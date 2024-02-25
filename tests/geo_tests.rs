@@ -192,7 +192,16 @@ mod tests {
     assert!(left_vertical.is_perpendicular_to(&lower_horizontal));
     assert!(left_vertical.is_perpendicular_to(&offset_horizontal));
 
-    assert!(upper_horizontal.could_pair_vertically_with(lower_horizontal));
-    assert!(!upper_horizontal.could_pair_vertically_with(offset_horizontal));
+    assert!(upper_horizontal.is_vertically_parallel_with(lower_horizontal));
+    assert!(!upper_horizontal.is_vertically_parallel_with(offset_horizontal));
+    assert!(!upper_horizontal.is_horizontally_parallel_with(left_vertical));
+    assert!(!upper_horizontal.is_horizontally_parallel_with(right_vertical));
+    assert!(!upper_horizontal.is_horizontally_parallel_with(offset_vertical));
+
+    assert!(left_vertical.is_horizontally_parallel_with(right_vertical));
+    assert!(!left_vertical.is_horizontally_parallel_with(offset_vertical));
+    assert!(!left_vertical.is_vertically_parallel_with(upper_horizontal));
+    assert!(!left_vertical.is_vertically_parallel_with(lower_horizontal));
+    assert!(!left_vertical.is_vertically_parallel_with(offset_horizontal));
   }
 }

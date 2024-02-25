@@ -210,14 +210,14 @@ impl Line {
     !self.is_parallel_to(other)
   }
 
-  pub fn could_pair_vertically_with(&self, other: Self) -> bool {
+  pub fn is_vertically_parallel_with(&self, other: Self) -> bool {
     self.is_horizontal()
       && other.is_horizontal()
       && self.length() == other.length()
       && self.start.is_left_aligned_with(&other)
   }
 
-  pub fn could_pair_horizontally_with(&self, other: Self) -> bool {
+  pub fn is_horizontally_parallel_with(&self, other: Self) -> bool {
     self.is_vertical()
       && other.is_vertical()
       && self.length() == other.length()
