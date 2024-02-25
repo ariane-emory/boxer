@@ -112,6 +112,14 @@ impl Point {
   pub fn new(line: u64, col: u64) -> Point {
     Point { line, col }
   }
+
+  pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {
+    self.col == other.col
+  }
+
+  pub fn is_horizontally_aligned_with(&self, other: &Self) -> bool {
+    self.line == other.line
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Point {
@@ -168,13 +176,13 @@ impl Line {
     self.size().is_tall()
   }
 
-  // pub fn is_parallel_to(&self, other: &Self) -> bool {
-  //   (self.is_horizontal() && other.is_horizontal()) || (self.is_vertical() && other.is_vertical())
-  // }
+  pub fn is_parallel_to(&self, other: &Self) -> bool {
+    (self.is_horizontal() && other.is_horizontal()) || (self.is_vertical() && other.is_vertical())
+  }
 
-  // pub fn could_pair_vertically_with(&self, other: Self) -> bool {
-  //   self.start.is_horizontally_aligned_with(&other.start) && self.length() == other.length()
-  // }
+  pub fn could_pair_vertically_with(&self, other: Self) -> bool {
+    self.start.is_left_aligned_with(&other.start) && self.end.is_right_aligned_with(&other.end)
+  }
 
   // pub fn could_pair_horizontally_with(&self, other: Self) -> bool {
   //   self.start.is_vertically_aligned_with(&other.start) && self.length() == other.length()
