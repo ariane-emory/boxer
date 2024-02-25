@@ -70,11 +70,11 @@ impl Line {
     self.start.is_vertically_aligned_with(self.end)
   }
 
-  fn could_pair_horizontally_with(&self, other: Self) -> bool {
+  fn could_pair_vertically_with(&self, other: Self) -> bool {
     self.start.is_horizontally_aligned_with(other.start) && self.length() == other.length()
   }
 
-  fn could_pair_vertically_with(&self, other: Self) -> bool {
+  fn could_pair_horizontally_with(&self, other: Self) -> bool {
     self.start.is_vertically_aligned_with(other.start) && self.length() == other.length()
   }
 
@@ -134,12 +134,12 @@ fn main() {
   // 5 xxxxx
 
   let lines = vec![
-    Line::new(Point::new(0, 0), Point::new(0, 4)),
-    Line::new(Point::new(5, 0), Point::new(5, 4)),
-    Line::new(Point::new(0, 0), Point::new(5, 0)),
-    Line::new(Point::new(0, 4), Point::new(5, 4)),
-    Line::new(Point::new(3, 5), Point::new(3, 9)),
-    Line::new(Point::new(0, 8), Point::new(1, 8)),
+    Line::new(Point::new(0, 0), Point::new(0, 4)).unwrap(),
+    Line::new(Point::new(5, 0), Point::new(5, 4)).unwrap(),
+    Line::new(Point::new(0, 0), Point::new(5, 0)).unwrap(),
+    Line::new(Point::new(0, 4), Point::new(5, 4)).unwrap(),
+    Line::new(Point::new(3, 5), Point::new(3, 9)).unwrap(),
+    Line::new(Point::new(0, 8), Point::new(1, 8)).unwrap(),
   ];
 
   for line in lines {
