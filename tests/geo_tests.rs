@@ -45,6 +45,15 @@ mod tests {
     assert!(!center.is_left_of(upper_middle));
     assert!(!center.is_left_of(lower_middle));
 
+    assert!(center.is_right_of(left_of_center));
+    assert!(center.is_right_of(upper_left));
+    assert!(center.is_right_of(lower_left));
+    assert!(!center.is_right_of(right_of_center));
+    assert!(!center.is_right_of(upper_right));
+    assert!(!center.is_right_of(lower_right));
+    assert!(!center.is_right_of(upper_middle));
+    assert!(!center.is_right_of(lower_middle));
+
     assert_eq!(4, center.line);
   }
 }

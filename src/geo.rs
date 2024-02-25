@@ -47,7 +47,7 @@ impl Point {
   }
 
   pub fn is_right_of(&self, other: Point) -> bool {
-    !(self.is_left_of(other) || self.is_vertically_aligned_with(other))
+    !(self.is_left_of(other) || self.is_horizontally_aligned_with(other))
   }
 
   pub fn is_above(&self, other: Point) -> bool {
