@@ -191,5 +191,8 @@ mod tests {
     assert!(left_vertical.is_perpendicular_to(&upper_horizontal));
     assert!(left_vertical.is_perpendicular_to(&lower_horizontal));
     assert!(left_vertical.is_perpendicular_to(&offset_horizontal));
+
+    assert!(upper_horizontal.could_pair_vertically_with(lower_horizontal));
+    assert!(!upper_horizontal.could_pair_vertically_with(offset_horizontal));
   }
 }
