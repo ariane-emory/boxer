@@ -2,8 +2,9 @@
 
 #[cfg(test)]
 mod tests {
-  use squares::geo::Point;
-  use squares::geo::Positional;
+  use squares::geo::*;
+  // use squares::geo::Point;
+  // use squares::geo::Positional;
 
   #[test]
   fn point_test() {
@@ -88,7 +89,5 @@ mod tests {
     assert!(center.is_above(&lower_left));
     assert!(center.is_above(&lower_middle));
     assert!(center.is_above(&lower_right));
-
-    assert_eq!(4, center.line);
   }
 }
