@@ -71,8 +71,12 @@ pub trait Positional: Debug {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn size(&self) -> Size {
     println!("Get size for: {:?}", self);
-
-    Size::new(self.size().height, self.size().width)
+    let size = Size::new(
+      self.lower_bound() - self.upper_bound() + 1,
+      self.right_bound() - self.left_bound() + 1,
+    );
+    println!("Got size:     {:?}", size);
+    size
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn height(&self) -> u64 {
