@@ -160,13 +160,13 @@ impl Line {
     Ok(Line { start, end })
   }
 
-  // pub fn is_horizontal(&self) -> bool {
-  //   self.start.is_horizontally_aligned_with(&self.end)
-  // }
+  pub fn is_horizontal(&self) -> bool {
+    self.size().is_wide()
+  }
 
-  // pub fn is_vertical(&self) -> bool {
-  //   self.start.is_vertically_aligned_with(&self.end)
-  // }
+  pub fn is_vertical(&self) -> bool {
+    self.size().is_tall()
+  }
 
   // pub fn is_parallel_to(&self, other: &Self) -> bool {
   //   (self.is_horizontal() && other.is_horizontal()) || (self.is_vertical() && other.is_vertical())
