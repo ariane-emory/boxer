@@ -27,17 +27,21 @@ impl fmt::Display for ErrString {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub trait Positional {
-//   fn is_left_of(&self, other: &impl Positional) -> bool;
-//   fn is_right_of(&self, other: &impl Positional) -> bool;
-//   fn is_above(&self, other: &impl Positional) -> bool;
-//   fn is_below(&self, other: &impl Positional) -> bool;
-//   fn is_horizontally_aligned_with(&self, other: &impl Positional) -> bool;
-//   fn is_vertically_aligned_with(&self, other: &impl Positional) -> bool;
-//   fn is_aligned_with(&self, other: &impl Positional) -> bool {
-//     self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
-//   }
-// }
+pub trait Positional {
+  fn is_left_of(&self, other: &impl Positional) -> bool;
+  fn is_right_of(&self, other: &impl Positional) -> bool;
+  fn is_above(&self, other: &impl Positional) -> bool;
+  fn is_below(&self, other: &impl Positional) -> bool;
+  fn is_horizontally_aligned_with(&self, other: &impl Positional) -> bool;
+  fn is_vertically_aligned_with(&self, other: &impl Positional) -> bool;
+  fn upper_bound(&self) -> u64;
+  fn lower_bound(&self) -> u64;
+  fn left_bound(&self) -> u64;
+  fn right_bound(&self) -> u64;
+  fn is_aligned_with(&self, other: &impl Positional) -> bool {
+    self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
