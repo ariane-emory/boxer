@@ -51,28 +51,48 @@ fn main() {
     // Borrow `lines` for iteration instead of moving it
     for other_line in &lines_deque {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
-        match orientation {
-          Horizontal => {
-            println!("... Horizontally coaligned with {:?}", other_line);
-            let left_candidate =
-              Line::from_points(line.start.clone(), other_line.start.clone()).unwrap();
-            println!("... Left side would need to match: {:?}", left_candidate);
-            let right_candidate =
-              Line::from_points(line.end.clone(), other_line.end.clone()).unwrap();
-            println!("... Right side would need to match: {:?}", right_candidate);
+        let (left_or_top_candidate, right_or_bottom_candidate) = match orientation {
+          Horizontal => (
+            Line::from_points(line.start.clone(), other_line.start.clone()).unwrap(),
+            Line::from_points(line.end.clone(), other_line.end.clone()).unwrap(),
+          ),
+          Vertical => (
+            Line::from_points(line.start.clone(), other_line.start.clone()).unwrap(),
+            Line::from_points(line.end.clone(), other_line.end.clone()).unwrap(),
+          ),
+        };
+
+        // Check if the candidate lines are in the deque
+        if lines_deque.contains(&left_or_top_candidate)
+          && lines_deque.contains(&right_or_bottom_candidate)
+        {
+          println!("Found coaligned lines: \n  {:?}\n  {:?}", line, other_line);
+          println!(
+            "With sides:\n  {:?}\n  {:?}",
+            left_or_top_candidate, right_or_bottom_candidate
+          );
+
+          // Create the rectangle here...
+          let mut tmp_vec = Vec::new();
+
+          tmp_vec.push(line.clone());
+          tmp_vec.push(other_line.clone());
+          tmp_vec.push(left_or_top_candidate.clone());
+          tmp_vec.push(right_or_bottom_candidate.clone());
+          tmp_vec.sort();
+
+          for t in &tmp_vec {
+            println!("-> {:?}", t);
           }
-          Vertical => {
-            println!("... Vertically coaligned with {:?}", other_line);
-            let top_candidate =
-              Line::from_points(line.start.clone(), other_line.start.clone()).unwrap();
-            println!("... Top side would need to match: {:?}", top_candidate);
-            let bottom_candidate =
-              Line::from_points(line.end.clone(), other_line.end.clone()).unwrap();
-            println!(
-              "... Bottom side would need to match: {:?}",
-              bottom_candidate
-            );
-          }
+
+          let rect = Rectangle::new(tmp_vec.first().unwrap().start, tmp_vec.last().unwrap().end);
+
+          println!("Rectangle: {:?}", rect);
+
+          // Schedule the lines for removal
+          lines_to_remove.push(other_line.clone());
+          lines_to_remove.push(left_or_top_candidate);
+          lines_to_remove.push(right_or_bottom_candidate);
         }
       }
     }
