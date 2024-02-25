@@ -320,7 +320,20 @@ pub struct Rectangle {
 }
 
 impl Rectangle {
-  pub fn new(top_left: Point, bottom_right: Point) -> Rectangle {
+  pub fn new(start: Point, end: Point) -> Rectangle {
+    // we want the 'start' point to be the top left corner and the 'end' point to be the bottom
+    // right corner... but, they might have been passed in a different order, so we're going to
+    // create our own points using the minimum/maximum line and column from the arguments:
+    let top_left = Point::new(
+      std::cmp::min(start.col, end.col),
+      std::cmp::min(start.line, end.line),
+    );
+
+    let bottom_right = Point::new(
+      std::cmp::max(start.col, end.col),
+      std::cmp::max(start.line, end.line),
+    );
+
     Rectangle {
       top_left,
       bottom_right,
