@@ -19,25 +19,25 @@ mod tests {
     let lower_middle = Point::new(8, 4);
     let lower_right = Point::new(8, 8);
 
-    assert!(!center.is_top_aligned_with(&left_of_center));
-    assert!(!center.is_top_aligned_with(&lower_left));
-    assert!(!center.is_top_aligned_with(&lower_right));
-    assert!(!center.is_top_aligned_with(&right_of_center));
-    assert!(!center.is_top_aligned_with(&upper_left));
-    assert!(!center.is_top_aligned_with(&upper_right));
-    assert!(center.is_top_aligned_with(&center));
-    assert!(center.is_top_aligned_with(&lower_middle));
-    assert!(center.is_top_aligned_with(&upper_middle));
+    assert!(!center.is_left_aligned_with(&left_of_center));
+    assert!(!center.is_left_aligned_with(&lower_left));
+    assert!(!center.is_left_aligned_with(&lower_right));
+    assert!(!center.is_left_aligned_with(&right_of_center));
+    assert!(!center.is_left_aligned_with(&upper_left));
+    assert!(!center.is_left_aligned_with(&upper_right));
+    assert!(center.is_left_aligned_with(&center));
+    assert!(center.is_left_aligned_with(&lower_middle));
+    assert!(center.is_left_aligned_with(&upper_middle));
 
-    assert!(!center.is_bottom_aligned_with(&left_of_center));
-    assert!(!center.is_bottom_aligned_with(&lower_left));
-    assert!(!center.is_bottom_aligned_with(&lower_right));
-    assert!(!center.is_bottom_aligned_with(&right_of_center));
-    assert!(!center.is_bottom_aligned_with(&upper_left));
-    assert!(!center.is_bottom_aligned_with(&upper_right));
-    assert!(center.is_bottom_aligned_with(&center));
-    assert!(center.is_bottom_aligned_with(&lower_middle));
-    assert!(center.is_bottom_aligned_with(&upper_middle));
+    assert!(!center.is_right_aligned_with(&left_of_center));
+    assert!(!center.is_right_aligned_with(&lower_left));
+    assert!(!center.is_right_aligned_with(&lower_right));
+    assert!(!center.is_right_aligned_with(&right_of_center));
+    assert!(!center.is_right_aligned_with(&upper_left));
+    assert!(!center.is_right_aligned_with(&upper_right));
+    assert!(center.is_right_aligned_with(&center));
+    assert!(center.is_right_aligned_with(&lower_middle));
+    assert!(center.is_right_aligned_with(&upper_middle));
 
     // assert!(!center.is_vertically_aligned_with(&lower_left));
     // assert!(!center.is_vertically_aligned_with(&lower_middle));
