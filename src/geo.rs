@@ -41,6 +41,14 @@ impl Size {
   pub fn area(&self) -> u64 {
     self.height * self.width
   }
+
+  pub fn is_tall(&self) -> bool {
+    self.height > self.width
+  }
+
+  pub fn is_wide(&self) -> bool {
+    self.width > self.height
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
