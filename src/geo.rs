@@ -194,12 +194,12 @@ impl Line {
     Ok(Line { start, end })
   }
 
-  pub fn new(start_line: u64, start_col: u64, end_line: u64, end_col: u64) -> LineResult {
-    Line::from_points(
-      Point::new(start_line, start_col),
-      Point::new(end_line, end_col),
-    )
-  }
+  // pub fn new(start_line: u64, start_col: u64, end_line: u64, end_col: u64) -> LineResult {
+  //   Line::from_points(
+  //     Point::new(start_line, start_col),
+  //     Point::new(end_line, end_col),
+  //   )
+  // }
 
   pub fn is_horizontal(&self) -> bool {
     self.size().is_wide()

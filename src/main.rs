@@ -12,12 +12,12 @@ fn main() {
   // 5 xxxxx       xxxxx
 
   let mut lines = vec![
-    Line::new(0, 0, /**/ 0, 4).unwrap(),
-    Line::new(5, 0, /**/ 5, 4).unwrap(),
-    Line::new(0, 0, /**/ 5, 0).unwrap(),
-    Line::new(0, 4, /**/ 5, 4).unwrap(),
-    Line::new(3, 5, /**/ 3, 9).unwrap(),
-    Line::new(0, 8, /**/ 1, 8).unwrap(),
+    Line::from_points(Point::new(0, 0), Point::new(0, 4)).unwrap(),
+    Line::from_points(Point::new(5, 0), Point::new(5, 4)).unwrap(),
+    Line::from_points(Point::new(0, 0), Point::new(5, 0)).unwrap(),
+    Line::from_points(Point::new(0, 4), Point::new(5, 4)).unwrap(),
+    Line::from_points(Point::new(3, 5), Point::new(3, 9)).unwrap(),
+    Line::from_points(Point::new(0, 8), Point::new(1, 8)).unwrap(),
   ];
 
   lines.sort(); // Sorts in place
