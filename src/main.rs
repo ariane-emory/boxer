@@ -32,6 +32,7 @@ pub struct Point {
   pub line: u64,
   pub col: u64,
 }
+
 impl Point {
   fn new(line: u64, col: u64) -> Point {
     Point { line, col }
@@ -67,6 +68,14 @@ impl Line {
 
   fn is_vertical(&self) -> bool {
     self.start.is_vertically_aligned_with(self.end)
+  }
+
+  fn length(&self) -> u64 {
+    if self.is_horizontal() {
+      self.end.col - self.start.col
+    } else {
+      self.end.line - self.start.line
+    }
   }
 
   fn new(start: Point, end: Point) -> LineResult {
