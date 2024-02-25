@@ -27,7 +27,8 @@ fn main() {
     Line::new(12, 5, 16, 5).unwrap(),
   ];
 
-  lines.sort(); // Sorts in place
+  lines.sort();
+  lines.reverse();
 
   for line in &lines {
     println!("{:?}", line);
@@ -42,13 +43,13 @@ fn main() {
     // Borrow `lines` for iteration instead of moving it
     for other_line in &lines {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
-        println!("{:?} is co-aligned with {:?}!", line, other_line);
+        //println!("{:?} is co-aligned with {:?}!", line, other_line);
         match orientation {
           Horizontal => {
-            println!("  {:?} is horizontal", line);
+            println!("... horizontally coaligned with {:?}", other_line);
           }
           Vertical => {
-            println!("  {:?} is vertical", line);
+            println!("... vertically coaligned with {:?}", other_line);
           }
         }
       }
