@@ -20,6 +20,9 @@ mod tests {
     let lower_middle = Point::new(8, 4);
     let lower_right = Point::new(8, 8);
 
+    assert_eq!(center.size(), Size::new(1, 1));
+    assert_eq!(center.size().area(), 1);
+
     assert!(!center.is_left_aligned_with(&left_of_center));
     assert!(!center.is_left_aligned_with(&lower_left));
     assert!(!center.is_left_aligned_with(&lower_right));
