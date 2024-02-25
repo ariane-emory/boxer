@@ -47,6 +47,24 @@ pub trait Positional {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Size {
+  pub height: u64,
+  pub width: u64,
+}
+
+impl Size {
+  pub fn new(height: u64, width: u64) -> Size {
+    Size { height, width }
+  }
+
+  pub fn area(&self) -> u64 {
+    self.height * self.width
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
   pub line: u64,
   pub col: u64,
