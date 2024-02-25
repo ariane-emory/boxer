@@ -111,7 +111,8 @@ fn main() {
           // }
 
           // Create the rectangle here...
-          let rect = Rectangle::new(tmp_vec.first().unwrap().start, tmp_vec.last().unwrap().end);
+          let rect =
+            Rectangle::new(tmp_vec.first().unwrap().start, tmp_vec.last().unwrap().end).unwrap();
 
           println!("New Rectangle: {:?}", rect);
 
