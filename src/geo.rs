@@ -220,6 +220,22 @@ impl Line {
     Ok(Line { start, end })
   }
 
+  pub fn intersects(&self, other: &Line) -> bool {
+    if self.is_horizontal() && other.is_vertical() {
+      other.start.col >= self.start.col
+        && other.start.col <= self.end.col
+        && self.start.line >= other.start.line
+        && self.start.line <= other.end.line
+    } else if self.is_vertical() && other.is_horizontal() {
+      self.start.col >= other.start.col
+        && self.start.col <= other.end.col
+        && other.start.line >= self.start.line
+        && other.start.line <= self.end.line
+    } else {
+      false
+    }
+  }
+
   pub fn is_horizontal(&self) -> bool {
     self.size().is_wide()
   }
