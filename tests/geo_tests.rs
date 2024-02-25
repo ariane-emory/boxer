@@ -1,5 +1,7 @@
 #![allow(unused_variables)]
 
+use squares::geo::*;
+
 #[cfg(test)]
 mod tests {
   #[test]
