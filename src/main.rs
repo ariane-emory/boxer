@@ -42,6 +42,10 @@ impl Point {
     self.col < other.col
   }
 
+  fn is_horizontally_aligned_with(&self, other: Point) -> bool {
+    self.col == other.col
+  }
+
   fn is_right_of(&self, other: Point) -> bool {
     !(self.is_left_of(other) || self.is_vertically_aligned_with(other))
   }
@@ -50,16 +54,12 @@ impl Point {
     self.line < other.line
   }
 
-  fn is_below(&self, other: Point) -> bool {
-    !(self.is_above(other) || self.is_horizontally_aligned_with(other))
-  }
-
-  fn is_horizontally_aligned_with(&self, other: Point) -> bool {
+  fn is_vertically_aligned_with(&self, other: Point) -> bool {
     self.line == other.line
   }
 
-  fn is_vertically_aligned_with(&self, other: Point) -> bool {
-    self.col == other.col
+  fn is_below(&self, other: Point) -> bool {
+    !(self.is_above(other) || self.is_vertically_aligned_with(other))
   }
 
   fn is_aligned_with(&self, other: Point) -> bool {
@@ -78,6 +78,23 @@ pub struct Line {
 type LineResult = std::result::Result<Line, ErrString>;
 
 impl Line {
+  fn new(start: Point, end: Point) -> LineResult {
+    if start == end {
+      return Err(ErrString::new("Start and end points cannot be the same"));
+    }
+
+    if !start.is_aligned_with(end) {
+      return Err(ErrString::new("Line must be either horizontal or vertical"));
+    }
+
+    let (start, end) = if (start.line < end.line) || (start.col < end.col) {
+      (start, end)
+    } else {
+      (end, start)
+    };
+    Ok(Line { start, end })
+  }
+
   fn is_horizontal(&self) -> bool {
     self.start.is_horizontally_aligned_with(self.end)
   }
@@ -107,40 +124,20 @@ impl Line {
   }
 
   // Whether lines are 'above' or to the left of each other is judged based on their start.
-
   fn is_above(&self, other: Self) -> bool {
     self.start.is_above(other.start)
-  }
-
-  fn is_left_of(&self, other: Self) -> bool {
-    self.start.is_left_of(other.start)
   }
 
   fn is_below(&self, other: Self) -> bool {
     self.start.is_below(other.start)
   }
 
-  fn is_right_of(&self, other: Self) -> bool {
-    self.start.is_right_of(other.start)
+  fn is_left_of(&self, other: Self) -> bool {
+    self.start.is_left_of(other.start)
   }
 
-  fn new(start: Point, end: Point) -> LineResult {
-    if start == end {
-      return Err(ErrString::new("Start and end points cannot be the same"));
-    }
-
-    if !start.is_aligned_with(end) {
-      return Err(ErrString::new("Line must be either horizontal or vertical"));
-    }
-
-    let (start, end) = if (start.line < end.line) || (start.col < end.col) {
-      (start, end)
-    } else {
-      (end, start)
-    };
-
-    // Finally, create and return the line.
-    Ok(Line { start, end })
+  fn is_right_of(&self, other: Self) -> bool {
+    self.start.is_right_of(other.start)
   }
 }
 
@@ -203,41 +200,41 @@ fn main() {
     println!("{:?}", line);
   }
 
-  // TODO: sort lines into 3 new vectors, one containing a single Rectangle, one
-  // containing a single horizontal line and one containing a single vertical line.
-  // Initialization
-  let mut rectangles = Vec::new();
-  let mut vertical_lines = Vec::new();
-  let mut horizontal_lines = Vec::new();
+  // // TODO: sort lines into 3 new vectors, one containing a single Rectangle, one
+  // // containing a single horizontal line and one containing a single vertical line.
+  // // Initialization
+  // let mut rectangles = Vec::new();
+  // let mut vertical_lines = Vec::new();
+  // let mut horizontal_lines = Vec::new();
 
-  // Step 2: Identification of Rectangles
-  for i in 0..lines.len() {
-    let line1 = &lines[i];
-    if line1.is_horizontal() {
-      for j in i + 1..lines.len() {
-        let line2 = &lines[j];
-        if line2.is_horizontal() && line1.is_parallel_to(line2) {
-          // Check for connecting vertical lines
-          if let Some((v1, v2)) = find_connecting_vertical_lines(line1, line2, &lines) {
-            rectangles.push(Rectangle::new(line1.start, line2.end));
-            // Remove or mark these lines so they are not considered in the next step
-            break;
-          }
-        }
-      }
-    }
-  }
+  // // Step 2: Identification of Rectangles
+  // for i in 0..lines.len() {
+  //   let line1 = &lines[i];
+  //   if line1.is_horizontal() {
+  //     for j in i + 1..lines.len() {
+  //       let line2 = &lines[j];
+  //       if line2.is_horizontal() && line1.is_parallel_to(line2) {
+  //         // Check for connecting vertical lines
+  //         if let Some((v1, v2)) = find_connecting_vertical_lines(line1, line2, &lines) {
+  //           rectangles.push(Rectangle::new(line1.start, line2.end));
+  //           // Remove or mark these lines so they are not considered in the next step
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
-  // Step 3: Categorization of Remaining Lines
-  for line in lines {
-    if !line.is_part_of_any_rectangle() {
-      if line.is_horizontal() {
-        horizontal_lines.push(line);
-      } else if line.is_vertical() {
-        vertical_lines.push(line);
-      }
-    }
-  }
+  // // Step 3: Categorization of Remaining Lines
+  // for line in lines {
+  //   if !line.is_part_of_any_rectangle() {
+  //     if line.is_horizontal() {
+  //       horizontal_lines.push(line);
+  //     } else if line.is_vertical() {
+  //       vertical_lines.push(line);
+  //     }
+  //   }
+  // }
 
   // Now `rectangles`, `vertical_lines`, and `horizontal_lines` hold the categorized lines.
 }
