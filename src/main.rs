@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-
+use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;
 
@@ -27,7 +27,7 @@ impl fmt::Display for ErrString {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
   pub line: u64,
   pub col: u64,
@@ -53,7 +53,7 @@ impl Point {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Line {
   pub start: Point,
   pub end: Point,
@@ -105,6 +105,23 @@ impl Line {
     Ok(Line { start, end })
   }
 }
+
+impl Eq for Line {}
+
+impl Ord for Line {
+  fn cmp(&self, other: &Self) -> Ordering {
+    self
+      .start
+      .cmp(&other.start)
+      .then_with(|| self.end.cmp(&other.end))
+  }
+}
+
+impl PartialOrd for Line {
+  fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+    Some(self.cmp(other))
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +150,7 @@ fn main() {
   // 4 x   xxxxx
   // 5 xxxxx
 
-  let lines = vec![
+  let mut lines = vec![
     Line::new(Point::new(0, 0), Point::new(0, 4)).unwrap(),
     Line::new(Point::new(5, 0), Point::new(5, 4)).unwrap(),
     Line::new(Point::new(0, 0), Point::new(5, 0)).unwrap(),
@@ -142,11 +159,13 @@ fn main() {
     Line::new(Point::new(0, 8), Point::new(1, 8)).unwrap(),
   ];
 
-  for line in lines {
+  lines.sort(); // Sorts in place
+
+  for line in &lines {
     println!("{:?}", line);
   }
 
-  // sort lines into 3 new vectors, one containing a single Rectangle, one
+  // TODO: sort lines into 3 new vectors, one containing a single Rectangle, one
   // containing a single horizontal line and one containing a single vertical line.
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
