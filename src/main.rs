@@ -86,6 +86,10 @@ impl Line {
     self.start.is_vertically_aligned_with(self.end)
   }
 
+  fn is_parallel_to(&self, other: &Self) -> bool {
+    (self.is_horizontal() && other.is_horizontal()) || (self.is_vertical() && other.is_vertical())
+  }
+
   fn could_pair_vertically_with(&self, other: Self) -> bool {
     self.start.is_horizontally_aligned_with(other.start) && self.length() == other.length()
   }
@@ -201,5 +205,40 @@ fn main() {
 
   // TODO: sort lines into 3 new vectors, one containing a single Rectangle, one
   // containing a single horizontal line and one containing a single vertical line.
+  // Initialization
+  let mut rectangles = Vec::new();
+  let mut vertical_lines = Vec::new();
+  let mut horizontal_lines = Vec::new();
+
+  // Step 2: Identification of Rectangles
+  for i in 0..lines.len() {
+    let line1 = &lines[i];
+    if line1.is_horizontal() {
+      for j in i + 1..lines.len() {
+        let line2 = &lines[j];
+        if line2.is_horizontal() && line1.is_parallel_to(line2) {
+          // Check for connecting vertical lines
+          if let Some((v1, v2)) = find_connecting_vertical_lines(line1, line2, &lines) {
+            rectangles.push(Rectangle::new(line1.start, line2.end));
+            // Remove or mark these lines so they are not considered in the next step
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  // Step 3: Categorization of Remaining Lines
+  for line in lines {
+    if !line.is_part_of_any_rectangle() {
+      if line.is_horizontal() {
+        horizontal_lines.push(line);
+      } else if line.is_vertical() {
+        vertical_lines.push(line);
+      }
+    }
+  }
+
+  // Now `rectangles`, `vertical_lines`, and `horizontal_lines` hold the categorized lines.
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
