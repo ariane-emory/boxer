@@ -15,7 +15,7 @@ mod tests {
     let right_of_center = Point::new(4, 8);
 
     let lower_left = Point::new(8, 0);
-    let lower_middle = Point::new(8, 8);
+    let lower_middle = Point::new(8, 4);
     let lower_right = Point::new(8, 8);
 
     assert!(center.is_horizontally_aligned_with(upper_middle));
