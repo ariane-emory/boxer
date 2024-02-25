@@ -254,6 +254,14 @@ impl Line {
   pub fn length(&self) -> u64 {
     self.size().area()
   }
+
+  pub fn orientation(&self) -> Orientation {
+    if self.is_horizontal() {
+      Horizontal
+    } else {
+      Vertical
+    }
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Eq for Line {}

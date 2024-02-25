@@ -1,4 +1,7 @@
+#![allow(unused_imports)]
+
 mod geo;
+use geo::Orientation::*;
 use geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +38,20 @@ fn main() {
   // pop items off of lines until it's empty:
   while let Some(line) = lines.pop() {
     println!("Study {:?}...", line);
+
+    // for other_line in lines {
+    //   if let Some(orientation) = line.is_coaligned_with(other_line) {
+    //     println!("{:?} is co-aligned with {:?}", line, other_line);
+    //     match orientation {
+    //       Horizontal => {
+    //         println!("  {:?} is horizontal", line);
+    //       }
+    //       Vertical => {
+    //         println!("  {:?} is vertical", line);
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
