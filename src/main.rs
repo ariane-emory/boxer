@@ -1,4 +1,6 @@
 #![allow(unused_imports)]
+#![allow(unused_variables)]
+#![allow(unused_mut)]
 
 use std::collections::VecDeque;
 mod geo;
@@ -15,6 +17,7 @@ fn main() {
   // 4 x   xxxxx   x   x
   // 5 xxxxx       xxxxx
 
+  let mut rects: Vec<Rectangle> = Vec::new();
   let mut lines = vec![
     Line::new(0, 0, 0, 5).unwrap(),
     Line::new(0, 0, 4, 0).unwrap(),
