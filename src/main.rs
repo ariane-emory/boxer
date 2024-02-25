@@ -24,7 +24,6 @@ impl fmt::Display for StringErr {
     write!(f, "Line creation error: {}", self.message)
   }
 }
-////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 type Result<T> = std::result::Result<T, StringErr>;
@@ -63,13 +62,9 @@ impl Line {
   //============================================================================
   fn new(start: Point, end: Point) -> Result<Line> {
     if start.line != end.line && start.col != end.col {
-      return Err(StringErr {
-        message: "Line must be either horizontal or vertical".to_string(),
-      });
+      return Err(StringErr::new("Line must be either horizontal or vertical"));
     } else if start == end {
-      Err(StringErr {
-        message: "Start and end points cannot be the same".to_string(),
-      })
+      Err(StringErr::new("Start and end points cannot be the same"))
     } else {
       Ok(Line { start, end })
     }
