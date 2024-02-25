@@ -14,7 +14,7 @@ fn main() {
   // 0 xxxxx  x    xxxxx
   // 1 x   x  x    x   x
   // 3 x   x       x   x
-  // 4 x   xxxxx   x   x
+  // 4 x   xxxxxx  x   x
   // 5 xxxxx       xxxxx
 
   let mut rects: Vec<Rectangle> = Vec::new();
@@ -27,7 +27,7 @@ fn main() {
     Line::new(12, 5, 16, 5).unwrap(),
     Line::new(16, 0, 16, 5).unwrap(),
     Line::new(4, 0, 4, 5).unwrap(),
-    Line::new(5, 4, 9, 4).unwrap(),
+    Line::new(5, 4, 10, 4).unwrap(),
     Line::new(8, 0, 8, 1).unwrap(),
   ];
 
