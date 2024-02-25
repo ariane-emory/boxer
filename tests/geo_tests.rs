@@ -103,6 +103,20 @@ mod tests {
     let right_vertical = Line::new(Point::new(0, 4), Point::new(4, 4)).unwrap();
     let offset_vertical = Line::new(Point::new(1, 0), Point::new(5, 0)).unwrap();
 
+    assert_eq!(upper_horizontal.size(), Size::new(1, 5));
+    assert_eq!(lower_horizontal.size(), Size::new(1, 5));
+    assert_eq!(offset_horizontal.size(), Size::new(1, 5));
+    assert_eq!(left_vertical.size(), Size::new(5, 1));
+    assert_eq!(right_vertical.size(), Size::new(5, 1));
+    assert_eq!(offset_vertical.size(), Size::new(5, 1));
+
+    assert_eq!(upper_horizontal.length(), 5);
+    assert_eq!(lower_horizontal.length(), 5);
+    assert_eq!(offset_horizontal.length(), 5);
+    assert_eq!(left_vertical.length(), 5);
+    assert_eq!(right_vertical.length(), 5);
+    assert_eq!(offset_vertical.length(), 5);
+
     assert!(upper_horizontal.is_horizontal());
     assert!(!upper_horizontal.is_vertical());
     assert!(lower_horizontal.is_horizontal());
@@ -116,5 +130,17 @@ mod tests {
     assert!(right_vertical.is_vertical());
     assert!(!offset_vertical.is_horizontal());
     assert!(offset_vertical.is_vertical());
+
+    assert!(upper_horizontal.is_parallel_to(&lower_horizontal));
+    assert!(upper_horizontal.is_parallel_to(&offset_horizontal));
+    assert!(!upper_horizontal.is_parallel_to(&left_vertical));
+    assert!(!upper_horizontal.is_parallel_to(&right_vertical));
+    assert!(!upper_horizontal.is_parallel_to(&offset_vertical));
+
+    assert!(left_vertical.is_parallel_to(&right_vertical));
+    assert!(left_vertical.is_parallel_to(&offset_vertical));
+    assert!(!left_vertical.is_parallel_to(&upper_horizontal));
+    assert!(!left_vertical.is_parallel_to(&lower_horizontal));
+    assert!(!left_vertical.is_parallel_to(&offset_horizontal));
   }
 }
