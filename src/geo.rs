@@ -72,11 +72,17 @@ pub trait Positional: Debug {
   fn size(&self) -> Size {
     println!("Get size for: {:?}", self);
 
-    Size::new(
-      self.upper_bound() - self.lower_bound() + 1,
-      self.right_bound() - self.left_bound() + 1,
-    )
+    Size::new(self.size().height, self.size().width)
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  fn height(&self) -> u64 {
+    self.size().height
+  }
+
+  fn width(&self) -> u64 {
+    self.size().width
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn is_left_aligned_with(&self, other: &impl Positional) -> bool {
     self.left_bound() == other.left_bound()
