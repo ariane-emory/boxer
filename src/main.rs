@@ -46,6 +46,8 @@ fn main() {
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
 
+    let mut lines_to_remove = Vec::new();
+
     // Borrow `lines` for iteration instead of moving it
     for other_line in &lines_deque {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
@@ -77,4 +79,5 @@ fn main() {
     break; // temporary, we'll remove this later.
   }
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
