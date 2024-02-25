@@ -75,6 +75,10 @@ impl Point {
     Point { line, col }
   }
 
+  pub fn size(&self) -> Size {
+    Size::new(self.line, self.col)
+  }
+
   pub fn is_left_of(&self, other: &Point) -> bool {
     self.col < other.col
   }
