@@ -27,6 +27,15 @@ mod tests {
     assert!(!center.is_horizontally_aligned_with(left_of_center));
     assert!(!center.is_horizontally_aligned_with(right_of_center));
 
+    assert!(center.is_vertically_aligned_with(left_of_center));
+    assert!(center.is_vertically_aligned_with(right_of_center));
+    assert!(!center.is_vertically_aligned_with(upper_left));
+    assert!(!center.is_vertically_aligned_with(upper_middle));
+    assert!(!center.is_vertically_aligned_with(upper_right));
+    assert!(!center.is_vertically_aligned_with(lower_left));
+    assert!(!center.is_vertically_aligned_with(lower_middle));
+    assert!(!center.is_vertically_aligned_with(lower_right));
+
     assert_eq!(4, center.line);
   }
 }
