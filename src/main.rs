@@ -47,7 +47,6 @@ fn main() {
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
 
-    let mut lines_to_remove = Vec::new();
     let mut found_a_rect = false;
 
     // Borrow `lines` for iteration instead of moving it
@@ -63,6 +62,7 @@ fn main() {
             Line::from_points(line.end.clone(), other_line.end.clone()).unwrap(),
           ),
         };
+        let mut lines_to_remove = Vec::new();
 
         // Check if the candidate lines are in the deque
         if lines_deque.contains(&left_or_top_candidate)
@@ -117,7 +117,7 @@ fn main() {
     println!("Discovered Rectangle: {:?}", rect);
   }
 
-  for line in &lines_deque {
+  for line in &leftover_lines {
     println!("Leftover Line: {:?}", line);
   }
 }
