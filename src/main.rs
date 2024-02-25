@@ -35,7 +35,7 @@ fn main() {
   //lines.reverse();
 
   for line in &lines {
-    println!("Soure Line: {:?}", line);
+    println!("Input Line: {:?}", line);
   }
 
   let mut lines_deque = VecDeque::from(lines);
