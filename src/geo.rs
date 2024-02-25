@@ -5,6 +5,16 @@ use std::fmt;
 use std::fmt::Debug;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+#[derive(Debug, Copy, Clone)]
+pub enum Orientation {
+  Horizontal,
+  Vertical,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+use Orientation::*;
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug, Clone)]
 pub struct ErrString {
   string: String,
@@ -215,6 +225,16 @@ impl Line {
 
   pub fn is_perpendicular_to(&self, other: &Self) -> bool {
     !self.is_parallel_to(other)
+  }
+
+  pub fn is_coaligned_with(&self, other: Self) -> Option<Orientation> {
+    if self.is_horizontally_coaligned_with(other) {
+      Some(Horizontal)
+    } else if self.is_vertically_coaligned_with(other) {
+      Some(Vertical)
+    } else {
+      None
+    }
   }
 
   pub fn is_horizontally_coaligned_with(&self, other: Self) -> bool {

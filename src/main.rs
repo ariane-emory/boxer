@@ -30,7 +30,11 @@ fn main() {
     println!("{:?}", line);
   }
 
+  println!("");
+
   // pop items off of lines until it's empty:
-  while let Some(_line) = lines.pop() {}
+  while let Some(line) = lines.pop() {
+    println!("Study {:?}...", line);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
