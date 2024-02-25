@@ -174,10 +174,10 @@ pub struct Line {
   pub end: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type LineResult = std::result::Result<Line, ErrString>;
+type GeoResult = std::result::Result<Line, ErrString>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Line {
-  pub fn from_points(start: Point, end: Point) -> LineResult {
+  pub fn from_points(start: Point, end: Point) -> GeoResult {
     if start == end {
       return Err(ErrString::new("Start and end points cannot be the same"));
     }
@@ -194,7 +194,7 @@ impl Line {
     Ok(Line { start, end })
   }
 
-  // pub fn new(start_line: u64, start_col: u64, end_line: u64, end_col: u64) -> LineResult {
+  // pub fn new(start_line: u64, start_col: u64, end_line: u64, end_col: u64) -> GeoResult {
   //   Line::from_points(
   //     Point::new(start_line, start_col),
   //     Point::new(end_line, end_col),
@@ -285,6 +285,24 @@ impl Rectangle {
       top_left,
       bottom_right,
     }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Positional for Rectangle {
+  fn upper_bound(&self) -> u64 {
+    self.top_left.upper_bound()
+  }
+
+  fn lower_bound(&self) -> u64 {
+    self.bottom_right.lower_bound()
+  }
+
+  fn left_bound(&self) -> u64 {
+    self.top_left.left_bound()
+  }
+
+  fn right_bound(&self) -> u64 {
+    self.bottom_right.right_bound()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
