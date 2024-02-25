@@ -136,6 +136,15 @@ pub trait Positional: Debug {
   fn is_below(&self, other: &impl Positional) -> bool {
     !(self.is_above(other) || self.is_top_aligned_with(other))
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  fn overlaps(&self, other: &impl Positional) -> bool {
+    let horizontal_overlap =
+      self.left_bound() <= other.right_bound() && self.right_bound() >= other.left_bound();
+    let vertical_overlap =
+      self.upper_bound() <= other.lower_bound() && self.lower_bound() >= other.upper_bound();
+    horizontal_overlap && vertical_overlap
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -218,22 +227,6 @@ impl Line {
       (end, start)
     };
     Ok(Line { start, end })
-  }
-
-  pub fn intersects(&self, other: &Line) -> bool {
-    if self.is_horizontal() && other.is_vertical() {
-      other.start.col >= self.start.col
-        && other.start.col <= self.end.col
-        && self.start.line >= other.start.line
-        && self.start.line <= other.end.line
-    } else if self.is_vertical() && other.is_horizontal() {
-      self.start.col >= other.start.col
-        && self.start.col <= other.end.col
-        && other.start.line >= self.start.line
-        && other.start.line <= self.end.line
-    } else {
-      false
-    }
   }
 
   pub fn is_horizontal(&self) -> bool {
