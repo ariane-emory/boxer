@@ -180,10 +180,16 @@ mod tests {
     assert!(!left_vertical.is_parallel_to(&lower_horizontal));
     assert!(!left_vertical.is_parallel_to(&offset_horizontal));
 
-    assert!(upper_horizontal.is_perpendicular_to(&left_vertical));
-    assert!(upper_horizontal.is_perpendicular_to(&right_vertical));
-    assert!(!upper_horizontal.is_perpendicular_to(&offset_vertical));
     assert!(!upper_horizontal.is_perpendicular_to(&lower_horizontal));
     assert!(!upper_horizontal.is_perpendicular_to(&offset_horizontal));
+    assert!(upper_horizontal.is_perpendicular_to(&left_vertical));
+    assert!(upper_horizontal.is_perpendicular_to(&right_vertical));
+    assert!(upper_horizontal.is_perpendicular_to(&offset_vertical));
+
+    assert!(!left_vertical.is_perpendicular_to(&right_vertical));
+    assert!(!left_vertical.is_perpendicular_to(&offset_vertical));
+    assert!(left_vertical.is_perpendicular_to(&upper_horizontal));
+    assert!(left_vertical.is_perpendicular_to(&lower_horizontal));
+    assert!(left_vertical.is_perpendicular_to(&offset_horizontal));
   }
 }
