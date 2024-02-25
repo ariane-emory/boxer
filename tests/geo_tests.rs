@@ -26,6 +26,7 @@ mod tests {
     assert!(!center.is_horizontally_aligned_with(lower_right));
     assert!(!center.is_horizontally_aligned_with(left_of_center));
     assert!(!center.is_horizontally_aligned_with(right_of_center));
+    assert!(center.is_horizontally_aligned_with(center));
 
     assert!(center.is_vertically_aligned_with(left_of_center));
     assert!(center.is_vertically_aligned_with(right_of_center));
@@ -35,6 +36,7 @@ mod tests {
     assert!(!center.is_vertically_aligned_with(lower_left));
     assert!(!center.is_vertically_aligned_with(lower_middle));
     assert!(!center.is_vertically_aligned_with(lower_right));
+    assert!(center.is_vertically_aligned_with(center));
 
     assert!(center.is_left_of(right_of_center));
     assert!(center.is_left_of(upper_right));
@@ -44,6 +46,7 @@ mod tests {
     assert!(!center.is_left_of(lower_left));
     assert!(!center.is_left_of(upper_middle));
     assert!(!center.is_left_of(lower_middle));
+    assert!(!center.is_left_of(center));
 
     assert!(center.is_right_of(left_of_center));
     assert!(center.is_right_of(upper_left));
@@ -53,6 +56,17 @@ mod tests {
     assert!(!center.is_right_of(lower_right));
     assert!(!center.is_right_of(upper_middle));
     assert!(!center.is_right_of(lower_middle));
+    assert!(!center.is_right_of(center));
+
+    assert!(center.is_above(lower_middle));
+    assert!(center.is_above(lower_left));
+    assert!(center.is_above(lower_right));
+    assert!(!center.is_above(upper_middle));
+    assert!(!center.is_above(upper_left));
+    assert!(!center.is_above(upper_right));
+    assert!(!center.is_above(left_of_center));
+    assert!(!center.is_above(right_of_center));
+    assert!(!center.is_above(center));
 
     assert_eq!(4, center.line);
   }
