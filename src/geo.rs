@@ -280,6 +280,23 @@ impl Line {
       Vertical
     }
   }
+
+  pub fn touches(&self, rectangle: &Rectangle) -> bool {
+    if self.is_horizontal() {
+      // For a horizontal line, check if it's adjacent to the left or right of the rectangle
+      (self.start.col == rectangle.right_bound() + 1 || self.end.col == rectangle.left_bound() - 1)
+        && self.start.line >= rectangle.upper_bound()
+        && self.start.line <= rectangle.lower_bound()
+    } else if self.is_vertical() {
+      // For a vertical line, check if it's adjacent above or below the rectangle
+      (self.start.line == rectangle.lower_bound() + 1
+        || self.start.line == rectangle.upper_bound() - 1)
+        && self.start.col >= rectangle.left_bound()
+        && self.start.col <= rectangle.right_bound()
+    } else {
+      false
+    }
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Line {
