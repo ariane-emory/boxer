@@ -188,13 +188,14 @@ impl Line {
   //   self.start.is_vertically_aligned_with(&other.start) && self.length() == other.length()
   // }
 
-  // pub fn length(&self) -> u64 {
-  //   if self.is_horizontal() {
-  //     self.end.col - self.start.col
-  //   } else {
-  //     self.end.line - self.start.line
-  //   }
-  // }
+  pub fn length(&self) -> u64 {
+    self.size().area()
+    //   if self.is_horizontal() {
+    //     self.end.col - self.start.col
+    //   } else {
+    //     self.end.line - self.start.line
+    //   }
+  }
 
   // // Whether lines are 'above' or to the left of each other is judged based on their start.
   // pub fn is_above(&self, other: Self) -> bool {
