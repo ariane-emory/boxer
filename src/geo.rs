@@ -32,7 +32,6 @@ pub struct Size {
   pub height: u64,
   pub width: u64,
 }
-
 impl Size {
   pub fn new(height: u64, width: u64) -> Size {
     Size { height, width }
@@ -102,13 +101,12 @@ pub struct Point {
   pub line: u64,
   pub col: u64,
 }
-
 impl Point {
   pub fn new(line: u64, col: u64) -> Point {
     Point { line, col }
   }
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Point {
   fn upper_bound(&self) -> u64 {
     self.line
