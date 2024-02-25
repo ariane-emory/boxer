@@ -112,12 +112,12 @@ mod tests {
 
   #[test]
   fn line_test() {
-    let upper_horizontal = Line::from_points(Point::new(0, 0), Point::new(0, 4)).unwrap();
-    let lower_horizontal = Line::from_points(Point::new(0, 0), Point::new(0, 4)).unwrap();
-    let offset_horizontal = Line::from_points(Point::new(0, 1), Point::new(0, 5)).unwrap();
-    let left_vertical = Line::from_points(Point::new(0, 0), Point::new(4, 0)).unwrap();
-    let right_vertical = Line::from_points(Point::new(0, 4), Point::new(4, 4)).unwrap();
-    let offset_vertical = Line::from_points(Point::new(1, 0), Point::new(5, 0)).unwrap();
+    let upper_horizontal = Line::new(0, 0, 0, 4).unwrap();
+    let lower_horizontal = Line::new(0, 0, 0, 4).unwrap();
+    let offset_horizontal = Line::new(0, 1, 0, 5).unwrap();
+    let left_vertical = Line::new(0, 0, 4, 0).unwrap();
+    let right_vertical = Line::new(0, 4, 4, 4).unwrap();
+    let offset_vertical = Line::new(1, 0, 5, 0).unwrap();
 
     assert_eq!(upper_horizontal.size(), Size::new(1, 5));
     assert_eq!(lower_horizontal.size(), Size::new(1, 5));
