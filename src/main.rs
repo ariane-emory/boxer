@@ -46,13 +46,27 @@ fn main() {
     // Borrow `lines` for iteration instead of moving it
     for other_line in &lines_deque {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
-        //println!("{:?} is co-aligned with {:?}!", line, other_line);
         match orientation {
           Horizontal => {
-            println!("... horizontally coaligned with {:?}", other_line);
+            println!("... Horizontally coaligned with {:?}", other_line);
+            let left_candidate =
+              Line::from_points(line.start.clone(), other_line.start.clone()).unwrap();
+            println!("... Left side would need to match: {:?}", left_candidate);
+            let right_candidate =
+              Line::from_points(line.end.clone(), other_line.end.clone()).unwrap();
+            println!("... Right side would need to match: {:?}", right_candidate);
           }
           Vertical => {
-            println!("... vertically coaligned with {:?}", other_line);
+            println!("... Vertically coaligned with {:?}", other_line);
+            let top_candidate =
+              Line::from_points(line.start.clone(), other_line.start.clone()).unwrap();
+            println!("... Top side would need to match: {:?}", top_candidate);
+            let bottom_candidate =
+              Line::from_points(line.end.clone(), other_line.end.clone()).unwrap();
+            println!(
+              "... Bottom side would need to match: {:?}",
+              bottom_candidate
+            );
           }
         }
       }
