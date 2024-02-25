@@ -1,8 +1,12 @@
+#![allow(unused_variables)]
+
 #[cfg(test)]
 mod tests {
   #[test]
   fn point_test() {
-    let point = squares::geo::Point { line: 0, col: 0 };
-    assert_eq!(0, point.line);
+    let above = squares::geo::Point::new(0, 0);
+    let center = squares::geo::Point::new(4, 4);
+
+    assert_eq!(4, center.line);
   }
 }
