@@ -50,7 +50,6 @@ pub trait Positional {
   fn right_bound(&self) -> u64;
   fn upper_bound(&self) -> u64;
   fn lower_bound(&self) -> u64;
-
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn size(&self) -> Size {
     Size::new(
@@ -58,7 +57,6 @@ pub trait Positional {
       self.right_bound() - self.left_bound() + 1,
     )
   }
-
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn is_left_aligned_with(&self, other: &impl Positional) -> bool {
     self.left_bound() == other.left_bound()
@@ -75,7 +73,6 @@ pub trait Positional {
   fn is_bottom_aligned_with(&self, other: &impl Positional) -> bool {
     self.lower_bound() == other.lower_bound()
   }
-
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn is_left_of(&self, other: &impl Positional) -> bool {
     self.right_bound() < other.left_bound()
