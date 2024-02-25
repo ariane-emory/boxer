@@ -38,6 +38,22 @@ impl Point {
     Point { line, col }
   }
 
+  fn is_left_of(&self, other: Point) -> bool {
+    self.col < other.col
+  }
+
+  fn is_right_of(&self, other: Point) -> bool {
+    !(self.is_left_of(other) || self.is_vertically_aligned_with(other))
+  }
+
+  fn is_above(&self, other: Point) -> bool {
+    self.line < other.line
+  }
+
+  fn is_below(&self, other: Point) -> bool {
+    !(self.is_above(other) || self.is_horizontally_aligned_with(other))
+  }
+
   fn is_horizontally_aligned_with(&self, other: Point) -> bool {
     self.line == other.line
   }
@@ -84,6 +100,24 @@ impl Line {
     } else {
       self.end.line - self.start.line
     }
+  }
+
+  // Whether lines are 'above' or to the left of each other is judged based on their start.
+
+  fn is_above(&self, other: Self) -> bool {
+    self.start.is_above(other.start)
+  }
+
+  fn is_left_of(&self, other: Self) -> bool {
+    self.start.is_left_of(other.start)
+  }
+
+  fn is_below(&self, other: Self) -> bool {
+    self.start.is_below(other.start)
+  }
+
+  fn is_right_of(&self, other: Self) -> bool {
+    self.start.is_right_of(other.start)
   }
 
   fn new(start: Point, end: Point) -> LineResult {
