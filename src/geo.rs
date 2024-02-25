@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+use std::cmp::max;
+use std::cmp::min;
 use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;
@@ -208,7 +210,8 @@ impl Line {
     if !(start.is_left_aligned_with(&end) || start.is_top_aligned_with(&end)) {
       return Err(ErrString::new("Line must be either horizontal or vertical"));
     }
-
+    // We want the start point to be the top/left end of the line and the end point to be
+    // the bottom/right end of the line, se we might swap the arguments' order.
     let (start, end) = if (start.line < end.line) || (start.col < end.col) {
       (start, end)
     } else {
@@ -324,15 +327,8 @@ impl Rectangle {
     // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
     // right corner... but, they might have been passed in a different order, so we're going to
     // create our own points using the minimum/maximum line and column from the arguments:
-    let top_left = Point::new(
-      std::cmp::min(start.col, end.col),
-      std::cmp::min(start.line, end.line),
-    );
-
-    let bottom_right = Point::new(
-      std::cmp::max(start.col, end.col),
-      std::cmp::max(start.line, end.line),
-    );
+    let top_left = Point::new(min(start.col, end.col), min(start.line, end.line));
+    let bottom_right = Point::new(max(start.col, end.col), max(start.line, end.line));
 
     if bottom_right.left_bound() - top_left.left_bound() < 2 {
       Err(ErrString::new("Rectangle must be at least 3 columns wide"))
