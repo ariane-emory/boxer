@@ -70,6 +70,14 @@ impl Line {
     self.start.is_vertically_aligned_with(self.end)
   }
 
+  fn could_pair_horizontally_with(&self, other: Self) -> bool {
+    self.start.is_horizontally_aligned_with(other.start) && self.length() == other.length()
+  }
+
+  fn could_pair_vertically_with(&self, other: Self) -> bool {
+    self.start.is_vertically_aligned_with(other.start) && self.length() == other.length()
+  }
+
   fn length(&self) -> u64 {
     if self.is_horizontal() {
       self.end.col - self.start.col
@@ -79,10 +87,10 @@ impl Line {
   }
 
   fn new(start: Point, end: Point) -> LineResult {
-    if !start.is_aligned_with(end) {
-      return Err(ErrString::new("Line must be either horizontal or vertical"));
-    } else if start == end {
+    if start == end {
       Err(ErrString::new("Start and end points cannot be the same"))
+    } else if !start.is_aligned_with(end) {
+      return Err(ErrString::new("Line must be either horizontal or vertical"));
     } else {
       Ok(Line { start, end })
     }
