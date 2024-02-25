@@ -27,7 +27,7 @@ impl fmt::Display for ErrString {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Point {
   pub line: u64,
   pub col: u64,
@@ -88,12 +88,21 @@ impl Line {
 
   fn new(start: Point, end: Point) -> LineResult {
     if start == end {
-      Err(ErrString::new("Start and end points cannot be the same"))
-    } else if !start.is_aligned_with(end) {
-      return Err(ErrString::new("Line must be either horizontal or vertical"));
-    } else {
-      Ok(Line { start, end })
+      return Err(ErrString::new("Start and end points cannot be the same"));
     }
+
+    if !start.is_aligned_with(end) {
+      return Err(ErrString::new("Line must be either horizontal or vertical"));
+    }
+
+    let (start, end) = if (start.line < end.line) || (start.col < end.col) {
+      (start, end)
+    } else {
+      (end, start)
+    };
+
+    // Finally, create and return the line.
+    Ok(Line { start, end })
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
