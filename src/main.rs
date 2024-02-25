@@ -1,5 +1,6 @@
 #![allow(unused_imports)]
 
+use std::collections::VecDeque;
 mod geo;
 use geo::Orientation::*;
 use geo::*;
@@ -28,20 +29,22 @@ fn main() {
   ];
 
   lines.sort();
-  lines.reverse();
+  //lines.reverse();
 
   for line in &lines {
     println!("{:?}", line);
   }
 
+  let mut lines_deque = VecDeque::from(lines);
+
   println!("");
 
   // pop items off of lines until it's empty:
-  while let Some(line) = lines.pop() {
+  while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
 
     // Borrow `lines` for iteration instead of moving it
-    for other_line in &lines {
+    for other_line in &lines_deque {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
         //println!("{:?} is co-aligned with {:?}!", line, other_line);
         match orientation {
