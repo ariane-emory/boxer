@@ -38,6 +38,7 @@ pub trait Positional {
   fn lower_bound(&self) -> u64;
   fn left_bound(&self) -> u64;
   fn right_bound(&self) -> u64;
+  fn size(&self) -> Size;
   fn is_aligned_with(&self, other: &impl Positional) -> bool {
     self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
   }
