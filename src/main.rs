@@ -9,6 +9,27 @@ use geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() {
+  // //                   1111111111111111
+  // //   0123457890abcdef0123456789abcdef
+  // // 0 xxxxx  x    xxxxx
+  // // 1 x   x  x    x   x
+  // // 3 x   x       x   x
+  // // 4 x   xxxxxx  x   x
+  // // 5 xxxxx       xxxxx
+
+  // let mut lines = vec![
+  //   Line::new(0, 0, 0, 5).unwrap(),
+  //   Line::new(0, 0, 4, 0).unwrap(),
+  //   Line::new(0, 5, 4, 5).unwrap(),
+  //   Line::new(12, 0, 12, 5).unwrap(),
+  //   Line::new(12, 0, 16, 0).unwrap(),
+  //   Line::new(12, 5, 16, 5).unwrap(),
+  //   Line::new(16, 0, 16, 5).unwrap(),
+  //   Line::new(4, 0, 4, 5).unwrap(),
+  //   Line::new(5, 4, 10, 4).unwrap(),
+  //   Line::new(8, 0, 8, 1).unwrap(),
+  // ];
+
   //                   1111111111111111
   //   0123457890abcdef0123456789abcdef
   // 0 xxxxx  x    xxxxx
@@ -16,20 +37,6 @@ fn main() {
   // 3 x   x       x   x
   // 4 x   xxxxxx  x   x
   // 5 xxxxx       xxxxx
-
-  let mut rects: Vec<Rectangle> = Vec::new();
-  let mut lines = vec![
-    Line::new(0, 0, 0, 5).unwrap(),
-    Line::new(0, 0, 4, 0).unwrap(),
-    Line::new(0, 5, 4, 5).unwrap(),
-    Line::new(12, 0, 12, 5).unwrap(),
-    Line::new(12, 0, 16, 0).unwrap(),
-    Line::new(12, 5, 16, 5).unwrap(),
-    Line::new(16, 0, 16, 5).unwrap(),
-    Line::new(4, 0, 4, 5).unwrap(),
-    Line::new(5, 4, 10, 4).unwrap(),
-    Line::new(8, 0, 8, 1).unwrap(),
-  ];
 
   lines.sort();
   //lines.reverse();
@@ -40,6 +47,7 @@ fn main() {
 
   let mut lines_deque = VecDeque::from(lines);
   let mut leftover_lines = Vec::new();
+  let mut rects: Vec<Rectangle> = Vec::new();
 
   // pop items off of lines until it's empty:
   while let Some(line) = lines_deque.pop_front() {
