@@ -107,10 +107,6 @@ impl Point {
   pub fn new(line: u64, col: u64) -> Point {
     Point { line, col }
   }
-
-  pub fn size(&self) -> Size {
-    Size::new(self.line, self.col)
-  }
 }
 
 impl Positional for Point {
