@@ -62,13 +62,11 @@ fn main() {
   let mut leftover_lines = Vec::new();
   let mut rects: Vec<Rectangle> = Vec::new();
 
-  // pop items off of lines until it's empty:
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
 
     let mut found_a_rect = false;
 
-    // Borrow `lines` for iteration instead of moving it
     for other_line in &lines_deque {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
         let (left_or_top_candidate, right_or_bottom_candidate) = match orientation {
@@ -83,7 +81,6 @@ fn main() {
         };
         let mut lines_to_remove = Vec::new();
 
-        // Check if the candidate lines are in the deque
         if lines_deque.contains(&left_or_top_candidate)
           && lines_deque.contains(&right_or_bottom_candidate)
         {
@@ -97,7 +94,7 @@ fn main() {
             left_or_top_candidate, right_or_bottom_candidate
           );
 
-          // Put the component lines in a vec and sort then so we can find the top left and bottom right
+          // Put the component lines in a vec and sort them so we can find the top left and bottom right
           // corners at opposite ends of the vec.
           let mut tmp_vec = Vec::new();
           tmp_vec.push(line.clone());
