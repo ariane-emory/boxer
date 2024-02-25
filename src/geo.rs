@@ -177,7 +177,7 @@ pub struct Line {
 type LineResult = std::result::Result<Line, ErrString>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Line {
-  pub fn new(start: Point, end: Point) -> LineResult {
+  pub fn from_points(start: Point, end: Point) -> LineResult {
     if start == end {
       return Err(ErrString::new("Start and end points cannot be the same"));
     }
@@ -192,6 +192,13 @@ impl Line {
       (end, start)
     };
     Ok(Line { start, end })
+  }
+
+  pub fn new(start_line: u64, start_col: u64, end_line: u64, end_col: u64) -> LineResult {
+    Line::from_points(
+      Point::new(start_line, start_col),
+      Point::new(end_line, end_col),
+    )
   }
 
   pub fn is_horizontal(&self) -> bool {
