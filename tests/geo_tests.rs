@@ -127,6 +127,25 @@ mod tests {
     assert_eq!(offset_vertical.size(), Size::new(5, 1));
 
     assert_eq!(upper_horizontal.area(), 5);
+    assert_eq!(lower_horizontal.area(), 5);
+    assert_eq!(offset_horizontal.area(), 5);
+    assert_eq!(left_vertical.area(), 5);
+    assert_eq!(right_vertical.area(), 5);
+    assert_eq!(offset_vertical.area(), 5);
+
+    assert_eq!(upper_horizontal.height(), 1);
+    assert_eq!(lower_horizontal.height(), 1);
+    assert_eq!(offset_horizontal.height(), 1);
+    assert_eq!(left_vertical.height(), 5);
+    assert_eq!(right_vertical.height(), 5);
+    assert_eq!(offset_vertical.height(), 5);
+
+    assert_eq!(upper_horizontal.width(), 5);
+    assert_eq!(lower_horizontal.width(), 5);
+    assert_eq!(offset_horizontal.width(), 5);
+    assert_eq!(left_vertical.width(), 1);
+    assert_eq!(right_vertical.width(), 1);
+    assert_eq!(offset_vertical.width(), 1);
 
     assert_eq!(upper_horizontal.length(), 5);
     assert_eq!(lower_horizontal.length(), 5);
@@ -160,5 +179,11 @@ mod tests {
     assert!(!left_vertical.is_parallel_to(&upper_horizontal));
     assert!(!left_vertical.is_parallel_to(&lower_horizontal));
     assert!(!left_vertical.is_parallel_to(&offset_horizontal));
+
+    assert!(upper_horizontal.is_perpendicular_to(&left_vertical));
+    assert!(upper_horizontal.is_perpendicular_to(&right_vertical));
+    assert!(!upper_horizontal.is_perpendicular_to(&offset_vertical));
+    assert!(!upper_horizontal.is_perpendicular_to(&lower_horizontal));
+    assert!(!upper_horizontal.is_perpendicular_to(&offset_horizontal));
   }
 }

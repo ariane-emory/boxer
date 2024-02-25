@@ -206,6 +206,10 @@ impl Line {
     (self.is_horizontal() && other.is_horizontal()) || (self.is_vertical() && other.is_vertical())
   }
 
+  pub fn is_perpendicular_to(&self, other: &Self) -> bool {
+    !self.is_parallel_to(other)
+  }
+
   pub fn could_pair_vertically_with(&self, other: Self) -> bool {
     self.is_horizontal()
       && other.is_horizontal()
