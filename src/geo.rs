@@ -193,6 +193,13 @@ pub struct Line {
 type GeoResult<T> = std::result::Result<T, ErrString>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Line {
+  pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Line> {
+    Line::from_points(
+      Point::new(start_col, start_line),
+      Point::new(end_col, end_line),
+    )
+  }
+
   pub fn from_points(start: Point, end: Point) -> GeoResult<Self> {
     if start == end {
       return Err(ErrString::new("Start and end points cannot be the same"));
@@ -208,13 +215,6 @@ impl Line {
       (end, start)
     };
     Ok(Line { start, end })
-  }
-
-  pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Line> {
-    Line::from_points(
-      Point::new(start_col, start_line),
-      Point::new(end_col, end_line),
-    )
   }
 
   pub fn is_horizontal(&self) -> bool {
