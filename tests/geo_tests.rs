@@ -19,6 +19,7 @@ mod tests {
     let lower_right = Point::new(8, 8);
 
     assert!(center.is_horizontally_aligned_with(upper_middle));
+    assert!(center.is_horizontally_aligned_with(lower_middle));
 
     assert_eq!(4, center.line);
   }
