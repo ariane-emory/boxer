@@ -93,4 +93,15 @@ mod tests {
     assert!(center.is_above(&lower_middle));
     assert!(center.is_above(&lower_right));
   }
+
+  #[test]
+  fn line_test() {
+    let upper_horizontal = Line::new(Point::new(0, 0), Point::new(0, 4)).unwrap();
+    let left_vertical = Line::new(Point::new(0, 0), Point::new(4, 0)).unwrap();
+
+    assert!(upper_horizontal.is_horizontal());
+    assert!(!upper_horizontal.is_vertical());
+    assert!(!left_vertical.is_horizontal());
+    assert!(left_vertical.is_vertical());
+  }
 }

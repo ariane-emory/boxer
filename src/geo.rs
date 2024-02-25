@@ -189,33 +189,22 @@ impl Line {
   }
 
   pub fn could_pair_vertically_with(&self, other: Self) -> bool {
-    self.start.is_left_aligned_with(&other.start) && self.end.is_right_aligned_with(&other.end)
+    self.is_horizontal()
+      && other.is_horizontal()
+      && self.length() == other.length()
+      && self.start.is_left_aligned_with(&other)
   }
 
-  // pub fn could_pair_horizontally_with(&self, other: Self) -> bool {
-  //   self.start.is_vertically_aligned_with(&other.start) && self.length() == other.length()
-  // }
+  pub fn could_pair_horizontally_with(&self, other: Self) -> bool {
+    self.is_vertical()
+      && other.is_vertical()
+      && self.length() == other.length()
+      && self.start.is_top_aligned_with(&other)
+  }
 
   pub fn length(&self) -> u64 {
     self.size().area()
   }
-
-  // // Whether lines are 'above' or to the left of each other is judged based on their start.
-  // pub fn is_above(&self, other: Self) -> bool {
-  //   self.start.is_above(&other.start)
-  // }
-
-  // pub fn is_below(&self, other: Self) -> bool {
-  //   self.start.is_below(&other.start)
-  // }
-
-  // pub fn is_left_of(&self, other: Self) -> bool {
-  //   self.start.is_left_of(&other.start)
-  // }
-
-  // pub fn is_right_of(&self, other: Self) -> bool {
-  //   self.start.is_right_of(&other.start)
-  // }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Eq for Line {}
