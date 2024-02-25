@@ -48,6 +48,7 @@ fn main() {
     println!("\nFind coaligned lines with {:?}...", line);
 
     let mut lines_to_remove = Vec::new();
+    let mut found_a_rect = false;
 
     // Borrow `lines` for iteration instead of moving it
     for other_line in &lines_deque {
@@ -67,15 +68,16 @@ fn main() {
         if lines_deque.contains(&left_or_top_candidate)
           && lines_deque.contains(&right_or_bottom_candidate)
         {
+          found_a_rect = true;
           println!("Found coaligned lines: \n  {:?}\n  {:?}", line, other_line);
           println!(
             "With sides:\n  {:?}\n  {:?}",
             left_or_top_candidate, right_or_bottom_candidate
           );
 
-          // Create the rectangle here...
+          // Put the component lines in a vec and sort then so we can find the top left and bottom right
+          // corners at opposite ends of the vec.
           let mut tmp_vec = Vec::new();
-
           tmp_vec.push(line.clone());
           tmp_vec.push(other_line.clone());
           tmp_vec.push(left_or_top_candidate.clone());
@@ -86,6 +88,7 @@ fn main() {
             println!("-> {:?}", t);
           }
 
+          // Create the rectangle here...
           let rect = Rectangle::new(tmp_vec.first().unwrap().start, tmp_vec.last().unwrap().end);
 
           println!("New Rectangle: {:?}", rect);
@@ -100,13 +103,14 @@ fn main() {
           lines_deque.retain(|l| !lines_to_remove.contains(l));
 
           break;
-        } else {
-          println!("Candidate lines not found in deque for {:?}.", line);
-          leftover_lines.push(other_line.clone());
         }
       }
     }
-    //break; // temporary, we'll remove this later.
+
+    if !found_a_rect {
+      println!("No coaligned lines found for {:?}", line);
+      leftover_lines.push(line.clone());
+    }
   }
 
   for rect in &rects {
