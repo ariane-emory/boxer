@@ -27,17 +27,17 @@ impl fmt::Display for ErrString {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Positional {
-  fn is_left_of(&self, other: &impl Positional) -> bool;
-  fn is_right_of(&self, other: &impl Positional) -> bool;
-  fn is_above(&self, other: &impl Positional) -> bool;
-  fn is_below(&self, other: &impl Positional) -> bool;
-  fn is_horizontally_aligned_with(&self, other: &impl Positional) -> bool;
-  fn is_vertically_aligned_with(&self, other: &impl Positional) -> bool;
-  fn is_aligned_with(&self, other: &impl Positional) -> bool {
-    self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
-  }
-}
+// pub trait Positional {
+//   fn is_left_of(&self, other: &impl Positional) -> bool;
+//   fn is_right_of(&self, other: &impl Positional) -> bool;
+//   fn is_above(&self, other: &impl Positional) -> bool;
+//   fn is_below(&self, other: &impl Positional) -> bool;
+//   fn is_horizontally_aligned_with(&self, other: &impl Positional) -> bool;
+//   fn is_vertically_aligned_with(&self, other: &impl Positional) -> bool;
+//   fn is_aligned_with(&self, other: &impl Positional) -> bool {
+//     self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
+//   }
+// }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,31 +53,31 @@ impl Point {
     Point { line, col }
   }
 
-  pub fn is_left_of(&self, other: Point) -> bool {
+  pub fn is_left_of(&self, other: &Point) -> bool {
     self.col < other.col
   }
 
-  pub fn is_horizontally_aligned_with(&self, other: Point) -> bool {
+  pub fn is_horizontally_aligned_with(&self, other: &Point) -> bool {
     self.col == other.col
   }
 
-  pub fn is_right_of(&self, other: Point) -> bool {
+  pub fn is_right_of(&self, other: &Point) -> bool {
     !(self.is_left_of(other) || self.is_horizontally_aligned_with(other))
   }
 
-  pub fn is_above(&self, other: Point) -> bool {
+  pub fn is_above(&self, other: &Point) -> bool {
     self.line < other.line
   }
 
-  pub fn is_vertically_aligned_with(&self, other: Point) -> bool {
+  pub fn is_vertically_aligned_with(&self, other: &Point) -> bool {
     self.line == other.line
   }
 
-  pub fn is_below(&self, other: Point) -> bool {
+  pub fn is_below(&self, other: &Point) -> bool {
     !(self.is_above(other) || self.is_vertically_aligned_with(other))
   }
 
-  pub fn is_aligned_with(&self, other: Point) -> bool {
+  pub fn is_aligned_with(&self, other: &Point) -> bool {
     self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
   }
 }
@@ -98,7 +98,7 @@ impl Line {
       return Err(ErrString::new("Start and end points cannot be the same"));
     }
 
-    if !start.is_aligned_with(end) {
+    if !start.is_aligned_with(&end) {
       return Err(ErrString::new("Line must be either horizontal or vertical"));
     }
 
@@ -111,11 +111,11 @@ impl Line {
   }
 
   pub fn is_horizontal(&self) -> bool {
-    self.start.is_horizontally_aligned_with(self.end)
+    self.start.is_horizontally_aligned_with(&self.end)
   }
 
   pub fn is_vertical(&self) -> bool {
-    self.start.is_vertically_aligned_with(self.end)
+    self.start.is_vertically_aligned_with(&self.end)
   }
 
   pub fn is_parallel_to(&self, other: &Self) -> bool {
@@ -123,11 +123,11 @@ impl Line {
   }
 
   pub fn could_pair_vertically_with(&self, other: Self) -> bool {
-    self.start.is_horizontally_aligned_with(other.start) && self.length() == other.length()
+    self.start.is_horizontally_aligned_with(&other.start) && self.length() == other.length()
   }
 
   pub fn could_pair_horizontally_with(&self, other: Self) -> bool {
-    self.start.is_vertically_aligned_with(other.start) && self.length() == other.length()
+    self.start.is_vertically_aligned_with(&other.start) && self.length() == other.length()
   }
 
   pub fn length(&self) -> u64 {
@@ -140,19 +140,19 @@ impl Line {
 
   // Whether lines are 'above' or to the left of each other is judged based on their start.
   pub fn is_above(&self, other: Self) -> bool {
-    self.start.is_above(other.start)
+    self.start.is_above(&other.start)
   }
 
   pub fn is_below(&self, other: Self) -> bool {
-    self.start.is_below(other.start)
+    self.start.is_below(&other.start)
   }
 
   pub fn is_left_of(&self, other: Self) -> bool {
-    self.start.is_left_of(other.start)
+    self.start.is_left_of(&other.start)
   }
 
   pub fn is_right_of(&self, other: Self) -> bool {
-    self.start.is_right_of(other.start)
+    self.start.is_right_of(&other.start)
   }
 }
 
