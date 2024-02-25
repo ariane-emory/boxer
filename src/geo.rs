@@ -114,10 +114,6 @@ impl Point {
 }
 
 impl Positional for Point {
-  fn size(&self) -> Size {
-    Size::new(1, 1)
-  }
-
   fn upper_bound(&self) -> u64 {
     self.line
   }
