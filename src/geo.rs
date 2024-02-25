@@ -70,12 +70,12 @@ pub trait Positional: Debug {
   fn lower_bound(&self) -> u64;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn size(&self) -> Size {
-    println!("Get size for: {:?}", self);
+    //println!("Get size for: {:?}", self);
     let size = Size::new(
       self.lower_bound() - self.upper_bound() + 1,
       self.right_bound() - self.left_bound() + 1,
     );
-    println!("Got size:     {:?}", size);
+    //println!("Got size:     {:?}", size);
     size
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////
