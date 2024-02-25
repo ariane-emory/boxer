@@ -334,10 +334,16 @@ impl Rectangle {
       std::cmp::max(start.line, end.line),
     );
 
-    Ok(Rectangle {
-      top_left,
-      bottom_right,
-    })
+    if bottom_right.left_bound() - top_left.left_bound() < 2 {
+      Err(ErrString::new("Rectangle must be at least 3 columns wide"))
+    } else if bottom_right.upper_bound() - top_left.upper_bound() < 2 {
+      Err(ErrString::new("Rectangle must be at least 3 lines tall"))
+    } else {
+      Ok(Rectangle {
+        top_left,
+        bottom_right,
+      })
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
