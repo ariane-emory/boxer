@@ -192,16 +192,16 @@ mod tests {
     assert!(left_vertical.is_perpendicular_to(&lower_horizontal));
     assert!(left_vertical.is_perpendicular_to(&offset_horizontal));
 
-    assert!(upper_horizontal.is_horizontally_coaligned_with(lower_horizontal));
-    assert!(!upper_horizontal.is_horizontally_coaligned_with(offset_horizontal));
-    assert!(!upper_horizontal.is_vertically_coaligned_with(left_vertical));
-    assert!(!upper_horizontal.is_vertically_coaligned_with(right_vertical));
-    assert!(!upper_horizontal.is_vertically_coaligned_with(offset_vertical));
+    assert!(upper_horizontal.is_horizontally_coaligned_with(&lower_horizontal));
+    assert!(!upper_horizontal.is_horizontally_coaligned_with(&offset_horizontal));
+    assert!(!upper_horizontal.is_vertically_coaligned_with(&left_vertical));
+    assert!(!upper_horizontal.is_vertically_coaligned_with(&right_vertical));
+    assert!(!upper_horizontal.is_vertically_coaligned_with(&offset_vertical));
 
-    assert!(left_vertical.is_vertically_coaligned_with(right_vertical));
-    assert!(!left_vertical.is_vertically_coaligned_with(offset_vertical));
-    assert!(!left_vertical.is_horizontally_coaligned_with(upper_horizontal));
-    assert!(!left_vertical.is_horizontally_coaligned_with(lower_horizontal));
-    assert!(!left_vertical.is_horizontally_coaligned_with(offset_horizontal));
+    assert!(left_vertical.is_vertically_coaligned_with(&right_vertical));
+    assert!(!left_vertical.is_vertically_coaligned_with(&offset_vertical));
+    assert!(!left_vertical.is_horizontally_coaligned_with(&upper_horizontal));
+    assert!(!left_vertical.is_horizontally_coaligned_with(&lower_horizontal));
+    assert!(!left_vertical.is_horizontally_coaligned_with(&offset_horizontal));
   }
 }
