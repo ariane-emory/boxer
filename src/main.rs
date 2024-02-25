@@ -41,8 +41,6 @@ fn main() {
   let mut lines_deque = VecDeque::from(lines);
   let mut leftover_lines = Vec::new();
 
-  println!("");
-
   // pop items off of lines until it's empty:
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
@@ -69,9 +67,12 @@ fn main() {
           && lines_deque.contains(&right_or_bottom_candidate)
         {
           found_a_rect = true;
-          println!("Found coaligned lines: \n  {:?}\n  {:?}", line, other_line);
           println!(
-            "With sides:\n  {:?}\n  {:?}",
+            "Found coaligned lines: \n   {:?}\n   {:?}",
+            line, other_line
+          );
+          println!(
+            "With sides:\n   {:?}\n   {:?}",
             left_or_top_candidate, right_or_bottom_candidate
           );
 
@@ -84,9 +85,9 @@ fn main() {
           tmp_vec.push(right_or_bottom_candidate.clone());
           tmp_vec.sort();
 
-          for t in &tmp_vec {
-            println!("-> {:?}", t);
-          }
+          // for t in &tmp_vec {
+          //   println!("-> {:?}", t);
+          // }
 
           // Create the rectangle here...
           let rect = Rectangle::new(tmp_vec.first().unwrap().start, tmp_vec.last().unwrap().end);
