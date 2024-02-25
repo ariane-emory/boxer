@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-pub mod geo;
 use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;
