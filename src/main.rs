@@ -35,10 +35,11 @@ fn main() {
   //lines.reverse();
 
   for line in &lines {
-    println!("{:?}", line);
+    println!("Soure Line: {:?}", line);
   }
 
   let mut lines_deque = VecDeque::from(lines);
+  let mut leftover_lines = Vec::new();
 
   println!("");
 
@@ -87,16 +88,33 @@ fn main() {
 
           let rect = Rectangle::new(tmp_vec.first().unwrap().start, tmp_vec.last().unwrap().end);
 
-          println!("Rectangle: {:?}", rect);
+          println!("New Rectangle: {:?}", rect);
 
           // Schedule the lines for removal
           lines_to_remove.push(other_line.clone());
           lines_to_remove.push(left_or_top_candidate);
           lines_to_remove.push(right_or_bottom_candidate);
+
+          rects.push(rect);
+
+          lines_deque.retain(|l| !lines_to_remove.contains(l));
+
+          break;
+        } else {
+          println!("Candidate lines not found in deque for {:?}.", line);
+          leftover_lines.push(other_line.clone());
         }
       }
     }
-    break; // temporary, we'll remove this later.
+    //break; // temporary, we'll remove this later.
+  }
+
+  for rect in &rects {
+    println!("Discovered Rectangle: {:?}", rect);
+  }
+
+  for line in &lines_deque {
+    println!("Leftover Line: {:?}", line);
   }
 }
 
