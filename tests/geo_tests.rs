@@ -22,6 +22,12 @@ mod tests {
 
     assert_eq!(center.size(), Size::new(1, 1));
     assert_eq!(center.size().area(), 1);
+    assert_eq!(center.size().height, 1);
+    assert_eq!(center.size().width, 1);
+    assert_eq!(center.left_bound(), 4);
+    assert_eq!(center.right_bound(), 4);
+    assert_eq!(center.upper_bound(), 4);
+    assert_eq!(center.lower_bound(), 4);
 
     assert!(!center.is_left_aligned_with(&left_of_center));
     assert!(!center.is_left_aligned_with(&lower_left));
@@ -92,6 +98,16 @@ mod tests {
     assert!(center.is_above(&lower_left));
     assert!(center.is_above(&lower_middle));
     assert!(center.is_above(&lower_right));
+
+    assert!(center.is_below(&upper_left));
+    assert!(center.is_below(&upper_middle));
+    assert!(center.is_below(&upper_right));
+    assert!(!center.is_below(&left_of_center));
+    assert!(!center.is_below(&right_of_center));
+    assert!(!center.is_below(&center));
+    assert!(!center.is_below(&lower_left));
+    assert!(!center.is_below(&lower_middle));
+    assert!(!center.is_below(&lower_right));
   }
 
   #[test]
@@ -109,6 +125,8 @@ mod tests {
     assert_eq!(left_vertical.size(), Size::new(5, 1));
     assert_eq!(right_vertical.size(), Size::new(5, 1));
     assert_eq!(offset_vertical.size(), Size::new(5, 1));
+
+    assert_eq!(upper_horizontal.area(), 5);
 
     assert_eq!(upper_horizontal.length(), 5);
     assert_eq!(lower_horizontal.length(), 5);
