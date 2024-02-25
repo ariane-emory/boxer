@@ -15,16 +15,16 @@ fn main() {
   // 5 xxxxx       xxxxx
 
   let mut lines = vec![
+    Line::new(0, 0, 0, 5).unwrap(),
     Line::new(0, 0, 4, 0).unwrap(),
     Line::new(0, 5, 4, 5).unwrap(),
-    Line::new(0, 0, 0, 5).unwrap(),
+    Line::new(12, 0, 12, 5).unwrap(),
+    Line::new(12, 0, 16, 0).unwrap(),
+    Line::new(12, 5, 16, 5).unwrap(),
+    Line::new(16, 0, 16, 5).unwrap(),
     Line::new(4, 0, 4, 5).unwrap(),
     Line::new(5, 3, 9, 3).unwrap(),
     Line::new(8, 0, 8, 1).unwrap(),
-    Line::new(12, 0, 16, 0).unwrap(),
-    Line::new(12, 0, 12, 5).unwrap(),
-    Line::new(16, 0, 16, 5).unwrap(),
-    Line::new(12, 5, 16, 5).unwrap(),
   ];
 
   lines.sort();
