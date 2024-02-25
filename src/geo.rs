@@ -130,13 +130,13 @@ pub trait Positional: Debug {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
-  pub line: u64,
   pub col: u64,
+  pub line: u64,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Point {
-  pub fn new(line: u64, col: u64) -> Point {
-    Point { line, col }
+  pub fn new(col: u64, line: u64) -> Point {
+    Point { col, line }
   }
 
   pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {

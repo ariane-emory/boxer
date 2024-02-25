@@ -9,15 +9,15 @@ mod tests {
   #[test]
   fn point_test() {
     let upper_left = Point::new(0, 0);
-    let upper_middle = Point::new(0, 4);
-    let upper_right = Point::new(0, 8);
+    let upper_middle = Point::new(4, 0);
+    let upper_right = Point::new(8, 0);
 
-    let left_of_center = Point::new(4, 0);
+    let left_of_center = Point::new(0, 4);
     let center = Point::new(4, 4);
-    let right_of_center = Point::new(4, 8);
+    let right_of_center = Point::new(8, 4);
 
-    let lower_left = Point::new(8, 0);
-    let lower_middle = Point::new(8, 4);
+    let lower_left = Point::new(0, 8);
+    let lower_middle = Point::new(4, 8);
     let lower_right = Point::new(8, 8);
 
     assert_eq!(center.size(), Size::new(1, 1));
@@ -112,12 +112,12 @@ mod tests {
 
   #[test]
   fn line_test() {
-    let upper_horizontal = Line::from_points(Point::new(0, 0), Point::new(0, 4)).unwrap();
-    let lower_horizontal = Line::from_points(Point::new(0, 0), Point::new(0, 4)).unwrap();
-    let offset_horizontal = Line::from_points(Point::new(0, 1), Point::new(0, 5)).unwrap();
-    let left_vertical = Line::from_points(Point::new(0, 0), Point::new(4, 0)).unwrap();
-    let right_vertical = Line::from_points(Point::new(0, 4), Point::new(4, 4)).unwrap();
-    let offset_vertical = Line::from_points(Point::new(1, 0), Point::new(5, 0)).unwrap();
+    let upper_horizontal = Line::from_points(Point::new(0, 0), Point::new(4, 0)).unwrap();
+    let lower_horizontal = Line::from_points(Point::new(0, 0), Point::new(4, 0)).unwrap();
+    let offset_horizontal = Line::from_points(Point::new(1, 0), Point::new(5, 0)).unwrap();
+    let left_vertical = Line::from_points(Point::new(0, 0), Point::new(0, 4)).unwrap();
+    let right_vertical = Line::from_points(Point::new(4, 0), Point::new(4, 4)).unwrap();
+    let offset_vertical = Line::from_points(Point::new(0, 1), Point::new(0, 5)).unwrap();
 
     assert_eq!(upper_horizontal.size(), Size::new(1, 5));
     assert_eq!(lower_horizontal.size(), Size::new(1, 5));
