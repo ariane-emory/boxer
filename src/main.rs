@@ -3,101 +3,102 @@
 use std::error::Error;
 use std::fmt;
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug, Clone)]
-struct StringErr {
-  message: String,
+struct ErrString {
+  string: String,
 }
-//==============================================================================
-impl Error for StringErr {}
-//==============================================================================
-impl StringErr {
-  fn new(message: &str) -> StringErr {
-    StringErr {
-      message: message.to_string(),
+
+impl ErrString {
+  fn new(string: &str) -> ErrString {
+    ErrString {
+      string: string.to_string(),
     }
   }
 }
-//==============================================================================
-impl fmt::Display for StringErr {
+
+impl Error for ErrString {}
+
+impl fmt::Display for ErrString {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "Line creation error: {}", self.message)
+    write!(f, "Error: {}", self.string)
   }
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-type Result<T> = std::result::Result<T, StringErr>;
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Point {
   pub line: u64,
   pub col: u64,
 }
-//==============================================================================
 impl Point {
-  //============================================================================
   fn new(line: u64, col: u64) -> Point {
     Point { line, col }
   }
-  //==============================================================================
+
+  fn is_horizontally_aligned_with(&self, other: Point) -> bool {
+    self.line == other.line
+  }
+
+  fn is_vertically_aligned_with(&self, other: Point) -> bool {
+    self.col == other.col
+  }
+
   fn is_aligned_with(&self, other: Point) -> bool {
-    self.line == other.line || self.col == other.col
+    self.is_horizontally_aligned_with(other) || self.is_vertically_aligned_with(other)
   }
 }
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug)]
 pub struct Line {
   pub start: Point,
   pub end: Point,
 }
-//==============================================================================
+
+type LineResult = std::result::Result<Line, ErrString>;
+
 impl Line {
-  //============================================================================
   fn is_horizontal(&self) -> bool {
-    self.start.line == self.end.line
+    self.start.is_horizontally_aligned_with(self.end)
   }
-  //============================================================================
+
   fn is_vertical(&self) -> bool {
-    self.start.col == self.end.col
+    self.start.is_vertically_aligned_with(self.end)
   }
-  //============================================================================
-  fn new(start: Point, end: Point) -> Result<Line> {
-    if start.line != end.line && start.col != end.col {
-      return Err(StringErr::new("Line must be either horizontal or vertical"));
+
+  fn new(start: Point, end: Point) -> LineResult {
+    if !start.is_aligned_with(end) {
+      return Err(ErrString::new("Line must be either horizontal or vertical"));
     } else if start == end {
-      Err(StringErr::new("Start and end points cannot be the same"))
+      Err(ErrString::new("Start and end points cannot be the same"))
     } else {
       Ok(Line { start, end })
     }
   }
-  //============================================================================
 }
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug)]
 pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
-//============================================================================
+
 impl Rectangle {
-  //==========================================================================
   fn new(top_left: Point, bottom_right: Point) -> Rectangle {
     Rectangle {
       top_left,
       bottom_right,
     }
   }
-  //============================================================================
 }
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() {
   //   0123457890
   // 0 xxxxx  x
@@ -122,4 +123,4 @@ fn main() {
   // sort lines into 3 new vectors, one containing a single Rectangle, one
   // containing a single horizontal line and one containing a single vertical line.
 }
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
