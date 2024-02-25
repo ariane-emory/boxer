@@ -39,7 +39,15 @@ impl Size {
   }
 
   pub fn area(&self) -> u64 {
-    self.height * self.width
+    if self.height == 1 && self.width == 1 {
+      1
+    } else if self.height == 1 {
+      self.width
+    } else if self.width == 1 {
+      self.height
+    } else {
+      self.height * self.width
+    }
   }
 
   pub fn is_tall(&self) -> bool {
@@ -190,11 +198,6 @@ impl Line {
 
   pub fn length(&self) -> u64 {
     self.size().area()
-    //   if self.is_horizontal() {
-    //     self.end.col - self.start.col
-    //   } else {
-    //     self.end.line - self.start.line
-    //   }
   }
 
   // // Whether lines are 'above' or to the left of each other is judged based on their start.
