@@ -334,6 +334,75 @@ impl Line {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait Rectangular {
+  fn top_side(&self) -> Line {
+    Line::new(
+      self.top_left().col,
+      self.top_left().line,
+      self.bottom_right().col,
+      self.top_left().line,
+    )
+    .unwrap()
+  }
+
+  fn bottom_side(&self) -> Line {
+    Line::new(
+      self.top_left().col,
+      self.bottom_right().line,
+      self.bottom_right().col,
+      self.bottom_right().line,
+    )
+    .unwrap()
+  }
+
+  fn left_side(&self) -> Line {
+    Line::new(
+      self.top_left().col,
+      self.top_left().line,
+      self.top_left().col,
+      self.bottom_right().line,
+    )
+    .unwrap()
+  }
+
+  fn right_side(&self) -> Line {
+    Line::new(
+      self.bottom_right().col,
+      self.top_left().line,
+      self.bottom_right().col,
+      self.bottom_right().line,
+    )
+    .unwrap()
+  }
+
+  fn top_left(&self) -> Point;
+
+  fn top_right(&self) -> Point {
+    Point::new(self.bottom_right().col, self.top_left().line)
+  }
+
+  fn bottom_left(&self) -> Point {
+    Point::new(self.top_left().col, self.bottom_right().line)
+  }
+
+  fn bottom_right(&self) -> Point;
+
+  fn point_is_corner(&self, point: &Point) -> bool {
+    point == &self.top_left()
+      || point == &self.bottom_right()
+      || point == &self.top_right()
+      || point == &self.bottom_left()
+  }
+
+  fn contained_area(&self) -> GeoResult<Rectangle> {
+    let top_left = Point::new(self.top_left().col + 1, self.top_left().line + 1);
+    let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
+    Rectangle::from_points(&top_left, &bottom_right)
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rectangle {
   pub top_left: Point,
@@ -361,6 +430,16 @@ impl Positional for Rectangle {
 
   fn right_bound(&self) -> usize {
     self.bottom_right.right_bound()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Rectangular for Rectangle {
+  fn top_left(&self) -> Point {
+    self.top_left
+  }
+
+  fn bottom_right(&self) -> Point {
+    self.bottom_right
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -394,75 +473,6 @@ impl Rectangle {
         bottom_right,
       })
     }
-  }
-
-  pub fn top_side(&self) -> Line {
-    Line::new(
-      self.top_left.col,
-      self.top_left.line,
-      self.bottom_right.col,
-      self.top_left.line,
-    )
-    .unwrap()
-  }
-
-  pub fn bottom_side(&self) -> Line {
-    Line::new(
-      self.top_left.col,
-      self.bottom_right.line,
-      self.bottom_right.col,
-      self.bottom_right.line,
-    )
-    .unwrap()
-  }
-
-  pub fn left_side(&self) -> Line {
-    Line::new(
-      self.top_left.col,
-      self.top_left.line,
-      self.top_left.col,
-      self.bottom_right.line,
-    )
-    .unwrap()
-  }
-
-  pub fn right_side(&self) -> Line {
-    Line::new(
-      self.bottom_right.col,
-      self.top_left.line,
-      self.bottom_right.col,
-      self.bottom_right.line,
-    )
-    .unwrap()
-  }
-
-  pub fn top_left(&self) -> Point {
-    self.top_left
-  }
-
-  pub fn top_right(&self) -> Point {
-    Point::new(self.bottom_right.col, self.top_left.line)
-  }
-
-  pub fn bottom_left(&self) -> Point {
-    Point::new(self.top_left.col, self.bottom_right.line)
-  }
-
-  pub fn bottom_right(&self) -> Point {
-    self.bottom_right
-  }
-
-  pub fn point_is_corner(&self, point: &Point) -> bool {
-    point == &self.top_left
-      || point == &self.bottom_right
-      || point == &self.top_right()
-      || point == &self.bottom_left()
-  }
-
-  pub fn contained_area(&self) -> GeoResult<Rectangle> {
-    let top_left = Point::new(self.top_left.col + 1, self.top_left.line + 1);
-    let bottom_right = Point::new(self.bottom_right.col - 1, self.bottom_right.line - 1);
-    Rectangle::from_points(&top_left, &bottom_right)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
