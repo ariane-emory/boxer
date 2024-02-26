@@ -69,6 +69,11 @@ fn main() {
 
     for other_line in &lines_deque {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
+        println!(
+          "Found coaligned lines: \n   {:?}\n   {:?}",
+          line, other_line
+        );
+
         let (left_or_top_candidate, right_or_bottom_candidate) = match orientation {
           Horizontal => (
             Line::from_points(&line.start, &other_line.start).unwrap(),
@@ -87,10 +92,6 @@ fn main() {
         {
           found_a_rect = true;
 
-          println!(
-            "Found coaligned lines: \n   {:?}\n   {:?}",
-            line, other_line
-          );
           println!(
             "With sides:\n   {:?}\n   {:?}",
             left_or_top_candidate, right_or_bottom_candidate
