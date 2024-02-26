@@ -329,13 +329,20 @@ mod tests {
 
     assert!(overlapping_rect.overlaps(&rect));
     assert!(!nonoverlapping_rect.overlaps(&rect));
-
-    // A horizontal line between the right edge of the rect and the left edge of the nonoverlapping rect (but not overlapping with either):
   }
 
   #[test]
   fn line_touches_rectangle_test() {
     let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
     let rect2 = Rectangle::new(30, 10, 40, 20).unwrap();
+
+    // A horizontal line between the right edge of rect1 and the left edge of rect2 (but not overlapping with either):
+    let line1 = Line::new(20, 15, 30, 15).unwrap();
+
+    // A horizontal line between the right edge of rect1 that doesn't quite reach the left edge of rect2:
+    let line2 = Line::new(20, 15, 29, 15).unwrap();
+
+    // A horizontal line between the right edge of rect2 that doesn't quite reach the right edge of rect2:
+    let line3 = Line::new(31, 15, 39, 15).unwrap();
   }
 }
