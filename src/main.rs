@@ -107,13 +107,13 @@ fn main() {
             )
             .unwrap();
 
+            rects.push(rect);
+
             println!("New Rectangle: {:?}", rect);
 
             let lines_to_remove: Vec<&Line> = vec![other_line, first_side, second_side];
 
             lines_deque.retain(|l| !lines_to_remove.contains(&l));
-
-            rects.push(rect);
 
             break;
           }
