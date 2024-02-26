@@ -85,7 +85,7 @@ fn main() {
           [first_side, second_side] => {
             println!("With sides:\n   {:?}\n   {:?}", first_side, second_side);
             found_a_rect = true;
-            let mut lines_to_remove: Vec<&Line> = Vec::new();
+            let mut lines_to_remove: Vec<Line> = Vec::new();
 
             // Put the component lines in a vec and sort them so we can find the top left and bottom right
             // corners at opposite ends of the vec.
