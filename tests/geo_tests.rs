@@ -299,26 +299,25 @@ mod tests {
 
   #[test]
   fn rectangle_test() {
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 0)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 0)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 2)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(0, 0)).is_err());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(0, 1)).is_err());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(1, 0)).is_err());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(1, 1)).is_err());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(1, 2)).is_err());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(2, 1)).is_err());
+    assert!(Box::from_points(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
 
-    assert!(Rectangle::new(0, 0, 0, 0).is_err());
-    assert!(Rectangle::new(0, 0, 0, 1).is_err());
-    assert!(Rectangle::new(0, 0, 1, 0).is_err());
-    assert!(Rectangle::new(0, 0, 1, 1).is_err());
-    assert!(Rectangle::new(0, 0, 1, 2).is_err());
-    assert!(Rectangle::new(0, 0, 2, 1).is_err());
-    assert!(Rectangle::new(0, 0, 2, 2).is_ok());
+    assert!(Box::new(0, 0, 0, 0).is_err());
+    assert!(Box::new(0, 0, 0, 1).is_err());
+    assert!(Box::new(0, 0, 1, 0).is_err());
+    assert!(Box::new(0, 0, 1, 1).is_err());
+    assert!(Box::new(0, 0, 1, 2).is_err());
+    assert!(Box::new(0, 0, 2, 1).is_err());
+    assert!(Box::new(0, 0, 2, 2).is_ok());
 
-    let rect = Rectangle::from_points(&Point::new(0, 10), &Point::new(5, 15)).unwrap();
-    let overlapping_rect = Rectangle::from_points(&Point::new(3, 13), &Point::new(8, 18)).unwrap();
-    let nonoverlapping_rect =
-      Rectangle::from_points(&Point::new(16, 16), &Point::new(20, 20)).unwrap();
+    let rect = Box::from_points(&Point::new(0, 10), &Point::new(5, 15)).unwrap();
+    let overlapping_rect = Box::from_points(&Point::new(3, 13), &Point::new(8, 18)).unwrap();
+    let nonoverlapping_rect = Box::from_points(&Point::new(16, 16), &Point::new(20, 20)).unwrap();
 
     assert!(rect.width() == 6);
     assert!(rect.height() == 6);
@@ -333,8 +332,8 @@ mod tests {
 
   #[test]
   fn line_touches_rectangle_test() {
-    let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
-    let rect2 = Rectangle::new(30, 10, 40, 20).unwrap();
+    let rect1 = Box::new(10, 10, 20, 20).unwrap();
+    let rect2 = Box::new(30, 10, 40, 20).unwrap();
 
     // A horizontal line touching the right edge of rect1 and the left edge of rect2 (but not overlapping with either):
     let line1 = Line::new(20, 15, 30, 15).unwrap();
@@ -378,7 +377,7 @@ mod tests {
     assert!(line6.overlaps(&rect1));
     assert!(line6.overlaps(&rect2));
 
-    let lower_rect = Rectangle::new(10, 30, 20, 40).unwrap();
+    let lower_rect = Box::new(10, 30, 20, 40).unwrap();
 
     // A vertical line touching the bottom edge of rect1 and the top edge of lower_rect (but not overlapping with either):
     let line7 = Line::new(15, 20, 15, 30).unwrap();

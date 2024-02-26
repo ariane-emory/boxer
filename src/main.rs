@@ -61,7 +61,7 @@ fn main() {
 
   let mut lines_deque: VecDeque<Line> = VecDeque::from(lines);
   let mut leftover_lines = Vec::new();
-  let mut rects: Vec<Rectangle> = Vec::new();
+  let mut rects: Vec<Box> = Vec::new();
 
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
@@ -92,11 +92,11 @@ fn main() {
             let mut tmp_vec: Vec<&Line> = vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
 
-            let rect = Rectangle::from_points(&tmp_vec[0].start, &tmp_vec[3].end).unwrap();
+            let rect = Box::from_points(&tmp_vec[0].start, &tmp_vec[3].end).unwrap();
 
             rects.push(rect);
 
-            println!("New Rectangle: {:?}", rect);
+            println!("New Box: {:?}", rect);
 
             lines_to_remove.push(*other_line);
             lines_to_remove.push(*first_side);
@@ -120,7 +120,7 @@ fn main() {
   }
 
   for rect in &rects {
-    println!("Discovered Rectangle: {:?}", rect);
+    println!("Discovered Box: {:?}", rect);
   }
 
   for line in &leftover_lines {
