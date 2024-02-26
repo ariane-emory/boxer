@@ -52,6 +52,7 @@ fn main() {
     Line::new(3, 4, 3, 9).unwrap(),
     Line::new(16, 4, 16, 9).unwrap(),
   ];
+
   lines.sort();
 
   for line in &lines {
