@@ -1,6 +1,4 @@
-use crate::simple_geo::Line;
-use crate::simple_geo::Point;
-use crate::simple_geo::Size;
+use crate::simple_geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Positional {

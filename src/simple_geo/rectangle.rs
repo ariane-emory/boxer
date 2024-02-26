@@ -1,7 +1,5 @@
-use crate::simple_geo::ErrString;
-use crate::simple_geo::GeoResult;
-use crate::simple_geo::Point;
-use crate::simple_geo::Positional;
+use crate::simple_geo::*;
+
 use std::cmp::max;
 use std::cmp::min;
 use std::fmt;

@@ -1,10 +1,5 @@
-use crate::simple_geo::ErrString;
-use crate::simple_geo::GeoResult;
-use crate::simple_geo::Orientation;
-use crate::simple_geo::Orientation::*;
-use crate::simple_geo::Point;
-use crate::simple_geo::Positional;
-use crate::simple_geo::Rectangle;
+use crate::simple_geo::*;
+
 use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
