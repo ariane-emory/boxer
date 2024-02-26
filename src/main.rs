@@ -71,12 +71,12 @@ fn main() {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
         let (left_or_top_candidate, right_or_bottom_candidate) = match orientation {
           Horizontal => (
-            Line::from_points(line.start.clone(), other_line.start.clone()).unwrap(),
-            Line::from_points(line.end.clone(), other_line.end.clone()).unwrap(),
+            Line::from_points(&line.start, &other_line.start).unwrap(),
+            Line::from_points(&line.end, &other_line.end).unwrap(),
           ),
           Vertical => (
-            Line::from_points(line.start.clone(), other_line.start.clone()).unwrap(),
-            Line::from_points(line.end.clone(), other_line.end.clone()).unwrap(),
+            Line::from_points(&line.start, &other_line.start).unwrap(),
+            Line::from_points(&line.end, &other_line.end).unwrap(),
           ),
         };
         let mut lines_to_remove = Vec::new();

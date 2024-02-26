@@ -210,17 +210,17 @@ type GeoResult<T> = std::result::Result<T, ErrString>;
 impl Line {
   pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Line> {
     Line::from_points(
-      Point::new(start_col, start_line),
-      Point::new(end_col, end_line),
+      &Point::new(start_col, start_line),
+      &Point::new(end_col, end_line),
     )
   }
 
-  pub fn from_points(start: Point, end: Point) -> GeoResult<Self> {
+  pub fn from_points(start: &Point, end: &Point) -> GeoResult<Self> {
     if start == end {
       return Err(ErrString::new("Start and end points cannot be the same"));
     }
 
-    if !(start.is_left_aligned_with(&end) || start.is_top_aligned_with(&end)) {
+    if !(start.is_left_aligned_with(end) || start.is_top_aligned_with(end)) {
       return Err(ErrString::new("Line must be either horizontal or vertical"));
     }
     // We want the start point to be the top/left end of the line and the end point to be
@@ -230,7 +230,10 @@ impl Line {
     } else {
       (end, start)
     };
-    Ok(Line { start, end })
+    Ok(Line {
+      start: *start,
+      end: *end,
+    })
   }
 
   pub fn is_horizontal(&self) -> bool {
