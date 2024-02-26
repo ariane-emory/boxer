@@ -85,6 +85,22 @@ pub trait Rectangular: Positional {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
+  fn point_is_corner(&self, point: &Point) -> bool {
+    point == &self.top_left()
+      || point == &self.bottom_right()
+      || point == &self.top_right()
+      || point == &self.bottom_left()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait Positional {
+  fn top_left(&self) -> Point;
+
+  fn bottom_right(&self) -> Point;
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   fn top_side(&self) -> Line {
     Line::new(
       self.top_left().col,
@@ -126,46 +142,23 @@ pub trait Rectangular: Positional {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  fn point_is_corner(&self, point: &Point) -> bool {
-    point == &self.top_left()
-      || point == &self.bottom_right()
-      || point == &self.top_right()
-      || point == &self.bottom_left()
-  }
-
-  fn contained_rectangle(&self) -> Rectangle {
-    let top_left = Point::new(self.top_left().col + 1, self.top_left().line + 1);
-    let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
-    Rectangle::from_points(&top_left, &bottom_right)
-  }
-
-  fn size(&self) -> Size {
-    Size::new(
-      self.bottom_right().line - self.top_left().line + 1,
-      self.bottom_right().col - self.top_left().col + 1,
-    )
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   fn height(&self) -> usize {
-    self.size().height
+    self.bottom_right().line - self.top_left().line + 1
   }
 
   fn width(&self) -> usize {
-    self.size().width
+    self.bottom_right().col - self.top_left().col + 1
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  fn size(&self) -> Size {
+    Size::new(self.height(), self.width())
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   fn area(&self) -> usize {
     self.size().area()
   }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Positional {
-  fn top_left(&self) -> Point;
-
-  fn bottom_right(&self) -> Point;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn left_bound(&self) -> usize {
@@ -458,6 +451,12 @@ impl Box {
         bottom_right,
       })
     }
+  }
+
+  fn contained_rectangle(&self) -> Rectangle {
+    let top_left = Point::new(self.top_left().col + 1, self.top_left().line + 1);
+    let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
+    Rectangle::from_points(&top_left, &bottom_right)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
