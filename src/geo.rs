@@ -231,7 +231,12 @@ impl Positional for Line {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Line {
-  pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> GeoResult<Line> {
+  pub fn new(
+    start_col: usize,
+    start_line: usize,
+    end_col: usize,
+    end_line: usize,
+  ) -> GeoResult<Line> {
     Line::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
@@ -329,14 +334,43 @@ impl Line {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+impl fmt::Debug for Rectangle {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Positional for Rectangle {
+  fn upper_bound(&self) -> usize {
+    self.top_left.upper_bound()
+  }
+
+  fn lower_bound(&self) -> usize {
+    self.bottom_right.lower_bound()
+  }
+
+  fn left_bound(&self) -> usize {
+    self.top_left.left_bound()
+  }
+
+  fn right_bound(&self) -> usize {
+    self.bottom_right.right_bound()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
-  pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> GeoResult<Rectangle> {
+  pub fn new(
+    start_col: usize,
+    start_line: usize,
+    end_col: usize,
+    end_line: usize,
+  ) -> GeoResult<Rectangle> {
     Rectangle::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
@@ -429,24 +463,6 @@ impl Rectangle {
     let top_left = Point::new(self.top_left.col + 1, self.top_left.line + 1);
     let bottom_right = Point::new(self.bottom_right.col - 1, self.bottom_right.line - 1);
     Rectangle::from_points(&top_left, &bottom_right)
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Positional for Rectangle {
-  fn upper_bound(&self) -> usize {
-    self.top_left.upper_bound()
-  }
-
-  fn lower_bound(&self) -> usize {
-    self.bottom_right.lower_bound()
-  }
-
-  fn left_bound(&self) -> usize {
-    self.top_left.left_bound()
-  }
-
-  fn right_bound(&self) -> usize {
-    self.bottom_right.right_bound()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
