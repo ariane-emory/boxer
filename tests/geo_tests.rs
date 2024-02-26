@@ -433,10 +433,16 @@ mod tests {
       "cr2: {:?}",
       Box::new(0, 0, 2, 2).unwrap().contained_rectangle()
     );
-    assert_eq!(rect1.contained_rectangle(), Rectangle::new(11, 11, 19, 19));
+    assert_eq!(
+      rect1.contained_rectangle(),
+      Box::new(11, 11, 19, 19).unwrap()
+    );
     assert_eq!(
       Box::new(0, 0, 2, 2).unwrap().contained_rectangle(),
-      Rectangle::new(1, 1, 1, 1)
+      Box {
+        top_left: Point::new(1, 1),
+        bottom_right: Point::new(1, 1)
+      }
     );
   }
 }

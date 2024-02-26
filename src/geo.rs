@@ -453,59 +453,63 @@ impl Box {
     }
   }
 
-  pub fn contained_rectangle(&self) -> Rectangle {
+  pub fn contained_rectangle(&self) -> Box {
     let top_left = Point::new(self.top_left().line + 1, self.top_left().line + 1);
     let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
-    Rectangle::from_points(&top_left, &bottom_right)
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Rectangle {
-  pub top_left: Point,
-  pub bottom_right: Point,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Rectangle {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Rectangular for Rectangle {}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Positional for Rectangle {
-  fn top_left(&self) -> Point {
-    self.top_left
-  }
-
-  fn bottom_right(&self) -> Point {
-    self.bottom_right
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Rectangle {
-  pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> Rectangle {
-    Rectangle {
-      top_left: Point::new(start_col, start_line),
-      bottom_right: Point::new(end_col, end_line),
+    Box {
+      top_left,
+      bottom_right,
     }
-  }
-
-  pub fn from_points(start: &Point, end: &Point) -> Rectangle {
-    // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
-    // right corner... but, they might have been passed in a different order, so we're going to
-    // create our own points using the minimum/maximum line and column from the arguments:
-    let top_left = Point::new(min(start.col, end.col), min(start.line, end.line));
-    let bottom_right = Point::new(max(start.col, end.col), max(start.line, end.line));
-    Rectangle::new(
-      top_left.col,
-      top_left.line,
-      bottom_right.col,
-      bottom_right.line,
-    )
+    //Rectangle::from_points(&top_left, &bottom_right)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+// pub struct Rectangle {
+//   pub top_left: Point,
+//   pub bottom_right: Point,
+// }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl fmt::Debug for Rectangle {
+//   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//     write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
+//   }
+// }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl Rectangular for Rectangle {}
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl Positional for Rectangle {
+//   fn top_left(&self) -> Point {
+//     self.top_left
+//   }
+
+//   fn bottom_right(&self) -> Point {
+//     self.bottom_right
+//   }
+// }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl Rectangle {
+//   pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> Rectangle {
+//     Rectangle {
+//       top_left: Point::new(start_col, start_line),
+//       bottom_right: Point::new(end_col, end_line),
+//     }
+//   }
+
+//   pub fn from_points(start: &Point, end: &Point) -> Rectangle {
+//     // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
+//     // right corner... but, they might have been passed in a different order, so we're going to
+//     // create our own points using the minimum/maximum line and column from the arguments:
+//     let top_left = Point::new(min(start.col, end.col), min(start.line, end.line));
+//     let bottom_right = Point::new(max(start.col, end.col), max(start.line, end.line));
+//     Rectangle::new(
+//       top_left.col,
+//       top_left.line,
+//       bottom_right.col,
+//       bottom_right.line,
+//     )
+//   }
+// }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
