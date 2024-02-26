@@ -428,10 +428,15 @@ mod tests {
     assert!(!line13.touches(&lower_rect));
     assert!(line13.overlaps(&lower_rect));
 
-    println!("rect1: {:?}", rect1);
+    println!("cr: {:?}", rect1.contained_rectangle());
     println!(
-      "rect1.contained_rectngle: {:?}",
-      rect1.contained_rectangle()
+      "cr2: {:?}",
+      Box::new(0, 0, 2, 2).unwrap().contained_rectangle()
+    );
+    assert_eq!(rect1.contained_rectangle(), Rectangle::new(11, 11, 19, 19));
+    assert_eq!(
+      Box::new(0, 0, 2, 2).unwrap().contained_rectangle(),
+      Rectangle::new(1, 1, 1, 1)
     );
   }
 }
