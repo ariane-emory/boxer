@@ -494,8 +494,8 @@ pub fn find_rectangles(
           [first_side, second_side] => {
             println!("\nWith sides:\n   {:?}\n   {:?}", first_side, second_side);
 
-            // Put the component lines in a vec and sort them so we can find the top left and bottom right
-            // corners at opposite ends of the vec.
+            // Put the component lines in a vec and sort them so we can find the top left
+            // and bottom right corners at opposite ends of the vec.
             let mut tmp_vec: Vec<&Line> = vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
 
