@@ -67,6 +67,7 @@ fn main() {
     println!("\nFind coaligned lines with {:?}...", line);
 
     let mut found_a_rect = false;
+    let mut lines_to_remove: Vec<&Line> = Vec::new();
 
     let cloned = lines_deque.clone();
 
@@ -83,8 +84,6 @@ fn main() {
             line.is_connected_to(tested_line) && other_line.is_connected_to(tested_line)
           })
           .collect();
-
-        let mut lines_to_remove: Vec<&Line> = Vec::new();
 
         match connected_lines.as_slice() {
           [first_side, second_side] => {
@@ -111,9 +110,9 @@ fn main() {
           }
           _ => println!("Did not find exactly two connecting lines."),
         }
-
-        lines_deque.retain(|l| !lines_to_remove.contains(&l));
       }
+
+      lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
 
     if !found_a_rect {
