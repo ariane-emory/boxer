@@ -59,7 +59,7 @@ fn main() {
     println!("Input Line: {:?}", line);
   }
 
-  let mut lines_deque = VecDeque::from(lines);
+  let mut lines_deque: VecDeque<Line> = VecDeque::from(lines);
   let mut leftover_lines = Vec::new();
   let mut rects: Vec<Rectangle> = Vec::new();
 
@@ -95,11 +95,7 @@ fn main() {
             tmp_vec.sort();
 
             // Create the rectangle here...
-            let rect = Rectangle::from_points(
-              &tmp_vec.first().unwrap().start,
-              &tmp_vec.last().unwrap().end,
-            )
-            .unwrap();
+            let rect = Rectangle::from_points(&tmp_vec[0].start, &tmp_vec[3].end).unwrap();
 
             rects.push(rect);
 
