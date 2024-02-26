@@ -91,13 +91,7 @@ fn main() {
 
             // Put the component lines in a vec and sort them so we can find the top left and bottom right
             // corners at opposite ends of the vec.
-            let mut tmp_vec = vec![
-              line.clone(),           // assuming line is already an owned value
-              other_line.clone(), // assuming this clones an owned value from the &Line reference
-              (*first_side).clone(), // clone the dereferenced value
-              (*second_side).clone(), // clone the dereferenced value
-            ];
-
+            let mut tmp_vec: Vec<&Line> = vec![&line, other_line, *first_side, *second_side];
             tmp_vec.sort(); // Now you can sort it because it's mutable
 
             // Create the rectangle here...
