@@ -77,7 +77,7 @@ fn main() {
           line, other_line
         );
 
-        let connected_lines: Vec<&Line> = lines_deque
+        let connected_lines: Vec<&Line> = cloned
           .iter()
           .filter(|&tested_line| {
             line.is_connected_to(tested_line) && other_line.is_connected_to(tested_line)
@@ -109,10 +109,10 @@ fn main() {
 
             println!("New Rectangle: {:?}", rect);
 
-            let mut lines_to_remove: Vec<Line> = Vec::new();
-            lines_to_remove.push(other_line.clone());
-            lines_to_remove.push((*first_side).clone());
-            lines_to_remove.push((*second_side).clone());
+            let mut lines_to_remove: Vec<&Line> = Vec::new();
+            lines_to_remove.push(other_line);
+            lines_to_remove.push(first_side);
+            lines_to_remove.push(second_side);
             lines_deque.retain(|l| !lines_to_remove.contains(&l));
 
             rects.push(rect);
