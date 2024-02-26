@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 use std::cmp::max;
 use std::cmp::min;
-use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;
 use std::fmt::Debug;
@@ -22,6 +21,14 @@ pub struct ErrString {
   string: String,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Error for ErrString {}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl fmt::Display for ErrString {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "Error: {}", self.string)
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ErrString {
   pub fn new(string: &str) -> ErrString {
     ErrString {
@@ -30,13 +37,7 @@ impl ErrString {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Error for ErrString {}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl fmt::Display for ErrString {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "Error: {}", self.string)
-  }
-}
+type GeoResult<T> = std::result::Result<T, ErrString>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,17 +156,9 @@ pub struct Point {
   pub col: u64,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Point {
-  pub fn new(col: u64, line: u64) -> Point {
-    Point { col, line }
-  }
-
-  pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {
-    self.col == other.col
-  }
-
-  pub fn is_horizontally_aligned_with(&self, other: &Self) -> bool {
-    self.line == other.line
+impl fmt::Debug for Point {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "({}:{})", self.col, self.line)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,21 +184,51 @@ impl Positional for Point {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Point {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "({}:{})", self.col, self.line)
+impl Point {
+  pub fn new(col: u64, line: u64) -> Point {
+    Point { col, line }
+  }
+
+  pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {
+    self.col == other.col
+  }
+
+  pub fn is_horizontally_aligned_with(&self, other: &Self) -> bool {
+    self.line == other.line
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Line {
   pub start: Point,
   pub end: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type GeoResult<T> = std::result::Result<T, ErrString>;
+impl fmt::Debug for Line {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "{:?} → {:?}", self.start, self.end)
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Positional for Line {
+  fn upper_bound(&self) -> u64 {
+    self.start.upper_bound()
+  }
+
+  fn lower_bound(&self) -> u64 {
+    self.end.lower_bound()
+  }
+
+  fn left_bound(&self) -> u64 {
+    self.start.left_bound()
+  }
+
+  fn right_bound(&self) -> u64 {
+    self.end.right_bound()
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Line {
   pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Line> {
@@ -303,47 +326,6 @@ impl Line {
     } else {
       false
     }
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Line {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "{:?} → {:?}", self.start, self.end)
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//impl Eq for Line {}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Ord for Line {
-  fn cmp(&self, other: &Self) -> Ordering {
-    self
-      .start
-      .cmp(&other.start)
-      .then_with(|| self.end.cmp(&other.end))
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl PartialOrd for Line {
-  fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-    Some(self.cmp(other))
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Positional for Line {
-  fn upper_bound(&self) -> u64 {
-    self.start.upper_bound()
-  }
-
-  fn lower_bound(&self) -> u64 {
-    self.end.lower_bound()
-  }
-
-  fn left_bound(&self) -> u64 {
-    self.start.left_bound()
-  }
-
-  fn right_bound(&self) -> u64 {
-    self.end.right_bound()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
