@@ -506,6 +506,8 @@ mod tests {
       println!("Leftover Line: {:?}", line);
     }
 
+    println!("");
+
     assert!(rects.len() == 2);
     assert!(leftover_lines.len() == 0);
     assert_eq!(rects[0], Rectangle::new(0, 0, 7, 7).unwrap());
