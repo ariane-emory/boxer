@@ -400,5 +400,19 @@ mod tests {
     assert!(line9.touches(&lower_rect));
     assert!(!line9.overlaps(&rect1));
     assert!(line9.overlaps(&lower_rect));
+
+    // A vertical line between rect1 and the top edge of lower_rect that overlaps with rect1:
+    let line10 = Line::new(15, 19, 15, 30).unwrap();
+    assert!(!line10.touches(&rect1));
+    assert!(line10.touches(&lower_rect));
+    assert!(line10.overlaps(&rect1));
+    assert!(line10.overlaps(&lower_rect));
+
+    // A vertical line between the bottom edge of rect1 and the top edge of lower_rect that overlaps with lower_rect:
+    let line11 = Line::new(15, 20, 15, 31).unwrap();
+    assert!(line11.touches(&rect1));
+    assert!(!line11.touches(&lower_rect));
+    assert!(line11.overlaps(&rect1));
+    assert!(line11.overlaps(&lower_rect));
   }
 }
