@@ -414,5 +414,10 @@ mod tests {
     assert!(!line11.touches(&lower_rect));
     assert!(line11.overlaps(&rect1));
     assert!(line11.overlaps(&lower_rect));
+
+    // A horizontal line that isn't properly touching rect1 beauce it strikes one of it's corners:
+    let line12 = Line::new(10, 10, 20, 10).unwrap();
+    assert!(!line12.touches(&rect1));
+    assert!(line12.overlaps(&rect1));
   }
 }
