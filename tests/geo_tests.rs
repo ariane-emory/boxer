@@ -112,6 +112,20 @@ mod tests {
 
   #[test]
   fn line_test() {
+    assert!(Line::new(0, 0, 0, 0).is_err());
+    assert!(Line::new(0, 0, 0, 1).is_ok());
+    assert!(Line::new(0, 0, 1, 0).is_ok());
+    assert!(Line::new(0, 0, 1, 1).is_err());
+    assert!(Line::new(0, 0, 1, 2).is_err());
+    assert!(Line::new(0, 0, 2, 1).is_err());
+
+    assert!(Line::from_points(Point::new(0, 0), Point::new(0, 0)).is_err());
+    assert!(Line::from_points(Point::new(0, 0), Point::new(0, 1)).is_ok());
+    assert!(Line::from_points(Point::new(0, 0), Point::new(1, 0)).is_ok());
+    assert!(Line::from_points(Point::new(0, 0), Point::new(1, 1)).is_err());
+    assert!(Line::from_points(Point::new(0, 0), Point::new(1, 2)).is_err());
+    assert!(Line::from_points(Point::new(0, 0), Point::new(2, 1)).is_err());
+
     let upper_horizontal = Line::new(0, 0, 4, 0).unwrap();
     let lower_horizontal = Line::new(0, 2, 4, 2).unwrap();
     let offset_horizontal = Line::new(1, 5, 5, 5).unwrap();
