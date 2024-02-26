@@ -185,6 +185,10 @@ impl Positional for Point {
   fn right_bound(&self) -> u64 {
     self.col
   }
+
+  fn area(&self) -> u64 {
+    1
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Point {
