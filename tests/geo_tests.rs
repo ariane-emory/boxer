@@ -307,6 +307,14 @@ mod tests {
     assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 1)).is_err());
     assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
 
+    assert!(Rectangle::new(0, 0, 0, 0).is_err());
+    assert!(Rectangle::new(0, 0, 0, 1).is_err());
+    assert!(Rectangle::new(0, 0, 1, 0).is_err());
+    assert!(Rectangle::new(0, 0, 1, 1).is_err());
+    assert!(Rectangle::new(0, 0, 1, 2).is_err());
+    assert!(Rectangle::new(0, 0, 2, 1).is_err());
+    assert!(Rectangle::new(0, 0, 2, 2).is_ok());
+
     let rect = Rectangle::from_points(&Point::new(0, 10), &Point::new(5, 15)).unwrap();
     let overlapping_rect = Rectangle::from_points(&Point::new(3, 13), &Point::new(8, 18)).unwrap();
     let nonoverlapping_rect =
@@ -319,10 +327,11 @@ mod tests {
     assert!(!nonoverlapping_rect.overlaps(&rect));
 
     // A horizontal line between the right edge of the rect and the left edge of the nonoverlapping rect (but not overlapping with either):
-    let line_between_rect_and_nonoverlapping_rect = Line::new(5, 15, 16, 15).unwrap();
+  }
 
-    // assert!(line_between_rect_and_nonoverlapping_rect.touches(&rect));
-    // assert!(line_between_rect_and_nonoverlapping_rect.touches(&nonoverlapping_rect));
-    // assert!(!line_between_rect_and_nonoverlapping_rect.touches(&overlapping_rect));
+  #[test]
+  fn line_touches_rectangle_test() {
+    let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
+    let rect2 = Rectangle::new(30, 10, 40, 20).unwrap();
   }
 }
