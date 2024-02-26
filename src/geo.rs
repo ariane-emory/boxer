@@ -47,6 +47,16 @@ pub struct Size {
   pub width: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Rectangular for Size {
+  fn top_left(&self) -> Point {
+    Point::new(0, 0)
+  }
+
+  fn bottom_right(&self) -> Point {
+    Point::new(self.width - 1, self.height - 1)
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Size {
   pub fn new(height: usize, width: usize) -> Size {
     Size { height, width }
