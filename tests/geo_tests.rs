@@ -281,4 +281,15 @@ mod tests {
       .is_coaligned_with(&offset_horizontal)
       .is_none());
   }
+
+  #[test]
+  fn rectangle_test() {
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(0, 0)).is_err());
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(0, 1)).is_err());
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(1, 0)).is_err());
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(1, 1)).is_err());
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(1, 2)).is_err());
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(2, 1)).is_err());
+    assert!(Rectangle::new(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
+  }
 }
