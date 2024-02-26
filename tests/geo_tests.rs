@@ -1,11 +1,9 @@
-#![allow(unused_variables)]
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #[cfg(test)]
 mod tests {
   use squares::simple_geo::*;
-  // use squares::simple_geo::Point;
-  // use squares::simple_geo::Positional;
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn point_test() {
     let upper_left = Point::new(0, 0);
@@ -110,6 +108,7 @@ mod tests {
     assert!(!center.is_below(&lower_right));
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn line_test() {
     assert!(Line::new(0, 0, 0, 0).is_err());
@@ -297,6 +296,7 @@ mod tests {
       .is_none());
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn rectangle_test() {
     assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 0)).is_err());
@@ -346,6 +346,7 @@ mod tests {
     );
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn line_touches_rectangle_test() {
     let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
@@ -444,4 +445,67 @@ mod tests {
     assert!(!line13.touches(&lower_rect));
     assert!(line13.overlaps(&lower_rect));
   }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  #[test]
+  fn find_rectangle_test() {
+    // //                   1111111111111111
+    // //   0123457890abcdef0123456789abcdef
+    // // 0 xxxxx  x    xxxxx
+    // // 1 x   x  x    x   x
+    // // 3 x   x       x   x
+    // // 4 x   xxxxxx  x   x
+    // // 5 xxxxx       xxxxx
+
+    // let mut lines = vec![
+    //   Line::new(0, 0, 0, 5).unwrap(),
+    //   Line::new(0, 0, 4, 0).unwrap(),
+    //   Line::new(0, 5, 4, 5).unwrap(),
+    //   Line::new(12, 0, 12, 5).unwrap(),
+    //   Line::new(12, 0, 16, 0).unwrap(),
+    //   Line::new(12, 5, 16, 5).unwrap(),
+    //   Line::new(16, 0, 16, 5).unwrap(),
+    //   Line::new(4, 0, 4, 5).unwrap(),
+    //   Line::new(5, 4, 10, 4).unwrap(),
+    //   Line::new(8, 0, 8, 1).unwrap(),
+    // ];
+
+    //                   1111111111111111
+    //   0123457890abcdef0123456789abcdef
+    // 0 xxxxxxx
+    // 1 x     x
+    // 3 x     x
+    // 4 x  xxxxxxx
+    // 5 x  x  x  x
+    // 6 x  x  x  x
+    // 7 xxxxxxx  x
+    // 8    x     x
+    // 9    xxxxxxx
+
+    let lines = vec![
+      Line::new(0, 0, 7, 0).unwrap(),
+      Line::new(3, 4, 16, 4).unwrap(),
+      Line::new(0, 7, 7, 7).unwrap(),
+      Line::new(3, 9, 16, 9).unwrap(),
+      Line::new(0, 0, 0, 7).unwrap(),
+      Line::new(7, 0, 7, 7).unwrap(),
+      Line::new(3, 4, 3, 9).unwrap(),
+      Line::new(16, 4, 16, 9).unwrap(),
+    ];
+
+    let mut leftover_lines = Vec::new();
+    let mut rects = Vec::new();
+
+    find_rectangles(&lines, &mut rects, &mut leftover_lines);
+
+    for rect in &rects {
+      println!("Discovered Rectangle: {:?}", rect);
+    }
+
+    for line in &leftover_lines {
+      println!("Leftover Line: {:?}", line);
+    }
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
