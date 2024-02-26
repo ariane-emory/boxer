@@ -352,7 +352,9 @@ mod tests {
     assert!(line3.touches(&rect2));
 
     // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with rect1:
-    let line4 = Line::new(20, 15, 35, 15).unwrap();
+    let line4 = Line::new(20, 15, 29, 15).unwrap();
+    assert!(!line4.touches(&rect1));
+    assert!(line4.touches(&rect2));
 
     // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with rect2:
     let line5 = Line::new(25, 15, 40, 15).unwrap();
