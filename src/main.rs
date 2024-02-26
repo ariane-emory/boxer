@@ -83,7 +83,7 @@ fn main() {
           })
           .collect();
 
-        match connected_lines {
+        match connected_lines.as_slice() {
           [first_side, second_side] => {
             println!("With sides:\n   {:?}\n   {:?}", first_side, second_side);
 
