@@ -294,12 +294,19 @@ mod tests {
 
     let rect = Rectangle::new(&Point::new(0, 10), &Point::new(5, 15)).unwrap();
     let overlapping_rect = Rectangle::new(&Point::new(3, 13), &Point::new(8, 18)).unwrap();
-    let nonoverlapping_rect = Rectangle::new(&Point::new(6, 16), &Point::new(10, 20)).unwrap();
+    let nonoverlapping_rect = Rectangle::new(&Point::new(16, 16), &Point::new(20, 20)).unwrap();
 
     assert!(rect.overlaps(&overlapping_rect));
     assert!(!rect.overlaps(&nonoverlapping_rect));
 
     assert!(overlapping_rect.overlaps(&rect));
     assert!(!nonoverlapping_rect.overlaps(&rect));
+
+    // A horizontal line between the right edge of the rect and the left edge of the nonoverlapping rect (but not overlapping with either):
+    let line_between_rect_and_nonoverlapping_rect = Line::new(5, 15, 16, 15).unwrap();
+
+    // assert!(line_between_rect_and_nonoverlapping_rect.touches(&rect));
+    // assert!(line_between_rect_and_nonoverlapping_rect.touches(&nonoverlapping_rect));
+    // assert!(!line_between_rect_and_nonoverlapping_rect.touches(&overlapping_rect));
   }
 }

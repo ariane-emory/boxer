@@ -327,6 +327,13 @@ impl Line {
       false
     }
   }
+
+  pub fn is_connected_to(&self, other_line: &Line) -> bool {
+    self.start == other_line.start
+      || self.start == other_line.end
+      || self.end == other_line.start
+      || self.end == other_line.end
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
