@@ -74,61 +74,58 @@ fn main() {
           line, other_line
         );
 
-        let (left_or_top_candidate, right_or_bottom_candidate) = match orientation {
-          Horizontal => (
-            Line::from_points(&line.start, &other_line.start).unwrap(),
-            Line::from_points(&line.end, &other_line.end).unwrap(),
-          ),
-          Vertical => (
-            Line::from_points(&line.start, &other_line.start).unwrap(),
-            Line::from_points(&line.end, &other_line.end).unwrap(),
-          ),
-        };
+        let connected_lines: Vec<&Line> = lines
+          .iter()
+          .filter(|&tested_line| {
+            line.is_connected_to(tested_line) && other_line.is_connected_to(tested_line)
+          })
+          .collect();
 
-        let mut lines_to_remove = Vec::new();
+        match connected_lines.as_slice() {
+          [first_side, second_side] => {
+            println!("With sides:\n   {:?}\n   {:?}", first_side, second_side);
+            found_a_rect = true;
+            let mut lines_to_remove: Vec<&Line> = Vec::new();
 
-        if lines_deque.contains(&left_or_top_candidate)
-          && lines_deque.contains(&right_or_bottom_candidate)
-        {
-          found_a_rect = true;
+            // Put the component lines in a vec and sort them so we can find the top left and bottom right
+            // corners at opposite ends of the vec.
+            let mut tmp_vec = vec![
+              line.clone(),           // assuming line is already an owned value
+              other_line.clone(), // assuming this clones an owned value from the &Line reference
+              (*first_side).clone(), // clone the dereferenced value
+              (*second_side).clone(), // clone the dereferenced value
+            ];
 
-          println!(
-            "With sides:\n   {:?}\n   {:?}",
-            left_or_top_candidate, right_or_bottom_candidate
-          );
+            tmp_vec.sort(); // Now you can sort it because it's mutable
 
-          // Put the component lines in a vec and sort them so we can find the top left and bottom right
-          // corners at opposite ends of the vec.
-          let mut tmp_vec = Vec::new();
-          tmp_vec.push(line.clone());
-          tmp_vec.push(other_line.clone());
-          tmp_vec.push(left_or_top_candidate.clone());
-          tmp_vec.push(right_or_bottom_candidate.clone());
-          tmp_vec.sort();
+            // let mut tmp_vec = Vec::new();
+            // tmp_vec.push(line.clone());
+            // tmp_vec.push(other_line.clone());
+            // tmp_vec.push(*first_side.clone()); // mismatched types
+            // tmp_vec.push(*second_side.clone()); // mismatched types
+            tmp_vec.sort();
 
-          // for t in &tmp_vec {
-          //   println!("-> {:?}", t);
-          // }
+            // Create the rectangle here...
+            let rect = Rectangle::from_points(
+              &tmp_vec.first().unwrap().start,
+              &tmp_vec.last().unwrap().end,
+            )
+            .unwrap();
 
-          // Create the rectangle here...
-          let rect = Rectangle::from_points(
-            &tmp_vec.first().unwrap().start,
-            &tmp_vec.last().unwrap().end,
-          )
-          .unwrap();
+            println!("New Rectangle: {:?}", rect);
 
-          println!("New Rectangle: {:?}", rect);
+            // Schedule the lines for removal
+            lines_to_remove.push(other_line);
+            lines_to_remove.push(first_side);
+            lines_to_remove.push(second_side);
 
-          // Schedule the lines for removal
-          lines_to_remove.push(other_line.clone());
-          lines_to_remove.push(left_or_top_candidate);
-          lines_to_remove.push(right_or_bottom_candidate);
+            rects.push(rect);
 
-          rects.push(rect);
+            lines_deque.retain(|l| !lines_to_remove.contains(&l));
 
-          lines_deque.retain(|l| !lines_to_remove.contains(l));
-
-          break;
+            break;
+          }
+          _ => println!("Did not find exactly two connecting lines."),
         }
       }
     }
