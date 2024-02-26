@@ -109,10 +109,8 @@ fn main() {
 
             println!("New Rectangle: {:?}", rect);
 
-            let mut lines_to_remove: Vec<&Line> = Vec::new();
-            lines_to_remove.push(other_line);
-            lines_to_remove.push(first_side);
-            lines_to_remove.push(second_side);
+            let lines_to_remove: Vec<&Line> = vec![other_line, first_side, second_side];
+
             lines_deque.retain(|l| !lines_to_remove.contains(&l));
 
             rects.push(rect);
