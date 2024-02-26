@@ -147,10 +147,10 @@ pub trait Rectangular {
       || point == &self.bottom_left()
   }
 
-  fn contained_area(&self) -> GeoResult<Box> {
+  fn contained_rectangle(&self) -> Rectangle {
     let top_left = Point::new(self.top_left().col + 1, self.top_left().line + 1);
     let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
-    Box::from_points(&top_left, &bottom_right)
+    Rectangle::from_points(&top_left, &bottom_right)
   }
 
   fn size(&self) -> Size {
