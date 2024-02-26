@@ -148,6 +148,21 @@ mod tests {
     // 4 x___xx
     // 5 _____x
 
+    assert!(upper_horizontal.is_connected_to(&left_vertical));
+    assert!(left_vertical.is_connected_to(&upper_horizontal));
+
+    assert!(upper_horizontal.is_connected_to(&right_vertical));
+    assert!(right_vertical.is_connected_to(&upper_horizontal));
+
+    assert!(!upper_horizontal.is_connected_to(&offset_vertical));
+    assert!(!offset_vertical.is_connected_to(&upper_horizontal));
+
+    assert!(!upper_horizontal.is_connected_to(&lower_horizontal));
+    assert!(!lower_horizontal.is_connected_to(&upper_horizontal));
+
+    assert!(!upper_horizontal.is_connected_to(&offset_horizontal));
+    assert!(!offset_horizontal.is_connected_to(&upper_horizontal));
+
     assert!(!upper_horizontal.overlaps(&lower_horizontal));
     assert!(!upper_horizontal.overlaps(&offset_horizontal));
     assert!(upper_horizontal.overlaps(&left_vertical));
