@@ -1,5 +1,4 @@
 use crate::simple_geo::*;
-
 use std::cmp::max;
 use std::cmp::min;
 use std::fmt;
