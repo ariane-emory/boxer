@@ -1,11 +1,15 @@
 #![allow(dead_code)]
 pub mod errstring;
+pub mod orientation;
 pub mod point;
 pub mod rectangle;
 pub mod size;
 
+use crate::simple_geo::Orientation::Horizontal;
+
 pub use errstring::ErrString;
 pub use errstring::GeoResult;
+pub use orientation::Orientation;
 pub use point::Point;
 pub use rectangle::Rectangle;
 pub use size::Size;
@@ -13,16 +17,6 @@ pub use size::Size;
 use std::collections::VecDeque;
 use std::fmt;
 use std::fmt::Debug;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Debug, Copy, Clone)]
-pub enum Orientation {
-  Horizontal,
-  Vertical,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-use Orientation::*;
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Positional {
