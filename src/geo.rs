@@ -370,6 +370,46 @@ impl Rectangle {
       })
     }
   }
+
+  pub fn top_side(&self) -> Line {
+    Line::new(
+      self.top_left.col,
+      self.top_left.line,
+      self.bottom_right.col,
+      self.top_left.line,
+    )
+    .unwrap()
+  }
+
+  pub fn bottom_side(&self) -> Line {
+    Line::new(
+      self.top_left.col,
+      self.bottom_right.line,
+      self.bottom_right.col,
+      self.bottom_right.line,
+    )
+    .unwrap()
+  }
+
+  pub fn left_side(&self) -> Line {
+    Line::new(
+      self.top_left.col,
+      self.top_left.line,
+      self.top_left.col,
+      self.bottom_right.line,
+    )
+    .unwrap()
+  }
+
+  pub fn right_side(&self) -> Line {
+    Line::new(
+      self.bottom_right.col,
+      self.top_left.line,
+      self.bottom_right.col,
+      self.bottom_right.line,
+    )
+    .unwrap()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Rectangle {
