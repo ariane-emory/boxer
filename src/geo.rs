@@ -200,6 +200,7 @@ pub trait Positional {
   fn is_bottom_aligned_with(&self, other: &impl Positional) -> bool {
     self.lower_bound() == other.lower_bound()
   }
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn is_left_of(&self, other: &impl Positional) -> bool {
     self.right_bound() < other.left_bound()
