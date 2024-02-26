@@ -327,6 +327,16 @@ impl Line {
     })
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  pub fn orientation(&self) -> Orientation {
+    if self.is_horizontal() {
+      Horizontal
+    } else {
+      Vertical
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   pub fn is_horizontal(&self) -> bool {
     self.size().is_wide()
   }
@@ -335,6 +345,7 @@ impl Line {
     self.size().is_tall()
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   pub fn is_parallel_to(&self, other: &Self) -> bool {
     (self.is_horizontal() && other.is_horizontal()) || (self.is_vertical() && other.is_vertical())
   }
@@ -343,6 +354,7 @@ impl Line {
     !self.is_parallel_to(other)
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   pub fn is_coaligned_with(&self, other: &Self) -> Option<Orientation> {
     if self.is_horizontally_coaligned_with(other) {
       Some(Horizontal)
@@ -353,6 +365,7 @@ impl Line {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   pub fn is_horizontally_coaligned_with(&self, other: &Self) -> bool {
     self.is_horizontal()
       && other.is_horizontal()
@@ -367,16 +380,9 @@ impl Line {
       && self.start.is_top_aligned_with(other)
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   pub fn length(&self) -> usize {
     self.size().area()
-  }
-
-  pub fn orientation(&self) -> Orientation {
-    if self.is_horizontal() {
-      Horizontal
-    } else {
-      Vertical
-    }
   }
 
   pub fn touches(&self, rect: &Box) -> bool {
