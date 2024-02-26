@@ -1,5 +1,5 @@
 [package]
-name = "squares"
+name = "simple_geo"
 version = "0.1.0"
 edition = "2021"
 
