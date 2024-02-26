@@ -9,7 +9,10 @@ use geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn find_rectangles(lines: &Vec<Line>, rects: &mut Vec<Rectangle>, leftover_lines: &mut Vec<Line>) {
-  let mut lines_deque: VecDeque<Line> = VecDeque::from(lines.clone());
+  let mut sorted = lines.clone();
+  sorted.sort();
+
+  let mut lines_deque: VecDeque<Line> = VecDeque::from(sorted.clone());
 
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
@@ -113,12 +116,6 @@ fn main() {
     Line::new(3, 4, 3, 9).unwrap(),
     Line::new(16, 4, 16, 9).unwrap(),
   ];
-
-  lines.sort();
-
-  for line in &lines {
-    println!("Input Line: {:?}", line);
-  }
 
   let mut leftover_lines = Vec::new();
   let mut rects = Vec::new();
