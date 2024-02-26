@@ -91,15 +91,14 @@ pub trait Positional: Rectangular {
   fn upper_bound(&self) -> usize;
   fn lower_bound(&self) -> usize;
 
-  fn size(&self) -> Size {
-    //println!("Get size for: {:?}", self);
-    let size = Size::new(
-      self.lower_bound() - self.upper_bound() + 1,
-      self.right_bound() - self.left_bound() + 1,
-    );
-    //println!("Got size:     {:?}", size);
-    size
-  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  // fn size(&self) -> Size {
+  //   let size = Size::new(
+  //     self.lower_bound() - self.upper_bound() + 1,
+  //     self.right_bound() - self.left_bound() + 1,
+  //   );
+  //   size
+  // }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn height(&self) -> usize {
@@ -427,6 +426,13 @@ pub trait Rectangular {
     let top_left = Point::new(self.top_left().col + 1, self.top_left().line + 1);
     let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
     Rectangle::from_points(&top_left, &bottom_right)
+  }
+
+  fn size(&self) -> Size {
+    Size::new(
+      self.bottom_right().line - self.top_left().line + 1,
+      self.bottom_right().col - self.top_left().col + 1,
+    )
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
