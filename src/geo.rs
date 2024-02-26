@@ -313,8 +313,8 @@ impl Line {
 
   pub fn touches(&self, rect: &Rectangle) -> bool {
     self.start.overlaps(&rect.right_side())
-      || self.end.overlaps(&rect.left_side())
       || self.start.overlaps(&rect.bottom_side())
+      || self.end.overlaps(&rect.left_side())
       || self.end.overlaps(&rect.top_side())
   }
 
