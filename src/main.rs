@@ -92,7 +92,7 @@ fn main() {
             // Put the component lines in a vec and sort them so we can find the top left and bottom right
             // corners at opposite ends of the vec.
             let mut tmp_vec: Vec<&Line> = vec![&line, other_line, *first_side, *second_side];
-            tmp_vec.sort(); // Now you can sort it because it's mutable
+            tmp_vec.sort();
 
             // Create the rectangle here...
             let rect = Rectangle::from_points(
