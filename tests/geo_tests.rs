@@ -322,6 +322,7 @@ mod tests {
 
     assert!(rect.width() == 6);
     assert!(rect.height() == 6);
+    assert!(rect.area() == 36);
 
     assert!(rect.overlaps(&overlapping_rect));
     assert!(!rect.overlaps(&nonoverlapping_rect));
