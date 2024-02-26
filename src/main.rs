@@ -103,6 +103,7 @@ fn main() {
             lines_to_remove.push(**second_side);
 
             found_a_rect = true;
+
             break;
           }
           _ => println!("Did not find exactly two connecting lines."),
