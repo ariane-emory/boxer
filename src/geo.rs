@@ -379,7 +379,7 @@ impl Line {
     self.size().area()
   }
 
-  pub fn touches(&self, rect: &Box) -> bool {
+  pub fn touches(&self, rect: &Rectangle) -> bool {
     !(rect.point_is_corner(&self.start) || rect.point_is_corner(&self.end))
       && (self.start.overlaps(&rect.right_side())
         || self.start.overlaps(&rect.bottom_side())
@@ -398,20 +398,20 @@ impl Line {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Box {
+pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Box {
+impl fmt::Debug for Rectangle {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "Box({:?}, {:?})", self.top_left, self.bottom_right)
+    write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Rectangular for Box {}
+impl Rectangular for Rectangle {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Positional for Box {
+impl Positional for Rectangle {
   fn top_left(&self) -> Point {
     self.top_left
   }
@@ -421,20 +421,20 @@ impl Positional for Box {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Box {
+impl Rectangle {
   pub fn new(
     start_col: usize,
     start_line: usize,
     end_col: usize,
     end_line: usize,
-  ) -> GeoResult<Box> {
-    Box::from_points(
+  ) -> GeoResult<Rectangle> {
+    Rectangle::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
     )
   }
 
-  pub fn from_points(start: &Point, end: &Point) -> GeoResult<Box> {
+  pub fn from_points(start: &Point, end: &Point) -> GeoResult<Rectangle> {
     // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
     // right corner... but, they might have been passed in a different order, so we're going to
     // create our own points using the minimum/maximum line and column from the arguments:
@@ -442,21 +442,21 @@ impl Box {
     let bottom_right = Point::new(max(start.col, end.col), max(start.line, end.line));
 
     if bottom_right.left_bound() - top_left.left_bound() < 2 {
-      Err(ErrString::new("Box must be at least 3 columns wide"))
+      Err(ErrString::new("Rectangle must be at least 3 columns wide"))
     } else if bottom_right.upper_bound() - top_left.upper_bound() < 2 {
-      Err(ErrString::new("Box must be at least 3 lines tall"))
+      Err(ErrString::new("Rectangle must be at least 3 lines tall"))
     } else {
-      Ok(Box {
+      Ok(Rectangle {
         top_left,
         bottom_right,
       })
     }
   }
 
-  pub fn contained_rectangle(&self) -> Box {
+  pub fn contained_rectangle(&self) -> Rectangle {
     let top_left = Point::new(self.top_left().line + 1, self.top_left().line + 1);
     let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
-    Box {
+    Rectangle {
       top_left,
       bottom_right,
     }
