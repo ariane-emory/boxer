@@ -134,6 +134,12 @@ mod tests {
     // 4 xx__x_
     // 5 _x____
 
+    assert!(!upper_horizontal.overlaps(&lower_horizontal));
+    assert!(!upper_horizontal.overlaps(&offset_horizontal));
+    assert!(upper_horizontal.overlaps(&left_vertical));
+    assert!(upper_horizontal.overlaps(&right_vertical));
+    assert!(!upper_horizontal.overlaps(&offset_vertical));
+
     assert!(upper_horizontal.is_horizontal());
     assert!(lower_horizontal.is_horizontal());
     assert!(offset_horizontal.is_horizontal());
