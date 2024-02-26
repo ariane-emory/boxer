@@ -345,7 +345,14 @@ pub struct Rectangle {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
-  pub fn new(start: &Point, end: &Point) -> GeoResult<Rectangle> {
+  pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Rectangle> {
+    Rectangle::from_points(
+      &Point::new(start_col, start_line),
+      &Point::new(end_col, end_line),
+    )
+  }
+
+  pub fn from_points(start: &Point, end: &Point) -> GeoResult<Rectangle> {
     // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
     // right corner... but, they might have been passed in a different order, so we're going to
     // create our own points using the minimum/maximum line and column from the arguments:

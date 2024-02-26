@@ -108,7 +108,7 @@ fn main() {
           // }
 
           // Create the rectangle here...
-          let rect = Rectangle::new(
+          let rect = Rectangle::from_points(
             &tmp_vec.first().unwrap().start,
             &tmp_vec.last().unwrap().end,
           )
