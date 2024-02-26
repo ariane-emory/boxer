@@ -427,5 +427,11 @@ mod tests {
     assert!(line13.overlaps(&rect1));
     assert!(!line13.touches(&lower_rect));
     assert!(line13.overlaps(&lower_rect));
+
+    println!("rect1: {:?}", rect1);
+    println!(
+      "rect1.contained_rectngle: {:?}",
+      rect1.contained_rectangle()
+    );
   }
 }
