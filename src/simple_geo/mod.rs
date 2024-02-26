@@ -9,7 +9,6 @@ pub mod size;
 
 pub use errstring::*;
 pub use line::*;
-//pub use orientation::Orientation::*;
 pub use orientation::*;
 pub use point::*;
 pub use positional::*;
