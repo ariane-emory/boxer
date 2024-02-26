@@ -88,7 +88,6 @@ fn main() {
           [first_side, second_side] => {
             println!("With sides:\n   {:?}\n   {:?}", first_side, second_side);
             found_a_rect = true;
-            let mut lines_to_remove: Vec<Line> = Vec::new();
 
             // Put the component lines in a vec and sort them so we can find the top left and bottom right
             // corners at opposite ends of the vec.
@@ -110,14 +109,13 @@ fn main() {
 
             println!("New Rectangle: {:?}", rect);
 
-            // Schedule the lines for removal
+            let mut lines_to_remove: Vec<Line> = Vec::new();
             lines_to_remove.push(other_line.clone());
             lines_to_remove.push((*first_side).clone());
             lines_to_remove.push((*second_side).clone());
+            lines_deque.retain(|l| !lines_to_remove.contains(&l));
 
             rects.push(rect);
-
-            lines_deque.retain(|l| !lines_to_remove.contains(&l));
 
             break;
           }
