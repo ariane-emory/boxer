@@ -113,11 +113,26 @@ mod tests {
   #[test]
   fn line_test() {
     let upper_horizontal = Line::new(0, 0, 4, 0).unwrap();
-    let lower_horizontal = Line::new(0, 0, 4, 0).unwrap();
-    let offset_horizontal = Line::new(1, 0, 5, 0).unwrap();
+    let lower_horizontal = Line::new(0, 2, 4, 2).unwrap();
+    let offset_horizontal = Line::new(1, 4, 5, 4).unwrap();
+    //   012345
+    // 0 xxxxx_
+    // 1 ______
+    // 2 xxxxx_
+    // 3 ______
+    // 4 _xxxxx
+    // 5 ______
+
     let left_vertical = Line::new(0, 0, 0, 4).unwrap();
     let right_vertical = Line::new(4, 0, 4, 4).unwrap();
     let offset_vertical = Line::new(0, 1, 0, 5).unwrap();
+    //   012345
+    // 0 x___x_
+    // 1 xx__x_
+    // 2 xx__x_
+    // 3 xx__x_
+    // 4 xx__x_
+    // 5 _x____
 
     assert!(upper_horizontal.is_horizontal());
     assert!(lower_horizontal.is_horizontal());
