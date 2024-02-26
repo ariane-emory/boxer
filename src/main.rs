@@ -74,7 +74,7 @@ fn main() {
           line, other_line
         );
 
-        let connected_lines: Vec<&Line> = lines
+        let connected_lines: Vec<&Line> = lines_deque
           .iter()
           .filter(|&tested_line| {
             line.is_connected_to(tested_line) && other_line.is_connected_to(tested_line)
