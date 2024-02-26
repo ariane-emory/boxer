@@ -291,5 +291,15 @@ mod tests {
     assert!(Rectangle::new(&Point::new(0, 0), &Point::new(1, 2)).is_err());
     assert!(Rectangle::new(&Point::new(0, 0), &Point::new(2, 1)).is_err());
     assert!(Rectangle::new(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
+
+    let rect = Rectangle::new(&Point::new(0, 0), &Point::new(5, 5)).unwrap();
+    let overlapping_rect = Rectangle::new(&Point::new(3, 3), &Point::new(8, 8)).unwrap();
+    let nonoverlapping_rect = Rectangle::new(&Point::new(6, 6), &Point::new(10, 10)).unwrap();
+
+    assert!(rect.overlaps(&overlapping_rect));
+    assert!(!rect.overlaps(&nonoverlapping_rect));
+
+    assert!(overlapping_rect.overlaps(&rect));
+    assert!(!nonoverlapping_rect.overlaps(&rect));
   }
 }
