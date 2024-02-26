@@ -492,7 +492,7 @@ pub fn find_rectangles(
 
         match connected_lines[..] {
           [first_side, second_side] => {
-            println!("With sides:\n   {:?}\n   {:?}", first_side, second_side);
+            println!("\nWith sides:\n   {:?}\n   {:?}", first_side, second_side);
 
             // Put the component lines in a vec and sort them so we can find the top left and bottom right
             // corners at opposite ends of the vec.
@@ -503,7 +503,7 @@ pub fn find_rectangles(
 
             rects.push(rect);
 
-            println!("New Rectangle: {:?}", rect);
+            println!("\nNew Rectangle: {:?}", rect);
 
             lines_to_remove.push(*other_line);
             lines_to_remove.push(*first_side);

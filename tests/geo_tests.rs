@@ -498,15 +498,15 @@ mod tests {
 
     find_rectangles(&lines, &mut rects, &mut leftover_lines);
 
+    println!("");
     for rect in &rects {
       println!("Discovered Rectangle: {:?}", rect);
     }
 
+    println!("");
     for line in &leftover_lines {
       println!("Leftover Line: {:?}", line);
     }
-
-    println!("");
 
     assert!(rects.len() == 2);
     assert!(leftover_lines.len() == 0);
