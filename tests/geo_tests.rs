@@ -320,6 +320,9 @@ mod tests {
     let nonoverlapping_rect =
       Rectangle::from_points(&Point::new(16, 16), &Point::new(20, 20)).unwrap();
 
+    assert!(rect.width() == 6);
+    assert!(rect.height() == 6);
+
     assert!(rect.overlaps(&overlapping_rect));
     assert!(!rect.overlaps(&nonoverlapping_rect));
 
