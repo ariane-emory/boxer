@@ -98,13 +98,6 @@ fn main() {
 
             tmp_vec.sort(); // Now you can sort it because it's mutable
 
-            // let mut tmp_vec = Vec::new();
-            // tmp_vec.push(line.clone());
-            // tmp_vec.push(other_line.clone());
-            // tmp_vec.push(*first_side.clone()); // mismatched types
-            // tmp_vec.push(*second_side.clone()); // mismatched types
-            tmp_vec.sort();
-
             // Create the rectangle here...
             let rect = Rectangle::from_points(
               &tmp_vec.first().unwrap().start,
