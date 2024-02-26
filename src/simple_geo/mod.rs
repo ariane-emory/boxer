@@ -1,9 +1,11 @@
 #![allow(dead_code)]
 pub mod errstring;
+pub mod point;
 pub mod size;
 
 pub use errstring::ErrString;
 pub use errstring::GeoResult;
+pub use point::Point;
 pub use size::Size;
 
 use std::cmp::max;
@@ -163,44 +165,6 @@ pub trait Positional {
       || point == &self.bottom_right()
       || point == &self.top_right()
       || point == &self.bottom_left()
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Point {
-  pub line: usize,
-  pub col: usize,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Point {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "({}:{})", self.col, self.line)
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Positional for Point {
-  fn top_left(&self) -> Point {
-    *self
-  }
-
-  fn bottom_right(&self) -> Point {
-    *self
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Point {
-  pub fn new(col: usize, line: usize) -> Point {
-    Point { col, line }
-  }
-
-  pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {
-    self.col == other.col
-  }
-
-  pub fn is_horizontally_aligned_with(&self, other: &Self) -> bool {
-    self.line == other.line
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
