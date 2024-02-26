@@ -79,6 +79,7 @@ fn main() {
             Line::from_points(&line.end, &other_line.end).unwrap(),
           ),
         };
+
         let mut lines_to_remove = Vec::new();
 
         if lines_deque.contains(&left_or_top_candidate)
