@@ -488,10 +488,10 @@ impl Positional for Rectangle {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
   pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> Rectangle {
-    Rectangle::from_points(
-      &Point::new(start_col, start_line),
-      &Point::new(end_col, end_line),
-    )
+    Rectangle {
+      top_left: Point::new(start_col, start_line),
+      bottom_right: Point::new(end_col, end_line),
+    }
   }
 
   pub fn from_points(start: &Point, end: &Point) -> Rectangle {
