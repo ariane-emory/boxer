@@ -5,18 +5,16 @@ pub mod point;
 pub mod rectangle;
 pub mod size;
 
-use crate::simple_geo::Orientation::Horizontal;
-
+use crate::simple_geo::orientation::Orientation;
 pub use errstring::ErrString;
 pub use errstring::GeoResult;
-pub use orientation::Orientation;
+pub use orientation::Orientation::*;
 pub use point::Point;
 pub use rectangle::Rectangle;
 pub use size::Size;
 
 use std::collections::VecDeque;
 use std::fmt;
-use std::fmt::Debug;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Positional {
