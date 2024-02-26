@@ -86,6 +86,19 @@ impl Size {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Rectangular {
+  fn top_left(&self) -> Point;
+
+  fn top_right(&self) -> Point {
+    Point::new(self.bottom_right().col, self.top_left().line)
+  }
+
+  fn bottom_left(&self) -> Point {
+    Point::new(self.top_left().col, self.bottom_right().line)
+  }
+
+  fn bottom_right(&self) -> Point;
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   fn top_side(&self) -> Line {
     Line::new(
       self.top_left().col,
@@ -126,18 +139,7 @@ pub trait Rectangular {
     .unwrap()
   }
 
-  fn top_left(&self) -> Point;
-
-  fn top_right(&self) -> Point {
-    Point::new(self.bottom_right().col, self.top_left().line)
-  }
-
-  fn bottom_left(&self) -> Point {
-    Point::new(self.top_left().col, self.bottom_right().line)
-  }
-
-  fn bottom_right(&self) -> Point;
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   fn point_is_corner(&self, point: &Point) -> bool {
     point == &self.top_left()
       || point == &self.bottom_right()
