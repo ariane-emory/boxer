@@ -337,12 +337,27 @@ mod tests {
     let rect2 = Rectangle::new(30, 10, 40, 20).unwrap();
 
     // A horizontal line between the right edge of rect1 and the left edge of rect2 (but not overlapping with either):
-    let line1 = Line::new(20, 15, 30, 15).unwrap();
+    let line1 = Line::new(21, 15, 29, 15).unwrap();
+    assert!(line1.touches(&rect1));
+    assert!(line1.touches(&rect2));
 
     // A horizontal line between the right edge of rect1 that doesn't quite reach the left edge of rect2:
-    let line2 = Line::new(20, 15, 29, 15).unwrap();
+    let line2 = Line::new(21, 15, 28, 15).unwrap();
+    assert!(line2.touches(&rect1));
+    assert!(!line2.touches(&rect2));
 
     // A horizontal line between the right edge of rect2 that doesn't quite reach the right edge of rect2:
-    let line3 = Line::new(31, 15, 39, 15).unwrap();
+    let line3 = Line::new(22, 15, 29, 15).unwrap();
+    assert!(!line3.touches(&rect1));
+    assert!(line3.touches(&rect2));
+
+    // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with rect1:
+    let line4 = Line::new(20, 15, 35, 15).unwrap();
+
+    // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with rect2:
+    let line5 = Line::new(25, 15, 40, 15).unwrap();
+
+    // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with both:
+    let line6 = Line::new(20, 15, 40, 15).unwrap();
   }
 }
