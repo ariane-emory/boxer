@@ -2,9 +2,9 @@
 
 #[cfg(test)]
 mod tests {
-  use squares::geo::*;
-  // use squares::geo::Point;
-  // use squares::geo::Positional;
+  use squares::simple_geo::*;
+  // use squares::simple_geo::Point;
+  // use squares::simple_geo::Positional;
 
   #[test]
   fn point_test() {

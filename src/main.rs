@@ -3,16 +3,16 @@
 #![allow(unused_mut)]
 
 use std::collections::VecDeque;
-mod geo;
-use geo::Orientation::*;
-use geo::*;
+mod simple_geo;
+use simple_geo::Orientation::*;
+use simple_geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn find_rectangles(lines: &Vec<Line>, rects: &mut Vec<Rectangle>, leftover_lines: &mut Vec<Line>) {
-  let mut sorted = lines.clone();
-  sorted.sort();
+  let mut sorted_lines = lines.clone();
+  sorted_lines.sort();
 
-  let mut lines_deque: VecDeque<Line> = VecDeque::from(sorted.clone());
+  let mut lines_deque: VecDeque<Line> = VecDeque::from(sorted_lines);
 
   while let Some(line) = lines_deque.pop_front() {
     println!("\nFind coaligned lines with {:?}...", line);
