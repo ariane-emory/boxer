@@ -500,3 +500,68 @@ impl Box {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Rectangle {
+  pub top_left: Point,
+  pub bottom_right: Point,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl fmt::Debug for Rectangle {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Rectangular for Rectangle {
+  fn top_left(&self) -> Point {
+    self.top_left
+  }
+
+  fn bottom_right(&self) -> Point {
+    self.bottom_right
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Positional for Rectangle {
+  fn upper_bound(&self) -> usize {
+    self.top_left.upper_bound()
+  }
+
+  fn lower_bound(&self) -> usize {
+    self.bottom_right.lower_bound()
+  }
+
+  fn left_bound(&self) -> usize {
+    self.top_left.left_bound()
+  }
+
+  fn right_bound(&self) -> usize {
+    self.bottom_right.right_bound()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Rectangle {
+  pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> Rectangle {
+    Rectangle::from_points(
+      &Point::new(start_col, start_line),
+      &Point::new(end_col, end_line),
+    )
+  }
+
+  pub fn from_points(start: &Point, end: &Point) -> Rectangle {
+    // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
+    // right corner... but, they might have been passed in a different order, so we're going to
+    // create our own points using the minimum/maximum line and column from the arguments:
+    let top_left = Point::new(min(start.col, end.col), min(start.line, end.line));
+    let bottom_right = Point::new(max(start.col, end.col), max(start.line, end.line));
+    Rectangle::new(
+      top_left.col,
+      top_left.line,
+      bottom_right.col,
+      bottom_right.line,
+    )
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
