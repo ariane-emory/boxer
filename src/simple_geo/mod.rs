@@ -7,10 +7,10 @@ pub mod positional;
 pub mod rectangle;
 pub mod size;
 
-use crate::simple_geo::orientation::Orientation;
 pub use errstring::ErrString;
 pub use errstring::GeoResult;
 pub use line::Line;
+pub use orientation::Orientation;
 pub use orientation::Orientation::*;
 pub use point::Point;
 pub use positional::Positional;
