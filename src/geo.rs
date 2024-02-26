@@ -312,10 +312,11 @@ impl Line {
   }
 
   pub fn touches(&self, rect: &Rectangle) -> bool {
-    self.start.overlaps(&rect.right_side())
-      || self.start.overlaps(&rect.bottom_side())
-      || self.end.overlaps(&rect.left_side())
-      || self.end.overlaps(&rect.top_side())
+    !(rect.point_is_corner(&self.start) || rect.point_is_corner(&self.end))
+      && (self.start.overlaps(&rect.right_side())
+        || self.start.overlaps(&rect.bottom_side())
+        || self.end.overlaps(&rect.left_side())
+        || self.end.overlaps(&rect.top_side()))
   }
 
   pub fn is_connected_to(&self, other_line: &Line) -> bool {
@@ -415,6 +416,19 @@ impl Rectangle {
 
   pub fn bottom_right(&self) -> Point {
     self.bottom_right
+  }
+
+  pub fn point_is_corner(&self, point: &Point) -> bool {
+    point == &self.top_left
+      || point == &self.bottom_right
+      || point == &self.top_right()
+      || point == &self.bottom_left()
+  }
+
+  pub fn contained_area(&self) -> GeoResult<Rectangle> {
+    let top_left = Point::new(self.top_left.col + 1, self.top_left.line + 1);
+    let bottom_right = Point::new(self.bottom_right.col - 1, self.bottom_right.line - 1);
+    Rectangle::from_points(&top_left, &bottom_right)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
