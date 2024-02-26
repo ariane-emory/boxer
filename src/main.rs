@@ -92,9 +92,7 @@ fn main() {
             let mut tmp_vec: Vec<&Line> = vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
 
-            let rect = Rectangle::from_points(&tmp_vec[0].start, &tmp_vec[3].end).unwrap();
-
-            rects.push(rect);
+            rects.push(Rectangle::from_points(&tmp_vec[0].start, &tmp_vec[3].end).unwrap());
 
             println!("New Rectangle: {:?}", rect);
 
