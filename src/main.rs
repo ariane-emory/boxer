@@ -67,7 +67,9 @@ fn main() {
 
     let mut found_a_rect = false;
 
-    for other_line in &lines_deque {
+    let cloned = lines_deque.clone();
+
+    for other_line in &cloned {
       if let Some(orientation) = line.is_coaligned_with(other_line) {
         println!(
           "Found coaligned lines: \n   {:?}\n   {:?}",
@@ -108,9 +110,9 @@ fn main() {
             println!("New Rectangle: {:?}", rect);
 
             // Schedule the lines for removal
-            lines_to_remove.push(other_line);
-            lines_to_remove.push(first_side);
-            lines_to_remove.push(second_side);
+            lines_to_remove.push(other_line.clone());
+            lines_to_remove.push((*first_side).clone());
+            lines_to_remove.push((*second_side).clone());
 
             rects.push(rect);
 
