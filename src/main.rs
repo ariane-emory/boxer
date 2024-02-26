@@ -86,6 +86,7 @@ fn main() {
           && lines_deque.contains(&right_or_bottom_candidate)
         {
           found_a_rect = true;
+
           println!(
             "Found coaligned lines: \n   {:?}\n   {:?}",
             line, other_line
