@@ -7,15 +7,14 @@ pub mod positional;
 pub mod rectangle;
 pub mod size;
 
-pub use errstring::ErrString;
-pub use errstring::GeoResult;
-pub use line::Line;
-pub use orientation::Orientation;
-pub use orientation::Orientation::*;
-pub use point::Point;
-pub use positional::Positional;
-pub use rectangle::Rectangle;
-pub use size::Size;
+pub use errstring::*;
+pub use line::*;
+//pub use orientation::Orientation::*;
+pub use orientation::*;
+pub use point::*;
+pub use positional::*;
+pub use rectangle::*;
+pub use size::*;
 
 use std::collections::VecDeque;
 
