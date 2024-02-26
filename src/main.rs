@@ -83,13 +83,13 @@ fn main() {
           })
           .collect();
 
-        match connected_lines.as_slice() {
+        match connected_lines[..] {
           [first_side, second_side] => {
             println!("With sides:\n   {:?}\n   {:?}", first_side, second_side);
 
             // Put the component lines in a vec and sort them so we can find the top left and bottom right
             // corners at opposite ends of the vec.
-            let mut tmp_vec: Vec<&Line> = vec![&line, other_line, *first_side, *second_side];
+            let mut tmp_vec: Vec<&Line> = vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
 
             let rect = Rectangle::from_points(&tmp_vec[0].start, &tmp_vec[3].end).unwrap();
@@ -99,8 +99,8 @@ fn main() {
             println!("New Rectangle: {:?}", rect);
 
             lines_to_remove.push(*other_line);
-            lines_to_remove.push(**first_side);
-            lines_to_remove.push(**second_side);
+            lines_to_remove.push(*first_side);
+            lines_to_remove.push(*second_side);
 
             found_a_rect = true;
 
