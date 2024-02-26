@@ -119,6 +119,20 @@ mod tests {
     let right_vertical = Line::new(4, 0, 4, 4).unwrap();
     let offset_vertical = Line::new(0, 1, 0, 5).unwrap();
 
+    assert!(upper_horizontal.is_horizontal());
+    assert!(lower_horizontal.is_horizontal());
+    assert!(offset_horizontal.is_horizontal());
+    assert!(!left_vertical.is_horizontal());
+    assert!(!right_vertical.is_horizontal());
+    assert!(!offset_vertical.is_horizontal());
+
+    assert!(!upper_horizontal.is_vertical());
+    assert!(!lower_horizontal.is_vertical());
+    assert!(!offset_horizontal.is_vertical());
+    assert!(left_vertical.is_vertical());
+    assert!(right_vertical.is_vertical());
+    assert!(offset_vertical.is_vertical());
+
     assert_eq!(upper_horizontal.size(), Size::new(1, 5));
     assert_eq!(lower_horizontal.size(), Size::new(1, 5));
     assert_eq!(offset_horizontal.size(), Size::new(1, 5));
@@ -203,5 +217,27 @@ mod tests {
     assert!(!left_vertical.is_horizontally_coaligned_with(&upper_horizontal));
     assert!(!left_vertical.is_horizontally_coaligned_with(&lower_horizontal));
     assert!(!left_vertical.is_horizontally_coaligned_with(&offset_horizontal));
+
+    assert!(upper_horizontal
+      .is_coaligned_with(&lower_horizontal)
+      .is_some());
+    assert!(upper_horizontal
+      .is_coaligned_with(&offset_horizontal)
+      .is_none());
+    assert!(upper_horizontal.is_coaligned_with(&left_vertical).is_none());
+    assert!(upper_horizontal
+      .is_coaligned_with(&right_vertical)
+      .is_none());
+    assert!(upper_horizontal
+      .is_coaligned_with(&offset_vertical)
+      .is_none());
+
+    assert!(left_vertical.is_coaligned_with(&right_vertical).is_some());
+    assert!(left_vertical.is_coaligned_with(&offset_vertical).is_none());
+    assert!(left_vertical.is_coaligned_with(&upper_horizontal).is_none());
+    assert!(left_vertical.is_coaligned_with(&lower_horizontal).is_none());
+    assert!(left_vertical
+      .is_coaligned_with(&offset_horizontal)
+      .is_none());
   }
 }
