@@ -1,14 +1,15 @@
 #![allow(dead_code)]
 pub mod size;
+pub use errstring::ErrString;
+pub use errstring::GeoResult;
+pub use size::Size;
 use std::cmp::max;
 use std::cmp::min;
 use std::collections::VecDeque;
 use std::fmt;
 use std::fmt::Debug;
 mod errstring;
-use crate::simple_geo::errstring::ErrString;
-use crate::simple_geo::size::Size;
-use errstring::GeoResult;
+//use crate::simple_geo::errstring::ErrString;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug, Copy, Clone)]
