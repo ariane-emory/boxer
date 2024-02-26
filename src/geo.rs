@@ -336,7 +336,7 @@ pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
   pub fn new(start: Point, end: Point) -> GeoResult<Rectangle> {
     // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
