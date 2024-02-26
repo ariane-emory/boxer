@@ -43,16 +43,16 @@ type GeoResult<T> = std::result::Result<T, ErrString>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Size {
-  pub height: u64,
-  pub width: u64,
+  pub height: usize,
+  pub width: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Size {
-  pub fn new(height: u64, width: u64) -> Size {
+  pub fn new(height: usize, width: usize) -> Size {
     Size { height, width }
   }
 
-  pub fn area(&self) -> u64 {
+  pub fn area(&self) -> usize {
     if self.height == 1 && self.width == 1 {
       1
     } else if self.height == 1 {
@@ -77,10 +77,10 @@ impl Size {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Positional: Debug {
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  fn left_bound(&self) -> u64;
-  fn right_bound(&self) -> u64;
-  fn upper_bound(&self) -> u64;
-  fn lower_bound(&self) -> u64;
+  fn left_bound(&self) -> usize;
+  fn right_bound(&self) -> usize;
+  fn upper_bound(&self) -> usize;
+  fn lower_bound(&self) -> usize;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn size(&self) -> Size {
     //println!("Get size for: {:?}", self);
@@ -92,16 +92,16 @@ pub trait Positional: Debug {
     size
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  fn area(&self) -> u64 {
+  fn area(&self) -> usize {
     self.size().area()
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  fn height(&self) -> u64 {
+  fn height(&self) -> usize {
     self.size().height
   }
 
-  fn width(&self) -> u64 {
+  fn width(&self) -> usize {
     self.size().width
   }
 
@@ -152,8 +152,8 @@ pub trait Positional: Debug {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
-  pub line: u64,
-  pub col: u64,
+  pub line: usize,
+  pub col: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Point {
@@ -163,29 +163,29 @@ impl fmt::Debug for Point {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Point {
-  fn upper_bound(&self) -> u64 {
+  fn upper_bound(&self) -> usize {
     self.line
   }
 
-  fn lower_bound(&self) -> u64 {
+  fn lower_bound(&self) -> usize {
     self.line
   }
 
-  fn left_bound(&self) -> u64 {
+  fn left_bound(&self) -> usize {
     self.col
   }
 
-  fn right_bound(&self) -> u64 {
+  fn right_bound(&self) -> usize {
     self.col
   }
 
-  fn area(&self) -> u64 {
+  fn area(&self) -> usize {
     1
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Point {
-  pub fn new(col: u64, line: u64) -> Point {
+  pub fn new(col: usize, line: usize) -> Point {
     Point { col, line }
   }
 
@@ -213,25 +213,25 @@ impl fmt::Debug for Line {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Line {
-  fn upper_bound(&self) -> u64 {
+  fn upper_bound(&self) -> usize {
     self.start.upper_bound()
   }
 
-  fn lower_bound(&self) -> u64 {
+  fn lower_bound(&self) -> usize {
     self.end.lower_bound()
   }
 
-  fn left_bound(&self) -> u64 {
+  fn left_bound(&self) -> usize {
     self.start.left_bound()
   }
 
-  fn right_bound(&self) -> u64 {
+  fn right_bound(&self) -> usize {
     self.end.right_bound()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Line {
-  pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Line> {
+  pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> GeoResult<Line> {
     Line::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
@@ -299,7 +299,7 @@ impl Line {
       && self.start.is_top_aligned_with(other)
   }
 
-  pub fn length(&self) -> u64 {
+  pub fn length(&self) -> usize {
     self.size().area()
   }
 
@@ -336,7 +336,7 @@ pub struct Rectangle {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
-  pub fn new(start_col: u64, start_line: u64, end_col: u64, end_line: u64) -> GeoResult<Rectangle> {
+  pub fn new(start_col: usize, start_line: usize, end_col: usize, end_line: usize) -> GeoResult<Rectangle> {
     Rectangle::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
@@ -433,19 +433,19 @@ impl Rectangle {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Rectangle {
-  fn upper_bound(&self) -> u64 {
+  fn upper_bound(&self) -> usize {
     self.top_left.upper_bound()
   }
 
-  fn lower_bound(&self) -> u64 {
+  fn lower_bound(&self) -> usize {
     self.bottom_right.lower_bound()
   }
 
-  fn left_bound(&self) -> u64 {
+  fn left_bound(&self) -> usize {
     self.top_left.left_bound()
   }
 
-  fn right_bound(&self) -> u64 {
+  fn right_bound(&self) -> usize {
     self.bottom_right.right_bound()
   }
 }
