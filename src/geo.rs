@@ -311,21 +311,11 @@ impl Line {
     }
   }
 
-  pub fn touches(&self, rectangle: &Rectangle) -> bool {
-    if self.is_horizontal() {
-      // For a horizontal line, check if it's adjacent to the left or right of the rectangle
-      (self.start.col == rectangle.right_bound() + 1 || self.end.col == rectangle.left_bound() - 1)
-        && self.start.line >= rectangle.upper_bound()
-        && self.start.line <= rectangle.lower_bound()
-    } else if self.is_vertical() {
-      // For a vertical line, check if it's adjacent above or below the rectangle
-      (self.start.line == rectangle.lower_bound() + 1
-        || self.start.line == rectangle.upper_bound() - 1)
-        && self.start.col >= rectangle.left_bound()
-        && self.start.col <= rectangle.right_bound()
-    } else {
-      false
-    }
+  pub fn touches(&self, rect: &Rectangle) -> bool {
+    self.start.overlaps(&rect.right_side())
+      || self.end.overlaps(&rect.left_side())
+      || self.start.overlaps(&rect.bottom_side())
+      || self.end.overlaps(&rect.top_side())
   }
 
   pub fn is_connected_to(&self, other_line: &Line) -> bool {
@@ -409,6 +399,22 @@ impl Rectangle {
       self.bottom_right.line,
     )
     .unwrap()
+  }
+
+  pub fn top_left(&self) -> Point {
+    self.top_left
+  }
+
+  pub fn top_right(&self) -> Point {
+    Point::new(self.bottom_right.col, self.top_left.line)
+  }
+
+  pub fn bottom_left(&self) -> Point {
+    Point::new(self.top_left.col, self.bottom_right.line)
+  }
+
+  pub fn bottom_right(&self) -> Point {
+    self.bottom_right
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
