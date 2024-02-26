@@ -320,7 +320,7 @@ mod tests {
     // A horizontal line between the right edge of the rect and the left edge of the nonoverlapping rect (but not overlapping with either):
     let line_between_rect_and_nonoverlapping_rect = Line::new(5, 15, 16, 15).unwrap();
 
-    // assert!(line_between_rect_and_nonoverlapping_rect.touches(&rect));
+    assert!(line_between_rect_and_nonoverlapping_rect.touches(&rect));
     // assert!(line_between_rect_and_nonoverlapping_rect.touches(&nonoverlapping_rect));
     // assert!(!line_between_rect_and_nonoverlapping_rect.touches(&overlapping_rect));
   }
