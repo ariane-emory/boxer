@@ -1,9 +1,8 @@
+use crate::noisy_println;
 use crate::simple_geo::Point;
+use crate::util::*;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
-
-use crate::noisy_println;
-use crate::util::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug, PartialEq)]
