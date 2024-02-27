@@ -57,3 +57,27 @@ where
 
   new_matrix
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait FormatRows<T> {
+  fn format_lines(&self) -> String;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl FormatRows<u8> for Vec<Vec<u8>> {
+  fn format_lines(&self) -> String {
+    let mut s: String = "[".to_string();
+
+    if self.len() > 0 {
+      s.push_str(" ");
+      s.push_str(format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string()).as_str());
+
+      for l in &self[1..] {
+        s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
+      }
+      s.push_str(" ");
+    }
+    s.push_str("]");
+    s
+  }
+}

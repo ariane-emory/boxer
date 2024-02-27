@@ -13,30 +13,6 @@ use std::io::SeekFrom;
 use std::io::{self, BufRead, BufReader};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-trait FormatLines<T> {
-  fn format_lines(&self) -> String;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl FormatLines<u8> for Vec<Vec<u8>> {
-  fn format_lines(&self) -> String {
-    let mut s: String = "[".to_string();
-
-    if self.len() > 0 {
-      s.push_str(" ");
-      s.push_str(format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string()).as_str());
-
-      for l in &self[1..] {
-        s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
-      }
-      s.push_str(" ");
-    }
-    s.push_str("]");
-    s
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 const NOISY: bool = false; // true;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
