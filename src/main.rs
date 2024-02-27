@@ -15,8 +15,8 @@ use simple_geo::{Line, Point};
 use std::cell::RefCell;
 use std::io::{self};
 use std::rc::Rc;
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   let horiz_lm = Rc::new(RefCell::new(LineMaker::new(b'-')));
   let horiz_lm_clone = Rc::clone(&horiz_lm);
@@ -44,7 +44,7 @@ fn main() -> io::Result<()> {
     println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
   });
 
-  let _ = process_file("./data/data.txt", process_horiz, process_vert);
+  let _ = process_file("./data/one.box", process_horiz, process_vert);
 
   let mut all_lines = Vec::new();
 
