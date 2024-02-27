@@ -73,15 +73,18 @@ fn main() -> io::Result<()> {
 
     let mut lm = lm.borrow_mut();
     lm.process(pos, byte);
+
     println!("Horiz {:?}: '{}'", pos, *byte as char);
   });
 
   let lm = Rc::new(RefCell::new(LineMaker::new(b'|')));
 
   let process_vert = Box::new(move |pos: &Point, byte: &u8| {
-    let mut lm = lm.borrow_mut();
     let inverted_pos = Point::new(pos.line, pos.col);
+
+    let mut lm = lm.borrow_mut();
     lm.process(&inverted_pos, byte);
+
     println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
   });
 
