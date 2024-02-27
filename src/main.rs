@@ -1,7 +1,7 @@
 #![allow(unused_imports)]
-// #![allow(unused_variables)]
+#![allow(unused_variables)]
 // #![allow(unused_mut)]
-// #![allow(dead_code)]
+#![allow(dead_code)]
 mod process_file;
 mod simple_geo;
 #[macro_use]
@@ -12,7 +12,27 @@ use simple_geo::{Line, Point};
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+struct LineMaker {
+  lines: Vec<Line>,
+  line_begin: Option<Point>,
+  line_body_char: u8,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl LineMaker {
+  fn new(line_body_char: u8) -> LineMaker {
+    LineMaker {
+      lines: Vec::new(),
+      line_begin: None,
+      line_body_char,
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
+  let lm = LineMaker::new(b'-');
+
   let _ = process_file(
     "./data/data.txt",
     Box::new(|pos: &Point, byte: &u8| {
