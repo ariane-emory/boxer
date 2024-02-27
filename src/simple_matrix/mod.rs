@@ -1,7 +1,5 @@
 use crate::simple_geo::Point;
 use std::fs::File;
-use std::io::Seek;
-use std::io::SeekFrom;
 use std::io::{self, BufRead, BufReader};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
