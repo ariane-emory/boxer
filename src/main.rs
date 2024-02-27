@@ -4,8 +4,25 @@
 #![allow(dead_code)]
 mod simple_geo;
 use simple_geo::*;
+use std::cmp::max;
 use std::fs::File;
+use std::io::Seek;
+use std::io::SeekFrom;
 use std::io::{self, BufRead, BufReader};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// #[derive(Debug)]
+// struct Point {
+//   line: usize,
+//   col: usize,
+// }
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl Point {
+//   fn new(line: usize, col: usize) -> Point {
+//     Point { line, col }
+//   }
+// }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 trait FormatLines {
@@ -32,7 +49,7 @@ impl FormatLines for Vec<Vec<u8>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-const NOISY: bool = true;
+const NOISY: bool = false; // true;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn noisy_println(args: std::fmt::Arguments) {
@@ -49,15 +66,130 @@ macro_rules! noisy_println {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn process_file<R: BufRead>(
-  buf_reader: R,
-  process_horiz: Box<dyn Fn(&Point, u8)>,
-  process_vert: Box<dyn Fn(&Point, u8)>,
-) -> io::Result<()> {
-  let file = File::open("./data/data.txt")?;
-  let mut buf_reader = BufReader::new(file);
-  let mut lines: Vec<Vec<u8>> = Vec::new();
+fn make_matrix_uniform<T>(byte_matrix: &Vec<Vec<T>>, len: usize, val: T) -> Vec<Vec<T>>
+where
+  T: Copy,
+{
+  let mut new_matrix = Vec::new();
+
+  for row in byte_matrix {
+    let row_len = row.len();
+    if row_len < len {
+      let mut new_row = row.clone();
+      new_row.resize(len, val);
+      new_matrix.push(new_row);
+    } else {
+      let new_row = row[0..len.min(row_len)].to_vec();
+      new_matrix.push(new_row);
+    }
+  }
+
+  new_matrix
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn process_matrix<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
+where
+  T: Copy,
+{
   let mut pos = Point::new(0, 0);
+
+  loop {
+    loop {
+      let byte = byte_matrix[pos.line][pos.col];
+      process(&pos, byte);
+
+      pos.col += 1;
+
+      if pos.col >= byte_matrix[pos.line].len() {
+        break;
+      }
+    }
+
+    pos.line += 1;
+    pos.col = 0;
+
+    noisy_println!("");
+
+    if pos.line >= byte_matrix.len() {
+      break;
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#[derive(Debug, PartialEq)]
+enum Rotation {
+  Clockwise,
+  CounterClockwise,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn rotate_matrix<T>(matrix: &[Vec<T>], rot: Rotation) -> Vec<Vec<T>>
+where
+  T: Copy,
+{
+  let num_rows = matrix.len();
+
+  if num_rows == 0 {
+    return vec![];
+  }
+
+  let num_cols = matrix[0].len();
+
+  let mut rotated_matrix = vec![vec![matrix[0][0]; num_rows]; num_cols];
+
+  for row in 0..num_rows {
+    for col in 0..num_cols {
+      if rot == Rotation::Clockwise {
+        rotated_matrix[col][num_rows - 1 - row] = matrix[row][col];
+      } else {
+        rotated_matrix[num_cols - 1 - col][row] = matrix[row][col];
+      }
+    }
+  }
+
+  rotated_matrix
+}
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// fn rotate_90_counter_clockwise<T>(matrix: &[Vec<T>]) -> Vec<Vec<T>>
+// where
+//   T: Copy,
+// {
+//   let num_rows = matrix.len();
+
+//   if num_rows == 0 {
+//     return vec![];
+//   }
+
+//   let num_cols = matrix[0].len();
+
+//   let mut rotated_matrix = vec![vec![matrix[0][0]; num_rows]; num_cols];
+
+//   for row in 0..num_rows {
+//     for col in 0..num_cols {
+//       rotated_matrix[num_cols - 1 - col][row] = matrix[row][col];
+//     }
+//   }
+
+//   rotated_matrix
+// }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn reverse_rows<T>(matrix: Vec<Vec<T>>) -> Vec<Vec<T>>
+where
+  T: Copy,
+{
+  matrix.into_iter().rev().collect()
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn max_line_len(path: &str) -> io::Result<usize> {
+  let file = File::open(path)?;
+  let mut buf_reader = BufReader::new(file);
+  let mut pos = Point::new(0, 0);
+  let mut max_len = 0;
 
   loop {
     let buffer: &[u8] = buf_reader.fill_buf()?;
@@ -66,25 +198,130 @@ fn process_file<R: BufRead>(
       break;
     }
 
-    noisy_println!("-- ls:  {}", lines.format_lines());
+    for &byte in buffer {
+      if byte == b'\n' {
+        max_len = max(max_len, pos.col);
+        pos.col = 0;
+        pos.line += 1;
+      } else {
+        pos.col += 1;
+      }
+    }
+
+    let len = buffer.len();
+    buf_reader.consume(len);
+  }
+
+  Ok(max_len)
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
+  let file = File::open(path)?;
+  let mut buf_reader = BufReader::new(file);
+  let mut pos = Point::new(0, 0);
+  let mut matrix: Vec<Vec<u8>> = Vec::new();
+
+  // loop through the file and build the byte matrix:
+  loop {
+    let buffer: &[u8] = buf_reader.fill_buf()?;
+
+    if buffer.is_empty() {
+      break;
+    }
+
+    noisy_println!("-- ls:      {}", matrix.format_lines());
+    noisy_println!("");
+
+    let mut row: Vec<u8> = Vec::new();
+
+    for &byte in buffer {
+      if byte == b'\n' {
+        noisy_println!("-- ls:      {}", matrix.format_lines());
+        noisy_println!("-- c:       {:?}", pos.col);
+        noisy_println!("-- l:       {:?}", pos.line);
+        noisy_println!("");
+
+        pos.col = 0;
+        pos.line += 1;
+        matrix.push(row);
+        row = Vec::new();
+      } else {
+        row.push(byte);
+        pos.col += 1;
+      }
+    }
+
+    let len = buffer.len();
+    buf_reader.consume(len);
+  }
+
+  pos.col = 0;
+  pos.line = 0;
+
+  noisy_println!("-- ls:  {}", matrix.format_lines());
+  noisy_println!("");
+
+  Ok(matrix)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn process_file_old(
+  path: &str,
+  process_horiz: Box<dyn Fn(&Point, u8)>,
+  process_vert: Box<dyn Fn(&Point, u8)>,
+) -> io::Result<()> {
+  let file = File::open(path)?;
+  let mut buf_reader = BufReader::new(file);
+  let mut pos = Point::new(0, 0);
+  let mut max_len = max_line_len(path)?;
+  let mut columns: Vec<Vec<u8>> = Vec::new();
+
+  noisy_println!("max_len:    {}", max_len);
+
+  // loop through the file processing the bytes with process_horiz and building the columns:
+  loop {
+    let buffer: &[u8] = buf_reader.fill_buf()?;
+
+    if buffer.is_empty() {
+      break;
+    }
+
+    noisy_println!("-- ls:      {}", columns.format_lines());
     noisy_println!("");
 
     for &byte in buffer {
       if byte == b'\n' {
+        while columns.len() < max_len {
+          noisy_println!("Add an imaginary column with one byte and process it!");
+          columns.push(vec![b' ']);
+          process_horiz(&pos, b' ');
+          pos.col += 1;
+        }
+
+        if pos.col < max_len {
+          noisy_println!("Lengthen the imaginary column and process the new imaginary byte!");
+          while pos.col < max_len {
+            columns[pos.col].push(b' ');
+            process_horiz(&pos, b' ');
+            pos.col += 1;
+          }
+        }
+
+        noisy_println!("-- ls:      {}", columns.format_lines());
+        noisy_println!("-- c:       {:?}", pos.col);
+        noisy_println!("-- l:       {:?}", pos.line);
+        noisy_println!("");
+
         pos.col = 0;
         pos.line += 1;
-
-        noisy_println!("-- c:   {:?}", pos.col);
-        noisy_println!("-- l:   {:?}", pos.line);
-        noisy_println!("-- ls:  {}", lines.format_lines());
-        noisy_println!("");
       } else {
         process_horiz(&pos, byte);
 
-        if lines.len() > pos.col {
-          lines[pos.col].push(byte);
+        if columns.len() > pos.col {
+          columns[pos.col].push(byte);
         } else {
-          lines.push(vec![byte]);
+          columns.push(vec![byte]);
         }
 
         pos.col += 1;
@@ -97,43 +334,58 @@ fn process_file<R: BufRead>(
   pos.col = 0;
   pos.line = 0;
 
-  noisy_println!("-- ls:  {}", lines.format_lines());
+  noisy_println!("-- ls:  {}", columns.format_lines());
   noisy_println!("");
 
-  loop {
-    loop {
-      let byte = lines[pos.line][pos.col];
-      process_vert(&pos, byte);
+  // loop through the columns, processing them with the process_vert function:
+  process_matrix(&columns, process_vert);
 
-      pos.col += 1;
+  Ok(())
+}
 
-      if pos.col >= lines[pos.line].len() {
-        break;
-      }
-    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+fn process_file(
+  path: &str,
+  process_horiz: Box<dyn Fn(&Point, u8)>,
+  process_vert: Box<dyn Fn(&Point, u8)>,
+) -> io::Result<()> {
+  let max_len = max_line_len(path)?;
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+  let uniform_matrix = make_matrix_uniform(&matrix, max_len, b' ');
 
-    pos.line += 1;
-    pos.col = 0;
+  process_matrix(&uniform_matrix, process_horiz);
 
-    noisy_println!("");
+  let mut rotated_matrix = rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
+  rotated_matrix.reverse();
 
-    if pos.line >= lines.len() {
-      break;
-    }
-  }
+  process_matrix(&rotated_matrix, process_vert);
 
   Ok(())
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  process_file(
-    BufReader::new(File::open("./data/data.txt")?),
+  let _ = process_file(
+    "./data/data.txt",
     Box::new(|pos: &Point, byte: u8| {
       println!("Horiz {}:{}: '{}'", pos.col, pos.line, byte as char);
     }),
     Box::new(|pos: &Point, byte: u8| {
       println!("Vert  {}:{}: '{}'", pos.col, pos.line, byte as char);
     }),
-  )
+  );
+
+  println!("");
+
+  let _ = process_file_old(
+    "./data/data.txt",
+    Box::new(|pos: &Point, byte: u8| {
+      println!("Horiz {}:{}: '{}'", pos.col, pos.line, byte as char);
+    }),
+    Box::new(|pos: &Point, byte: u8| {
+      println!("Vert  {}:{}: '{}'", pos.col, pos.line, byte as char);
+    }),
+  );
+
+  Ok(())
 }
