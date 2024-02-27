@@ -18,6 +18,18 @@ use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
+  let vert_lm = Rc::new(RefCell::new(LineMaker::new(b'|')));
+  let vert_lm_clone = Rc::clone(&vert_lm);
+
+  let process_vert = Box::new(move |pos: &Point, byte: &u8| {
+    let inverted_pos = Point::new(pos.line, pos.col);
+
+    let mut lm = vert_lm_clone.borrow_mut();
+    lm.process(&inverted_pos, byte);
+
+    println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
+  });
+
   let horiz_lm = Rc::new(RefCell::new(LineMaker::new(b'-')));
   let horiz_lm_clone = Rc::clone(&horiz_lm);
 
@@ -30,18 +42,6 @@ fn main() -> io::Result<()> {
     lm.process(pos, byte);
 
     println!("Horiz {:?}: '{}'", pos, *byte as char);
-  });
-
-  let vert_lm = Rc::new(RefCell::new(LineMaker::new(b'|')));
-  let vert_lm_clone = Rc::clone(&vert_lm);
-
-  let process_vert = Box::new(move |pos: &Point, byte: &u8| {
-    let inverted_pos = Point::new(pos.line, pos.col);
-
-    let mut lm = vert_lm_clone.borrow_mut();
-    lm.process(&inverted_pos, byte);
-
-    println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
   });
 
   let _ = process_file("./data/one.box", process_horiz, process_vert);
