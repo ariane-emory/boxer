@@ -149,7 +149,7 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
     let mut pos = Point::new(0, 0);
 
     for line in 0..self.len() {
-      pos.col = 0; // Reset column index for each new row
+      pos.col = 0;
       for col in 0..self[line].len() {
         pos.line = line;
         pos.col = col;
