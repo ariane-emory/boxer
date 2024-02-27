@@ -2,7 +2,6 @@
 // #![allow(unused_variables)]
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
-#[macro_use]
 mod util;
 use util::*;
 mod simple_geo;
