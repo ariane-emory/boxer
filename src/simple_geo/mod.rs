@@ -1,12 +1,12 @@
 #![allow(dead_code)]
-pub mod errstring;
-pub mod free_functions;
-pub mod line;
-pub mod orientation;
-pub mod point;
-pub mod positional;
-pub mod rectangle;
-pub mod size;
+mod errstring;
+mod free_functions;
+mod line;
+mod orientation;
+mod point;
+mod positional;
+mod rectangle;
+mod size;
 
 pub use errstring::*;
 pub use free_functions::*;
