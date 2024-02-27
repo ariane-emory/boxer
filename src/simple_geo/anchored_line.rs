@@ -37,13 +37,18 @@ impl AnchoredLine {
     end_col: usize,
     end_line: usize,
   ) -> GeoResult<AnchoredLine> {
-    let line = Line::from_points(
+    AnchoredLine::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
-    )?;
+    )
+  }
 
-    let (start, end) = (line.start, line.end);
+  pub fn from_points(start: &Point, end: &Point) -> GeoResult<Self> {
+    let _ = Line::from_points(start, end);
 
-    Ok(AnchoredLine { start, end })
+    Ok(AnchoredLine {
+      start: *start,
+      end: *end,
+    })
   }
 }
