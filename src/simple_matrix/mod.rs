@@ -173,7 +173,7 @@ pub trait MatrixEachable<T>
 where
   T: Copy,
 {
-  fn map(&self, process: Box<dyn Fn(&Point, T)>);
+  fn each(&self, process: Box<dyn Fn(&Point, T)>);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,7 +181,7 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>>
 where
   T: Copy,
 {
-  fn map(&self, process: Box<dyn Fn(&Point, T)>) {
+  fn each(&self, process: Box<dyn Fn(&Point, T)>) {
     matrix_each(self, process);
   }
 }
