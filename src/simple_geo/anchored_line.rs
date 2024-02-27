@@ -44,11 +44,10 @@ impl AnchoredLine {
   }
 
   pub fn from_points(start: &Point, end: &Point) -> GeoResult<Self> {
-    let _ = Line::from_points(start, end);
+    let line = Line::from_points(start, end);
 
-    Ok(AnchoredLine {
-      start: *start,
-      end: *end,
-    })
+    let (start, end) = (line.start, line.end);
+
+    Ok(AnchoredLine { start, end })
   }
 }
