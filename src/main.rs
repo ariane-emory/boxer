@@ -2,19 +2,13 @@
 // #![allow(unused_variables)]
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
-// use util::*;
 mod process_file;
 mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
-
 use process_file::process_file;
-//use simple_geo::*;
-//use simple_matrix::*;
-
 use std::io::{self};
-
 type Point = simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
