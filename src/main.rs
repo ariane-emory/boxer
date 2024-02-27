@@ -46,12 +46,16 @@ fn main() -> io::Result<()> {
 
   let _ = process_file("./data/data.txt", process_horiz, process_vert);
 
+  let mut all_lines = Vec::new();
+
   for line in horiz_lm.borrow().lines.iter() {
     println!("Horiz line: {:?}", line);
+    all_lines.push(line);
   }
 
   for line in vert_lm.borrow().lines.iter() {
     println!("Vert line:  {:?}", line);
+    all_lines.push(line);
   }
 
   Ok(())
