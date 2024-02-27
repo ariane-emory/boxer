@@ -150,10 +150,10 @@ fn main() -> io::Result<()> {
   let _ = process_file(
     "./data/data.txt",
     Box::new(|pos: &Point, byte: &u8| {
-      println!("Horiz {:2}:{:2}: '{}'", pos.col, pos.line, *byte as char);
+      println!("Horiz {:?}: '{}'", pos, *byte as char);
     }),
     Box::new(|pos: &Point, byte: &u8| {
-      println!("Vert  {:2}:{:2}: '{}'", pos.col, pos.line, *byte as char);
+      println!("Vert  {:?}: '{}'", pos, *byte as char);
     }),
   );
 
