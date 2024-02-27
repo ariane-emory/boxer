@@ -40,7 +40,9 @@ fn main() -> io::Result<()> {
       println!("Horiz {:?}: '{}'", pos, *byte as char);
     }),
     Box::new(|pos: &Point, byte: &u8| {
-      println!("Vert  {:?}: '{}'", pos, *byte as char);
+      // Print an inverted posittion to reflext the character's original posiion in the file:
+      let inverted_pos = Point::new(pos.line, pos.col);
+      println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
     }),
   );
 
