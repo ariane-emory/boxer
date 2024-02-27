@@ -12,7 +12,7 @@ pub mod size;
 
 use crate::util::*;
 
-pub use anchored_line::*;
+//pub use anchored_line::*;
 pub use find_rectangles::*;
 pub use line::*;
 pub use line_methods::*;

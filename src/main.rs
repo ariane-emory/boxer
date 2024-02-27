@@ -1,7 +1,7 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
+//#![allow(unused_imports)]
+//#![allow(unused_variables)]
 // #![allow(unused_mut)]
-#![allow(dead_code)]
+//#![allow(dead_code)]
 mod line_maker;
 mod process_file;
 mod simple_geo;
@@ -11,7 +11,7 @@ mod simple_matrix;
 use crate::simple_geo::find_rectangles;
 use line_maker::LineMaker;
 use process_file::process_file;
-use simple_geo::{Line, Point};
+use simple_geo::Point;
 use std::cell::RefCell;
 use std::io::{self};
 use std::rc::Rc;
