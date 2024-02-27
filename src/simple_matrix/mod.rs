@@ -148,26 +148,15 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
   fn each(&self, process: Box<dyn Fn(&Point, &T)>) {
     let mut pos = Point::new(0, 0);
 
-    loop {
-      loop {
-        let byte = &self[pos.line][pos.col];
+    for line in 0..self.len() {
+      pos.col = 0; // Reset column index for each new row
+      for col in 0..self[line].len() {
+        pos.line = line;
+        pos.col = col;
+        let byte = &self[line][col];
         process(&pos, byte);
-
-        pos.col += 1;
-
-        if pos.col >= self[pos.line].len() {
-          break;
-        }
       }
-
-      pos.line += 1;
-      pos.col = 0;
-
       noisy_println!("");
-
-      if pos.line >= self.len() {
-        break;
-      }
     }
   }
 }
