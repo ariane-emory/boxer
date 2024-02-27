@@ -6,6 +6,7 @@ use std::io::{self, BufRead, BufReader};
 const NOISY: bool = false; // true;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// Temporarily public, move this somewhere else!
 pub fn noisy_println(args: std::fmt::Arguments) {
   if NOISY {
     println!("{}", args);
