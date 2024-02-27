@@ -1,6 +1,7 @@
 use crate::noisy_println;
 use crate::simple_geo::Point;
 use crate::util::*;
+
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
@@ -43,7 +44,7 @@ where
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn make_matrix_uniform<T>(byte_matrix: &Vec<Vec<T>>, len: usize, val: T) -> Vec<Vec<T>>
+pub fn normalize_matrix_width<T>(byte_matrix: &Vec<Vec<T>>, len: usize, val: T) -> Vec<Vec<T>>
 where
   T: Copy,
 {
