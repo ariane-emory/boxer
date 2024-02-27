@@ -8,7 +8,7 @@ mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
-// use crate::simple_geo::find_rectangles;
+use crate::simple_geo::find_rectangles;
 use line_maker::LineMaker;
 use process_file::process_file;
 use simple_geo::{Line, Point};
@@ -50,12 +50,25 @@ fn main() -> io::Result<()> {
 
   for line in horiz_lm.borrow().lines.iter() {
     println!("Horiz line: {:?}", line);
-    all_lines.push(line);
+    all_lines.push(line.clone());
   }
 
   for line in vert_lm.borrow().lines.iter() {
     println!("Vert line:  {:?}", line);
-    all_lines.push(line);
+    all_lines.push(line.clone());
+  }
+
+  let mut rectangles = Vec::new();
+  let mut leftover_lines = Vec::new();
+
+  find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
+
+  for rect in rectangles.iter() {
+    println!("Found rectangle: {:?}", rect);
+  }
+
+  for line in leftover_lines.iter() {
+    println!("Leftover line: {:?}", line);
   }
 
   Ok(())
