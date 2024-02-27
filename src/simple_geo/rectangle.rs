@@ -9,12 +9,14 @@ pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Rectangle {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
   }
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Rectangle {
   fn top_left(&self) -> Point {
@@ -25,6 +27,7 @@ impl Positional for Rectangle {
     self.bottom_right
   }
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
   pub fn new(
@@ -72,7 +75,5 @@ impl Rectangle {
       top_left,
       bottom_right,
     })
-    //Rectangle::from_points(&top_left, &bottom_right)
   }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////

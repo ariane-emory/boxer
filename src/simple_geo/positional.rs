@@ -123,6 +123,7 @@ pub trait Positional {
       self.left_bound() <= other.right_bound() && self.right_bound() >= other.left_bound();
     let vertical_overlap =
       self.upper_bound() <= other.lower_bound() && self.lower_bound() >= other.upper_bound();
+
     horizontal_overlap && vertical_overlap
   }
 
@@ -143,4 +144,3 @@ pub trait Positional {
       || point == &self.bottom_left()
   }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
