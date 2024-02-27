@@ -59,6 +59,7 @@ fn main() -> io::Result<()> {
       all_lines.push(line.clone());
     }
   }
+
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
