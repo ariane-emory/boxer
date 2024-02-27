@@ -1,7 +1,10 @@
-// #![allow(unused_imports)]
+#![allow(unused_imports)]
 // #![allow(unused_variables)]
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
+#[macro_use]
+mod util;
+use util::*;
 mod simple_geo;
 #[macro_use]
 mod simple_matrix;
@@ -52,9 +55,9 @@ fn process_file_old(
   process_vert: Box<dyn Fn(&Point, u8)>,
 ) -> io::Result<()> {
   let file = File::open(path)?;
+  let max_len = max_line_len(path)?;
   let mut buf_reader = BufReader::new(file);
   let mut pos = Point::new(0, 0);
-  let mut max_len = max_line_len(path)?;
   let mut columns: Vec<Vec<u8>> = Vec::new();
 
   noisy_println!("max_len:    {}", max_len);
