@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-mod find_rectangles;
+pub mod find_rectangles;
 mod line;
 mod orientation;
 mod point;
@@ -10,7 +10,7 @@ mod size;
 
 use crate::util::*;
 
-pub use find_rectangles::*;
+// pub use find_rectangles::*;
 pub use line::*;
 pub use orientation::*;
 pub use point::*;
