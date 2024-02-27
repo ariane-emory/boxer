@@ -139,34 +139,9 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn matrix_each<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
-where
-  T: Copy,
-{
-  let mut pos = Point::new(0, 0);
-
-  loop {
-    loop {
-      let byte = byte_matrix[pos.line][pos.col];
-      process(&pos, byte);
-
-      pos.col += 1;
-
-      if pos.col >= byte_matrix[pos.line].len() {
-        break;
-      }
-    }
-
-    pos.line += 1;
-    pos.col = 0;
-
-    noisy_println!("");
-
-    if pos.line >= byte_matrix.len() {
-      break;
-    }
-  }
-}
+//pub fn matrix_each<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
+//where
+//  T: Copy,
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait MatrixEachable<T>
@@ -182,6 +157,28 @@ where
   T: Copy,
 {
   fn each(&self, process: Box<dyn Fn(&Point, T)>) {
-    matrix_each(self, process);
+    let mut pos = Point::new(0, 0);
+
+    loop {
+      loop {
+        let byte = self[pos.line][pos.col];
+        process(&pos, byte);
+
+        pos.col += 1;
+
+        if pos.col >= self[pos.line].len() {
+          break;
+        }
+      }
+
+      pos.line += 1;
+      pos.col = 0;
+
+      noisy_println!("");
+
+      if pos.line >= self.len() {
+        break;
+      }
+    }
   }
 }
