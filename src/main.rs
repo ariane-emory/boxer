@@ -1,4 +1,4 @@
-// #![allow(unused_imports)]
+#![allow(unused_imports)]
 // #![allow(unused_variables)]
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
@@ -10,6 +10,8 @@ mod simple_matrix;
 use process_file::process_file;
 use std::io::{self};
 type Point = simple_geo::Point;
+
+use simple_geo::line;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
