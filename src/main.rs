@@ -66,20 +66,22 @@ impl LineMaker {
 fn main() -> io::Result<()> {
   let lm = Rc::new(RefCell::new(LineMaker::new(b'-')));
 
-  let lm_clone_horiz = Rc::clone(&lm);
   let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
     if 0 != (*byte & 128) {
       panic!("Found non-ASCII byte {} at {:?}", byte, pos);
     }
 
-    let mut lm = lm_clone_horiz.borrow_mut();
+    let mut lm = lm.borrow_mut();
     lm.process(pos, byte);
     println!("Horiz {:?}: '{}'", pos, *byte as char);
   });
 
-  let lm_clone_vert = Rc::clone(&lm);
+  let lm = Rc::new(RefCell::new(LineMaker::new(b'|')));
+
   let process_vert = Box::new(move |pos: &Point, byte: &u8| {
+    let mut lm = lm.borrow_mut();
     let inverted_pos = Point::new(pos.line, pos.col);
+    lm.process(&inverted_pos, byte);
     println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
   });
 
