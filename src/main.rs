@@ -157,17 +157,19 @@ fn main() -> io::Result<()> {
     }),
   );
 
-  println!("");
+  if false {
+    println!("");
 
-  let _ = process_file_old(
-    "./data/data.txt",
-    Box::new(|pos: &Point, byte: &u8| {
-      println!("Horiz {}:{}: '{}'", pos.col, pos.line, *byte as char);
-    }),
-    Box::new(|pos: &Point, byte: &u8| {
-      println!("Vert  {}:{}: '{}'", pos.col, pos.line, *byte as char);
-    }),
-  );
+    let _ = process_file_old(
+      "./data/data.txt",
+      Box::new(|pos: &Point, byte: &u8| {
+        println!("Horiz {}:{}: '{}'", pos.col, pos.line, *byte as char);
+      }),
+      Box::new(|pos: &Point, byte: &u8| {
+        println!("Vert  {}:{}: '{}'", pos.col, pos.line, *byte as char);
+      }),
+    );
+  }
 
   Ok(())
 }

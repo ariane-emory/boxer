@@ -1,4 +1,3 @@
 abc
-defgh
-ijkl
-mnopqr
+defg
+hij

@@ -95,12 +95,8 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
   let mut matrix = Vec::new();
 
   for line in buf_reader.lines() {
-    let line = line?; // Convert io::Result<String> to String, handle possible errors
-                      // Convert String to Vec<u8> and push to matrix
+    let line = line?;
     matrix.push(line.into_bytes());
-    // Printing for debugging purposes, similar to noisy_println! macro usage
-    noisy_println!("-- ls:      {}", matrix.format_lines());
-    noisy_println!("");
   }
 
   Ok(matrix)
