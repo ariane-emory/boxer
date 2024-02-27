@@ -120,7 +120,7 @@ fn process_file_old(
   noisy_println!("");
 
   // loop through the columns, processing them with the process_vert function:
-  matrix_each(&columns, process_vert);
+  columns.each(process_vert);
 
   Ok(())
 }
@@ -135,12 +135,12 @@ fn process_file(
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
   let uniform_matrix = make_matrix_uniform(&matrix, max_len, b' ');
 
-  matrix_each(&uniform_matrix, process_horiz);
+  uniform_matrix.each(process_horiz);
 
   let mut rotated_matrix = rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
   rotated_matrix.reverse();
 
-  matrix_each(&rotated_matrix, process_vert);
+  rotated_matrix.each(process_vert);
 
   Ok(())
 }
