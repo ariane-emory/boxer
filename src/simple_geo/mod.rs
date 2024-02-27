@@ -1,12 +1,12 @@
 #![allow(dead_code)]
 
 pub mod find_rectangles;
-mod line;
-mod orientation;
-mod point;
-mod positional;
-mod rectangle;
-mod size;
+pub mod line;
+pub mod orientation;
+pub mod point;
+pub mod positional;
+pub mod rectangle;
+pub mod size;
 
 use crate::util::*;
 
