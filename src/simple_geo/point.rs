@@ -39,4 +39,10 @@ impl Point {
   pub fn is_horizontally_aligned_with(&self, other: &Self) -> bool {
     self.line == other.line
   }
+
+  pub fn distance(&self, other: &Self) -> usize {
+    // calculates the 'Manhattan distance'.
+    (self.col as isize - other.col as isize).abs() as usize
+      + (self.line as isize - other.line as isize).abs() as usize
+  }
 }
