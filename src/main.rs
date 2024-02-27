@@ -50,8 +50,8 @@ fn max_line_len(path: &str) -> io::Result<usize> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn process_file_old(
   path: &str,
-  process_horiz: Box<dyn Fn(&Point, u8)>,
-  process_vert: Box<dyn Fn(&Point, u8)>,
+  process_horiz: Box<dyn Fn(&Point, &u8)>,
+  process_vert: Box<dyn Fn(&Point, &u8)>,
 ) -> io::Result<()> {
   let file = File::open(path)?;
   let max_len = max_line_len(path)?;
@@ -77,7 +77,7 @@ fn process_file_old(
         while columns.len() < max_len {
           noisy_println!("Add an imaginary column with one byte and process it!");
           columns.push(vec![b' ']);
-          process_horiz(&pos, b' ');
+          process_horiz(&pos, &b' ');
           pos.col += 1;
         }
 
@@ -85,7 +85,7 @@ fn process_file_old(
           noisy_println!("Lengthen the imaginary column and process the new imaginary byte!");
           while pos.col < max_len {
             columns[pos.col].push(b' ');
-            process_horiz(&pos, b' ');
+            process_horiz(&pos, &b' ');
             pos.col += 1;
           }
         }
@@ -98,7 +98,7 @@ fn process_file_old(
         pos.col = 0;
         pos.line += 1;
       } else {
-        process_horiz(&pos, byte);
+        process_horiz(&pos, &byte);
 
         if columns.len() > pos.col {
           columns[pos.col].push(byte);
@@ -128,8 +128,8 @@ fn process_file_old(
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 fn process_file(
   path: &str,
-  process_horiz: Box<dyn Fn(&Point, u8)>,
-  process_vert: Box<dyn Fn(&Point, u8)>,
+  process_horiz: Box<dyn Fn(&Point, &u8)>,
+  process_vert: Box<dyn Fn(&Point, &u8)>,
 ) -> io::Result<()> {
   let max_len = max_line_len(path)?;
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
@@ -149,11 +149,11 @@ fn process_file(
 fn main() -> io::Result<()> {
   let _ = process_file(
     "./data/data.txt",
-    Box::new(|pos: &Point, byte: u8| {
-      println!("Horiz {}:{}: '{}'", pos.col, pos.line, byte as char);
+    Box::new(|pos: &Point, byte: &u8| {
+      println!("Horiz {}:{}: '{}'", pos.col, pos.line, *byte as char);
     }),
-    Box::new(|pos: &Point, byte: u8| {
-      println!("Vert  {}:{}: '{}'", pos.col, pos.line, byte as char);
+    Box::new(|pos: &Point, byte: &u8| {
+      println!("Vert  {}:{}: '{}'", pos.col, pos.line, *byte as char);
     }),
   );
 
@@ -161,11 +161,11 @@ fn main() -> io::Result<()> {
 
   let _ = process_file_old(
     "./data/data.txt",
-    Box::new(|pos: &Point, byte: u8| {
-      println!("Horiz {}:{}: '{}'", pos.col, pos.line, byte as char);
+    Box::new(|pos: &Point, byte: &u8| {
+      println!("Horiz {}:{}: '{}'", pos.col, pos.line, *byte as char);
     }),
-    Box::new(|pos: &Point, byte: u8| {
-      println!("Vert  {}:{}: '{}'", pos.col, pos.line, byte as char);
+    Box::new(|pos: &Point, byte: &u8| {
+      println!("Vert  {}:{}: '{}'", pos.col, pos.line, *byte as char);
     }),
   );
 
