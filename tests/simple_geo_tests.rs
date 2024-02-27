@@ -364,7 +364,7 @@ mod tests {
   #[test]
   #[should_panic]
   fn rectangle_panic_test_1() {
-    let r = Rectangle::new(0, 0, 1, 1).unwrap();
+    Rectangle::new(0, 0, 1, 1).unwrap();
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -374,6 +374,18 @@ mod tests {
     Rectangle {
       top_left: Point::new(1, 1),
       bottom_right: Point::new(1, 1),
+    }
+    .contained_rectangle()
+    .unwrap();
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  #[test]
+  #[should_panic]
+  fn rectangle_panic_test_3() {
+    Rectangle {
+      top_left: Point::new(1, 1),
+      bottom_right: Point::new(1, 5),
     }
     .contained_rectangle()
     .unwrap();
