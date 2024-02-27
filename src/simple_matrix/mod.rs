@@ -139,7 +139,7 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn process_matrix<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
+pub fn matrix_map<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
 where
   T: Copy,
 {
