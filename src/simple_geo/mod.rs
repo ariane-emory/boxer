@@ -1,5 +1,10 @@
 #![allow(dead_code)]
-mod errstring;
+
+use crate::util::*;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub type GeoResult<T> = std::result::Result<T, ErrString>;
+////////////////////////////////////////////////////////////////////////////////////////////////////
 mod free_functions;
 mod line;
 mod orientation;
@@ -8,7 +13,6 @@ mod positional;
 mod rectangle;
 mod size;
 
-pub use errstring::*;
 pub use free_functions::*;
 pub use line::*;
 pub use orientation::*;
