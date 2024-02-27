@@ -58,13 +58,14 @@ impl Rectangle {
     }
   }
 
-  pub fn contained_rectangle(&self) -> Rectangle {
+  pub fn contained_rectangle(&self) -> Option<Rectangle> {
     let top_left = Point::new(self.top_left().line + 1, self.top_left().line + 1);
     let bottom_right = Point::new(self.bottom_right().col - 1, self.bottom_right().line - 1);
-    Rectangle {
+
+    Some(Rectangle {
       top_left,
       bottom_right,
-    }
+    })
     //Rectangle::from_points(&top_left, &bottom_right)
   }
 }

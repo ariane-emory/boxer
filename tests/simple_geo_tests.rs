@@ -333,12 +333,15 @@ mod tests {
     let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
 
     assert_eq!(
-      rect1.contained_rectangle(),
+      rect1.contained_rectangle().unwrap(),
       Rectangle::new(11, 11, 19, 19).unwrap()
     );
 
     assert_eq!(
-      Rectangle::new(0, 0, 2, 2).unwrap().contained_rectangle(),
+      Rectangle::new(0, 0, 2, 2)
+        .unwrap()
+        .contained_rectangle()
+        .unwrap(),
       Rectangle {
         top_left: Point::new(1, 1),
         bottom_right: Point::new(1, 1)
@@ -512,6 +515,15 @@ mod tests {
     assert!(leftover_lines.len() == 0);
     assert_eq!(rects[0], Rectangle::new(0, 0, 7, 7).unwrap());
     assert_eq!(rects[1], Rectangle::new(3, 4, 16, 9).unwrap());
+
+    let r1 = Rectangle::new(0, 0, 2, 2).unwrap();
+    println!("r1: {:?}", r1);
+
+    let r2 = r1.contained_rectangle().unwrap();
+    println!("r2: {:?}", r2);
+
+    let r3 = r2.contained_rectangle().unwrap();
+    println!("r3: {:?}", r3);
   }
   ////////////////////////////////////////////////////////////////////////////////////////////////////
 }
