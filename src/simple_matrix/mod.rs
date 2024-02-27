@@ -1,4 +1,4 @@
-use simple_geo::simple_geo::Point;
+use boxer::simple_geo::Point;
 use std::fs::File;
 use std::io::Seek;
 use std::io::SeekFrom;
