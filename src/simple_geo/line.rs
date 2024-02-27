@@ -45,6 +45,7 @@ impl Line {
     if !(start.is_left_aligned_with(end) || start.is_top_aligned_with(end)) {
       return Err(ErrString::new("Line must be either horizontal or vertical"));
     }
+
     // We want the start point to be the top/left end of the line and the end point to be
     // the bottom/right end of the line, se we might swap the arguments' order.
     let (start, end) = if (start.line < end.line) || (start.col < end.col) {
@@ -52,6 +53,7 @@ impl Line {
     } else {
       (end, start)
     };
+
     Ok(Line {
       start: *start,
       end: *end,

@@ -27,7 +27,6 @@ where
   }
 
   let num_cols = matrix[0].len();
-
   let mut rotated_matrix = vec![vec![matrix[0][0]; num_rows]; num_cols];
 
   for row in 0..num_rows {
@@ -52,6 +51,7 @@ where
 
   for row in byte_matrix {
     let row_len = row.len();
+
     if row_len < len {
       let mut new_row = row.clone();
       new_row.resize(len, val);
@@ -140,12 +140,16 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
 
     for line in 0..self.len() {
       pos.col = 0;
+
       for col in 0..self[line].len() {
         pos.line = line;
         pos.col = col;
+
         let byte = &self[line][col];
+
         process(&pos, byte);
       }
+
       noisy_println!("");
     }
   }
@@ -168,8 +172,10 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
       for l in &self[1..] {
         s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
       }
+
       s.push_str(" ");
     }
+
     s.push_str("]");
     s
   }
