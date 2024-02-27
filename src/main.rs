@@ -2,10 +2,10 @@
 // #![allow(unused_variables)]
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
-mod util;
 // use util::*;
 mod process_file;
 mod simple_geo;
+mod util;
 #[macro_use]
 mod simple_matrix;
 
