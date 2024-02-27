@@ -51,7 +51,7 @@ fn main() -> io::Result<()> {
   }
 
   for line in vert_lm.borrow().lines.iter() {
-    println!("Vert line: {:?}", line);
+    println!("Vert line:  {:?}", line);
   }
 
   Ok(())
