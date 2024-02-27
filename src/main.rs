@@ -37,6 +37,9 @@ fn main() -> io::Result<()> {
   let _ = process_file(
     "./data/data.txt",
     Box::new(|pos: &Point, byte: &u8| {
+      if 0 != (*byte & 128) {
+        panic!("Found non-ASCII byte {} at {:?}", byte, pos);
+      }
       println!("Horiz {:?}: '{}'", pos, *byte as char);
     }),
     Box::new(|pos: &Point, byte: &u8| {
