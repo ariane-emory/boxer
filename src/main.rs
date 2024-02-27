@@ -69,7 +69,7 @@ fn process_file_old(
       break;
     }
 
-    noisy_println!("-- ls:      {}", columns.format_lines());
+    noisy_println!("-- ls:      {}", columns.format_rows());
     noisy_println!("");
 
     for &byte in buffer {
@@ -90,7 +90,7 @@ fn process_file_old(
           }
         }
 
-        noisy_println!("-- ls:      {}", columns.format_lines());
+        noisy_println!("-- ls:      {}", columns.format_rows());
         noisy_println!("-- c:       {:?}", pos.col);
         noisy_println!("-- l:       {:?}", pos.line);
         noisy_println!("");
@@ -116,7 +116,7 @@ fn process_file_old(
   pos.col = 0;
   pos.line = 0;
 
-  noisy_println!("-- ls:  {}", columns.format_lines());
+  noisy_println!("-- ls:  {}", columns.format_rows());
   noisy_println!("");
 
   // loop through the columns, processing them with the process_vert function:
