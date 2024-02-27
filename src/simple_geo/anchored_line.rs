@@ -3,9 +3,19 @@ use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
+pub enum Anchoring {
+  Start,
+  End,
+  Both,
+  Neither,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub struct AnchoredLine {
   pub start: Point,
   pub end: Point,
+  pub anchoring: Anchoring,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,16 +46,22 @@ impl AnchoredLine {
     start_line: usize,
     end_col: usize,
     end_line: usize,
+    anchoring: Anchoring,
   ) -> GeoResult<AnchoredLine> {
     AnchoredLine::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
+      anchoring,
     )
   }
 
-  pub fn from_points(start: &Point, end: &Point) -> GeoResult<Self> {
+  pub fn from_points(start: &Point, end: &Point, anchoring: Anchoring) -> GeoResult<Self> {
     let (start, end) = Line::from_points(start, end)?.points();
 
-    Ok(AnchoredLine { start, end })
+    Ok(AnchoredLine {
+      start,
+      end,
+      anchoring,
+    })
   }
 }
