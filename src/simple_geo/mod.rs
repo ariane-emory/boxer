@@ -10,7 +10,7 @@ pub mod size;
 
 use crate::util::*;
 
-// pub use find_rectangles::*;
+pub use find_rectangles::*;
 pub use line::*;
 pub use orientation::*;
 pub use point::*;

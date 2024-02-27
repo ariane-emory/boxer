@@ -8,13 +8,13 @@ mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
+// use crate::simple_geo::find_rectangles;
 use line_maker::LineMaker;
 use process_file::process_file;
 use simple_geo::{Line, Point};
 use std::cell::RefCell;
 use std::io::{self};
 use std::rc::Rc;
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 fn main() -> io::Result<()> {
