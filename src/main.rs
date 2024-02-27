@@ -8,9 +8,8 @@ mod simple_geo;
 mod util;
 mod simple_matrix;
 use process_file::process_file;
-use std::io::{self};
-
 use simple_geo::{Line, Point};
+use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
