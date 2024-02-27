@@ -139,7 +139,7 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn matrix_map<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
+pub fn matrix_each<T>(byte_matrix: &Vec<Vec<T>>, process: Box<dyn Fn(&Point, T)>)
 where
   T: Copy,
 {
@@ -165,5 +165,23 @@ where
     if pos.line >= byte_matrix.len() {
       break;
     }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait MatrixEachable<T>
+where
+  T: Copy,
+{
+  fn map(&self, process: Box<dyn Fn(&Point, T)>);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T> MatrixEachable<T> for Vec<Vec<T>>
+where
+  T: Copy,
+{
+  fn map(&self, process: Box<dyn Fn(&Point, T)>) {
+    matrix_each(self, process);
   }
 }
