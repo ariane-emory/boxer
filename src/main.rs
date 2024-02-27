@@ -3,7 +3,9 @@
 #![allow(unused_mut)]
 #![allow(dead_code)]
 mod simple_geo;
+mod simple_matrix;
 use simple_geo::*;
+use simple_matrix::*;
 use std::cmp::max;
 use std::fs::File;
 use std::io::Seek;
