@@ -21,6 +21,7 @@ fn main() -> io::Result<()> {
   let mut all_lines = Vec::new();
 
   {
+    // Closure/RefCell scope:
     let vert_lm = Rc::new(RefCell::new(LineMaker::new(b'|')));
     let vert_lm_clone = Rc::clone(&vert_lm);
 
@@ -58,7 +59,7 @@ fn main() -> io::Result<()> {
       println!("Vert line:  {:?}", line);
       all_lines.push(line.clone());
     }
-  }
+  } // End closure/RefCell scope.
 
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
