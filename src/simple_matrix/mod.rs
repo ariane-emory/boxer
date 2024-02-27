@@ -1,3 +1,9 @@
+use simple_geo::simple_geo::Point;
+use std::fs::File;
+use std::io::Seek;
+use std::io::SeekFrom;
+use std::io::{self, BufRead, BufReader};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug, PartialEq)]
 pub enum Rotation {
@@ -80,4 +86,71 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
     s.push_str("]");
     s
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+const NOISY: bool = false; // true;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub fn noisy_println(args: std::fmt::Arguments) {
+  if NOISY {
+    println!("{}", args);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+macro_rules! noisy_println {
+  ($($arg:tt)*) => {
+    noisy_println(format_args!($($arg)*));
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
+  let file = File::open(path)?;
+  let mut buf_reader = BufReader::new(file);
+  let mut pos = Point::new(0, 0);
+  let mut matrix: Vec<Vec<u8>> = Vec::new();
+
+  // loop through the file and build the byte matrix:
+  loop {
+    let buffer: &[u8] = buf_reader.fill_buf()?;
+
+    if buffer.is_empty() {
+      break;
+    }
+
+    noisy_println!("-- ls:      {}", matrix.format_lines());
+    noisy_println!("");
+
+    let mut row: Vec<u8> = Vec::new();
+
+    for &byte in buffer {
+      if byte == b'\n' {
+        noisy_println!("-- ls:      {}", matrix.format_lines());
+        noisy_println!("-- c:       {:?}", pos.col);
+        noisy_println!("-- l:       {:?}", pos.line);
+        noisy_println!("");
+
+        pos.col = 0;
+        pos.line += 1;
+        matrix.push(row);
+        row = Vec::new();
+      } else {
+        row.push(byte);
+        pos.col += 1;
+      }
+    }
+
+    let len = buffer.len();
+    buf_reader.consume(len);
+  }
+
+  pos.col = 0;
+  pos.line = 0;
+
+  noisy_println!("-- ls:  {}", matrix.format_lines());
+  noisy_println!("");
+
+  Ok(matrix)
 }
