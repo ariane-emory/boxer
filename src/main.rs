@@ -5,8 +5,8 @@
 // use util::*;
 mod process_file;
 mod simple_geo;
-mod util;
 #[macro_use]
+mod util;
 mod simple_matrix;
 
 use process_file::process_file;
