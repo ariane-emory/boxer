@@ -91,52 +91,69 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
   let file = File::open(path)?;
-  let mut buf_reader = BufReader::new(file);
-  let mut pos = Point::new(0, 0);
-  let mut matrix: Vec<Vec<u8>> = Vec::new();
+  let buf_reader = BufReader::new(file);
+  let mut matrix = Vec::new();
 
-  // loop through the file and build the byte matrix:
-  loop {
-    let buffer: &[u8] = buf_reader.fill_buf()?;
-
-    if buffer.is_empty() {
-      break;
-    }
-
+  for line in buf_reader.lines() {
+    let line = line?; // Convert io::Result<String> to String, handle possible errors
+                      // Convert String to Vec<u8> and push to matrix
+    matrix.push(line.into_bytes());
+    // Printing for debugging purposes, similar to noisy_println! macro usage
     noisy_println!("-- ls:      {}", matrix.format_lines());
     noisy_println!("");
-
-    let mut row: Vec<u8> = Vec::new();
-
-    for &byte in buffer {
-      if byte == b'\n' {
-        noisy_println!("-- ls:      {}", matrix.format_lines());
-        noisy_println!("-- c:       {:?}", pos.col);
-        noisy_println!("-- l:       {:?}", pos.line);
-        noisy_println!("");
-
-        pos.col = 0;
-        pos.line += 1;
-        matrix.push(row);
-        row = Vec::new();
-      } else {
-        row.push(byte);
-        pos.col += 1;
-      }
-    }
-
-    let len = buffer.len();
-    buf_reader.consume(len);
   }
-
-  pos.col = 0;
-  pos.line = 0;
-
-  noisy_println!("-- ls:  {}", matrix.format_lines());
-  noisy_println!("");
 
   Ok(matrix)
 }
+
+// pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
+//   let file = File::open(path)?;
+//   let mut buf_reader = BufReader::new(file);
+//   let mut pos = Point::new(0, 0);
+//   let mut matrix: Vec<Vec<u8>> = Vec::new();
+
+//   // loop through the file and build the byte matrix:
+//   loop {
+//     let buffer: &[u8] = buf_reader.fill_buf()?;
+
+//     if buffer.is_empty() {
+//       break;
+//     }
+
+//     noisy_println!("-- ls:      {}", matrix.format_lines());
+//     noisy_println!("");
+
+//     let mut row: Vec<u8> = Vec::new();
+
+//     for &byte in buffer {
+//       if byte == b'\n' {
+//         noisy_println!("-- ls:      {}", matrix.format_lines());
+//         noisy_println!("-- c:       {:?}", pos.col);
+//         noisy_println!("-- l:       {:?}", pos.line);
+//         noisy_println!("");
+
+//         pos.col = 0;
+//         pos.line += 1;
+//         matrix.push(row);
+//         row = Vec::new();
+//       } else {
+//         row.push(byte);
+//         pos.col += 1;
+//       }
+//     }
+
+//     let len = buffer.len();
+//     buf_reader.consume(len);
+//   }
+
+//   pos.col = 0;
+//   pos.line = 0;
+
+//   noisy_println!("-- ls:  {}", matrix.format_lines());
+//   noisy_println!("");
+
+//   Ok(matrix)
+// }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait MatrixEachable<T> {
