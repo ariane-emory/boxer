@@ -13,12 +13,12 @@ use std::io::SeekFrom;
 use std::io::{self, BufRead, BufReader};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-trait FormatLines {
+trait FormatLines<T> {
   fn format_lines(&self) -> String;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl FormatLines for Vec<Vec<u8>> {
+impl FormatLines<u8> for Vec<Vec<u8>> {
   fn format_lines(&self) -> String {
     let mut s: String = "[".to_string();
 
