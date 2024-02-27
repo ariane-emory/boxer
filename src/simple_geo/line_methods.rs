@@ -5,8 +5,14 @@ pub trait LineMethods
 where
   Self: Positional + Sized,
 {
-  fn start(&self) -> Point;
-  fn end(&self) -> Point;
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  fn start(&self) -> Point {
+    self.top_left()
+  }
+
+  fn end(&self) -> Point {
+    self.bottom_right()
+  }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   fn orientation(&self) -> Orientation {
