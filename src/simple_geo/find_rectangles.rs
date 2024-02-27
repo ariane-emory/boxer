@@ -1,3 +1,4 @@
+use crate::noisy_println;
 use crate::simple_geo::*;
 use std::collections::VecDeque;
 
@@ -15,16 +16,17 @@ pub fn find_rectangles(
   let mut lines_deque: VecDeque<Line> = VecDeque::from(sorted_lines);
 
   while let Some(line) = lines_deque.pop_front() {
-    println!("\nFind coaligned lines with {:?}...", line);
+    noisy_println!("\nFind coaligned lines with {:?}...", line);
 
     let mut found_a_rect = false;
     let mut lines_to_remove: Vec<Line> = Vec::new();
 
     for other_line in &lines_deque {
       if let Some(_) = line.is_coaligned_with(other_line) {
-        println!(
+        noisy_println!(
           "Found coaligned lines: \n   {:?}\n   {:?}",
-          line, other_line
+          line,
+          other_line
         );
 
         let connected_lines: Vec<&Line> = lines_deque
@@ -36,7 +38,7 @@ pub fn find_rectangles(
 
         match connected_lines[..] {
           [first_side, second_side] => {
-            println!("\nWith sides:\n   {:?}\n   {:?}", first_side, second_side);
+            noisy_println!("\nWith sides:\n   {:?}\n   {:?}", first_side, second_side);
 
             // Put the component lines in a vec and sort them so we can find the top left
             // and bottom right corners at opposite ends of the vec.
@@ -47,7 +49,7 @@ pub fn find_rectangles(
 
             rects.push(rect);
 
-            println!("\nNew Rectangle: {:?}", rect);
+            noisy_println!("\nNew Rectangle: {:?}", rect);
 
             lines_to_remove.push(*other_line);
             lines_to_remove.push(*first_side);
@@ -57,13 +59,13 @@ pub fn find_rectangles(
 
             break;
           }
-          _ => println!("Did not find exactly two connecting lines."),
+          _ => noisy_println!("Did not find exactly two connecting lines."),
         }
       }
     }
 
     if !found_a_rect {
-      println!("No coaligned lines found for {:?}", line);
+      noisy_println!("No coaligned lines found for {:?}", line);
       leftover_lines.push(line.clone());
     } else {
       lines_deque.retain(|l| !lines_to_remove.contains(&l));

@@ -13,6 +13,6 @@ pub fn noisy_println(args: std::fmt::Arguments) {
 #[macro_export]
 macro_rules! noisy_println {
   ($($arg:tt)*) => {
-    noisy_println(format_args!($($arg)*));
+    noisy_println(format_args!($($arg)*))
   }
 }
