@@ -11,16 +11,11 @@ pub fn find_rectangles<T: LineMethods + Debug>(
   rects: &mut Vec<Rectangle>,
   leftover_lines: &mut Vec<T>,
 ) {
-  println!("qqq");
   let mut sorted_lines: Vec<T> = lines.to_vec();
-  println!("{:?}", sorted_lines);
-  println!("{:?}", lines);
   sorted_lines.sort();
 
   let mut lines_deque: VecDeque<T> = VecDeque::from(sorted_lines);
-  println!("qqq");
   while let Some(line) = lines_deque.pop_front() {
-    println!("qqq");
     noisy_println!("\nFind coaligned lines with {:?}...", line);
 
     let mut found_a_rect = false;

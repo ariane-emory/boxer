@@ -23,18 +23,15 @@ use std::rc::Rc;
 fn main() -> io::Result<()> {
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
-  println!("xxx");
+
   {
     // all_lines scope:
     let mut all_lines = Vec::new();
-    println!("xxx");
 
     {
-      println!("xxx");
       // Closure/RefCell scope:
       let vert_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
-      println!("xxx");
 
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
         let inverted_pos = Point::new(pos.line, pos.col);
@@ -59,9 +56,7 @@ fn main() -> io::Result<()> {
         println!("Horiz {:?}: '{}'", pos, *byte as char);
       });
 
-      println!("xxx");
       let _ = process_file("./data/one.box", process_horiz, process_vert);
-      println!("yyy");
 
       for line in horiz_linemaker.borrow().lines.iter() {
         println!("Horiz line: {:?}", line);
@@ -72,10 +67,7 @@ fn main() -> io::Result<()> {
         println!("Vert line:  {:?}", line);
         all_lines.push(*line);
       }
-      println!("zzz");
     } // End closure/RefCell scope.
-
-    println!("ppp {:?}", all_lines);
 
     find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
   } // End all_lines scope.
