@@ -40,7 +40,7 @@ impl LineMaker {
         self.line_begin = None;
       }
     } else if *byte == b'+' {
-      self.line_begin = Some(pos.clone());
+      self.line_begin = Some(*pos);
     }
   }
 }
