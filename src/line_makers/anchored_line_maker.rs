@@ -37,6 +37,7 @@ impl AnchoredLineMaker {
         println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
+        self.process(pos, byte);
       } else if *byte != self.line_body_char {
         self.line_begin = None;
       }
