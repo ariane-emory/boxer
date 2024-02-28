@@ -1,7 +1,7 @@
 use crate::simple_geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd {
+pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
   fn top_left(&self) -> Point;
 
   fn bottom_right(&self) -> Point;
