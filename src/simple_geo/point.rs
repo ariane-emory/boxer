@@ -17,19 +17,19 @@ impl fmt::Debug for Point {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Positional for Point {
-  fn top_left(&self) -> Point {
+  fn top_left(&self) -> Self {
     *self
   }
 
-  fn bottom_right(&self) -> Point {
+  fn bottom_right(&self) -> Self {
     *self
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Point {
-  pub fn new(col: usize, line: usize) -> Point {
-    Point { col, line }
+  pub fn new(col: usize, line: usize) -> Self {
+    Self { col, line }
   }
 
   pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {
