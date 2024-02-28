@@ -4,14 +4,14 @@
 //#![allow(unused_mut)]
 //#![allow(dead_code)]
 
-mod anchored_line_maker;
+mod line_makers; //::anchored_line_maker;
 mod process_file;
 mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
 
-use anchored_line_maker::AnchoredLineMaker;
+use line_makers::AnchoredLineMaker;
 use process_file::process_file;
 use simple_geo::find_rectangles;
 use simple_geo::Point;
