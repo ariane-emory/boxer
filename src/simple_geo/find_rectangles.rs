@@ -66,7 +66,7 @@ pub fn find_rectangles(
 
     if !found_a_rect {
       noisy_println!("No coaligned lines found for {:?}", line);
-      leftover_lines.push(line.clone());
+      leftover_lines.push(line);
     } else {
       lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
