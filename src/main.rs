@@ -3,14 +3,14 @@
 //#![allow(unused_mut)]
 //#![allow(dead_code)]
 
-mod line_maker;
+mod anchored_line_maker;
 mod process_file;
 mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
 
-use line_maker::LineMaker;
+use anchored_line_maker::AnchoredLineMaker;
 use process_file::process_file;
 use simple_geo::find_rectangles;
 use simple_geo::Point;
@@ -29,7 +29,7 @@ fn main() -> io::Result<()> {
 
     {
       // Closure/RefCell scope:
-      let vert_linemaker = Rc::new(RefCell::new(LineMaker::new(b'|')));
+      let vert_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
 
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
@@ -41,7 +41,7 @@ fn main() -> io::Result<()> {
         println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
       });
 
-      let horiz_linemaker = Rc::new(RefCell::new(LineMaker::new(b'-')));
+      let horiz_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'-')));
       let horiz_linemaker_twin = Rc::clone(&horiz_linemaker);
 
       let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
