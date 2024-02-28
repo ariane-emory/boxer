@@ -59,12 +59,12 @@ fn main() -> io::Result<()> {
 
       for line in horiz_linemaker.borrow().lines.iter() {
         println!("Horiz line: {:?}", line);
-        all_lines.push(line.clone());
+        all_lines.push(*line);
       }
 
       for line in vert_linemaker.borrow().lines.iter() {
         println!("Vert line:  {:?}", line);
-        all_lines.push(line.clone());
+        all_lines.push(*line);
       }
     } // End closure/RefCell scope.
 
