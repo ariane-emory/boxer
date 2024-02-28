@@ -21,6 +21,7 @@ use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
+  let filename = "./data/one.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
@@ -56,7 +57,7 @@ fn main() -> io::Result<()> {
         println!("Horiz {:?}: '{}'", pos, *byte as char);
       });
 
-      let _ = process_file("./data/one.box", process_horiz, process_vert);
+      let _ = process_file(filename, process_horiz, process_vert);
 
       for line in horiz_linemaker.borrow().lines.iter() {
         println!("Horiz line: {:?}", line);
