@@ -28,23 +28,20 @@ impl LineMaker {
     // to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a line).
 
-    match self.line_begin {
-      None => {
-        if *byte == b'+' {
-          self.line_begin = Some(pos.clone());
-        }
+    if let Some(begin) = self.line_begin {
+      // in order to ensure that the line is at least one character long, we need to
+      // check the distance between the current position and the line begin position:
+      if *byte == b'+' && pos.distance(&begin) > 1 {
+        let line = Line::from_points(&begin, &pos.clone()).unwrap();
+        println!("new line: {:?}", line);
+        self.lines.push(line);
+        self.line_begin = None;
+      } else if *byte != self.line_body_char {
+        self.line_begin = None;
       }
-      Some(begin) => {
-        // in order to ensure that the line is at least one character long, we need to
-        // check the distance between the current position and the line begin position:
-        if *byte == b'+' && pos.distance(&begin) > 1 {
-          let line = Line::from_points(&begin, &pos.clone()).unwrap();
-          println!("new line: {:?}", line);
-          self.lines.push(line);
-          self.line_begin = None;
-        } else if *byte != self.line_body_char {
-          self.line_begin = None;
-        }
+    } else {
+      if *byte == b'+' {
+        self.line_begin = Some(pos.clone());
       }
     }
   }
