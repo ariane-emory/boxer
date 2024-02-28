@@ -35,7 +35,7 @@ fn main() -> io::Result<()> {
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
         let inverted_pos = Point::new(pos.line, pos.col);
 
-        let mut lm = vert_linemaker_clone.borrow_mut();
+        let mut lm = vert_linemaker_twin.borrow_mut();
         lm.process(&inverted_pos, byte);
 
         println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
