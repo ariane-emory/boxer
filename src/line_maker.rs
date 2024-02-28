@@ -32,7 +32,7 @@ impl LineMaker {
       // in order to ensure that the line is at least one character long, we need to
       // check the distance between the current position and the line begin position:
       if *byte == b'+' && pos.distance(&begin) > 1 {
-        let line = Line::from_points(&begin, &pos.clone()).unwrap();
+        let line = Line::from_points(&begin, &pos).unwrap();
         println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
