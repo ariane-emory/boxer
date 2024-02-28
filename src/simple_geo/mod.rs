@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 pub mod anchored_line;
+pub mod connected_line;
 pub mod find_rectangles;
 pub mod line;
 pub mod line_methods;
@@ -12,7 +13,6 @@ pub mod size;
 
 use crate::util::*;
 
-// pub use anchored_line::Anchoring::*;
 pub use anchored_line::*;
 pub use find_rectangles::*;
 pub use line::*;

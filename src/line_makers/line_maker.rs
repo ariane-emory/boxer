@@ -2,6 +2,7 @@ use crate::simple_geo::Line;
 use crate::simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+#[allow(dead_code)]
 pub struct LineMaker {
   pub lines: Vec<Line>,
   line_begin: Option<Point>,
@@ -10,6 +11,7 @@ pub struct LineMaker {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl LineMaker {
+  #[allow(dead_code)]
   pub fn new(line_body_char: u8) -> LineMaker {
     LineMaker {
       lines: Vec::new(),
@@ -18,6 +20,7 @@ impl LineMaker {
     }
   }
 
+  #[allow(dead_code)]
   pub fn process(&mut self, pos: &Point, byte: &u8) {
     // Feed a character to the LineMaker: this looks for ASCII art lines like '+----+'.-
     // When a '+' is observed and line_begin is None, the current position is recorded.
