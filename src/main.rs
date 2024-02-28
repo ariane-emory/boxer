@@ -24,12 +24,12 @@ fn main() -> io::Result<()> {
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
+  // all_lines scope:
   {
-    // all_lines scope:
     let mut all_lines = Vec::new();
 
+    // Closure/RefCell scope:
     {
-      // Closure/RefCell scope:
       let vert_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
 
@@ -67,10 +67,10 @@ fn main() -> io::Result<()> {
         println!("Vert line:  {:?}", line);
         all_lines.push(*line);
       }
-    } // End closure/RefCell scope.
+    } // End of closure/RefCell scope.
 
     find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
-  } // End all_lines scope.
+  } // End of all_lines scope.
 
   for rect in rectangles.iter() {
     println!("Found rectangle: {:?}", rect);
