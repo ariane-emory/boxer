@@ -3,11 +3,12 @@ use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
-pub enum Anchoring {
-  Start,
-  End,
-  Both,
-  Neither,
+pub enum ConnectionType {
+  Nothing,
+  Line,
+  Input,
+  Output,
+  Variable,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,20 +16,14 @@ pub enum Anchoring {
 pub struct ConnectedLine {
   pub start: Point,
   pub end: Point,
-  pub anchoring: Anchoring,
+  pub start_connects_to: ConnectionType,
+  pub end_connects_to: ConnectionType,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for ConnectedLine {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    let anchoring = match self.anchoring {
-      Anchoring::Start => "⇐",
-      Anchoring::End => "⇐",
-      Anchoring::Both => "⇔",
-      Anchoring::Neither => "⤄",
-    };
-
-    write!(f, "{:?} {} {:?}", self.start, anchoring, self.end)
+    write!(f, "{:?} ⇼ {:?}", self.start, self.end)
   }
 }
 
@@ -53,22 +48,30 @@ impl ConnectedLine {
     start_line: usize,
     end_col: usize,
     end_line: usize,
-    anchoring: Anchoring,
+    start_connects_to: ConnectionType,
+    end_connects_to: ConnectionType,
   ) -> GeoResult<Self> {
     Self::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
-      anchoring,
+      start_connects_to,
+      end_connects_to,
     )
   }
 
-  pub fn from_points(start: &Point, end: &Point, anchoring: Anchoring) -> GeoResult<Self> {
+  pub fn from_points(
+    start: &Point,
+    end: &Point,
+    start_connects_to: ConnectionType,
+    end_connects_to: ConnectionType,
+  ) -> GeoResult<Self> {
     let (start, end) = Line::from_points(start, end)?.points();
 
     Ok(Self {
       start,
       end,
-      anchoring,
+      start_connects_to,
+      end_connects_to,
     })
   }
 }
