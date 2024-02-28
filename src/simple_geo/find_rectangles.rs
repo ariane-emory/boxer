@@ -10,7 +10,7 @@ pub fn find_rectangles(
   rects: &mut Vec<Rectangle>,
   leftover_lines: &mut Vec<Line>,
 ) {
-  let mut sorted_lines = lines.clone();
+  let mut sorted_lines: Vec<Line> = lines.to_vec();
   sorted_lines.sort();
 
   let mut lines_deque: VecDeque<Line> = VecDeque::from(sorted_lines);
