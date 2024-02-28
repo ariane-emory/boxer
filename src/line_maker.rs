@@ -1,18 +1,17 @@
-use crate::simple_geo::AnchoredLine;
-use crate::simple_geo::Anchoring::Both;
+use crate::simple_geo::Line;
 use crate::simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct AnchoredLineMaker {
-  pub lines: Vec<AnchoredLine>,
+pub struct LineMaker {
+  pub lines: Vec<Line>,
   line_begin: Option<Point>,
   line_body_char: u8,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl AnchoredLineMaker {
-  pub fn new(line_body_char: u8) -> AnchoredLineMaker {
-    AnchoredLineMaker {
+impl LineMaker {
+  pub fn new(line_body_char: u8) -> LineMaker {
+    LineMaker {
       lines: Vec::new(),
       line_begin: None,
       line_body_char,
@@ -20,7 +19,7 @@ impl AnchoredLineMaker {
   }
 
   pub fn process(&mut self, pos: &Point, byte: &u8) {
-    // Feed a character to the AnchoredLineMaker: this looks for ASCII art lines like '+----+'.-
+    // Feed a character to the LineMaker: this looks for ASCII art lines like '+----+'.-
     // When a '+' is observed and line_begin is None, the current position is recorded.
     // If line begin is set and the current character is the same as line_body_char, the
     // line is extended. If the current character is a '+', the line is closed and added
@@ -33,7 +32,7 @@ impl AnchoredLineMaker {
       // in order to ensure that the line is at least one character long, we need to
       // check the distance between the current position and the line begin position:
       if *byte == b'+' && pos.distance(&begin) > 1 {
-        let line = AnchoredLine::from_points(&begin, &pos, Both).unwrap();
+        let line = Line::from_points(&begin, &pos).unwrap();
         println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;

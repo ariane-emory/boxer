@@ -21,7 +21,14 @@ pub struct AnchoredLine {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for AnchoredLine {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "{:?} → {:?}", self.start, self.end)
+    let anchoring = match self.anchoring {
+      Anchoring::Start => "⇐",
+      Anchoring::End => "⇐",
+      Anchoring::Both => "⇔",
+      Anchoring::Neither => "⤄",
+    };
+
+    write!(f, "{:?} {} {:?}", self.start, anchoring, self.end)
   }
 }
 

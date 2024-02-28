@@ -18,7 +18,6 @@ pub fn process_file(
 
   let mut rotated_matrix = rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
   rotated_matrix.reverse();
-
   rotated_matrix.each(process_vert);
 
   Ok(())
