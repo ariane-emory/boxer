@@ -30,7 +30,7 @@ fn main() -> io::Result<()> {
     {
       // Closure/RefCell scope:
       let vert_linemaker = Rc::new(RefCell::new(LineMaker::new(b'|')));
-      let vert_linemaker_clone = Rc::clone(&vert_linemaker);
+      let vert_linemaker_twin = Rc::clone(&vert_linemaker);
 
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
         let inverted_pos = Point::new(pos.line, pos.col);
@@ -42,14 +42,14 @@ fn main() -> io::Result<()> {
       });
 
       let horiz_linemaker = Rc::new(RefCell::new(LineMaker::new(b'-')));
-      let horiz_linemaker_clone = Rc::clone(&horiz_linemaker);
+      let horiz_linemaker_twin = Rc::clone(&horiz_linemaker);
 
       let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
         if 0 != (*byte & 128) {
           panic!("Found non-ASCII byte {} at {:?}", byte, pos);
         }
 
-        let mut lm = horiz_linemaker_clone.borrow_mut();
+        let mut lm = horiz_linemaker_twin.borrow_mut();
         lm.process(pos, byte);
 
         println!("Horiz {:?}: '{}'", pos, *byte as char);
