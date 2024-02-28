@@ -36,8 +36,8 @@ impl Line {
     start_line: usize,
     end_col: usize,
     end_line: usize,
-  ) -> GeoResult<Line> {
-    Line::from_points(
+  ) -> GeoResult<Self> {
+    Self::from_points(
       &Point::new(start_col, start_line),
       &Point::new(end_col, end_line),
     )
@@ -60,6 +60,6 @@ impl Line {
       (*end, *start)
     };
 
-    Ok(Line { start, end })
+    Ok(Self { start, end })
   }
 }
