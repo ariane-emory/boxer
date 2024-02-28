@@ -1,9 +1,10 @@
-use crate::simple_geo::Line;
+use crate::simple_geo::AnchoredLine;
+use crate::simple_geo::Anchoring::Both;
 use crate::simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct AnchoredLineMaker {
-  pub lines: Vec<Line>,
+  pub lines: Vec<AnchoredLine>,
   line_begin: Option<Point>,
   line_body_char: u8,
 }
@@ -27,12 +28,13 @@ impl AnchoredLineMaker {
     // If some other character is observed in the middle (e.g., '+---a---+' the attempt
     // to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a line).
-
+    panic!("ad");
+    println!("pppojkl");
     if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least one character long, we need to
       // check the distance between the current position and the line begin position:
       if *byte == b'+' && pos.distance(&begin) > 1 {
-        let line = Line::from_points(&begin, &pos).unwrap();
+        let line = AnchoredLine::from_points(&begin, &pos, Both).unwrap();
         println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;

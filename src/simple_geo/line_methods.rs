@@ -82,7 +82,7 @@ pub trait LineMethods: Positional {
         || self.end().overlaps(&rect.top_side()))
   }
 
-  fn is_connected_to(&self, other_line: &Line) -> bool {
+  fn is_connected_to(&self, other_line: &Self) -> bool {
     self.start() == other_line.start()
       || self.start() == other_line.end()
       || self.end() == other_line.start()

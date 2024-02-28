@@ -136,6 +136,7 @@ pub trait MatrixEachable<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T> MatrixEachable<T> for Vec<Vec<T>> {
   fn each(&self, process: Box<dyn Fn(&Point, &T)>) {
+    println!("each: {:?}", self.len());
     let mut pos = Point::new(0, 0);
 
     for line in 0..self.len() {
