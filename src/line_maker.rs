@@ -39,10 +39,8 @@ impl LineMaker {
       } else if *byte != self.line_body_char {
         self.line_begin = None;
       }
-    } else {
-      if *byte == b'+' {
-        self.line_begin = Some(pos.clone());
-      }
+    } else if *byte == b'+' {
+      self.line_begin = Some(pos.clone());
     }
   }
 }
