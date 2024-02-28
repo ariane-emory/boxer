@@ -10,10 +10,9 @@ mod simple_geo;
 mod util;
 mod simple_matrix;
 
-use simple_geo::find_rectangles;
-
 use line_maker::LineMaker;
 use process_file::process_file;
+use simple_geo::find_rectangles;
 use simple_geo::Point;
 use std::cell::RefCell;
 use std::io::{self};
