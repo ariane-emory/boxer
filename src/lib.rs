@@ -1,5 +1,4 @@
-pub mod anchored_line_maker;
-pub mod line_maker;
+pub mod line_makers;
 pub mod process_file;
 pub mod simple_geo;
 pub mod simple_matrix;
