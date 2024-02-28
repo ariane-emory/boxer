@@ -53,7 +53,7 @@ where
     let row_len = row.len();
 
     if row_len < len {
-      let mut new_row = row.clone();
+      let mut new_row = row.to_vec();
       new_row.resize(len, val);
       new_matrix.push(new_row);
     } else {
