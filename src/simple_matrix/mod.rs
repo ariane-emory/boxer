@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Rotation {
   Clockwise,
   CounterClockwise,
