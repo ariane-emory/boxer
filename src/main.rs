@@ -34,12 +34,12 @@ fn main() -> io::Result<()> {
       let vert_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
-        let inverted_pos = Point::new(pos.line, pos.col);
+        let pos = Point::new(pos.line, pos.col);
 
         let mut lm = vert_linemaker_twin.borrow_mut();
-        lm.process(&inverted_pos, byte);
+        lm.process(&pos, byte);
 
-        println!("Vert  {:?}: '{}'", inverted_pos, *byte as char);
+        println!("Vert  {:?}: '{}'", pos, *byte as char);
       });
 
       let horiz_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'-')));
