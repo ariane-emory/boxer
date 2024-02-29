@@ -33,10 +33,8 @@ pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
 
   fn right_side(&self) -> Line {
     Line::new(
-      self.bottom_right().col,
-      self.top_left().line,
-      self.bottom_right().col,
-      self.bottom_right().line,
+      Point::new(self.bottom_right().col, self.top_left().line),
+      self.bottom_right(),
     )
     .unwrap()
   }
