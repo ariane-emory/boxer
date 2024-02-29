@@ -24,7 +24,7 @@ fn main() -> io::Result<()> {
   let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
-  let line_offset = 0;
+  let line_offset = 1;
 
   // all_lines scope:
   {
@@ -40,7 +40,7 @@ fn main() -> io::Result<()> {
         }
 
         // invert line/column for vertical pass:
-        let pos = Point::new(pos.col, pos.line + line_offset);
+        let pos = Point::new(pos.col + line_offset, pos.line);
         let mut lm = vert_linemaker_twin.borrow_mut();
         lm.process(&pos, byte);
 
