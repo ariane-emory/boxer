@@ -129,6 +129,32 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
 // }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait FormatRows<T> {
+  fn format_rows(&self) -> String;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl FormatRows<u8> for Vec<Vec<u8>> {
+  fn format_rows(&self) -> String {
+    let mut s: String = "[".to_string();
+
+    if self.len() > 0 {
+      s.push_str(" ");
+      s.push_str(format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string()).as_str());
+
+      for l in &self[1..] {
+        s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
+      }
+
+      s.push_str(" ");
+    }
+
+    s.push_str("]");
+    s
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait MatrixEachable<T> {
   fn each(&self, process: Box<dyn Fn(&Point, &T)>);
 }
@@ -152,31 +178,5 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
 
       noisy_println!("");
     }
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait FormatRows<T> {
-  fn format_rows(&self) -> String;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl FormatRows<u8> for Vec<Vec<u8>> {
-  fn format_rows(&self) -> String {
-    let mut s: String = "[".to_string();
-
-    if self.len() > 0 {
-      s.push_str(" ");
-      s.push_str(format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string()).as_str());
-
-      for l in &self[1..] {
-        s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
-      }
-
-      s.push_str(" ");
-    }
-
-    s.push_str("]");
-    s
   }
 }
