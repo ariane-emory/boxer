@@ -44,28 +44,12 @@ impl LineMethods for ConnectedLine {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLine {
   pub fn new(
-    start_col: usize,
-    start_line: usize,
-    end_col: usize,
-    end_line: usize,
+    start: Point,
+    end: Point,
     start_connects_to: ConnectionType,
     end_connects_to: ConnectionType,
   ) -> GeoResult<Self> {
-    Self::from_points(
-      &Point::new(start_line, start_col),
-      &Point::new(end_line, end_col),
-      start_connects_to,
-      end_connects_to,
-    )
-  }
-
-  pub fn from_points(
-    start: &Point,
-    end: &Point,
-    start_connects_to: ConnectionType,
-    end_connects_to: ConnectionType,
-  ) -> GeoResult<Self> {
-    let (start, end) = Line::new(*start, *end)?.points();
+    let (start, end) = Line::new(start, end)?.points();
 
     Ok(Self {
       start,

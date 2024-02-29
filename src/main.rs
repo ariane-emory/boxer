@@ -81,10 +81,8 @@ fn main() -> io::Result<()> {
         // made horizontal lines.
 
         let line = ConnectedLine::new(
-          line.start.col,
-          line.start.line,
-          line.end.col,
-          line.end.line,
+          Point::new(line.start.col, line.start.line),
+          Point::new(line.end.col, line.end.line),
           line.start_connects_to,
           line.end_connects_to,
         )

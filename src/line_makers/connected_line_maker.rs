@@ -38,7 +38,7 @@ impl ConnectedLineMaker {
       // in order to ensure that the line is at least one character long, we need to
       // check the distance between the current position and the line begin position:
       if *byte == b'+' && pos.distance(&begin) > 1 {
-        let line = ConnectedLine::from_points(&begin, &pos, Nothing, Nothing).unwrap();
+        let line = ConnectedLine::new(begin, *pos, Nothing, Nothing).unwrap();
         // println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
