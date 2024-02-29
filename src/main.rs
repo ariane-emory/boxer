@@ -4,18 +4,18 @@
 //#![allow(unused_mut)]
 //#![allow(dead_code)]
 
-mod line_makers; //::anchored_line_maker;
+mod line_makers; //::connected_line_maker;
 mod process_file;
 mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
 
-use line_makers::AnchoredLineMaker;
+use line_makers::ConnectedLineMaker;
 
 use process_file::process_file;
 use simple_geo::find_rectangles;
-use simple_geo::AnchoredLine;
+use simple_geo::ConnectedLine;
 use simple_geo::Point;
 use std::cell::RefCell;
 use std::io::{self};
@@ -34,7 +34,7 @@ fn main() -> io::Result<()> {
 
     // Closure/RefCell scope:
     {
-      let vert_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'|')));
+      let vert_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
         if pos.col == 0 {
@@ -51,7 +51,7 @@ fn main() -> io::Result<()> {
         println!("Vert  {:?}: '{}'", pos, *byte as char);
       });
 
-      let horiz_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'-')));
+      let horiz_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'-')));
       let horiz_linemaker_twin = Rc::clone(&horiz_linemaker);
       let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
         if pos.col == 0 {
@@ -80,12 +80,13 @@ fn main() -> io::Result<()> {
         // we need to flip the row and column on the vertical lines, since the LineMaker will have
         // made horizontal lines.
 
-        let line = AnchoredLine::new(
+        let line = ConnectedLine::new(
           line.start.col,
           line.start.line,
           line.end.col,
           line.end.line,
-          line.anchoring,
+          line.start_connects_to,
+          line.end_connects_to,
         )
         .unwrap();
 
