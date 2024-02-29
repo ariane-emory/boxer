@@ -27,7 +27,7 @@ pub fn process_file(
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn make_process_fun<'a>(
+pub fn make_process_file_fun<'a>(
   line_body_char: u8,
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (
