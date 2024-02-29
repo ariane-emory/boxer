@@ -286,15 +286,15 @@ impl<'a> Block for LogicNot<'a> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RiseCounter<'a> {
-  source: &'a BlockOutput<bool>,
+  input: &'a BlockOutput<bool>,
   last_state: bool,
   count: BlockOutput<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RiseCounter<'a> {
-  fn new(source: &'a BlockOutput<bool>) -> Self {
+  fn new(input: &'a BlockOutput<bool>) -> Self {
     RiseCounter {
-      source,
+      input,
       last_state: false,
       count: BlockOutput::new(0),
     }
@@ -303,7 +303,7 @@ impl<'a> RiseCounter<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> Block for RiseCounter<'a> {
   fn step(&mut self) {
-    let read = *self.source.read();
+    let read = *self.input.read();
 
     if read && !self.last_state {
       self.count.set(self.count.read() + 1);
@@ -315,14 +315,14 @@ impl<'a> Block for RiseCounter<'a> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RisingTrigger<'a> {
-  source: &'a BlockOutput<bool>,
+  input: &'a BlockOutput<bool>,
   pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RisingTrigger<'a> {
-  fn new(source: &'a BlockOutput<bool>) -> Self {
+  fn new(input: &'a BlockOutput<bool>) -> Self {
     RisingTrigger {
-      source,
+      input,
       output: BlockOutput::new(false),
     }
   }
@@ -330,8 +330,8 @@ impl<'a> RisingTrigger<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block for RisingTrigger<'_> {
   fn step(&mut self) {
-    let last_state = *self.source.read();
-    let input = *self.source.read();
+    let last_state = *self.input.read();
+    let input = *self.input.read();
 
     if input && !last_state {
       self.output.set(true);
@@ -343,14 +343,14 @@ impl Block for RisingTrigger<'_> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct FallingTrigger<'a> {
-  source: &'a BlockOutput<bool>,
+  input: &'a BlockOutput<bool>,
   pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> FallingTrigger<'a> {
-  fn new(source: &'a BlockOutput<bool>) -> Self {
+  fn new(input: &'a BlockOutput<bool>) -> Self {
     FallingTrigger {
-      source,
+      input,
       output: BlockOutput::new(false),
     }
   }
@@ -358,8 +358,8 @@ impl<'a> FallingTrigger<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block for FallingTrigger<'_> {
   fn step(&mut self) {
-    let last_state = *self.source.read();
-    let input = *self.source.read();
+    let last_state = *self.input.read();
+    let input = *self.input.read();
 
     if !input && last_state {
       self.output.set(true);
@@ -452,6 +452,42 @@ impl Block for TOF {
       self.output.set(false);
     } else {
       self.output.set(true);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Basically an IEC 61131-3 'TP' block, which holds it's input for a set number of steps after it rises.
+struct TP<'a> {
+  pub output: BlockOutput<bool>,
+  input: &'a BlockOutput<bool>,
+  count_from: &'a BlockOutput<usize>,
+  count: usize,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> TP<'a> {
+  pub fn new(input: &'a BlockOutput<bool>, count_from: &'a BlockOutput<usize>) -> Self {
+    TP {
+      output: BlockOutput::new(false),
+      input,
+      count_from,
+      count: 0,
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> Block for TP<'a> {
+  fn step(&mut self) {
+    if *self.input.read() && !*self.output.read() {
+      self.count = *self.count_from.read();
+    }
+
+    if self.count > 0 {
+      self.output.set(true);
+      self.count -= 1;
+    } else {
+      self.output.set(false);
     }
   }
 }
