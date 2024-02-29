@@ -461,21 +461,25 @@ pub struct TON<'a> {
   pub output: BlockOutput<bool>,
   pub count: BlockOutput<usize>,
   delay: &'a BlockOutput<usize>,
+  reset: &'a BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> TON<'a> {
-  pub fn new(delay: &'a BlockOutput<usize>) -> Self {
+  pub fn new(delay: &'a BlockOutput<usize>, reset: &'a BlockOutput) -> Self {
     TON {
       output: BlockOutput::new(false),
       count: BlockOutput::new(0),
       delay,
+      reset,
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> Block for TON<'a> {
   fn step(&mut self) {
-    if *self.output.read() {
+    if *self.reset.read() {
+      self.count.set(0);
+    } else if *self.output.read() {
       self.count.set(self.count.read() + 1);
     } else {
       self.count.set(0);
@@ -495,21 +499,25 @@ pub struct TOF<'a> {
   pub output: BlockOutput<bool>,
   pub count: BlockOutput<usize>,
   delay: &'a BlockOutput<usize>,
+  reset: &'a BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> TOF<'a> {
-  pub fn new(delay: &'a BlockOutput<usize>) -> Self {
+  pub fn new(delay: &'a BlockOutput<usize>, reset: &'a BlockOutput<bool>) -> Self {
     TOF {
       output: BlockOutput::new(false),
       count: BlockOutput::new(0),
       delay,
+      reset,
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> Block for TOF<'a> {
   fn step(&mut self) {
-    if !*self.output.read() {
+    if *self.reset.read() {
+      self.count.set(0);
+    } else if !*self.output.read() {
       self.count.set(self.count.read() + 1);
     } else {
       self.count.set(0);
