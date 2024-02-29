@@ -24,10 +24,10 @@ fn main() -> io::Result<()> {
   let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
-  let line_offset = 1;
 
   // all_lines scope:
   {
+    let line_offset = 1;
     let mut all_lines = Vec::new();
 
     // Closure/RefCell scope:
