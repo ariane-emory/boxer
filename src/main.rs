@@ -21,7 +21,7 @@ use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  let filename = "./data/simple.box";
+  let filename = "./data/single.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
