@@ -27,7 +27,7 @@ fn main() -> io::Result<()> {
 
   // all_lines scope:
   {
-    let line_offset = 0;
+    let _line_offset = 1;
     let mut all_lines = Vec::new();
 
     // Closure/RefCell scope:
@@ -43,10 +43,8 @@ fn main() -> io::Result<()> {
           panic!("Found non-ASCII byte {} at {:?}", byte, pos);
         }
 
-        // invert line/column for vertical pass:
-        let pos = Point::new(pos.col + line_offset, pos.line);
         let mut lm = vert_linemaker_twin.borrow_mut();
-        lm.process(&pos, byte);
+        lm.process(pos, byte);
 
         println!("Vert  {:?}: '{}'", pos, *byte as char);
       });
@@ -60,9 +58,9 @@ fn main() -> io::Result<()> {
 
         // Don't bother checking if byte is in the ASCII range since it was already checked during
         // the vertical pass.
-        let pos = Point::new(pos.line + line_offset, pos.col);
+
         let mut lm = horiz_linemaker_twin.borrow_mut();
-        lm.process(&pos, byte);
+        lm.process(pos, byte);
 
         println!("Horiz {:?}: '{}'", pos, *byte as char);
       });
