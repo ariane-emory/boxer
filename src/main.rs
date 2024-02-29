@@ -27,7 +27,7 @@ fn main() -> io::Result<()> {
 
   // all_lines scope:
   {
-    let line_offset = 1;
+    let line_offset = 0;
     let mut all_lines = Vec::new();
 
     // Closure/RefCell scope:
