@@ -11,42 +11,10 @@ mod simple_geo;
 mod util;
 mod simple_matrix;
 
-use line_makers::ConnectedLineMaker;
 use process_file::*;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
-use simple_geo::Point;
-use std::cell::RefCell;
 use std::io::{self};
-use std::rc::Rc;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-fn make_process_fun<'a>(
-  line_body_char: u8,
-  custom_printer: impl Fn(Point, u8) + 'a,
-) -> (
-  Rc<RefCell<ConnectedLineMaker>>,
-  Box<impl Fn(&Point, &u8) + 'a>,
-) {
-  let lm = ConnectedLineMaker::new(line_body_char);
-  let rc_lm = Rc::new(RefCell::new(lm));
-  let rc_lm_twin = Rc::clone(&rc_lm);
-  (
-    rc_lm,
-    Box::new(move |pos: &Point, byte: &u8| {
-      if pos.col == 0 {
-        println!("");
-      }
-
-      if 0 != (*byte & 128) {
-        panic!("Found non-ASCII byte {} at {:?}", byte, pos);
-      }
-
-      custom_printer(*pos, *byte);
-      rc_lm_twin.borrow_mut().process(pos, *byte);
-    }),
-  )
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
