@@ -81,17 +81,22 @@ fn main() -> io::Result<()> {
     println!("Leftover line: {:?}", line);
   }
 
-  let one = block::Fixed::new(1);
-  let five = block::Fixed::new(5);
+  let one = block::Value::new(1);
+  let five = block::Value::new(5);
   let mut adder = block::MathAdd::new(&one.output, &five.output);
   println!("Adder: {}", adder.output.read());
   adder.step();
   println!("Adder: {}", adder.output.read());
 
-  let flip = block::Fixed<bool>::new(false);
-  let ten = block::Fixed<usize>::new(10);
+  let flip = block::Value::new(false);
+  let ten = block::Value::new(10);
   let ctr = block::RiseCounter::new(&flip.output, &ten.output);
+  println!("Ctr: {}", ctr.output.read());
+  ctr.step();
+  println!("Ctr: {}", ctr.output.read());
+  flip.ouput.set(true);
+  ctr.step();
+  println!("Ctr: {}", ctr.output.read());
 
-  
   Ok(())
 }

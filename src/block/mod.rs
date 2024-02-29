@@ -142,19 +142,19 @@ impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> MathMod<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Fixed<T: Copy> {
+pub struct Value<T: Copy> {
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Fixed<T> {
+impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
-    Fixed {
+    Value {
       output: BlockOutput::new(value),
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Block for Fixed<T> {
+impl<T: Copy> Block for Value<T> {
   fn step(&mut self) {}
 }
 
@@ -360,7 +360,7 @@ pub struct RiseCounter<'a> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RiseCounter<'a> {
-  fn new(input: &'a BlockOutput<bool>, max: &'a BlockOutput<usize>) -> Self {
+  pub fn new(input: &'a BlockOutput<bool>, max: &'a BlockOutput<usize>) -> Self {
     RiseCounter {
       input,
       max,
@@ -397,7 +397,7 @@ pub struct RisingTrigger<'a> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RisingTrigger<'a> {
-  fn new(input: &'a BlockOutput<bool>) -> Self {
+  pub fn new(input: &'a BlockOutput<bool>) -> Self {
     RisingTrigger {
       input,
       output: BlockOutput::new(false),
@@ -425,7 +425,7 @@ pub struct FallingTrigger<'a> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> FallingTrigger<'a> {
-  fn new(input: &'a BlockOutput<bool>) -> Self {
+  pub fn new(input: &'a BlockOutput<bool>) -> Self {
     FallingTrigger {
       input,
       output: BlockOutput::new(false),
