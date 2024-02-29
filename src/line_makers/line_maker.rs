@@ -21,7 +21,7 @@ impl LineMaker {
   }
 
   #[allow(dead_code)]
-  pub fn process(&mut self, pos: Point, byte: u8) {
+  pub fn process(&mut self, pos: &Point, byte: u8) {
     // Feed a character to the LineMaker: this looks for ASCII art lines like '+----+'.-
     // When a '+' is observed and line_begin is None, the current position is recorded.
     // If line begin is set and the current character is the same as line_body_char, the
@@ -35,7 +35,7 @@ impl LineMaker {
       // in order to ensure that the line is at least one character long, we need to
       // check the distance between the current position and the line begin position:
       if byte == b'+' && pos.distance(&begin) > 1 {
-        let line = Line::new(begin, pos).unwrap();
+        let line = Line::new(begin, *pos).unwrap();
         println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
@@ -44,7 +44,7 @@ impl LineMaker {
         self.line_begin = None;
       }
     } else if byte == b'+' {
-      self.line_begin = Some(pos);
+      self.line_begin = Some(*pos);
     }
   }
 }

@@ -37,7 +37,7 @@ fn make_process_fun(char: u8) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&P
         panic!("Found non-ASCII byte {} at {:?}", byte, pos);
       }
 
-      rc_lm_twin.borrow_mut().process(*pos, *byte);
+      rc_lm_twin.borrow_mut().process(pos, *byte);
 
       println!("Horiz {:?}: '{}'", pos, *byte as char);
     }),
