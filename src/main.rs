@@ -39,6 +39,7 @@ fn main() -> io::Result<()> {
           panic!("Found non-ASCII byte {} at {:?}", byte, pos);
         }
 
+        // invert line/column for vertical pass:
         let pos = Point::new(pos.col, pos.line);
         let mut lm = vert_linemaker_twin.borrow_mut();
         lm.process(&pos, byte);
