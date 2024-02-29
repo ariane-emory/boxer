@@ -167,9 +167,9 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
         pos.line = line;
         pos.col = col;
 
-        let byte = &self[line][col];
+        let elem = &self[line][col];
 
-        process(&pos, byte);
+        process(&pos, elem);
       }
     }
   }
