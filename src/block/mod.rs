@@ -95,3 +95,31 @@ impl Block for RisingTrigger<'_> {
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct FallingTrigger<'a> {
+  source: &'a BlockOutput<bool>,
+  output: BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> FallingTrigger<'a> {
+  fn new(source: &'a BlockOutput<bool>) -> Self {
+    FallingTrigger {
+      source,
+      output: BlockOutput::new(false),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for FallingTrigger<'_> {
+  fn step(&mut self) {
+    let last_state = *self.source.read();
+    let input = *self.source.read();
+
+    if !input && last_state {
+      self.output.set(true);
+    } else {
+      self.output.set(false);
+    }
+  }
+}
