@@ -12,11 +12,9 @@ mod util;
 mod simple_matrix;
 
 use line_makers::ConnectedLineMaker;
-
 use process_file::process_file;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
-use simple_geo::ConnectedLine;
 use simple_geo::Point;
 use std::cell::RefCell;
 use std::io::{self};
