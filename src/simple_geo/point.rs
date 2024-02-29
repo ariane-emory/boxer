@@ -40,7 +40,7 @@ impl Point {
     self.line == other.line
   }
 
-  pub fn distance(&self, other: Self) -> usize {
+  pub fn distance(&self, other: &Self) -> usize {
     // calculates the 'Manhattan distance'.
     (self.col as isize - other.col as isize).abs() as usize
       + (self.line as isize - other.line as isize).abs() as usize
