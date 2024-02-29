@@ -40,32 +40,43 @@ impl<'a, T> Adder<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct Counter<'a> {
+struct RiseCounter<'a> {
   source: &'a BlockOutput<bool>,
+  last_state: bool,
   count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a> Counter<'a> {
+impl<'a> RiseCounter<'a> {
   fn new(source: &'a BlockOutput<bool>) -> Self {
-    Counter { source, count: 0 }
+    RiseCounter {
+      source,
+      last_state: false,
+      count: 0,
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for Counter<'a> {
+impl<'a> Block for RiseCounter<'a> {
   fn step(&mut self) {
-    if *self.source.read() {
+    let read = *self.source.read();
+    if read {
       self.count += 1;
     }
+    self.last_state = read;
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 struct RisingTrigger<'a> {
   source: &'a BlockOutput<bool>,
+  last_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RisingTrigger<'a> {
   fn new(source: &'a BlockOutput<bool>) -> Self {
-    RisingTrigger { source }
+    RisingTrigger {
+      source,
+      last_state: false,
+    }
   }
 }
