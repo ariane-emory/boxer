@@ -300,13 +300,13 @@ mod tests {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn rectangle_test() {
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 0)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 0)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 2)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(0, 0)).is_err());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(1, 0)).is_err());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(0, 1)).is_err());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(1, 1)).is_err());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(2, 1)).is_err());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(1, 2)).is_err());
+    assert!(Rectangle::from_points(Point::new(0, 0), Point::new(2, 2)).is_ok());
 
     assert!(Rectangle::new(0, 0, 0, 0).is_err());
     assert!(Rectangle::new(0, 0, 0, 1).is_err());
@@ -316,10 +316,10 @@ mod tests {
     assert!(Rectangle::new(0, 0, 2, 1).is_err());
     assert!(Rectangle::new(0, 0, 2, 2).is_ok());
 
-    let rect = Rectangle::from_points(&Point::new(10, 0), &Point::new(15, 5)).unwrap();
-    let overlapping_rect = Rectangle::from_points(&Point::new(13, 3), &Point::new(18, 8)).unwrap();
+    let rect = Rectangle::from_points(Point::new(10, 0), Point::new(15, 5)).unwrap();
+    let overlapping_rect = Rectangle::from_points(Point::new(13, 3), Point::new(18, 8)).unwrap();
     let nonoverlapping_rect =
-      Rectangle::from_points(&Point::new(16, 16), &Point::new(20, 20)).unwrap();
+      Rectangle::from_points(Point::new(16, 16), Point::new(20, 20)).unwrap();
 
     assert!(rect.width() == 6);
     assert!(rect.height() == 6);
