@@ -455,3 +455,57 @@ impl Block for TOF {
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct SRLatch<'a> {
+  pub output: BlockOutput<bool>,
+  set: &'a BlockOutput<bool>,
+  reset: &'a BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> SRLatch<'a> {
+  pub fn new(set: &'a BlockOutput<bool>, reset: &'a BlockOutput<bool>) -> Self {
+    SRLatch {
+      output: BlockOutput::new(false),
+      set,
+      reset,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> Block for SRLatch<'a> {
+  fn step(&mut self) {
+    if *self.set.read() {
+      self.output.set(true);
+    } else if *self.reset.read() {
+      self.output.set(false);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct RSLatch<'a> {
+  pub output: BlockOutput<bool>,
+  set: &'a BlockOutput<bool>,
+  reset: &'a BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> RSLatch<'a> {
+  pub fn new(set: &'a BlockOutput<bool>, reset: &'a BlockOutput<bool>) -> Self {
+    RSLatch {
+      output: BlockOutput::new(false),
+      set,
+      reset,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> Block for RSLatch<'a> {
+  fn step(&mut self) {
+    if *self.reset.read() {
+      self.output.set(false);
+    } else if *self.set.read() {
+      self.output.set(true);
+    }
+  }
+}
