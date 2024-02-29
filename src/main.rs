@@ -49,6 +49,9 @@ fn make_process_fun<'a>(
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+static LINE_OFFSET: isize = 1;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   let filename = "./data/tangle.box";
   let mut rectangles = Vec::new();
@@ -63,24 +66,26 @@ fn main() -> io::Result<()> {
       let (vert_linemaker, process_vert) = make_process_fun(b'|', |pos, byte| {
         println!(
           "Vert:    {:?}: '{}'",
-          pos.flip().offset_by(1, 0),
+          pos.flip().offset_by(LINE_OFFSET, 0),
           byte as char
         );
       });
       let (horiz_linemaker, process_horiz) = make_process_fun(b'-', |pos, byte| {
-        println!("Horiz:   {:?}: '{}'", pos.offset_by(1, 0), byte as char);
+        println!(
+          "Horiz:   {:?}: '{}'",
+          pos.offset_by(LINE_OFFSET, 0),
+          byte as char
+        );
       });
 
       process_file(filename, process_horiz, process_vert)?;
 
       println!("");
 
-      let line_offset = 1;
-
       // we'll offset the line by one so that the line numbers are consistent with emacs'
       // line numbering.
       for line in horiz_linemaker.borrow().lines.iter() {
-        let line = line.offset_by(line_offset, 0);
+        let line = line.offset_by(LINE_OFFSET, 0);
         println!("Horiz line: {:?}", line);
         all_lines.push(line);
       }
@@ -89,7 +94,7 @@ fn main() -> io::Result<()> {
       // line numbering. we'll also need to flip the row and column on the vertical lines,
       // since the LineMaker will have made horizontal lines.
       for line in vert_linemaker.borrow().lines.iter() {
-        let line = line.flip().offset_by(line_offset, 0);
+        let line = line.flip().offset_by(LINE_OFFSET, 0);
         println!("Vert line:  {:?}", line);
         all_lines.push(line);
       }
