@@ -40,9 +40,10 @@ fn make_process_fun(
         panic!("Found non-ASCII byte {} at {:?}", byte, pos);
       }
 
-      rc_lm_twin.borrow_mut().process(pos, *byte);
+      let tmp = format!("{}:", label);
+      println!("{:8} {:?}: '{}'", tmp, pos, *byte as char);
 
-      println!("{:8} {:?}: '{}'", label, pos, *byte as char);
+      rc_lm_twin.borrow_mut().process(pos, *byte);
     }),
   )
 }
@@ -59,8 +60,8 @@ fn main() -> io::Result<()> {
 
     // Closure/RefCell scope:
     {
-      let (vert_linemaker, process_vert) = make_process_fun(String::from("Vert:"), b'|');
-      let (horiz_linemaker, process_horiz) = make_process_fun(String::from("Horiz:"), b'-');
+      let (vert_linemaker, process_vert) = make_process_fun(String::from("Vert"), b'|');
+      let (horiz_linemaker, process_horiz) = make_process_fun(String::from("Horiz"), b'-');
 
       process_file(filename, process_horiz, process_vert)?;
 

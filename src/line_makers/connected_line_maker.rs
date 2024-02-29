@@ -39,12 +39,12 @@ impl ConnectedLineMaker {
       // check the distance between the current position and the line begin position:
       if byte == b'+' && pos.distance(&begin) > 1 {
         let line = ConnectedLine::new(begin, *pos, Nothing, Nothing).unwrap();
-        // println!("new line: {:?}", line);
+        println!("CREATE LINE: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
-        self.process(pos, byte);
+        // self.process(pos, byte);
       } else if byte != self.line_body_char {
-        println!("broke line!");
+        println!("broke line, distance = {}!", pos.distance(&begin));
         self.line_begin = None; // HERE?
       }
     } else if byte == b'+' {
