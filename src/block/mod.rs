@@ -1,15 +1,8 @@
 #![allow(dead_code)]
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub enum BlockSignal {
-  BooleanSignal(bool),
-  UnsignedSignal(isize),
-  SignedSignal(usize),
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait BlockOutput {
-  fn read(&self) -> BlockSignal;
+pub trait BlockOutput<T> {
+  fn read(&self) -> T;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,14 +11,14 @@ pub trait Block {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct Adder<'a> {
-  left_addend: &'a dyn BlockOutput,
-  right_addend: &'a dyn BlockOutput,
+struct Adder<'a, T> {
+  left_addend: &'a dyn BlockOutput<T>,
+  right_addend: &'a dyn BlockOutput<T>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a> Adder<'a> {
-  fn new(left_addend: &'a dyn BlockOutput, right_addend: &'a dyn BlockOutput) -> Self {
+impl<'a, T> Adder<'a, T> {
+  fn new(left_addend: &'a dyn BlockOutput<T>, right_addend: &'a dyn BlockOutput<T>) -> Self {
     Adder {
       left_addend,
       right_addend,
