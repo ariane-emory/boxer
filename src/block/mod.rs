@@ -43,7 +43,7 @@ impl<'a, T> Adder<'a, T> {
 struct RiseCounter<'a> {
   source: &'a BlockOutput<bool>,
   last_state: bool,
-  count: usize,
+  count: BlockOutput<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RiseCounter<'a> {
@@ -51,7 +51,7 @@ impl<'a> RiseCounter<'a> {
     RiseCounter {
       source,
       last_state: false,
-      count: 0,
+      count: BlockOutput::new(0),
     }
   }
 }
@@ -59,8 +59,8 @@ impl<'a> RiseCounter<'a> {
 impl<'a> Block for RiseCounter<'a> {
   fn step(&mut self) {
     let read = *self.source.read();
-    if read {
-      self.count += 1;
+    if read && !self.last_state {
+      self.count.set(self.count.read() + 1);
     }
     self.last_state = read;
   }
