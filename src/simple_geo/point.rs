@@ -75,4 +75,8 @@ impl Point {
       (self.col as isize + col_offset) as usize,
     )
   }
+
+  pub fn offset_by_point(&self, other: &Self) -> Self {
+    self.offset(other.line as isize, other.col as isize)
+  }
 }
