@@ -390,31 +390,31 @@ impl Block for RandomUsize {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
-pub struct TON {
+pub struct TON<'a> {
   pub output: BlockOutput<bool>,
-  count: BlockOutput<usize>,
-  delay: usize,
+  delay: &'a BlockOutput<usize>,
+  count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl TON {
-  pub fn new(delay: usize) -> Self {
+impl<'a> TON<'a> {
+  pub fn new(delay: &'a BlockOutput<usize>) -> Self {
     TON {
       output: BlockOutput::new(false),
-      count: BlockOutput::new(0),
       delay,
+      count: 0,
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TON {
+impl<'a> Block for TON<'a> {
   fn step(&mut self) {
     if *self.output.read() {
-      self.count.set(self.count.read() + 1);
+      self.count = self.count + 1;
     } else {
-      self.count.set(0);
+      self.count = 0;
     }
 
-    if *self.count.read() >= self.delay {
+    if self.count >= *self.delay.read() {
       self.output.set(true);
     } else {
       self.output.set(false);
