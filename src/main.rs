@@ -61,10 +61,10 @@ fn main() -> io::Result<()> {
     // RefCell scope:
     {
       let (vert_linemaker, process_vert) = make_process_fun(b'|', |pos, byte| {
-        println!("Vert:  {:?}: '{}'", pos, byte as char);
+        println!("Vert:    {:?}: '{}'", pos, byte as char);
       });
       let (horiz_linemaker, process_horiz) = make_process_fun(b'-', |pos, byte| {
-        println!("Horiz: {:?}: '{}'", pos, byte as char);
+        println!("Horiz:   {:?}: '{}'", pos, byte as char);
       });
 
       process_file(filename, process_horiz, process_vert)?;
