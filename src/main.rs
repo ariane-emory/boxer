@@ -4,6 +4,7 @@
 //#![allow(unused_mut)]
 //#![allow(dead_code)]
 
+mod block;
 mod line_makers; //::connected_line_maker;
 mod process_file;
 mod simple_geo;
@@ -11,6 +12,7 @@ mod simple_geo;
 mod util;
 mod simple_matrix;
 
+//use block::*;
 use process_file::*;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
