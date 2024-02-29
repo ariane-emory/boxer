@@ -23,7 +23,8 @@ use std::io::{self};
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn make_proc_fun(lm: Box<RefCell<ConnectedLineMaker>>) -> Box<dyn Fn(&Point, &u8)> {
+fn make_process_fun(lm: &Rc<RefCell<ConnectedLineMaker>>) -> Box<dyn Fn(&Point, &u8)> {
+  let twin = Rc::clone(&lm);
   Box::new(move |pos: &Point, byte: &u8| {
     if pos.col == 0 {
       println!("");
@@ -33,7 +34,7 @@ fn make_proc_fun(lm: Box<RefCell<ConnectedLineMaker>>) -> Box<dyn Fn(&Point, &u8
       panic!("Found non-ASCII byte {} at {:?}", byte, pos);
     }
 
-    let mut lm = lm.borrow_mut();
+    let mut lm = twin.borrow_mut();
     lm.process(pos, byte);
 
     println!("Horiz {:?}: '{}'", pos, *byte as char);
@@ -53,25 +54,10 @@ fn main() -> io::Result<()> {
     // Closure/RefCell scope:
     {
       let vert_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'|')));
-      let vert_linemaker_twin = Rc::clone(&vert_linemaker);
-      let process_vert = make_proc_fun(vert_linemaker);
+      let process_vert = make_process_fun(&vert_linemaker);
 
       let horiz_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'-')));
-      let horiz_linemaker_twin = Rc::clone(&horiz_linemaker);
-      let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
-        if pos.col == 0 {
-          println!("");
-        }
-
-        if 0 != (*byte & 128) {
-          panic!("Found non-ASCII byte {} at {:?}", byte, pos);
-        }
-
-        let mut lm = horiz_linemaker_twin.borrow_mut();
-        lm.process(pos, byte);
-
-        println!("Horiz {:?}: '{}'", pos, *byte as char);
-      });
+      let process_horiz = make_process_fun(&horiz_linemaker);
 
       process_file(filename, process_horiz, process_vert)?;
 
