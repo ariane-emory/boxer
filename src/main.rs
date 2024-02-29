@@ -21,9 +21,9 @@ use std::io::{self};
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn make_process_fun<F>(
+fn make_process_fun(
   line_body_char: u8,
-  custom_printer: Fn(Point, u8) + 'static,
+  custom_printer: impl Fn(Point, u8) + 'static,
 ) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&Point, &u8)>) {
   let lm = ConnectedLineMaker::new(line_body_char);
   let rc_lm = Rc::new(RefCell::new(lm));
