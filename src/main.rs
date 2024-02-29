@@ -42,7 +42,6 @@ fn main() -> io::Result<()> {
         // invert line/column for vertical pass:
         let pos = Point::new(pos.col, pos.line + line_offset);
         let mut lm = vert_linemaker_twin.borrow_mut();
-
         lm.process(&pos, byte);
 
         println!("Vert  {:?}: '{}'", pos, *byte as char);
@@ -55,7 +54,6 @@ fn main() -> io::Result<()> {
         // the vertical pass.
         let pos = Point::new(pos.line + line_offset, pos.col);
         let mut lm = horiz_linemaker_twin.borrow_mut();
-
         lm.process(&pos, byte);
 
         println!("Horiz {:?}: '{}'", pos, *byte as char);
