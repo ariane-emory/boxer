@@ -27,9 +27,9 @@ pub trait Block {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathAdd<'a, T> {
+  pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdd<'a, T> {
@@ -42,18 +42,18 @@ impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdd<'a, T> {
 impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathAdd {
+      output: BlockOutput::new(Default::default()),
       left,
       right,
-      output: BlockOutput::new(Default::default()),
     }
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathSub<'a, T> {
+  pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<'a, T> {
@@ -65,18 +65,18 @@ impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<'a, T>
 impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> MathSub<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathSub {
+      output: BlockOutput::new(Default::default()),
       left,
       right,
-      output: BlockOutput::new(Default::default()),
     }
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMul<'a, T> {
+  pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<'a, T> {
@@ -88,18 +88,18 @@ impl<'a, T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<'a, T>
 impl<'a, T: std::ops::Mul<Output = T> + Copy + Default> MathMul<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathMul {
+      output: BlockOutput::new(Default::default()),
       left,
       right,
-      output: BlockOutput::new(Default::default()),
     }
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathDiv<'a, T> {
+  pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<'a, T> {
@@ -111,18 +111,18 @@ impl<'a, T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<'a, T>
 impl<'a, T: std::ops::Div<Output = T> + Copy + Default> MathDiv<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathDiv {
+      output: BlockOutput::new(Default::default()),
       left,
       right,
-      output: BlockOutput::new(Default::default()),
     }
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMod<'a, T> {
+  pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<'a, T> {
@@ -134,9 +134,9 @@ impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<'a, T>
 impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> MathMod<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathMod {
+      output: BlockOutput::new(Default::default()),
       left,
       right,
-      output: BlockOutput::new(Default::default()),
     }
   }
 }
