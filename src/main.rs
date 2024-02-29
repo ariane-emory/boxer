@@ -54,20 +54,7 @@ fn main() -> io::Result<()> {
     {
       let vert_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
-      let process_vert = Box::new(move |pos: &Point, byte: &u8| {
-        if pos.col == 0 {
-          println!("");
-        }
-
-        if 0 != (*byte & 128) {
-          panic!("Found non-ASCII byte {} at {:?}", byte, pos);
-        }
-
-        let mut lm = vert_linemaker_twin.borrow_mut();
-        lm.process(pos, byte);
-
-        println!("Vert  {:?}: '{}'", pos, *byte as char);
-      });
+      let process_vert = make_proc_fun(vert_linemaker);
 
       let horiz_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'-')));
       let horiz_linemaker_twin = Rc::clone(&horiz_linemaker);
