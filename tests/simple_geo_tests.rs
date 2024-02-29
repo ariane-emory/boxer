@@ -111,24 +111,59 @@ mod tests {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
+  fn point_distance() {
+    let upper_left = Point::new(0, 0);
+    let upper_middle = Point::new(0, 1);
+    let upper_right = Point::new(0, 2);
+
+    let left_of_center = Point::new(1, 0);
+    let center = Point::new(1, 1);
+    let right_of_center = Point::new(1, 2);
+
+    let lower_left = Point::new(2, 0);
+    let lower_middle = Point::new(2, 1);
+    let lower_right = Point::new(2, 2);
+
+    assert_eq!(upper_left.distance(&upper_left), 0);
+
+    assert_eq!(upper_left.distance(&upper_middle), 1);
+    assert_eq!(upper_middle.distance(&upper_left), 1);
+
+    assert_eq!(upper_left.distance(&upper_right), 2);
+    assert_eq!(upper_right.distance(&upper_left), 2);
+
+    assert_eq!(upper_left.distance(&left_of_center), 1);
+    assert_eq!(left_of_center.distance(&upper_left), 1);
+
+    assert_eq!(upper_left.distance(&center), 2);
+    assert_eq!(center.distance(&upper_left), 2);
+
+    assert_eq!(upper_left.distance(&right_of_center), 3);
+    assert_eq!(right_of_center.distance(&upper_left), 3);
+
+    assert_eq!(upper_left.distance(&lower_left), 2);
+    assert_eq!(lower_left.distance(&upper_left), 2);
+
+    assert_eq!(upper_left.distance(&lower_middle), 3);
+    assert_eq!(lower_middle.distance(&upper_left), 3);
+
+    assert_eq!(upper_left.distance(&lower_right), 4);
+    assert_eq!(lower_right.distance(&upper_left), 4);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  #[test]
   fn line_test() {
-    assert!(Line::new(0, 0, 0, 0).is_err());
-    assert!(Line::new(0, 0, 0, 1).is_ok());
-    assert!(Line::new(0, 0, 1, 0).is_ok());
-    assert!(Line::new(0, 0, 1, 1).is_err());
-    assert!(Line::new(0, 0, 1, 2).is_err());
-    assert!(Line::new(0, 0, 2, 1).is_err());
+    assert!(Line::new(Point::new(0, 0), Point::new(0, 0)).is_err());
+    assert!(Line::new(Point::new(0, 0), Point::new(1, 0)).is_ok());
+    assert!(Line::new(Point::new(0, 0), Point::new(0, 1)).is_ok());
+    assert!(Line::new(Point::new(0, 0), Point::new(1, 1)).is_err());
+    assert!(Line::new(Point::new(0, 0), Point::new(2, 1)).is_err());
+    assert!(Line::new(Point::new(0, 0), Point::new(1, 2)).is_err());
 
-    assert!(Line::from_points(&Point::new(0, 0), &Point::new(0, 0)).is_err());
-    assert!(Line::from_points(&Point::new(0, 0), &Point::new(1, 0)).is_ok());
-    assert!(Line::from_points(&Point::new(0, 0), &Point::new(0, 1)).is_ok());
-    assert!(Line::from_points(&Point::new(0, 0), &Point::new(1, 1)).is_err());
-    assert!(Line::from_points(&Point::new(0, 0), &Point::new(2, 1)).is_err());
-    assert!(Line::from_points(&Point::new(0, 0), &Point::new(1, 2)).is_err());
-
-    let upper_horizontal = Line::new(0, 0, 4, 0).unwrap();
-    let lower_horizontal = Line::new(0, 2, 4, 2).unwrap();
-    let offset_horizontal = Line::new(1, 5, 5, 5).unwrap();
+    let upper_horizontal = Line::new(Point::new(0, 0), Point::new(0, 4)).unwrap();
+    let lower_horizontal = Line::new(Point::new(2, 0), Point::new(2, 4)).unwrap();
+    let offset_horizontal = Line::new(Point::new(5, 1), Point::new(5, 5)).unwrap();
     //   012345
     // 0 xxxxx_
     // 1 ______
@@ -137,9 +172,9 @@ mod tests {
     // 5 ______
     // 5 _xxxxx
 
-    let left_vertical = Line::new(0, 0, 0, 4).unwrap();
-    let right_vertical = Line::new(4, 0, 4, 4).unwrap();
-    let offset_vertical = Line::new(5, 1, 5, 5).unwrap();
+    let left_vertical = Line::new(Point::new(0, 0), Point::new(4, 0)).unwrap();
+    let right_vertical = Line::new(Point::new(0, 4), Point::new(4, 4)).unwrap();
+    let offset_vertical = Line::new(Point::new(1, 5), Point::new(5, 5)).unwrap();
     //   012345
     // 0 x___x_
     // 1 x___xx
@@ -300,26 +335,17 @@ mod tests {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn rectangle_test() {
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 0)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 0)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(0, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 1)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(1, 2)).is_err());
-    assert!(Rectangle::from_points(&Point::new(0, 0), &Point::new(2, 2)).is_ok());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(0, 0)).is_err());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(1, 0)).is_err());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(0, 1)).is_err());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(1, 1)).is_err());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(2, 1)).is_err());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(1, 2)).is_err());
+    assert!(Rectangle::new(Point::new(0, 0), Point::new(2, 2)).is_ok());
 
-    assert!(Rectangle::new(0, 0, 0, 0).is_err());
-    assert!(Rectangle::new(0, 0, 0, 1).is_err());
-    assert!(Rectangle::new(0, 0, 1, 0).is_err());
-    assert!(Rectangle::new(0, 0, 1, 1).is_err());
-    assert!(Rectangle::new(0, 0, 1, 2).is_err());
-    assert!(Rectangle::new(0, 0, 2, 1).is_err());
-    assert!(Rectangle::new(0, 0, 2, 2).is_ok());
-
-    let rect = Rectangle::from_points(&Point::new(10, 0), &Point::new(15, 5)).unwrap();
-    let overlapping_rect = Rectangle::from_points(&Point::new(13, 3), &Point::new(18, 8)).unwrap();
-    let nonoverlapping_rect =
-      Rectangle::from_points(&Point::new(16, 16), &Point::new(20, 20)).unwrap();
+    let rect = Rectangle::new(Point::new(10, 0), Point::new(15, 5)).unwrap();
+    let overlapping_rect = Rectangle::new(Point::new(13, 3), Point::new(18, 8)).unwrap();
+    let nonoverlapping_rect = Rectangle::new(Point::new(16, 16), Point::new(20, 20)).unwrap();
 
     assert!(rect.width() == 6);
     assert!(rect.height() == 6);
@@ -331,15 +357,15 @@ mod tests {
     assert!(overlapping_rect.overlaps(&rect));
     assert!(!nonoverlapping_rect.overlaps(&rect));
 
-    let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
+    let rect1 = Rectangle::new(Point::new(10, 10), Point::new(20, 20)).unwrap();
 
     assert_eq!(
       rect1.contained_rectangle().unwrap(),
-      Rectangle::new(11, 11, 19, 19).unwrap()
+      Rectangle::new(Point::new(11, 11), Point::new(19, 19)).unwrap()
     );
 
     assert_eq!(
-      Rectangle::new(0, 0, 2, 2)
+      Rectangle::new(Point::new(0, 0), Point::new(2, 2))
         .unwrap()
         .contained_rectangle()
         .unwrap(),
@@ -350,7 +376,7 @@ mod tests {
     );
 
     assert_eq!(
-      Rectangle::new(0, 0, 2, 2)
+      Rectangle::new(Point::new(0, 0), Point::new(2, 2))
         .unwrap()
         .contained_rectangle()
         .unwrap(),
@@ -365,7 +391,7 @@ mod tests {
   #[test]
   #[should_panic]
   fn rectangle_panic_test_1() {
-    Rectangle::new(0, 0, 1, 1).unwrap();
+    Rectangle::new(Point::new(0, 0), Point::new(1, 1)).unwrap();
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -395,97 +421,97 @@ mod tests {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn line_touches_rectangle_test() {
-    let rect1 = Rectangle::new(10, 10, 20, 20).unwrap();
-    let rect2 = Rectangle::new(30, 10, 40, 20).unwrap();
+    let rect1 = Rectangle::new(Point::new(10, 10), Point::new(20, 20)).unwrap();
+    let rect2 = Rectangle::new(Point::new(10, 30), Point::new(20, 40)).unwrap();
 
-    // A horizontal line touching the right edge of rect1 and the left edge of rect2 (but not overlapping with either):
-    let line1 = Line::new(20, 15, 30, 15).unwrap();
+    // A horizontal line touching the right edge of rect1 and the left edge of rect2:
+    let line1 = Line::new(Point::new(15, 20), Point::new(15, 30)).unwrap();
     assert!(line1.touches(&rect1));
     assert!(line1.touches(&rect2));
     assert!(line1.overlaps(&rect1));
     assert!(line1.overlaps(&rect2));
 
     // A horizontal line touching the right edge of rect1 that doesn't quite reach the left edge of rect2:
-    let line2 = Line::new(20, 15, 29, 15).unwrap();
+    let line2 = Line::new(Point::new(15, 20), Point::new(15, 29)).unwrap();
     assert!(line2.touches(&rect1));
     assert!(!line2.touches(&rect2));
     assert!(line2.overlaps(&rect1));
     assert!(!line2.overlaps(&rect2));
 
     // A horizontal line touching the left edge of rect2 that doesn't quite reach the right edge of rect2:
-    let line3 = Line::new(21, 15, 30, 15).unwrap();
+    let line3 = Line::new(Point::new(15, 21), Point::new(15, 30)).unwrap();
     assert!(!line3.touches(&rect1));
     assert!(line3.touches(&rect2));
     assert!(!line3.overlaps(&rect1));
     assert!(line3.overlaps(&rect2));
 
     // A horizontal line between rect1 and the left edge of rect2 that overlaps with rect1:
-    let line4 = Line::new(19, 15, 30, 15).unwrap();
+    let line4 = Line::new(Point::new(15, 19), Point::new(15, 30)).unwrap();
     assert!(!line4.touches(&rect1));
     assert!(line4.touches(&rect2));
     assert!(line4.overlaps(&rect1));
     assert!(line4.overlaps(&rect2));
 
     // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with rect2:
-    let line5 = Line::new(20, 15, 31, 15).unwrap();
+    let line5 = Line::new(Point::new(15, 20), Point::new(15, 31)).unwrap();
     assert!(line5.touches(&rect1));
     assert!(!line5.touches(&rect2));
     assert!(line5.overlaps(&rect1));
     assert!(line5.overlaps(&rect2));
 
     // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with both:
-    let line6 = Line::new(19, 15, 41, 15).unwrap();
+    let line6 = Line::new(Point::new(15, 19), Point::new(15, 41)).unwrap();
     assert!(!line6.touches(&rect1));
     assert!(!line6.touches(&rect2));
     assert!(line6.overlaps(&rect1));
     assert!(line6.overlaps(&rect2));
 
-    let lower_rect = Rectangle::new(10, 30, 20, 40).unwrap();
+    let lower_rect = Rectangle::new(Point::new(30, 10), Point::new(40, 20)).unwrap();
 
     // A vertical line touching the bottom edge of rect1 and the top edge of lower_rect (but not overlapping with either):
-    let line7 = Line::new(15, 20, 15, 30).unwrap();
+    let line7 = Line::new(Point::new(20, 15), Point::new(30, 15)).unwrap();
     assert!(line7.touches(&rect1));
     assert!(line7.touches(&lower_rect));
     assert!(line7.overlaps(&rect1));
     assert!(line7.overlaps(&lower_rect));
 
     // A vertical line touching the bottom edge of rect1 that doesn't quite reach the top edge of lower_rect:
-    let line8 = Line::new(15, 20, 15, 29).unwrap();
+    let line8 = Line::new(Point::new(20, 15), Point::new(29, 15)).unwrap();
     assert!(line8.touches(&rect1));
     assert!(!line8.touches(&lower_rect));
     assert!(line8.overlaps(&rect1));
     assert!(!line8.overlaps(&lower_rect));
 
     // A vertical line touching the top edge of lower_rect that doesn't quite reach the bottom edge of rect1:
-    let line9 = Line::new(15, 21, 15, 30).unwrap();
+    let line9 = Line::new(Point::new(21, 15), Point::new(30, 15)).unwrap();
     assert!(!line9.touches(&rect1));
     assert!(line9.touches(&lower_rect));
     assert!(!line9.overlaps(&rect1));
     assert!(line9.overlaps(&lower_rect));
 
     // A vertical line between rect1 and the top edge of lower_rect that overlaps with rect1:
-    let line10 = Line::new(15, 19, 15, 30).unwrap();
+    let line10 = Line::new(Point::new(19, 15), Point::new(30, 15)).unwrap();
     assert!(!line10.touches(&rect1));
     assert!(line10.touches(&lower_rect));
     assert!(line10.overlaps(&rect1));
     assert!(line10.overlaps(&lower_rect));
 
     // A vertical line between the bottom edge of rect1 and the top edge of lower_rect that overlaps with lower_rect:
-    let line11 = Line::new(15, 20, 15, 31).unwrap();
+    let line11 = Line::new(Point::new(20, 15), Point::new(31, 15)).unwrap();
     assert!(line11.touches(&rect1));
     assert!(!line11.touches(&lower_rect));
     assert!(line11.overlaps(&rect1));
     assert!(line11.overlaps(&lower_rect));
 
     // A horizontal line that isn't properly touching rect1 and rect2 because it strikes their corners:
-    let line12 = Line::new(10, 10, 30, 10).unwrap();
+    let line12 = Line::new(Point::new(10, 10), Point::new(10, 30)).unwrap();
     assert!(!line12.touches(&rect1));
     assert!(line12.overlaps(&rect1));
     assert!(!line12.touches(&rect2));
     assert!(line12.overlaps(&rect2));
 
     // A vertical line that isn't properly touching rect1 and lower_rect because it strikes their corners:
-    let line13 = Line::new(10, 10, 10, 30).unwrap();
+    let line13 = Line::new(Point::new(10, 10), Point::new(30, 10)).unwrap();
     assert!(!line13.touches(&rect1));
     assert!(line13.overlaps(&rect1));
     assert!(!line13.touches(&lower_rect));
@@ -495,27 +521,6 @@ mod tests {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn find_rectangle_test() {
-    // //                   1111111111111111
-    // //   0123457890abcdef0123456789abcdef
-    // // 0 xxxxx  x    xxxxx
-    // // 1 x   x  x    x   x
-    // // 3 x   x       x   x
-    // // 4 x   xxxxxx  x   x
-    // // 5 xxxxx       xxxxx
-
-    // let mut lines = vec![
-    //   Line::new(0, 0, 0, 5).unwrap(),
-    //   Line::new(0, 0, 4, 0).unwrap(),
-    //   Line::new(0, 5, 4, 5).unwrap(),
-    //   Line::new(12, 0, 12, 5).unwrap(),
-    //   Line::new(12, 0, 16, 0).unwrap(),
-    //   Line::new(12, 5, 16, 5).unwrap(),
-    //   Line::new(16, 0, 16, 5).unwrap(),
-    //   Line::new(4, 0, 4, 5).unwrap(),
-    //   Line::new(5, 4, 10, 4).unwrap(),
-    //   Line::new(8, 0, 8, 1).unwrap(),
-    // ];
-
     //                   1111111111111111
     //   0123457890abcdef0123456789abcdef
     // 0 xxxxxxx
@@ -529,14 +534,14 @@ mod tests {
     // 9    xxxxxxx
 
     let lines = vec![
-      Line::new(0, 0, 7, 0).unwrap(),
-      Line::new(3, 4, 16, 4).unwrap(),
-      Line::new(0, 7, 7, 7).unwrap(),
-      Line::new(3, 9, 16, 9).unwrap(),
-      Line::new(0, 0, 0, 7).unwrap(),
-      Line::new(7, 0, 7, 7).unwrap(),
-      Line::new(3, 4, 3, 9).unwrap(),
-      Line::new(16, 4, 16, 9).unwrap(),
+      Line::new(Point::new(0, 0), Point::new(0, 7)).unwrap(),
+      Line::new(Point::new(4, 3), Point::new(4, 16)).unwrap(),
+      Line::new(Point::new(7, 0), Point::new(7, 7)).unwrap(),
+      Line::new(Point::new(9, 3), Point::new(9, 16)).unwrap(),
+      Line::new(Point::new(0, 0), Point::new(7, 0)).unwrap(),
+      Line::new(Point::new(0, 7), Point::new(7, 7)).unwrap(),
+      Line::new(Point::new(4, 3), Point::new(9, 3)).unwrap(),
+      Line::new(Point::new(4, 16), Point::new(9, 16)).unwrap(),
     ];
 
     let mut leftover_lines = Vec::new();
@@ -556,8 +561,17 @@ mod tests {
 
     assert!(rects.len() == 2);
     assert!(leftover_lines.len() == 0);
-    assert_eq!(rects[0], Rectangle::new(0, 0, 7, 7).unwrap());
-    assert_eq!(rects[1], Rectangle::new(3, 4, 16, 9).unwrap());
+    assert_eq!(
+      rects[0],
+      Rectangle {
+        top_left: Point::new(0, 0),
+        bottom_right: Point::new(7, 7)
+      }
+    );
+    assert_eq!(
+      rects[1],
+      Rectangle::new(Point::new(4, 3), Point::new(9, 16)).unwrap()
+    );
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////

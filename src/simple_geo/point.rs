@@ -45,4 +45,28 @@ impl Point {
     (self.col as isize - other.col as isize).abs() as usize
       + (self.line as isize - other.line as isize).abs() as usize
   }
+
+  pub fn flip(&self) -> Self {
+    Self::new(self.col, self.line)
+  }
+
+  pub fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    let new_line = if line_offset < 0 {
+      self.line.checked_sub((-line_offset) as usize)
+    } else {
+      self.line.checked_add(line_offset as usize)
+    };
+
+    let new_col = if col_offset < 0 {
+      self.col.checked_sub((-col_offset) as usize)
+    } else {
+      self.col.checked_add(col_offset as usize)
+    };
+
+    // Construct new Point or panic on error
+    match (new_line, new_col) {
+      (Some(line), Some(col)) => Self::new(line, col),
+      _ => panic!("Offset results in underflow or overflow"),
+    }
+  }
 }

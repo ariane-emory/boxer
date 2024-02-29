@@ -45,7 +45,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
             let mut tmp_vec: Vec<&T> = vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
 
-            let rect = Rectangle::from_points(&tmp_vec[0].start(), &tmp_vec[3].end()).unwrap();
+            let rect = Rectangle::new(tmp_vec[0].start(), tmp_vec[3].end()).unwrap();
 
             rects.push(rect);
 

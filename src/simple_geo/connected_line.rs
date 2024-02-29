@@ -23,7 +23,8 @@ pub struct ConnectedLine {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for ConnectedLine {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "{:?} ⇼ {:?}", self.start, self.end)
+    let prefix = if self.is_vertical() { "V" } else { "H" };
+    write!(f, "{}{:?} ⇼ {:?}", prefix, self.start, self.end)
   }
 }
 
@@ -39,33 +40,37 @@ impl Positional for ConnectedLine {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LineMethods for ConnectedLine {}
+impl LineMethods for ConnectedLine {
+  fn flip(&self) -> Self {
+    Self::new(
+      self.start().flip(),
+      self.end().flip(),
+      self.start_connects_to,
+      self.end_connects_to,
+    )
+    .unwrap()
+  }
+
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    Self::new(
+      self.start.offset_by(line_offset, col_offset),
+      self.end.offset_by(line_offset, col_offset),
+      self.start_connects_to,
+      self.end_connects_to,
+    )
+    .unwrap()
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLine {
   pub fn new(
-    start_col: usize,
-    start_line: usize,
-    end_col: usize,
-    end_line: usize,
+    start: Point,
+    end: Point,
     start_connects_to: ConnectionType,
     end_connects_to: ConnectionType,
   ) -> GeoResult<Self> {
-    Self::from_points(
-      &Point::new(start_line, start_col),
-      &Point::new(end_line, end_col),
-      start_connects_to,
-      end_connects_to,
-    )
-  }
-
-  pub fn from_points(
-    start: &Point,
-    end: &Point,
-    start_connects_to: ConnectionType,
-    end_connects_to: ConnectionType,
-  ) -> GeoResult<Self> {
-    let (start, end) = Line::from_points(start, end)?.points();
+    let (start, end) = Line::new(start, end)?.points();
 
     Ok(Self {
       start,
