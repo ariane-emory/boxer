@@ -353,16 +353,20 @@ impl<'a> Block for LogicNor<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RiseCounter<'a> {
   input: &'a BlockOutput<bool>,
-  last_state: bool,
+  max: &'a BlockOutput<usize>,
   count: BlockOutput<usize>,
+  at_max: BlockOutput<bool>,
+  last_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RiseCounter<'a> {
-  fn new(input: &'a BlockOutput<bool>) -> Self {
+  fn new(input: &'a BlockOutput<bool>, max: &'a BlockOutput<usize>) -> Self {
     RiseCounter {
       input,
-      last_state: false,
+      max,
       count: BlockOutput::new(0),
+      at_max: BlockOutput::new(false),
+      last_state: false,
     }
   }
 }
@@ -372,7 +376,13 @@ impl<'a> Block for RiseCounter<'a> {
   fn step(&mut self) {
     let read = *self.input.read();
 
-    if read && !self.last_state {
+    if self.count.read() == self.max.read() {
+      self.at_max.set(true);
+    } else {
+      self.at_max.set(false);
+    }
+
+    if (!*self.at_max.read()) && *self.input.read() && !self.last_state {
       self.count.set(self.count.read() + 1);
     }
 
@@ -465,7 +475,7 @@ pub struct TON<'a> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> TON<'a> {
-  pub fn new(delay: &'a BlockOutput<usize>, reset: &'a BlockOutput) -> Self {
+  pub fn new(delay: &'a BlockOutput<usize>, reset: &'a BlockOutput<bool>) -> Self {
     TON {
       output: BlockOutput::new(false),
       count: BlockOutput::new(0),
