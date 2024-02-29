@@ -46,7 +46,7 @@ impl Point {
       + (self.line as isize - other.line as isize).abs() as usize
   }
 
-  pub fn invert(&self) -> Self {
+  pub fn flip(&self) -> Self {
     Self::new(self.col, self.line)
   }
 

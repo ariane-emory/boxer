@@ -41,10 +41,10 @@ impl Positional for ConnectedLine {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl LineMethods for ConnectedLine {
-  fn invert(&self) -> Self {
+  fn flip(&self) -> Self {
     Self::new(
-      self.start().invert(),
-      self.end().invert(),
+      self.start().flip(),
+      self.end().flip(),
       self.start_connects_to,
       self.end_connects_to,
     )

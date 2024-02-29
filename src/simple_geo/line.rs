@@ -28,8 +28,8 @@ impl Positional for Line {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl LineMethods for Line {
-  fn invert(&self) -> Self {
-    Self::new(self.start().invert(), self.end().invert()).unwrap()
+  fn flip(&self) -> Self {
+    Self::new(self.start().flip(), self.end().flip()).unwrap()
   }
 
   fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
