@@ -141,39 +141,39 @@ impl<'a, T: std::ops::Rem<Output = T> + Copy> MathMod<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct FixedValue<T> {
+struct Fixed<T> {
   value: T,
   output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> FixedValue<T> {
+impl<T: Copy> Fixed<T> {
   pub fn new(value: T) -> Self {
-    FixedValue {
+    Fixed {
       value,
       output: BlockOutput::new(value),
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T> Block for FixedValue<T> {
+impl<T> Block for Fixed<T> {
   fn step(&mut self) {}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct SelectValue<'a, T> {
+struct Select<'a, T> {
   selector: &'a BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
   output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: Copy> SelectValue<'a, T> {
+impl<'a, T: Copy> Select<'a, T> {
   pub fn new(
     selector: &'a BlockOutput<bool>,
     left: &'a BlockOutput<T>,
     right: &'a BlockOutput<T>,
   ) -> Self {
-    SelectValue {
+    Select {
       selector,
       left,
       right,
@@ -182,7 +182,7 @@ impl<'a, T: Copy> SelectValue<'a, T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: Clone> Block for SelectValue<'a, T> {
+impl<'a, T: Clone> Block for Select<'a, T> {
   fn step(&mut self) {
     if *self.selector.read() {
       self.output.set(self.left.read().clone());
