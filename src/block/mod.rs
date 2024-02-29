@@ -77,7 +77,7 @@ struct RisingTrigger<'a> {
 impl<'a> RisingTrigger<'a> {
   fn new(source: &'a BlockOutput<bool>) -> Self {
     RisingTrigger {
-      last_state: false,
+      source,
       output: BlockOutput::new(false),
     }
   }
@@ -85,15 +85,15 @@ impl<'a> RisingTrigger<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block for RisingTrigger<'_> {
   fn step(&mut self) {
-    if output.read() {
-      output.set(false);
+    if *self.output.read() {
+      self.output.set(false);
     }
 
     let read = *self.source.read();
 
-    if read && !self.last_state {
+    if read && !*self.output.read() {
       println!("Rising edge detected!");
-      output.set(true);
+      self.output.set(true);
     }
   }
 }
