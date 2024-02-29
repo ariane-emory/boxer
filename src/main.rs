@@ -57,7 +57,7 @@ fn main() -> io::Result<()> {
       let horiz_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'-')));
       let process_horiz = make_process_fun(&horiz_linemaker);
 
-      proess_file(filename, process_horiz, process_vert)?;
+      process_file(filename, process_horiz, process_vert)?;
 
       println!("");
 
