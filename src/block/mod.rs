@@ -423,7 +423,7 @@ impl<'a> FallingTrigger<'a> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for FallingTrigger<'_> {
+impl<'a> Block for FallingTrigger<'a> {
   fn step(&mut self) {
     let last_state = *self.input.read();
     let input = *self.input.read();
