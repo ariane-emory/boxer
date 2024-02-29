@@ -26,16 +26,168 @@ pub trait Block {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct Adder<'a, T> {
-  left_addend: &'a BlockOutput<T>,
-  right_addend: &'a BlockOutput<T>,
+struct MathAdder<'a, T> {
+  left: &'a BlockOutput<T>,
+  right: &'a BlockOutput<T>,
+  output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T> Adder<'a, T> {
-  pub fn new(left_addend: &'a BlockOutput<T>, right_addend: &'a BlockOutput<T>) -> Self {
-    Adder {
-      left_addend,
-      right_addend,
+impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdder<'a, T> {
+  fn step(&mut self) {
+    self.output.set(*self.left.read() + *self.right.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Add<Output = T> + Copy> MathAdder<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    MathAdder {
+      left,
+      right,
+      output: BlockOutput::new(*left.read() + *right.read()),
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct MathSubtractor<'a, T> {
+  left: &'a BlockOutput<T>,
+  right: &'a BlockOutput<T>,
+  output: BlockOutput<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Sub<Output = T> + Copy> Block for MathSubtractor<'a, T> {
+  fn step(&mut self) {
+    self.output.set(*self.left.read() - *self.right.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Sub<Output = T> + Copy> MathSubtractor<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    MathSubtractor {
+      left,
+      right,
+      output: BlockOutput::new(*left.read() - *right.read()),
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct MathMultiplier<'a, T> {
+  left: &'a BlockOutput<T>,
+  right: &'a BlockOutput<T>,
+  output: BlockOutput<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Mul<Output = T> + Copy> Block for MathMultiplier<'a, T> {
+  fn step(&mut self) {
+    self.output.set(*self.left.read() * *self.right.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Mul<Output = T> + Copy> MathMultiplier<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    MathMultiplier {
+      left,
+      right,
+      output: BlockOutput::new(*left.read() * *right.read()),
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct MathDiv<'a, T> {
+  left: &'a BlockOutput<T>,
+  right: &'a BlockOutput<T>,
+  output: BlockOutput<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Div<Output = T> + Copy> Block for MathDiv<'a, T> {
+  fn step(&mut self) {
+    self.output.set(*self.left.read() / *self.right.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Div<Output = T> + Copy> MathDiv<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    MathDiv {
+      left,
+      right,
+      output: BlockOutput::new(*left.read() / *right.read()),
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct MathMod<'a, T> {
+  left: &'a BlockOutput<T>,
+  right: &'a BlockOutput<T>,
+  output: BlockOutput<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Rem<Output = T> + Copy> Block for MathMod<'a, T> {
+  fn step(&mut self) {
+    self.output.set(*self.left.read() % *self.right.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Rem<Output = T> + Copy> MathMod<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    MathMod {
+      left,
+      right,
+      output: BlockOutput::new(*left.read() % *right.read()),
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct FixedValue<T> {
+  value: T,
+  output: BlockOutput<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy> FixedValue<T> {
+  pub fn new(value: T) -> Self {
+    FixedValue {
+      value,
+      output: BlockOutput::new(value),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T> Block for FixedValue<T> {
+  fn step(&mut self) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct SelectValue<'a, T> {
+  selector: &'a BlockOutput<bool>,
+  left: &'a BlockOutput<T>,
+  right: &'a BlockOutput<T>,
+  output: BlockOutput<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: Copy> SelectValue<'a, T> {
+  pub fn new(
+    selector: &'a BlockOutput<bool>,
+    left: &'a BlockOutput<T>,
+    right: &'a BlockOutput<T>,
+  ) -> Self {
+    SelectValue {
+      selector,
+      left,
+      right,
+      output: BlockOutput::new(*left.read()),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: Clone> Block for SelectValue<'a, T> {
+  fn step(&mut self) {
+    if *self.selector.read() {
+      self.output.set(self.left.read().clone());
+    } else {
+      self.output.set(self.right.read().clone());
     }
   }
 }
