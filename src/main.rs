@@ -23,6 +23,24 @@ use std::io::{self};
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+fn make_proc_fun(lm: Box<RefCell<ConnectedLineMaker>>) -> Box<dyn Fn(&Point, &u8)> {
+  Box::new(move |pos: &Point, byte: &u8| {
+    if pos.col == 0 {
+      println!("");
+    }
+
+    if 0 != (*byte & 128) {
+      panic!("Found non-ASCII byte {} at {:?}", byte, pos);
+    }
+
+    let mut lm = lm.borrow_mut();
+    lm.process(pos, byte);
+
+    println!("Horiz {:?}: '{}'", pos, *byte as char);
+  })
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   let filename = "./data/single.box";
   let mut rectangles = Vec::new();
@@ -58,8 +76,9 @@ fn main() -> io::Result<()> {
           println!("");
         }
 
-        // Don't bother checking if byte is in the ASCII range since it was already checked during
-        // the vertical pass.
+        if 0 != (*byte & 128) {
+          panic!("Found non-ASCII byte {} at {:?}", byte, pos);
+        }
 
         let mut lm = horiz_linemaker_twin.borrow_mut();
         lm.process(pos, byte);
