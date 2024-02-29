@@ -88,5 +88,10 @@ fn main() -> io::Result<()> {
   adder.step();
   println!("Adder: {}", adder.output.read());
 
+  let flip = block::Fixed<bool>::new(false);
+  let ten = block::Fixed<usize>::new(10);
+  let ctr = block::RiseCounter::new(&flip.output, &ten.output);
+
+  
   Ok(())
 }
