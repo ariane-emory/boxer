@@ -387,3 +387,71 @@ impl Block for RandomUsize {
     self.output.set(rand::random());
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
+pub struct TimerOn {
+  pub output: BlockOutput<bool>,
+  count: BlockOutput<usize>,
+  delay: usize,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl TimerOn {
+  pub fn new(delay: usize) -> Self {
+    TimerOn {
+      output: BlockOutput::new(false),
+      count: BlockOutput::new(0),
+      delay,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for TimerOn {
+  fn step(&mut self) {
+    if *self.output.read() {
+      self.count.set(self.count.read() + 1);
+    } else {
+      self.count.set(0);
+    }
+
+    if *self.count.read() >= self.delay {
+      self.output.set(true);
+    } else {
+      self.output.set(false);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
+pub struct TimerOff {
+  pub output: BlockOutput<bool>,
+  count: BlockOutput<usize>,
+  delay: usize,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl TimerOff {
+  pub fn new(delay: usize) -> Self {
+    TimerOff {
+      output: BlockOutput::new(false),
+      count: BlockOutput::new(0),
+      delay,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for TimerOff {
+  fn step(&mut self) {
+    if !*self.output.read() {
+      self.count.set(self.count.read() + 1);
+    } else {
+      self.count.set(0);
+    }
+
+    if *self.count.read() >= self.delay {
+      self.output.set(false);
+    } else {
+      self.output.set(true);
+    }
+  }
+}
