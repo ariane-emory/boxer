@@ -42,7 +42,6 @@ impl ConnectedLineMaker {
         println!("CREATE LINE: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
-        // self.process(pos, byte);
       } else if byte != self.line_body_char {
         println!("broke line, distance = {}!", pos.distance(&begin));
         self.line_begin = None; // HERE?

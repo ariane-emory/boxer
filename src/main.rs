@@ -47,7 +47,7 @@ fn make_process_fun(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  let filename = "./data/simple.box";
+  let filename = "./data/tangle.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
@@ -55,7 +55,7 @@ fn main() -> io::Result<()> {
   {
     let mut all_lines = Vec::new();
 
-    // Closure/RefCell scope:
+    // RefCell scope:
     {
       let (vert_linemaker, process_vert) = make_process_fun(b'|', |pos, byte| {
         println!("Vert:  {:?}: '{}'", pos, byte as char);
@@ -86,7 +86,7 @@ fn main() -> io::Result<()> {
         println!("Vert line:  {:?}", line);
         all_lines.push(line);
       }
-    } // End of closure/RefCell scope.
+    } // End of RefCell scope.
 
     find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
   } // End of all_lines scope.
