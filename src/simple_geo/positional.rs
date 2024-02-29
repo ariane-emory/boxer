@@ -129,11 +129,11 @@ pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   fn top_right(&self) -> Point {
-    Point::new(self.bottom_right().col, self.top_left().line)
+    Point::new(self.top_left().line, self.bottom_right().col)
   }
 
   fn bottom_left(&self) -> Point {
-    Point::new(self.top_left().col, self.bottom_right().line)
+    Point::new(self.bottom_right().line, self.top_left().col)
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
