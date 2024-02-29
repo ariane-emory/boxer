@@ -59,9 +59,11 @@ impl<'a> RiseCounter<'a> {
 impl<'a> Block for RiseCounter<'a> {
   fn step(&mut self) {
     let read = *self.source.read();
+
     if read && !self.last_state {
       self.count.set(self.count.read() + 1);
     }
+
     self.last_state = read;
   }
 }
@@ -69,14 +71,29 @@ impl<'a> Block for RiseCounter<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 struct RisingTrigger<'a> {
   source: &'a BlockOutput<bool>,
-  last_state: bool,
+  output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RisingTrigger<'a> {
   fn new(source: &'a BlockOutput<bool>) -> Self {
     RisingTrigger {
-      source,
       last_state: false,
+      output: BlockOutput::new(false),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for RisingTrigger<'_> {
+  fn step(&mut self) {
+    if output.read() {
+      output.set(false);
+    }
+
+    let read = *self.source.read();
+
+    if read && !self.last_state {
+      println!("Rising edge detected!");
+      output.set(true);
     }
   }
 }
