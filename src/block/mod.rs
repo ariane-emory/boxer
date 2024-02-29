@@ -193,9 +193,19 @@ impl<'a, T: Clone> Block for Select<'a, T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct GreaterThan<'a, T> {
+  pub output: BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  pub output: BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T> GreaterThan<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    GreaterThan {
+      output: BlockOutput::new(false),
+      left,
+      right,
+    }
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::cmp::PartialOrd> Block for GreaterThan<'a, T> {
@@ -206,9 +216,19 @@ impl<'a, T: std::cmp::PartialOrd> Block for GreaterThan<'a, T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct LessThan<'a, T> {
+  pub output: BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T> LessThan<'a, T> {
+  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+    LessThan {
+      output: BlockOutput::new(false),
+      left,
+      right,
+    }
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::cmp::PartialOrd> Block for LessThan<'a, T> {
@@ -439,16 +459,16 @@ impl Block for RandomUsize {
 // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
 pub struct TON<'a> {
   pub output: BlockOutput<bool>,
+  pub count: BlockOutput<usize>,
   delay: &'a BlockOutput<usize>,
-  count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> TON<'a> {
   pub fn new(delay: &'a BlockOutput<usize>) -> Self {
     TON {
       output: BlockOutput::new(false),
+      count: BlockOutput::new(0),
       delay,
-      count: 0,
     }
   }
 }
@@ -456,12 +476,12 @@ impl<'a> TON<'a> {
 impl<'a> Block for TON<'a> {
   fn step(&mut self) {
     if *self.output.read() {
-      self.count = self.count + 1;
+      self.count.set(self.count.read() + 1);
     } else {
-      self.count = 0;
+      self.count.set(0);
     }
 
-    if self.count >= *self.delay.read() {
+    if *self.count.read() >= *self.delay.read() {
       self.output.set(true);
     } else {
       self.output.set(false);
@@ -473,16 +493,16 @@ impl<'a> Block for TON<'a> {
 // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
 pub struct TOF<'a> {
   pub output: BlockOutput<bool>,
+  pub count: BlockOutput<usize>,
   delay: &'a BlockOutput<usize>,
-  count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> TOF<'a> {
   pub fn new(delay: &'a BlockOutput<usize>) -> Self {
     TOF {
       output: BlockOutput::new(false),
+      count: BlockOutput::new(0),
       delay,
-      count: 0,
     }
   }
 }
@@ -490,12 +510,12 @@ impl<'a> TOF<'a> {
 impl<'a> Block for TOF<'a> {
   fn step(&mut self) {
     if !*self.output.read() {
-      self.count = self.count + 1;
+      self.count.set(self.count.read() + 1);
     } else {
-      self.count = 0;
+      self.count.set(0);
     }
 
-    if self.count >= *self.delay.read() {
+    if *self.count.read() >= *self.delay.read() {
       self.output.set(false);
     } else {
       self.output.set(true);
@@ -509,7 +529,7 @@ struct TP<'a> {
   pub output: BlockOutput<bool>,
   input: &'a BlockOutput<bool>,
   count_from: &'a BlockOutput<usize>,
-  count: usize,
+  count: BlockOutput<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> TP<'a> {
@@ -518,7 +538,7 @@ impl<'a> TP<'a> {
       output: BlockOutput::new(false),
       input,
       count_from,
-      count: 0,
+      count: BlockOutput::new(0),
     }
   }
 }
@@ -526,13 +546,13 @@ impl<'a> TP<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> Block for TP<'a> {
   fn step(&mut self) {
-    if *self.input.read() && !*self.output.read() {
-      self.count = *self.count_from.read();
+    if *self.input.read() {
+      self.count.set(*self.count_from.read());
     }
 
-    if self.count > 0 {
+    if *self.count.read() > 0usize {
       self.output.set(true);
-      self.count -= 1;
+      self.count.set(self.count.read() - 1);
     } else {
       self.output.set(false);
     }
