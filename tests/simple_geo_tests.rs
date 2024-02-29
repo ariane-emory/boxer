@@ -111,6 +111,48 @@ mod tests {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
+  fn point_distance() {
+    let upper_left = Point::new(0, 0);
+    let upper_middle = Point::new(0, 1);
+    let upper_right = Point::new(0, 2);
+
+    let left_of_center = Point::new(1, 0);
+    let center = Point::new(1, 1);
+    let right_of_center = Point::new(1, 2);
+
+    let lower_left = Point::new(2, 0);
+    let lower_middle = Point::new(2, 1);
+    let lower_right = Point::new(2, 2);
+
+    assert_eq!(upper_left.distance(&upper_left), 0);
+
+    assert_eq!(upper_left.distance(&upper_middle), 1);
+    assert_eq!(upper_middle.distance(&upper_left), 1);
+
+    assert_eq!(upper_left.distance(&upper_right), 2);
+    assert_eq!(upper_right.distance(&upper_left), 2);
+
+    assert_eq!(upper_left.distance(&left_of_center), 1);
+    assert_eq!(left_of_center.distance(&upper_left), 1);
+
+    assert_eq!(upper_left.distance(&center), 2);
+    assert_eq!(center.distance(&upper_left), 2);
+
+    assert_eq!(upper_left.distance(&right_of_center), 3);
+    assert_eq!(right_of_center.distance(&upper_left), 3);
+
+    assert_eq!(upper_left.distance(&lower_left), 2);
+    assert_eq!(lower_left.distance(&upper_left), 2);
+
+    assert_eq!(upper_left.distance(&lower_middle), 3);
+    assert_eq!(lower_middle.distance(&upper_left), 3);
+
+    assert_eq!(upper_left.distance(&lower_right), 4);
+    assert_eq!(lower_right.distance(&upper_left), 4);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  #[test]
   fn line_test() {
     assert!(Line::new(Point::new(0, 0), Point::new(0, 0)).is_err());
     assert!(Line::new(Point::new(0, 0), Point::new(1, 0)).is_ok());
