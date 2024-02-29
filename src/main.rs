@@ -24,7 +24,7 @@ fn main() -> io::Result<()> {
   let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
-  let line_offset = 1;
+  let line_offset = 0;
 
   // all_lines scope:
   {
@@ -40,8 +40,9 @@ fn main() -> io::Result<()> {
         }
 
         // invert line/column for vertical pass:
-        let pos = Point::new(pos.col, pos.line);
+        let pos = Point::new(pos.col, pos.line + line_offset);
         let mut lm = vert_linemaker_twin.borrow_mut();
+
         lm.process(&pos, byte);
 
         println!("Vert  {:?}: '{}'", pos, *byte as char);
@@ -52,8 +53,9 @@ fn main() -> io::Result<()> {
       let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
         // Don't bother checking if byte is in the ASCII range since it was already checked during
         // the vertical pass.
-        let pos = Point::new(pos.line, pos.col);
+        let pos = Point::new(pos.line + line_offset, pos.col);
         let mut lm = horiz_linemaker_twin.borrow_mut();
+
         lm.process(&pos, byte);
 
         println!("Horiz {:?}: '{}'", pos, *byte as char);
