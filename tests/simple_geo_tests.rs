@@ -388,7 +388,7 @@ mod tests {
   #[test]
   fn line_touches_rectangle_test() {
     let rect1 = Rectangle::new(Point::new(10, 10), Point::new(20, 20)).unwrap();
-    let rect2 = Rectangle::new(Point::new(30, 10), Point::new(40, 20)).unwrap();
+    let rect2 = Rectangle::new(Point::new(10, 30), Point::new(20, 40)).unwrap();
 
     // A horizontal line touching the right edge of rect1 and the left edge of rect2 (but not overlapping with either):
     let line1 = Line::new(20, 15, 30, 15).unwrap();
@@ -432,7 +432,7 @@ mod tests {
     assert!(line6.overlaps(&rect1));
     assert!(line6.overlaps(&rect2));
 
-    let lower_rect = Rectangle::new(Point::new(10, 30), Point::new(20, 40)).unwrap();
+    let lower_rect = Rectangle::new(Point::new(30, 10), Point::new(40, 20)).unwrap();
 
     // A vertical line touching the bottom edge of rect1 and the top edge of lower_rect (but not overlapping with either):
     let line7 = Line::new(15, 20, 15, 30).unwrap();
