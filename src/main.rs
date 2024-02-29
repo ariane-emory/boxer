@@ -39,7 +39,7 @@ fn main() -> io::Result<()> {
           panic!("Found non-ASCII byte {} at {:?}", byte, pos);
         }
 
-        let pos = Point::new(pos.line, pos.col);
+        let pos = Point::new(pos.col, pos.line);
         let mut lm = vert_linemaker_twin.borrow_mut();
         lm.process(&pos, byte);
 
@@ -51,7 +51,7 @@ fn main() -> io::Result<()> {
       let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
         // Don't bother checking if byte is in the ASCII range since it was already checked during
         // the vertical pass.
-        let pos = Point::new(pos.col, pos.line);
+        let pos = Point::new(pos.line, pos.col);
         let mut lm = horiz_linemaker_twin.borrow_mut();
         lm.process(&pos, byte);
 
