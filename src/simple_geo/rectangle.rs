@@ -30,21 +30,7 @@ impl Positional for Rectangle {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
-  pub fn new
-  // (
-  //   start_col: usize,
-  //   start_line: usize,
-  //   end_col: usize,
-  //   end_line: usize,
-  // ) -> GeoResult<Self> {
-  //   Self::from_points(
-  //     Point::new(start_line, start_col),
-  //     Point::new(end_line, end_col),
-  //   )
-  // }
-
-  // pub fn from_points
-    (start: Point, end: Point) -> GeoResult<Self> {
+  pub fn new (start: Point, end: Point) -> GeoResult<Self> {
     // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
     // right corner... but, they might have been passed in a different order, so we're going to
     // create our own points using the minimum/maximum line and column from the arguments:
