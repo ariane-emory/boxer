@@ -39,7 +39,7 @@ impl AnchoredLineMaker {
         self.line_begin = None;
         self.process(pos, byte);
       } else if *byte != self.line_body_char {
-        // println!("nullify line.");
+        println!("nullify line.");
         self.line_begin = None; // HERE?
       }
     } else if *byte == b'+' {
