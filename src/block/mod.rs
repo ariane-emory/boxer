@@ -85,15 +85,13 @@ impl<'a> RisingTrigger<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block for RisingTrigger<'_> {
   fn step(&mut self) {
-    if *self.output.read() {
-      self.output.set(false);
-    }
+    let last_state = *self.source.read();
+    let input = *self.source.read();
 
-    let read = *self.source.read();
-
-    if read && !*self.output.read() {
-      println!("Rising edge detected!");
+    if input && !last_state {
       self.output.set(true);
+    } else {
+      self.output.set(false);
     }
   }
 }
