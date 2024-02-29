@@ -10,14 +10,14 @@ pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
   fn top_side(&self) -> Line {
     Line::new(
       self.top_left(),
-      Point::new(self.bottom_right().col, self.top_left().line),
+      Point::new(self.top_left().line, self.bottom_right().col),
     )
     .unwrap()
   }
 
   fn bottom_side(&self) -> Line {
     Line::new(
-      Point::new(self.top_left().col, self.bottom_right().line),
+      Point::new(self.bottom_right().line, self.top_left().col),
       self.bottom_right(),
     )
     .unwrap()
@@ -26,14 +26,14 @@ pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
   fn left_side(&self) -> Line {
     Line::new(
       self.top_left(),
-      Point::new(self.top_left().col, self.bottom_right().line),
+      Point::new(self.bottom_right().line, self.top_left().col),
     )
     .unwrap()
   }
 
   fn right_side(&self) -> Line {
     Line::new(
-      Point::new(self.bottom_right().col, self.top_left().line),
+      Point::new(self.top_left().line, self.bottom_right().col),
       self.bottom_right(),
     )
     .unwrap()
