@@ -21,11 +21,14 @@ use std::io::{self};
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn make_process_fun(
-  label: String,
-  char: u8,
-) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&Point, &u8)>) {
-  let lm = ConnectedLineMaker::new(char);
+fn make_process_fun<F>(
+  line_body_char: u8,
+  custom_printer: F,
+) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&Point, &u8)>)
+where
+  F: Fn(Point, u8) + 'static,
+{
+  let lm = ConnectedLineMaker::new(line_body_char);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
 
@@ -40,9 +43,7 @@ fn make_process_fun(
         panic!("Found non-ASCII byte {} at {:?}", byte, pos);
       }
 
-      let tmp = format!("{}:", label);
-      println!("{:8} {:?}: '{}'", tmp, pos, *byte as char);
-
+      custom_printer(*pos, *byte);
       rc_lm_twin.borrow_mut().process(pos, *byte);
     }),
   )
@@ -60,8 +61,12 @@ fn main() -> io::Result<()> {
 
     // Closure/RefCell scope:
     {
-      let (vert_linemaker, process_vert) = make_process_fun(String::from("Vert"), b'|');
-      let (horiz_linemaker, process_horiz) = make_process_fun(String::from("Horiz"), b'-');
+      let (vert_linemaker, process_vert) = make_process_fun(b'|', |pos, byte| {
+        println!("Vert:  {:?}: '{}'", pos, byte as char);
+      });
+      let (horiz_linemaker, process_horiz) = make_process_fun(b'-', |pos, byte| {
+        println!("Horiz: {:?}: '{}'", pos, byte as char);
+      });
 
       process_file(filename, process_horiz, process_vert)?;
 
