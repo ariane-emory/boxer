@@ -29,7 +29,6 @@ fn main() -> io::Result<()> {
 
   // all_lines scope:
   {
-    let _line_offset = 1;
     let mut all_lines = Vec::new();
 
     // Closure/RefCell scope:
@@ -71,18 +70,32 @@ fn main() -> io::Result<()> {
 
       println!("");
 
+      let line_offset = 1;
+
       for line in horiz_linemaker.borrow().lines.iter() {
+        // we'll offset the line by one so that the line numbers are consistent with emacs'
+        // line numbering.
+
+        let line = ConnectedLine::new(
+          Point::new(line.start.line, line.start.col + line_offset),
+          Point::new(line.end.line, line.end.col + line_offset),
+          line.start_connects_to,
+          line.end_connects_to,
+        )
+        .unwrap();
+
         println!("Horiz line: {:?}", line);
-        all_lines.push(*line);
+        all_lines.push(line);
       }
 
       for line in vert_linemaker.borrow().lines.iter() {
-        // we need to flip the row and column on the vertical lines, since the LineMaker will have
-        // made horizontal lines.
+        // we'll offset the line by one so that the line numbers are consistent with emacs'
+        // line numbering. we need to flip the row and column on the vertical lines, since
+        // the LineMaker will have made horizontal lines.
 
         let line = ConnectedLine::new(
-          Point::new(line.start.col, line.start.line),
-          Point::new(line.end.col, line.end.line),
+          Point::new(line.start.col, line.start.line + line_offset),
+          Point::new(line.end.col, line.end.line + line_offset),
           line.start_connects_to,
           line.end_connects_to,
         )
