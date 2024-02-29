@@ -34,12 +34,13 @@ impl AnchoredLineMaker {
       // check the distance between the current position and the line begin position:
       if *byte == b'+' && pos.distance(&begin) > 1 {
         let line = AnchoredLine::from_points(&begin, &pos, Both).unwrap();
-        println!("new line: {:?}", line);
+        // println!("new line: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;
         self.process(pos, byte);
       } else if *byte != self.line_body_char {
-        self.line_begin = None;
+        // println!("nullify line.");
+        self.line_begin = None; // HERE?
       }
     } else if *byte == b'+' {
       self.line_begin = Some(*pos);

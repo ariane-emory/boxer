@@ -35,6 +35,10 @@ fn main() -> io::Result<()> {
       let vert_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'|')));
       let vert_linemaker_twin = Rc::clone(&vert_linemaker);
       let process_vert = Box::new(move |pos: &Point, byte: &u8| {
+        if pos.col == 0 {
+          println!("");
+        }
+
         if 0 != (*byte & 128) {
           panic!("Found non-ASCII byte {} at {:?}", byte, pos);
         }
@@ -50,6 +54,10 @@ fn main() -> io::Result<()> {
       let horiz_linemaker = Rc::new(RefCell::new(AnchoredLineMaker::new(b'-')));
       let horiz_linemaker_twin = Rc::clone(&horiz_linemaker);
       let process_horiz = Box::new(move |pos: &Point, byte: &u8| {
+        if pos.col == 0 {
+          println!("");
+        }
+
         // Don't bother checking if byte is in the ASCII range since it was already checked during
         // the vertical pass.
         let pos = Point::new(pos.line + line_offset, pos.col);
@@ -60,6 +68,8 @@ fn main() -> io::Result<()> {
       });
 
       process_file(filename, process_horiz, process_vert)?;
+
+      println!("");
 
       for line in horiz_linemaker.borrow().lines.iter() {
         println!("Horiz line: {:?}", line);

@@ -1,6 +1,4 @@
-use crate::noisy_println;
 use crate::simple_geo::Point;
-use crate::util::*;
 
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
@@ -145,10 +143,8 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
       for l in &self[1..] {
         s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
       }
-
       s.push_str(" ");
     }
-
     s.push_str("]");
     s
   }
@@ -175,8 +171,6 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
 
         process(&pos, byte);
       }
-
-      noisy_println!("");
     }
   }
 }
