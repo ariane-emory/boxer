@@ -12,8 +12,10 @@ mod util;
 mod simple_matrix;
 
 use line_makers::AnchoredLineMaker;
+
 use process_file::process_file;
 use simple_geo::find_rectangles;
+use simple_geo::AnchoredLine;
 use simple_geo::Point;
 use std::cell::RefCell;
 use std::io::{self};
@@ -75,8 +77,18 @@ fn main() -> io::Result<()> {
       }
 
       for line in vert_linemaker.borrow().lines.iter() {
+        // we need to flip the row and column on the vertical lines, since the LineMaker will have
+        // made horizontal lines.
+
+        let line = AnchoredLine::from_points(
+          &Point::new(line.start.col, line.start.line),
+          &Point::new(line.end.col, line.end.line),
+          line.anchoring,
+        )
+        .unwrap();
+
         println!("Vert line:  {:?}", line);
-        all_lines.push(*line);
+        all_lines.push(line);
       }
     } // End of closure/RefCell scope.
 
