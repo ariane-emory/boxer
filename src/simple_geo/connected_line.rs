@@ -40,7 +40,17 @@ impl Positional for ConnectedLine {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LineMethods for ConnectedLine {}
+impl LineMethods for ConnectedLine {
+  fn invert(&self) -> Self {
+    Self::new(
+      self.start().invert(),
+      self.end().invert(),
+      self.start_connects_to,
+      self.end_connects_to,
+    )
+    .unwrap()
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLine {

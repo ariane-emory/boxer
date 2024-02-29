@@ -88,4 +88,6 @@ pub trait LineMethods: Positional {
       || self.end() == other_line.start()
       || self.end() == other_line.end()
   }
+
+  fn invert(&self) -> Self;
 }
