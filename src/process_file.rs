@@ -13,12 +13,11 @@ pub fn process_file(
   let max_len = max_line_len(path)?;
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
-
-  uniform_matrix.each(process_horiz);
-
   let mut rotated_matrix = rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
   rotated_matrix.reverse();
+
   rotated_matrix.each(process_vert);
+  uniform_matrix.each(process_horiz);
 
   Ok(())
 }
