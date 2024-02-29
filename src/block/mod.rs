@@ -285,6 +285,52 @@ impl<'a> Block for LogicNot<'a> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+struct LogicXor<'a> {
+  pub output: BlockOutput<bool>,
+  left: &'a BlockOutput<bool>,
+  right: &'a BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> LogicXor<'a> {
+  pub fn new(left: &'a BlockOutput<bool>, right: &'a BlockOutput<bool>) -> Self {
+    LogicXor {
+      left,
+      right,
+      output: BlockOutput::new(false),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> Block for LogicXor<'a> {
+  fn step(&mut self) {
+    self.output.set(*self.left.read() ^ *self.right.read());
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct LogicNor<'a> {
+  pub output: BlockOutput<bool>,
+  left: &'a BlockOutput<bool>,
+  right: &'a BlockOutput<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> LogicNor<'a> {
+  pub fn new(left: &'a BlockOutput<bool>, right: &'a BlockOutput<bool>) -> Self {
+    LogicNor {
+      left,
+      right,
+      output: BlockOutput::new(false),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a> Block for LogicNor<'a> {
+  fn step(&mut self) {
+    self.output.set(!(*self.left.read() || *self.right.read()));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RiseCounter<'a> {
   input: &'a BlockOutput<bool>,
   last_state: bool,
@@ -300,6 +346,7 @@ impl<'a> RiseCounter<'a> {
     }
   }
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> Block for RiseCounter<'a> {
   fn step(&mut self) {
