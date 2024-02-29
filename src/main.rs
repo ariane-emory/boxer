@@ -15,6 +15,7 @@ use line_makers::ConnectedLineMaker;
 
 use process_file::process_file;
 use simple_geo::find_rectangles;
+use simple_geo::line_methods::*;
 use simple_geo::ConnectedLine;
 use simple_geo::Point;
 use std::cell::RefCell;
@@ -75,14 +76,7 @@ fn main() -> io::Result<()> {
       // we'll offset the line by one so that the line numbers are consistent with emacs'
       // line numbering.
       for line in horiz_linemaker.borrow().lines.iter() {
-        let line = ConnectedLine::new(
-          line.start.offset_by(line_offset, 0),
-          line.end.offset_by(line_offset, 0),
-          line.start_connects_to,
-          line.end_connects_to,
-        )
-        .unwrap();
-
+        let line = line.offset_by(line_offset, 0);
         println!("Horiz line: {:?}", line);
         all_lines.push(line);
       }
@@ -91,14 +85,7 @@ fn main() -> io::Result<()> {
       // line numbering. we'll also need to flip the row and column on the vertical lines,
       // since the LineMaker will have made horizontal lines.
       for line in vert_linemaker.borrow().lines.iter() {
-        let line = ConnectedLine::new(
-          line.start.flip().offset_by(line_offset, 0),
-          line.end.flip().offset_by(line_offset, 0),
-          line.start_connects_to,
-          line.end_connects_to,
-        )
-        .unwrap();
-
+        let line = line.flip().offset_by(line_offset, 0);
         println!("Vert line:  {:?}", line);
         all_lines.push(line);
       }
