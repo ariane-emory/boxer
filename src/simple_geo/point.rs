@@ -46,37 +46,27 @@ impl Point {
       + (self.line as isize - other.line as isize).abs() as usize
   }
 
-  pub fn flip(&self) -> Self {
+  pub fn invert(&self) -> Self {
     Self::new(self.col, self.line)
   }
 
-  pub fn offset(&self, line_offset: isize, col_offset: isize) -> Self {
-    // if adding the offsets to the existing line/column would over/underflow,
-    // something has gone wrong, panic.
+  pub fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    let new_line = if line_offset < 0 {
+      self.line.checked_sub((-line_offset) as usize)
+    } else {
+      self.line.checked_add(line_offset as usize)
+    };
 
-    if line_offset < 0 && self.line < (-line_offset) as usize {
-      panic!("Line underflow");
+    let new_col = if col_offset < 0 {
+      self.col.checked_sub((-col_offset) as usize)
+    } else {
+      self.col.checked_add(col_offset as usize)
+    };
+
+    // Construct new Point or panic on error
+    match (new_line, new_col) {
+      (Some(line), Some(col)) => Self::new(line, col),
+      _ => panic!("Offset results in underflow or overflow"),
     }
-
-    if col_offset < 0 && self.col < (-col_offset) as usize {
-      panic!("Column underflow");
-    }
-
-    if line_offset > 0 && self.line > (usize::MAX as isize - line_offset) as usize {
-      panic!("Line overflow");
-    }
-
-    if col_offset > 0 && self.col > (usize::MAX as isize - col_offset) as usize {
-      panic!("Column overflow");
-    }
-
-    Self::new(
-      (self.line as isize + line_offset) as usize,
-      (self.col as isize + col_offset) as usize,
-    )
-  }
-
-  pub fn offset_by_point(&self, other: &Self) -> Self {
-    self.offset(other.line as isize, other.col as isize)
   }
 }

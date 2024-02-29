@@ -76,8 +76,8 @@ fn main() -> io::Result<()> {
       // line numbering.
       for line in horiz_linemaker.borrow().lines.iter() {
         let line = ConnectedLine::new(
-          Point::new(line.start.line + line_offset, line.start.col),
-          Point::new(line.end.line + line_offset, line.end.col),
+          line.start.offset_by(line_offset, 0),
+          line.end.offset_by(line_offset, 0),
           line.start_connects_to,
           line.end_connects_to,
         )
@@ -88,12 +88,12 @@ fn main() -> io::Result<()> {
       }
 
       // we'll offset the line by one so that the line numbers are consistent with emacs'
-      // line numbering. we'll also  need to flip the row and column on the vertical lines,
+      // line numbering. we'll also need to invert the row and column on the vertical lines,
       // since the LineMaker will have made horizontal lines.
       for line in vert_linemaker.borrow().lines.iter() {
         let line = ConnectedLine::new(
-          Point::new(line.start.col + line_offset, line.start.line),
-          Point::new(line.end.col + line_offset, line.end.line),
+          line.start.invert().offset_by(line_offset, 0),
+          line.end.invert().offset_by(line_offset, 0),
           line.start_connects_to,
           line.end_connects_to,
         )
