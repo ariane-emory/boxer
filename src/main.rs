@@ -46,7 +46,7 @@ fn make_process_fun(char: u8) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&P
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  let filename = "./data/single.box";
+  let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
