@@ -56,8 +56,8 @@ impl AnchoredLine {
     anchoring: Anchoring,
   ) -> GeoResult<Self> {
     Self::from_points(
-      &Point::new(start_col, start_line),
-      &Point::new(end_col, end_line),
+      &Point::new(start_line, start_col),
+      &Point::new(end_line, end_col),
       anchoring,
     )
   }

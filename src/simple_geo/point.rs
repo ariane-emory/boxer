@@ -4,8 +4,8 @@ use std::fmt;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
-  pub line: usize,
   pub col: usize,
+  pub line: usize,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,8 +28,8 @@ impl Positional for Point {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Point {
-  pub fn new(col: usize, line: usize) -> Self {
-    Self { col, line }
+  pub fn new(line: usize, col: usize) -> Self {
+    Self { line, col }
   }
 
   pub fn is_vertically_aligned_with(&self, other: &Self) -> bool {
