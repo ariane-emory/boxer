@@ -51,10 +51,10 @@ impl LineMethods for AnchoredLine {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl AnchoredLine {
   pub fn new(
-    start_col: usize,
     start_line: usize,
-    end_col: usize,
+    start_col: usize,
     end_line: usize,
+    end_col: usize,
     anchoring: Anchoring,
   ) -> GeoResult<Self> {
     Self::from_points(

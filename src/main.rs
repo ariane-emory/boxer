@@ -80,9 +80,11 @@ fn main() -> io::Result<()> {
         // we need to flip the row and column on the vertical lines, since the LineMaker will have
         // made horizontal lines.
 
-        let line = AnchoredLine::from_points(
-          &Point::new(line.start.col, line.start.line),
-          &Point::new(line.end.col, line.end.line),
+        let line = AnchoredLine::new(
+          line.start.col,
+          line.start.line,
+          line.end.col,
+          line.end.line,
           line.anchoring,
         )
         .unwrap();
