@@ -21,22 +21,29 @@ use std::io::{self};
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn make_process_fun(lm: &Rc<RefCell<ConnectedLineMaker>>) -> Box<dyn Fn(&Point, &u8)> {
-  let twin = Rc::clone(&lm);
-  Box::new(move |pos: &Point, byte: &u8| {
-    if pos.col == 0 {
-      println!("");
-    }
+fn make_process_fun(
+  lm: ConnectedLineMaker,
+) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&Point, &u8)>) {
+  let rclm = Rc::new(RefCell::new(lm));
+  let twin = Rc::clone(&rclm);
 
-    if 0 != (*byte & 128) {
-      panic!("Found non-ASCII byte {} at {:?}", byte, pos);
-    }
+  (
+    rclm,
+    Box::new(move |pos: &Point, byte: &u8| {
+      if pos.col == 0 {
+        println!("");
+      }
 
-    let mut lm = twin.borrow_mut();
-    lm.process(pos, byte);
+      if 0 != (*byte & 128) {
+        panic!("Found non-ASCII byte {} at {:?}", byte, pos);
+      }
 
-    println!("Horiz {:?}: '{}'", pos, *byte as char);
-  })
+      let mut lm = twin.borrow_mut();
+      lm.process(pos, byte);
+
+      println!("Horiz {:?}: '{}'", pos, *byte as char);
+    }),
+  )
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,11 +58,8 @@ fn main() -> io::Result<()> {
 
     // Closure/RefCell scope:
     {
-      let vert_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'|')));
-      let process_vert = make_process_fun(&vert_linemaker);
-
-      let horiz_linemaker = Rc::new(RefCell::new(ConnectedLineMaker::new(b'-')));
-      let process_horiz = make_process_fun(&horiz_linemaker);
+      let (vert_linemaker, process_vert) = make_process_fun(ConnectedLineMaker::new(b'|'));
+      let (horiz_linemaker, process_horiz) = make_process_fun(ConnectedLineMaker::new(b'-'));
 
       process_file(filename, process_horiz, process_vert)?;
 
