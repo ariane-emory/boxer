@@ -65,7 +65,7 @@ impl ConnectedLine {
     start_connects_to: ConnectionType,
     end_connects_to: ConnectionType,
   ) -> GeoResult<Self> {
-    let (start, end) = Line::from_points(start, end)?.points();
+    let (start, end) = Line::new(*start, *end)?.points();
 
     Ok(Self {
       start,
