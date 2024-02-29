@@ -28,7 +28,9 @@ impl fmt::Debug for AnchoredLine {
       Anchoring::Neither => "⤄",
     };
 
-    write!(f, "{:?} {} {:?}", self.start, anchoring, self.end)
+    let prefix = if self.is_vertical() { "V" } else { "H" };
+
+    write!(f, "{}{:?} {} {:?}", prefix, self.start, anchoring, self.end)
   }
 }
 
