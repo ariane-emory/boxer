@@ -11,12 +11,12 @@ impl<T> BlockOutput<T> {
     &self.value
   }
 
-  pub fn set(&mut self, value: T) {
-    self.value = value;
+  pub fn set(&mut self, value: & T) {
+    self.value = *value;
   }
 
-  pub fn new(value: T) -> Self {
-    BlockOutput { value }
+  pub fn new(value: & T) -> Self {
+    BlockOutput { *value }
   }
 }
 
