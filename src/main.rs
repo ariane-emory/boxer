@@ -12,7 +12,7 @@ mod simple_geo;
 mod util;
 mod simple_matrix;
 
-//use block::*;
+use block::*;
 use process_file::*;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
