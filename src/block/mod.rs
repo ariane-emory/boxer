@@ -390,15 +390,15 @@ impl Block for RandomUsize {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
-pub struct TimerOn {
+pub struct TON {
   pub output: BlockOutput<bool>,
   count: BlockOutput<usize>,
   delay: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl TimerOn {
+impl TON {
   pub fn new(delay: usize) -> Self {
-    TimerOn {
+    TON {
       output: BlockOutput::new(false),
       count: BlockOutput::new(0),
       delay,
@@ -406,7 +406,7 @@ impl TimerOn {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TimerOn {
+impl Block for TON {
   fn step(&mut self) {
     if *self.output.read() {
       self.count.set(self.count.read() + 1);
@@ -424,15 +424,15 @@ impl Block for TimerOn {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
-pub struct TimerOff {
+pub struct TOF {
   pub output: BlockOutput<bool>,
   count: BlockOutput<usize>,
   delay: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl TimerOff {
+impl TOF {
   pub fn new(delay: usize) -> Self {
-    TimerOff {
+    TOF {
       output: BlockOutput::new(false),
       count: BlockOutput::new(0),
       delay,
@@ -440,7 +440,7 @@ impl TimerOff {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TimerOff {
+impl Block for TOF {
   fn step(&mut self) {
     if !*self.output.read() {
       self.count.set(self.count.read() + 1);
