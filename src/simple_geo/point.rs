@@ -28,7 +28,7 @@ impl Positional for Point {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Point {
-  pub fn new(col: usize, line: usize) -> Self {
+  pub fn new(line: usize, col: usize) -> Self {
     Self { line, col }
   }
 
