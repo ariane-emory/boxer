@@ -81,5 +81,12 @@ fn main() -> io::Result<()> {
     println!("Leftover line: {:?}", line);
   }
 
+  let one = block::Fixed::new(1);
+  let five = block::Fixed::new(5);
+  let adder = block::MathAdd::new(&one.output, &five.output);
+  println!("Adder: {}", adder.output.get());
+  adder.step();
+  println!("Adder: {}", adder.output.get());
+
   Ok(())
 }

@@ -26,21 +26,21 @@ pub trait Block {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct MathAdder<'a, T> {
+pub struct MathAdd<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<T>,
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdder<'a, T> {
+impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdd<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() + *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy> MathAdder<'a, T> {
+impl<'a, T: std::ops::Add<Output = T> + Copy> MathAdd<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
-    MathAdder {
+    MathAdd {
       left,
       right,
       output: BlockOutput::new(*left.read() + *right.read()),
@@ -49,21 +49,21 @@ impl<'a, T: std::ops::Add<Output = T> + Copy> MathAdder<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct MathSubtractor<'a, T> {
+pub struct MathSub<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<T>,
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Sub<Output = T> + Copy> Block for MathSubtractor<'a, T> {
+impl<'a, T: std::ops::Sub<Output = T> + Copy> Block for MathSub<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() - *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Sub<Output = T> + Copy> MathSubtractor<'a, T> {
+impl<'a, T: std::ops::Sub<Output = T> + Copy> MathSub<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
-    MathSubtractor {
+    MathSub {
       left,
       right,
       output: BlockOutput::new(*left.read() - *right.read()),
@@ -72,21 +72,21 @@ impl<'a, T: std::ops::Sub<Output = T> + Copy> MathSubtractor<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct MathMultiplier<'a, T> {
+pub struct MathMul<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<T>,
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Mul<Output = T> + Copy> Block for MathMultiplier<'a, T> {
+impl<'a, T: std::ops::Mul<Output = T> + Copy> Block for MathMul<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() * *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Mul<Output = T> + Copy> MathMultiplier<'a, T> {
+impl<'a, T: std::ops::Mul<Output = T> + Copy> MathMul<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
-    MathMultiplier {
+    MathMul {
       left,
       right,
       output: BlockOutput::new(*left.read() * *right.read()),
@@ -95,10 +95,10 @@ impl<'a, T: std::ops::Mul<Output = T> + Copy> MathMultiplier<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct MathDiv<'a, T> {
+pub struct MathDiv<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<T>,
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Div<Output = T> + Copy> Block for MathDiv<'a, T> {
@@ -118,10 +118,10 @@ impl<'a, T: std::ops::Div<Output = T> + Copy> MathDiv<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct MathMod<'a, T> {
+pub struct MathMod<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<T>,
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Rem<Output = T> + Copy> Block for MathMod<'a, T> {
@@ -141,15 +141,13 @@ impl<'a, T: std::ops::Rem<Output = T> + Copy> MathMod<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct Fixed<T> {
-  value: T,
-  output: BlockOutput<T>,
+pub struct Fixed<T> {
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Fixed<T> {
   pub fn new(value: T) -> Self {
     Fixed {
-      value,
       output: BlockOutput::new(value),
     }
   }
@@ -160,11 +158,11 @@ impl<T> Block for Fixed<T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct Select<'a, T> {
+pub struct Select<'a, T> {
   selector: &'a BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<T>,
+  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: Copy> Select<'a, T> {
@@ -193,10 +191,10 @@ impl<'a, T: Clone> Block for Select<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct GreaterThan<'a, T> {
+pub struct GreaterThan<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
-  output: BlockOutput<bool>,
+  pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::cmp::PartialOrd> Block for GreaterThan<'a, T> {
@@ -206,7 +204,7 @@ impl<'a, T: std::cmp::PartialOrd> Block for GreaterThan<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct LessThan<'a, T> {
+pub struct LessThan<'a, T> {
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
   output: BlockOutput<bool>,
@@ -219,10 +217,10 @@ impl<'a, T: std::cmp::PartialOrd> Block for LessThan<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct LogicOr<'a> {
+pub struct LogicOr<'a> {
   left: &'a BlockOutput<bool>,
   right: &'a BlockOutput<bool>,
-  output: BlockOutput<bool>,
+  pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> LogicOr<'a> {
@@ -242,10 +240,10 @@ impl<'a> Block for LogicOr<'a> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct LogicAnd<'a> {
+pub struct LogicAnd<'a> {
   left: &'a BlockOutput<bool>,
   right: &'a BlockOutput<bool>,
-  output: BlockOutput<bool>,
+  pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> LogicAnd<'a> {
@@ -265,9 +263,9 @@ impl<'a> Block for LogicAnd<'a> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct LogicNot<'a> {
+pub struct LogicNot<'a> {
   input: &'a BlockOutput<bool>,
-  output: BlockOutput<bool>,
+  pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> LogicNot<'a> {
@@ -286,7 +284,7 @@ impl<'a> Block for LogicNot<'a> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct RiseCounter<'a> {
+pub struct RiseCounter<'a> {
   source: &'a BlockOutput<bool>,
   last_state: bool,
   count: BlockOutput<usize>,
@@ -315,9 +313,9 @@ impl<'a> Block for RiseCounter<'a> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct RisingTrigger<'a> {
+pub struct RisingTrigger<'a> {
   source: &'a BlockOutput<bool>,
-  output: BlockOutput<bool>,
+  pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RisingTrigger<'a> {
@@ -343,9 +341,9 @@ impl Block for RisingTrigger<'_> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct FallingTrigger<'a> {
+pub struct FallingTrigger<'a> {
   source: &'a BlockOutput<bool>,
-  output: BlockOutput<bool>,
+  pub output: BlockOutput<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> FallingTrigger<'a> {
@@ -371,8 +369,8 @@ impl Block for FallingTrigger<'_> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct RandomUsize {
-  output: BlockOutput<usize>,
+pub struct RandomUsize {
+  pub output: BlockOutput<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block for RandomUsize {
