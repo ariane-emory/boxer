@@ -29,9 +29,10 @@ impl AnchoredLineMaker {
     // to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a line).
 
-    // if pos.col == 0 {
-    //   self.line_begin = None;
-    // }
+    if pos.col == 0 {
+      println!("new line!");
+      self.line_begin = None;
+    }
 
     if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least one character long, we need to
@@ -43,7 +44,7 @@ impl AnchoredLineMaker {
         self.line_begin = None;
         self.process(pos, byte);
       } else if *byte != self.line_body_char {
-        println!("nullify line.");
+        println!("broke line!");
         self.line_begin = None; // HERE?
       }
     } else if *byte == b'+' {
