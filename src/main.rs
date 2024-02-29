@@ -5,14 +5,14 @@
 //#![allow(dead_code)]
 
 mod line_makers; //::connected_line_maker;
-mod parse;
+mod process_file;
 mod simple_geo;
 #[macro_use]
 mod util;
 mod simple_matrix;
 
 use line_makers::ConnectedLineMaker;
-use parse::*;
+use process_file::*;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
 use simple_geo::Point;

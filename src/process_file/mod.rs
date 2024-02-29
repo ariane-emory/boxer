@@ -1,3 +1,5 @@
+pub mod process_file;
+
 use crate::simple_geo::Point;
 use crate::simple_matrix::*;
 use crate::util::max_line_len;
