@@ -24,7 +24,7 @@ use std::rc::Rc;
 fn make_process_fun(
   line_body_char: u8,
   custom_printer: impl Fn(Point, u8) + 'static,
-) -> (Rc<RefCell<ConnectedLineMaker>>, Box<dyn Fn(&Point, &u8)>) {
+) -> (Rc<RefCell<ConnectedLineMaker>>, Box<impl Fn(&Point, &u8)>) {
   let lm = ConnectedLineMaker::new(line_body_char);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
