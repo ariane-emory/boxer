@@ -28,7 +28,6 @@ fn make_process_fun(
   let lm = ConnectedLineMaker::new(line_body_char);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
-
   (
     rc_lm,
     Box::new(move |pos: &Point, byte: &u8| {
