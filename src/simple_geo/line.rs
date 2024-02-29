@@ -31,6 +31,14 @@ impl LineMethods for Line {
   fn invert(&self) -> Self {
     Self::new(self.start().invert(), self.end().invert()).unwrap()
   }
+
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    Self::new(
+      self.start.offset_by(line_offset, col_offset),
+      self.end.offset_by(line_offset, col_offset),
+    )
+    .unwrap()
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
