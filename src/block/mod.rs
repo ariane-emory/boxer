@@ -184,9 +184,9 @@ impl<'a, T: Copy> Select<'a, T> {
 impl<'a, T: Copy> Block for Select<'a, T> {
   fn step(&mut self) {
     if *self.selector.read() {
-      self.output.set(self.left.read().clone());
+      self.output.set(*self.left.read());
     } else {
-      self.output.set(self.right.read().clone());
+      self.output.set(*self.right.read());
     }
   }
 }
@@ -395,7 +395,7 @@ impl<'a> RisingTrigger<'a> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for RisingTrigger<'_> {
+impl<'a> Block for RisingTrigger<'a> {
   fn step(&mut self) {
     let last_state = *self.input.read();
     let input = *self.input.read();
