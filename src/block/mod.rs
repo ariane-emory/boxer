@@ -2,21 +2,21 @@
 use rand;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct BlockOutput<T> {
+pub struct BlockOutput<T: Copy> {
   value: T,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T> BlockOutput<T> {
+impl<T: Copy> BlockOutput<T> {
   pub fn read(&self) -> &T {
     &self.value
   }
 
-  pub fn set(&mut self, value: & T) {
-    self.value = *value;
+  pub fn set(&mut self, value: T) {
+    self.value = value;
   }
 
-  pub fn new(value: & T) -> Self {
-    BlockOutput { *value }
+  pub fn new(value: T) -> Self {
+    BlockOutput { value }
   }
 }
 
@@ -26,13 +26,13 @@ pub trait Block {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathAdd<'a, T> {
+pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
   pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdd<'a, T> {
+impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T> {
   fn step(&mut self) {
     println!("MathAdd::step");
     self.output.set(*self.left.read() + *self.right.read());
@@ -50,7 +50,7 @@ impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathSub<'a, T> {
+pub struct MathSub<'a, T: std::ops::Sub<Output = T> + Copy + Default> {
   pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
@@ -73,7 +73,7 @@ impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> MathSub<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathMul<'a, T> {
+pub struct MathMul<'a, T: std::ops::Mul<Output = T> + Copy + Default> {
   pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
@@ -96,7 +96,7 @@ impl<'a, T: std::ops::Mul<Output = T> + Copy + Default> MathMul<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathDiv<'a, T> {
+pub struct MathDiv<'a, T: std::ops::Div<Output = T> + Copy + Default> {
   pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
@@ -119,7 +119,7 @@ impl<'a, T: std::ops::Div<Output = T> + Copy + Default> MathDiv<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathMod<'a, T> {
+pub struct MathMod<'a, T: std::ops::Rem<Output = T> + Copy + Default> {
   pub output: BlockOutput<T>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
@@ -142,7 +142,7 @@ impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> MathMod<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Fixed<T> {
+pub struct Fixed<T: Copy> {
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,12 +154,12 @@ impl<T: Copy> Fixed<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T> Block for Fixed<T> {
+impl<T: Copy> Block for Fixed<T> {
   fn step(&mut self) {}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Select<'a, T> {
+pub struct Select<'a, T: Copy> {
   selector: &'a BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
@@ -181,7 +181,7 @@ impl<'a, T: Copy> Select<'a, T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: Clone> Block for Select<'a, T> {
+impl<'a, T: Copy> Block for Select<'a, T> {
   fn step(&mut self) {
     if *self.selector.read() {
       self.output.set(self.left.read().clone());
@@ -192,13 +192,13 @@ impl<'a, T: Clone> Block for Select<'a, T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct GreaterThan<'a, T> {
+pub struct GreaterThan<'a, T: std::cmp::PartialOrd + Copy> {
   pub output: BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T> GreaterThan<'a, T> {
+impl<'a, T: std::cmp::PartialOrd + Copy> GreaterThan<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     GreaterThan {
       output: BlockOutput::new(false),
@@ -208,20 +208,20 @@ impl<'a, T> GreaterThan<'a, T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::cmp::PartialOrd> Block for GreaterThan<'a, T> {
+impl<'a, T: std::cmp::PartialOrd + Copy> Block for GreaterThan<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() > *self.right.read());
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct LessThan<'a, T> {
+pub struct LessThan<'a, T: std::cmp::PartialOrd + Copy> {
   pub output: BlockOutput<bool>,
   left: &'a BlockOutput<T>,
   right: &'a BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T> LessThan<'a, T> {
+impl<'a, T: std::cmp::PartialOrd + Copy> LessThan<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     LessThan {
       output: BlockOutput::new(false),
@@ -231,7 +231,7 @@ impl<'a, T> LessThan<'a, T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::cmp::PartialOrd> Block for LessThan<'a, T> {
+impl<'a, T: std::cmp::PartialOrd + Copy> Block for LessThan<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() < *self.right.read());
   }
