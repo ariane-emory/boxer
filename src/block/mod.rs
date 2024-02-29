@@ -424,31 +424,31 @@ impl Block for TON {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
-pub struct TOF {
+pub struct TOF<'a> {
   pub output: BlockOutput<bool>,
-  count: BlockOutput<usize>,
-  delay: usize,
+  delay: &'a BlockOutput<usize>,
+  count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl TOF {
-  pub fn new(delay: usize) -> Self {
+impl<'a> TOF<'a> {
+  pub fn new(delay: &'a BlockOutput<usize>) -> Self {
     TOF {
       output: BlockOutput::new(false),
-      count: BlockOutput::new(0),
       delay,
+      count: 0,
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TOF {
+impl<'a> Block for TOF<'a> {
   fn step(&mut self) {
     if !*self.output.read() {
-      self.count.set(self.count.read() + 1);
+      self.count = self.count + 1;
     } else {
-      self.count.set(0);
+      self.count = 0;
     }
 
-    if *self.count.read() >= self.delay {
+    if self.count >= *self.delay.read() {
       self.output.set(false);
     } else {
       self.output.set(true);
