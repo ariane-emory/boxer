@@ -23,7 +23,8 @@ pub struct ConnectedLine {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for ConnectedLine {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "{:?} ⇼ {:?}", self.start, self.end)
+    let prefix = if self.is_vertical() { "V" } else { "H" };
+    write!(f, "{}{:?} ⇼ {:?}", prefix, self.start, self.end)
   }
 }
 

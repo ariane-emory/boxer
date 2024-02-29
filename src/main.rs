@@ -76,8 +76,8 @@ fn main() -> io::Result<()> {
       // line numbering.
       for line in horiz_linemaker.borrow().lines.iter() {
         let line = ConnectedLine::new(
-          Point::new(line.start.line, line.start.col + line_offset),
-          Point::new(line.end.line, line.end.col + line_offset),
+          Point::new(line.start.line + line_offset, line.start.col),
+          Point::new(line.end.line + line_offset, line.end.col),
           line.start_connects_to,
           line.end_connects_to,
         )
@@ -92,8 +92,8 @@ fn main() -> io::Result<()> {
       // since the LineMaker will have made horizontal lines.
       for line in vert_linemaker.borrow().lines.iter() {
         let line = ConnectedLine::new(
-          Point::new(line.start.col, line.start.line + line_offset),
-          Point::new(line.end.col, line.end.line + line_offset),
+          Point::new(line.start.col + line_offset, line.start.line),
+          Point::new(line.end.col + line_offset, line.end.line),
           line.start_connects_to,
           line.end_connects_to,
         )
