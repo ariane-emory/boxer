@@ -34,16 +34,17 @@ pub struct MathAdd<'a, T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a, T: std::ops::Add<Output = T> + Copy> Block for MathAdd<'a, T> {
   fn step(&mut self) {
+    println!("MathAdd::step");
     self.output.set(*self.left.read() + *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy> MathAdd<'a, T> {
+impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathAdd {
       left,
       right,
-      output: BlockOutput::new(*left.read() + *right.read()),
+      output: BlockOutput::new(Default::default()),
     }
   }
 }
@@ -55,18 +56,18 @@ pub struct MathSub<'a, T> {
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Sub<Output = T> + Copy> Block for MathSub<'a, T> {
+impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() - *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Sub<Output = T> + Copy> MathSub<'a, T> {
+impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> MathSub<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathSub {
       left,
       right,
-      output: BlockOutput::new(*left.read() - *right.read()),
+      output: BlockOutput::new(Default::default()),
     }
   }
 }
@@ -78,18 +79,18 @@ pub struct MathMul<'a, T> {
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Mul<Output = T> + Copy> Block for MathMul<'a, T> {
+impl<'a, T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() * *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Mul<Output = T> + Copy> MathMul<'a, T> {
+impl<'a, T: std::ops::Mul<Output = T> + Copy + Default> MathMul<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathMul {
       left,
       right,
-      output: BlockOutput::new(*left.read() * *right.read()),
+      output: BlockOutput::new(Default::default()),
     }
   }
 }
@@ -101,18 +102,18 @@ pub struct MathDiv<'a, T> {
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Div<Output = T> + Copy> Block for MathDiv<'a, T> {
+impl<'a, T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() / *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Div<Output = T> + Copy> MathDiv<'a, T> {
+impl<'a, T: std::ops::Div<Output = T> + Copy + Default> MathDiv<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathDiv {
       left,
       right,
-      output: BlockOutput::new(*left.read() / *right.read()),
+      output: BlockOutput::new(Default::default()),
     }
   }
 }
@@ -124,18 +125,18 @@ pub struct MathMod<'a, T> {
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Rem<Output = T> + Copy> Block for MathMod<'a, T> {
+impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<'a, T> {
   fn step(&mut self) {
     self.output.set(*self.left.read() % *self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Rem<Output = T> + Copy> MathMod<'a, T> {
+impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> MathMod<'a, T> {
   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
     MathMod {
       left,
       right,
-      output: BlockOutput::new(*left.read() % *right.read()),
+      output: BlockOutput::new(Default::default()),
     }
   }
 }
@@ -371,6 +372,14 @@ impl Block for FallingTrigger<'_> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RandomUsize {
   pub output: BlockOutput<usize>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl RandomUsize {
+  pub fn new() -> Self {
+    RandomUsize {
+      output: BlockOutput::new(0),
+    }
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block for RandomUsize {
