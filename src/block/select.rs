@@ -10,12 +10,15 @@ pub struct Select<T: Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Select<T> {
   pub fn new(which: &Signal<bool>, left: &Signal<T>, right: &Signal<T>) -> Self {
-    Select {
+    let mut r = Select {
       output: new_signal(*left.borrow().read()),
       which: Rc::clone(which),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
