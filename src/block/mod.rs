@@ -49,14 +49,14 @@ impl<T: Copy> Block for Value<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
+pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
   pub output: Rc<RefCell<BlockOutput<T>>>,
-  left: &'a Rc<RefCell<BlockOutput<T>>>,
-  right: &'a Rc<RefCell<BlockOutput<T>>>,
+  left: Rc<RefCell<BlockOutput<T>>>,
+  right: Rc<RefCell<BlockOutput<T>>>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T> {
+impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
   fn step(&mut self) {
     println!("MathAdd::step");
     self
@@ -66,15 +66,12 @@ impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T>
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
-  pub fn new(
-    left: &'a Rc<RefCell<BlockOutput<T>>>,
-    right: &'a Rc<RefCell<BlockOutput<T>>>,
-  ) -> Self {
+impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
+  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
     MathAdd {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: left,
-      right: right,
+      left: Rc::clone(left),
+      right: Rc::clone(right),
     }
   }
 }
