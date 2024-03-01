@@ -63,7 +63,8 @@ pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Block<T: Copy + Steppable> {
+pub trait Block<T: Copy> {
+  fn step(&mut self);
   fn output(&self) -> &Signal<T>;
   fn output_value(&self) -> T {
     *self.output().borrow().read()
@@ -73,4 +74,14 @@ pub trait Block<T: Copy + Steppable> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Steppable {
   fn step(&mut self);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy> Steppable for T
+where
+  T: Block<T>,
+{
+  fn step(&mut self) {
+    Block::<T>::step(self);
+  }
 }
