@@ -37,9 +37,9 @@ fn main() -> io::Result<()> {
   let counter_reset = block::Value::new(false);
   let counter_max = Value::new(100);
   let mut counter = Counter::new(
-    &counter_input.output,
-    &counter_reset.output,
-    &counter_max.output,
+    counter_input.output(),
+    counter_reset.output(),
+    counter_max.output(),
   );
 
   for _ in 0..10 {
