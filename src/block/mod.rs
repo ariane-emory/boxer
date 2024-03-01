@@ -626,57 +626,57 @@ impl Block for TP {
 }
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct SRLatch {
-//   pub output: Signal<bool>,
-//   set: Signal<bool>,
-//   reset: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl SRLatch {
-//   pub fn new(set: Signal<bool>, reset: Signal<bool>) -> Self {
-//     SRLatch {
-//       output: new_signal(false),
-//       set,
-//       reset,
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for SRLatch {
-//   fn step(&mut self) {
-//     if *self.set.borrow().read() {
-//       self.output.borrow_mut().set(true);
-//     } else if *self.reset.borrow().read() {
-//       self.output.borrow_mut().set(false);
-//     }
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct SRLatch {
+  pub output: Signal<bool>,
+  set: Signal<bool>,
+  reset: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl SRLatch {
+  pub fn new(set: &Signal<bool>, reset: &Signal<bool>) -> Self {
+    SRLatch {
+      output: new_signal(false),
+      set: Rc::clone(set),
+      reset: Rc::clone(reset),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for SRLatch {
+  fn step(&mut self) {
+    if *self.set.borrow().read() {
+      self.output.borrow_mut().set(true);
+    } else if *self.reset.borrow().read() {
+      self.output.borrow_mut().set(false);
+    }
+  }
+}
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct RSLatch {
-//   pub output: Signal<bool>,
-//   set: Signal<bool>,
-//   reset: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl RSLatch {
-//   pub fn new(set: Signal<bool>, reset: Signal<bool>) -> Self {
-//     RSLatch {
-//       output: new_signal(false),
-//       set,
-//       reset,
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for RSLatch {
-//   fn step(&mut self) {
-//     if *self.reset.borrow().read() {
-//       self.output.borrow_mut().set(false);
-//     } else if *self.set.borrow().read() {
-//       self.output.borrow_mut().set(true);
-//     }
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct RSLatch {
+  pub output: Signal<bool>,
+  set: Signal<bool>,
+  reset: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl RSLatch {
+  pub fn new(set: &Signal<bool>, reset: &Signal<bool>) -> Self {
+    RSLatch {
+      output: new_signal(false),
+      set: Rc::clone(set),
+      reset: Rc::clone(reset),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for RSLatch {
+  fn step(&mut self) {
+    if *self.reset.borrow().read() {
+      self.output.borrow_mut().set(false);
+    } else if *self.set.borrow().read() {
+      self.output.borrow_mut().set(true);
+    }
+  }
+}
