@@ -138,7 +138,6 @@ fn main() -> io::Result<()> {
     let mut sample_and_hold = SampleAndHold::new(add.output(), clock.output(), never.output());
     held_value.set_input(&sample_and_hold.output());
 
-
     // let mut blocks: Vec<&dyn Block<T>> = Vec::new();
     // blocks.push(&square);
     // blocks.push(&select);
