@@ -4,18 +4,19 @@
 #![allow(unused_mut)]
 //#![allow(dead_code)]
 
-mod block;
-mod line_makers; //::connected_line_maker;
-mod process_file;
-mod simple_geo;
-#[macro_use]
-mod util;
-mod simple_matrix;
+// mod block;
+// mod line_makers;
+// mod process_file;
+// mod simple_geo;
+// #[macro_use]
+// mod util;
+// mod simple_matrix;
 
-use block::*;
-use process_file::*;
-use simple_geo::find_rectangles;
-use simple_geo::line_methods::*;
+use boxer::block;
+use boxer::block::*;
+use boxer::process_file::*;
+use boxer::simple_geo::find_rectangles;
+use boxer::simple_geo::line_methods::*;
 use std::cell::RefCell;
 use std::io::{self};
 
