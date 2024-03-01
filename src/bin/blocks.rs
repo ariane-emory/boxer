@@ -10,21 +10,22 @@ use std::io::{self};
 
 fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut printed = 0;
-  let three_quarterways = 3 * width >> 2;
-  let halfways = width >> 1;
   let quarterways = width >> 2;
+  let mut next_div = quarterways;
 
   print!("|");
   for _ in 0..signal {
-    if printed == quarterways || printed == halfways || printed == three_quarterways {
+    if printed == next_div {
       print!("|");
+      next_div = next_div + quarterways;
     }
     print!("{}", char as char);
     printed = printed + 1;
   }
   for _ in 0..(width - signal) {
-    if printed == quarterways || printed == halfways || printed == three_quarterways {
+    if printed == next_div {
       print!("|");
+      next_div = next_div + quarterways;
     }
     print!("{}", char2 as char);
     printed = printed + 1;
