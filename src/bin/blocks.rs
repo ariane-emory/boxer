@@ -15,6 +15,7 @@ fn main() -> io::Result<()> {
   let twenty = block::Value::new(20);
   let mut adder = block::MathAdd::new(&left.output, &left.output);
   let mut subber = block::MathSub::new(&twenty.output, &adder.output);
+  let always_false = block::Value::new(false);
 
   println!("Adder: {}", adder.output.borrow().read());
   println!("Subber: {}", subber.output.borrow().read());
@@ -35,7 +36,7 @@ fn main() -> io::Result<()> {
 
   let flip = Value::new(false);
   let max = Value::new(100);
-  let mut counter = Counter::new(&flip.output, &max.output);
+  let mut counter = Counter::new(&flip.output, &always_false.output, &max.output);
 
   for _ in 0..10 {
     counter.step();
