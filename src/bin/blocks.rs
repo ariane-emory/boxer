@@ -139,7 +139,17 @@ fn main() -> io::Result<()> {
     held_value.set_input(&sample_and_hold.output());
 
 
+    // let mut blocks: Vec<&dyn Block<T>> = Vec::new();
+    // blocks.push(&square);
+    // blocks.push(&select);
+    // blocks.push(&held_value);
+    // blocks.push(&div_held_value_by_itwo);
+    // blocks.push(&div_new_input_by_itwo);
+    // blocks.push(&add);
+    // blocks.push(&sample_and_hold);
+
     for _ in 0..511 {
+      //blocks.iter_mut().for_each(|b| b.step());
       clock.step();
       square.step();
       select.step();
