@@ -43,9 +43,9 @@ fn main() -> io::Result<()> {
     counter_max.output(),
   );
 
-  for _ in 0..40 {
-    println!("counter_input: {}", counter_input.output.borrow().read());
-    println!("Counter: {}", counter.output().borrow().read());
+  for _ in 0..30 {
+    println!("counter input:  {}", counter_input.output.borrow().read());
+    println!("counter output: {}", counter.output().borrow().read());
 
     counter.step();
 
