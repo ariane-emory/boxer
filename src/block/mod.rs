@@ -5,12 +5,6 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Block {
-  fn step(&mut self);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct BlockOutput<T: Copy> {
   value: T,
 }
@@ -37,6 +31,13 @@ fn new_signal<T: Copy>(value: T) -> Signal<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait Block<T: Copy> {
+  fn step(&mut self);
+  fn output(&self) -> &Signal<T>;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Value<T: Copy> {
   pub output: Signal<T>,
 }
@@ -49,8 +50,12 @@ impl<T: Copy> Value<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Block for Value<T> {
+impl<T: Copy> Block<T> for Value<T> {
   fn step(&mut self) {}
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
+  }
 }
 
 
@@ -62,13 +67,17 @@ pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
+impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for MathAdd<T> {
   fn step(&mut self) {
     println!("MathAdd::step");
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() + *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,13 +99,17 @@ pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
+impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for MathSub<T> {
   fn step(&mut self) {
     println!("MathSub::step");
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() - *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,13 +131,17 @@ pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for MathMul<T> {
   fn step(&mut self) {
     println!("MathMul::step");
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() * *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,13 +163,17 @@ pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
+impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for MathDiv<T> {
   fn step(&mut self) {
     println!("MathDiv::step");
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() / *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,13 +195,17 @@ pub struct MathMod<T: std::ops::Rem<Output = T> + Copy + Default> {
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
+impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for MathMod<T> {
   fn step(&mut self) {
     println!("MathMod::step");
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() % *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,30 +222,34 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Select<T: Copy> {
+  pub output: Signal<T>,
   which: Signal<bool>,
   left: Signal<T>,
   right: Signal<T>,
-  pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Select<T> {
   pub fn new(which: &Signal<bool>, left: &Signal<T>, right: &Signal<T>) -> Self {
     Select {
+      output: new_signal(*left.borrow().read()),
       which: Rc::clone(which),
       left: Rc::clone(left),
       right: Rc::clone(right),
-      output: BlockOutput::new(*left.borrow().read()),
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Block for Select<T> {
+impl<T: Copy> Block<T> for Select<T> {
   fn step(&mut self) {
     if *self.which.borrow().read() {
-      self.output.set(*self.left.borrow().read());
+      self.output.borrow_mut().set(*self.left.borrow().read());
     } else {
-      self.output.set(*self.right.borrow().read());
+      self.output.borrow_mut().set(*self.right.borrow().read());
     }
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
   }
 }
 
@@ -242,12 +271,16 @@ impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> Block<bool> for GreaterThan<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() > *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -269,12 +302,16 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> Block for LessThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> Block<bool> for LessThan<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() < *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -296,12 +333,16 @@ impl LogicOr {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for LogicOr {
+impl Block<bool> for LogicOr {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() || *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -323,12 +364,16 @@ impl LogicAnd {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for LogicAnd {
+impl Block<bool> for LogicAnd {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() && *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -348,9 +393,13 @@ impl LogicNot {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for LogicNot {
+impl Block<bool> for LogicNot {
   fn step(&mut self) {
     self.output.borrow_mut().set(!*self.input.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -372,12 +421,16 @@ impl LogicXor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for LogicXor {
+impl Block<bool> for LogicXor {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() ^ *self.right.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -399,12 +452,16 @@ impl LogicNor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for LogicNor {
+impl Block<bool> for LogicNor {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -446,7 +503,7 @@ impl RisingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for RisingTrigger {
+impl Block<bool> for RisingTrigger {
   fn step(&mut self) {
     let last_state = *self.input.borrow().read();
     let input = *self.input.borrow().read();
@@ -456,6 +513,10 @@ impl Block for RisingTrigger {
     } else {
       self.output.borrow_mut().set(false);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -475,7 +536,7 @@ impl FallingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for FallingTrigger {
+impl Block<bool> for FallingTrigger {
   fn step(&mut self) {
     let last_state = *self.input.borrow().read();
     let input = *self.input.borrow().read();
@@ -485,6 +546,10 @@ impl Block for FallingTrigger {
     } else {
       self.output.borrow_mut().set(false);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -502,9 +567,13 @@ impl RandomUsize {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for RandomUsize {
+impl Block<usize> for RandomUsize {
   fn step(&mut self) {
     self.output.borrow_mut().set(rand::random());
+  }
+
+  fn output(&self) -> &Signal<usize> {
+    &self.output
   }
 }
 
@@ -529,7 +598,7 @@ impl TON {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TON {
+impl Block<bool> for TON {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
@@ -547,6 +616,10 @@ impl Block for TON {
     } else {
       self.output.borrow_mut().set(false);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -571,7 +644,7 @@ impl TOF {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TOF {
+impl Block<bool> for TOF {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
@@ -589,6 +662,10 @@ impl Block for TOF {
     } else {
       self.output.borrow_mut().set(true);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -613,7 +690,7 @@ impl TP {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for TP {
+impl Block<bool> for TP {
   fn step(&mut self) {
     if *self.input.borrow().read() {
       self
@@ -631,6 +708,10 @@ impl Block for TP {
     } else {
       self.output.borrow_mut().set(false);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -652,13 +733,17 @@ impl SRLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for SRLatch {
+impl Block<bool> for SRLatch {
   fn step(&mut self) {
     if *self.set.borrow().read() {
       self.output.borrow_mut().set(true);
     } else if *self.reset.borrow().read() {
       self.output.borrow_mut().set(false);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
 
@@ -680,12 +765,16 @@ impl RSLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block for RSLatch {
+impl Block<bool> for RSLatch {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.output.borrow_mut().set(false);
     } else if *self.set.borrow().read() {
       self.output.borrow_mut().set(true);
     }
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
   }
 }
