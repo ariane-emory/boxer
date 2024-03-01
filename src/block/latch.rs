@@ -34,7 +34,7 @@ impl Block<bool> for SRLatch {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RSLatch {
-  pub output: Signal<bool>,
+  output: Signal<bool>,
   set: Signal<bool>,
   reset: Signal<bool>,
 }
@@ -66,7 +66,7 @@ impl Block<bool> for RSLatch {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 struct GenericRSLatch<T: Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   set: Signal<bool>,
   reset: Signal<bool>,
   input: Signal<T>,

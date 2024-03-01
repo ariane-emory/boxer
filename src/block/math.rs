@@ -2,7 +2,7 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Add<T: std::ops::Add<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -33,7 +33,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for Add<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Sub<T: std::ops::Sub<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -64,7 +64,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for Sub<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Mul<T: std::ops::Mul<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -95,7 +95,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for Mul<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Div<T: std::ops::Div<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -126,7 +126,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for Div<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Mod<T: std::ops::Rem<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -157,7 +157,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for Mod<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct LShift {
-  pub output: Signal<usize>,
+  output: Signal<usize>,
   input_value: Signal<usize>,
   input_shift: Signal<usize>,
 }
@@ -188,7 +188,7 @@ impl Block<usize> for LShift {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RShift {
-  pub output: Signal<usize>,
+  output: Signal<usize>,
   input_value: Signal<usize>,
   input_shift: Signal<usize>,
 }

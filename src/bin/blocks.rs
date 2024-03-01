@@ -72,9 +72,9 @@ fn main() -> io::Result<()> {
       select.step();
 
       if *counter.at_max().borrow().read() {
-        counter_reset.output.borrow_mut().set(true);
+        counter_reset.output().borrow_mut().set(true);
         counter.step();
-        counter_reset.output.borrow_mut().set(false);
+        counter_reset.output().borrow_mut().set(false);
       }
 
       // println!("");

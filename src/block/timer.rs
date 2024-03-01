@@ -3,8 +3,8 @@ use crate::block::*;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
 pub struct TON {
-  pub output: Signal<bool>,
-  pub count_output: Signal<usize>,
+  output: Signal<bool>,
+  count_output: Signal<usize>,
   delay: Signal<usize>,
   reset: Signal<bool>,
 }
@@ -17,6 +17,10 @@ impl TON {
       delay: Rc::clone(delay),
       reset: Rc::clone(reset),
     }
+  }
+
+  pub fn count_output(&self) -> &Signal<usize> {
+    &self.count_output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,8 +53,8 @@ impl Block<bool> for TON {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
 pub struct TOF {
-  pub output: Signal<bool>,
-  pub count_output: Signal<usize>,
+  output: Signal<bool>,
+  count_output: Signal<usize>,
   delay: Signal<usize>,
   reset: Signal<bool>,
 }
@@ -63,6 +67,10 @@ impl TOF {
       delay: Rc::clone(delay),
       reset: Rc::clone(reset),
     }
+  }
+
+  pub fn count_output(&self) -> &Signal<usize> {
+    &self.count_output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,8 +103,8 @@ impl Block<bool> for TOF {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-3 'TP' block, which holds it's input for a set number of steps after it rises.
 struct TP {
-  pub output: Signal<bool>,
-  pub count_output: Signal<usize>,
+  output: Signal<bool>,
+  count_output: Signal<usize>,
   input: Signal<bool>,
   count_from: Signal<usize>,
 }
@@ -109,6 +117,10 @@ impl TP {
       input: Rc::clone(input),
       count_from: Rc::clone(count_from),
     }
+  }
+
+  pub fn count_output(&self) -> &Signal<usize> {
+    &self.count_output
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +153,7 @@ impl Block<bool> for TP {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This delays it's input by once cycle:
 pub struct UnitDelay<T: Copy + Default> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   input: Signal<T>,
   previous: Signal<T>,
 }
