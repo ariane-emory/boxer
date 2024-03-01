@@ -128,6 +128,7 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait FormatRows<T> {
+  #[allow(dead_code)]
   fn format_rows(&self) -> String;
 }
 
