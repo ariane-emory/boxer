@@ -1,15 +1,15 @@
 use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
+pub struct Add<T: std::ops::Add<Output = T> + Copy + Default> {
   pub output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
+impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathAdd {
+    Add {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -17,7 +17,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for MathAdd<T> {
+impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for Add<T> {
   fn step(&mut self) {
     self
       .output
@@ -32,15 +32,15 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for MathAdd<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
+pub struct Sub<T: std::ops::Sub<Output = T> + Copy + Default> {
   pub output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
+impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathSub {
+    Sub {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -48,7 +48,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for MathSub<T> {
+impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for Sub<T> {
   fn step(&mut self) {
     self
       .output
@@ -63,15 +63,15 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for MathSub<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
+pub struct Mul<T: std::ops::Mul<Output = T> + Copy + Default> {
   pub output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathMul {
+    Mul {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -79,7 +79,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for MathMul<T> {
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for Mul<T> {
   fn step(&mut self) {
     self
       .output
@@ -94,15 +94,15 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for MathMul<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
+pub struct Div<T: std::ops::Div<Output = T> + Copy + Default> {
   pub output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
+impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathDiv {
+    Div {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -110,7 +110,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for MathDiv<T> {
+impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for Div<T> {
   fn step(&mut self) {
     self
       .output
@@ -125,15 +125,15 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for MathDiv<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathMod<T: std::ops::Rem<Output = T> + Copy + Default> {
+pub struct Mod<T: std::ops::Rem<Output = T> + Copy + Default> {
   pub output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
+impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathMod {
+    Mod {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -141,7 +141,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for MathMod<T> {
+impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for Mod<T> {
   fn step(&mut self) {
     self
       .output
@@ -156,15 +156,15 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for MathMod<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathLShift {
+pub struct LShift {
   pub output: Signal<usize>,
   input_value: Signal<usize>,
   input_shift: Signal<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl MathLShift {
+impl LShift {
   pub fn new(input_value: &Signal<usize>, input_shift: &Signal<usize>) -> Self {
-    MathLShift {
+    LShift {
       output: Rc::new(RefCell::new(BlockOutput::new(0))),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
@@ -172,7 +172,7 @@ impl MathLShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<usize> for MathLShift {
+impl Block<usize> for LShift {
   fn step(&mut self) {
     self
       .output
@@ -187,15 +187,15 @@ impl Block<usize> for MathLShift {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathRShift {
+pub struct RShift {
   pub output: Signal<usize>,
   input_value: Signal<usize>,
   input_shift: Signal<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl MathRShift {
+impl RShift {
   pub fn new(input_value: &Signal<usize>, input_shift: &Signal<usize>) -> Self {
-    MathRShift {
+    RShift {
       output: Rc::new(RefCell::new(BlockOutput::new(0))),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
@@ -203,7 +203,7 @@ impl MathRShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<usize> for MathRShift {
+impl Block<usize> for RShift {
   fn step(&mut self) {
     self
       .output

@@ -23,8 +23,8 @@ fn main() -> io::Result<()> {
   // loop {
   // let left = block::Value::new(1);
   // let twenty = block::Value::new(20);
-  // let mut add = block::MathAdd::new(left.output(), left.output());
-  // let mut subber = block::MathSub::new(twenty.output(), add.output());
+  // let mut add = block::Add::new(left.output(), left.output());
+  // let mut subber = block::Sub::new(twenty.output(), add.output());
 
   // println!("Add: {}", add.output().borrow().read());
   // println!("Subber: {}", subber.output().borrow().read());
@@ -52,10 +52,10 @@ fn main() -> io::Result<()> {
     let counter_max = Value::new(40);
     let mut counter = Counter::new(clock.output(), counter_reset.output(), counter_max.output());
 
-    let mut add = block::MathAdd::new(counter.output(), one.output());
+    let mut add = block::Add::new(counter.output(), one.output());
 
     let two = Value::new(2);
-    let mut div = MathDiv::new(add.output(), two.output());
+    let mut div = Div::new(add.output(), two.output());
 
     let mut square = SquareWave::new(div.output());
 
@@ -109,7 +109,7 @@ fn main() -> io::Result<()> {
     sr_set.input = Some(max_and_not_latched.output().clone());
     sr_reset.input = Some(max_and_latched.output().clone());
 
-    let mut sub = MathSub::new(counter_max.output(), counter.output());
+    let mut sub = Sub::new(counter_max.output(), counter.output());
     let mut select = Select::new(sr.output(), counter.output(), sub.output());
 
     for _ in 0..1024 {
