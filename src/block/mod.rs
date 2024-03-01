@@ -11,16 +11,23 @@ pub trait Block {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct BlockOutput<T: Copy> {
-  value: T,
+  value: RefCell<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> BlockOutput<T> {
-  pub fn read(&self) -> &T { &self.value }
+  pub fn new(value: T) -> Self {
+    BlockOutput {
+      value: RefCell::new(value),
+    }
+  }
 
-  pub fn set(&mut self, value: T) { self.value = value; }
+  pub fn read(&self) -> T { *self.value.borrow() }
 
-  pub fn new(value: T) -> Self { BlockOutput { value } }
+  pub fn set(&mut self, value: T) { *self.value.borrow_mut() = value; }
 }
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,30 +48,38 @@ impl<T: Copy> Block for Value<T> {
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
-  pub output: BlockOutput<T>,
-  left: &'a BlockOutput<T>,
-  right: &'a BlockOutput<T>,
-}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T> {
-  fn step(&mut self) {
-    println!("MathAdd::step");
-    self.output.set(*self.left.read() + *self.right.read());
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
-  pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
-    MathAdd {
-      output: BlockOutput::new(Default::default()),
-      left,
-      right,
-    }
-  }
-}
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
+//   pub output: BlockOutput<T>,
+//   left: &'a RefCell<BlockOutput<T>>,
+//   right: &'a RefCell<BlockOutput<T>>,
+// }
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T> {
+//   fn step(&mut self) {
+//     println!("MathAdd::step");
+//     self
+//       .output
+//       .set(*self.left.borrow().read() + *self.right.borrow().read());
+//   }
+// }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
+// impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
+//   pub fn new(left: &'a RefCell<BlockOutput<T>>, right: &'a RefCell<BlockOutput<T>>) -> Self {
+//     MathAdd {
+//       output: BlockOutput::new(Default::default()),
+//       left: left,
+//       right: right,
+//     }
+//   }
+// }
+
+
+
+
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
