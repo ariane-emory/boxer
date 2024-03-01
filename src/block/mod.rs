@@ -606,23 +606,24 @@ impl TP {
     }
   }
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for TP {
+  fn step(&mut self) {
+    if *self.input.borrow().read() {
+      self
+        .count
+        .borrow_mut()
+        .set(*self.count_from.borrow().read());
+    }
 
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for TP {
-//   fn step(&mut self) {
-//     if *self.input.borrow().read() {
-//       self.count.borrow_mut().set(*self.count_from.borrow().read());
-//     }
-
-//     if *self.count.borrow().read() > 0usize {
-//       self.output.borrow_mut().set(true);
-//       self.count.borrow_mut().set(self.count.borrow().read() - 1);
-//     } else {
-//       self.output.borrow_mut().set(false);
-//     }
-//   }
-// }
+    if *self.count.borrow().read() > 0usize {
+      self.output.borrow_mut().set(true);
+      self.count.borrow_mut().set(self.count.borrow().read() - 1);
+    } else {
+      self.output.borrow_mut().set(false);
+    }
+  }
+}
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
