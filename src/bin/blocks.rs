@@ -70,7 +70,7 @@ fn main() -> io::Result<()> {
       counter_reset.output.borrow_mut().set(false);
     }
 
-    println!("");
+    // println!("");
     // println!("counter input:  {}", fast_square.output.borrow().read());
     // println!("counter output: {}", counter.output().borrow().read());
     // println!("adder output:   {}", adder.output().borrow().read());
