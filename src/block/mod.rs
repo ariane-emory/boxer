@@ -9,6 +9,7 @@ pub mod select;
 pub mod timer;
 pub mod trigger;
 pub mod value;
+pub mod wire;
 
 pub use cmp::*;
 pub use counter::*;
@@ -20,6 +21,7 @@ pub use select::*;
 pub use timer::*;
 pub use trigger::*;
 pub use value::*;
+pub use wire::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;
