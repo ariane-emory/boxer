@@ -43,10 +43,22 @@ fn main() -> io::Result<()> {
     counter_max.output(),
   );
 
-  for _ in 0..30 {
-    println!("counter input:  {}", counter_input.output.borrow().read());
-    println!("counter output: {}", counter.output().borrow().read());
+  let mut square = SquareWave::new(counter.output());
 
+  let max = Value::new(255);
+  let zero = Value::new(0);
+  let mut select = Select::new(square.output(), zero.output(), max.output());
+
+
+  for _ in 0..30 {
+    println!("");
+    //println!("counter input:  {}", counter_input.output.borrow().read());
+    println!("counter output: {}", counter.output().borrow().read());
+    // println!("square output:  {}", square.output().borrow().read());
+    println!("select output:  {}", select.output().borrow().read());
+
+    square.step();
+    select.step();
     counter.step();
 
     if *counter.at_max.borrow().read() {
@@ -58,21 +70,6 @@ fn main() -> io::Result<()> {
     let counter_input_val = *counter_input.output().borrow().read();
     counter_input.output().borrow_mut().set(!counter_input_val);
   }
-
-  let eight = Value::new(8);
-  let mut square = SquareWave::new(eight.output());
-
-  let zero = Value::new(0);
-  let max = Value::new(255);
-  let mut select = Select::new(square.output(), zero.output(), max.output());
-
-  for _ in 0..30 {
-    println!("square output:  {}", square.output().borrow().read());
-    println!("select output:  {}", select.output().borrow().read());
-    square.step();
-    select.step();
-  }
-
 
   Ok(())
 }
