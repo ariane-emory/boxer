@@ -123,9 +123,8 @@ fn main() -> io::Result<()> {
     sr_reset.input = Some(max_and_latched.output().clone());
 
     for _ in 0..1024 {
-      println!("");
+      // println!("");
 
-      sub.step();
       fast_square.step();
       counter.step();
       not_latched.step();
@@ -135,23 +134,25 @@ fn main() -> io::Result<()> {
       delay2.step();
       delay3.step();
       delay4.step();
-      counter_reset();
+      sr.step();
+      sub.step();
       select.step();
+
+      counter_reset_delay.step();
       counter_reset.step();
       sr_set.step();
       sr_reset.step();
-      sr.step();
 
-      println!("counter:             {}", counter.output().borrow().read());
-      println!("counter.at_max:      {}", counter.at_max.borrow().read());
-      println!("counter reset:       {}", counter_reset.output().borrow().read());
-      println!("sr_reset:            {}", sr_reset.output().borrow().read());
-      println!("sr:                  {}", sr.output().borrow().read());
-      println!("sub:                 {}", sub.output().borrow().read());
-      println!("select:              {}", select.output().borrow().read());
-      println!("not_latched:         {}", not_latched.output().borrow().read());
-      println!("max_and_latched:     {}", max_and_latched.output().borrow().read());
-      println!("max_and_not_latched: {}", max_and_not_latched.output().borrow().read());
+      // println!("counter:             {}", counter.output().borrow().read());
+      // println!("counter.at_max:      {}", counter.at_max.borrow().read());
+      // println!("counter reset:       {}", counter_reset.output().borrow().read());
+      // println!("sr_reset:            {}", sr_reset.output().borrow().read());
+      // println!("sr:                  {}", sr.output().borrow().read());
+      // println!("sub:                 {}", sub.output().borrow().read());
+      // println!("select:              {}", select.output().borrow().read());
+      // println!("not_latched:         {}", not_latched.output().borrow().read());
+      // println!("max_and_latched:     {}", max_and_latched.output().borrow().read());
+      // println!("max_and_not_latched: {}", max_and_not_latched.output().borrow().read());
       render(b'x', b'-', select.output(), counter_max.output());
     }
   }

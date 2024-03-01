@@ -43,11 +43,11 @@ impl Block<usize> for Counter {
     self.at_max.borrow_mut().set(at_max);
 
     if reset_rose {
-      println!("Reset rose..");
+      // println!("Reset rose..");
       self.output.borrow_mut().set(0);
       self.at_max.borrow_mut().set(false);
     } else if at_max {
-      println!("At max!");
+      // println!("At max!");
       return;
     } else if input_rose {
       // println!("  Input rose..");
