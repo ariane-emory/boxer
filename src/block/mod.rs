@@ -548,43 +548,43 @@ impl Block for TON {
 }
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
-// pub struct TOF {
-//   pub output: Signal<bool>,
-//   pub count: Signal<usize>,
-//   delay: Signal<usize>,
-//   reset: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl TOF {
-//   pub fn new(delay: Signal<usize>, reset: Signal<bool>) -> Self {
-//     TOF {
-//       output: new_signal(false),
-//       count: new_signal(0),
-//       delay,
-//       reset,
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for TOF {
-//   fn step(&mut self) {
-//     if *self.reset.borrow().read() {
-//       self.count.borrow().set(0);
-//     } else if !*self.output.borrow().read() {
-//       self.count.borrow().set(self.count.borrow().read() + 1);
-//     } else {
-//       self.count.borrow().set(0);
-//     }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
+pub struct TOF {
+  pub output: Signal<bool>,
+  pub count: Signal<usize>,
+  delay: Signal<usize>,
+  reset: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl TOF {
+  pub fn new(delay: &Signal<usize>, reset: &Signal<bool>) -> Self {
+    TOF {
+      output: new_signal(false),
+      count: new_signal(0),
+      delay: Rc::clone(delay),
+      reset: Rc::clone(reset),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for TOF {
+  fn step(&mut self) {
+    if *self.reset.borrow().read() {
+      self.count.borrow_mut().set(0);
+    } else if !*self.output.borrow().read() {
+      self.count.borrow_mut().set(self.count.borrow().read() + 1);
+    } else {
+      self.count.borrow_mut().set(0);
+    }
 
-//     if *self.count.borrow().read() >= *self.delay.borrow().read() {
-//       self.output.borrow_mut().set(false);
-//     } else {
-//       self.output.borrow_mut().set(true);
-//     }
-//   }
-// }
+    if *self.count.borrow().read() >= *self.delay.borrow().read() {
+      self.output.borrow_mut().set(false);
+    } else {
+      self.output.borrow_mut().set(true);
+    }
+  }
+}
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -612,12 +612,12 @@ impl Block for TON {
 // impl Block for TP {
 //   fn step(&mut self) {
 //     if *self.input.borrow().read() {
-//       self.count.borrow().set(*self.count_from.borrow().read());
+//       self.count.borrow_mut().set(*self.count_from.borrow().read());
 //     }
 
 //     if *self.count.borrow().read() > 0usize {
 //       self.output.borrow_mut().set(true);
-//       self.count.borrow().set(self.count.borrow().read() - 1);
+//       self.count.borrow_mut().set(self.count.borrow().read() - 1);
 //     } else {
 //       self.output.borrow_mut().set(false);
 //     }
