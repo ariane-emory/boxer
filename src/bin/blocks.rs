@@ -32,26 +32,17 @@ fn main() -> io::Result<()> {
 
   println!("Adder: {}", adder.output.borrow().read());
   println!("Subber: {}", subber.output.borrow().read());
-  // }
 
-  // let five = block::Value::new(5);
+  let mut flip = Value::new(false);
+  let mut max = Value::new(100);
+  let mut counter = Counter::new(&flip.output, &max.output);
 
-  // println!("Adder: {}", adder.output.read());
-  // adder.step();
-  // println!("Adder: {}", adder.output.read());
-  // left.output.set(2);
-  // adder.step();
-  // println!("Adder: {}", adder.output.read());
-
-  // let mut flip = block::Value::new(false);
-  // let ten = block::Value::new(10);
-  // let mut ctr = block::Counter::new(&flip.output, &ten.output);
-  // println!("Ctr: {}", ctr.count.read());
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
-  // flip.output.set(true);
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
+  for _ in 0..10 {
+    counter.step();
+    println!("flip: {}", flip.output.borrow().read());
+    println!("Counter: {}", counter.output.borrow().read());
+    flip.output.borrow_mut().set(!flip.output.borrow().read());
+  }
 
   Ok(())
 }
