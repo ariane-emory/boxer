@@ -441,7 +441,7 @@ impl RisingTrigger {
   pub fn new(input: &Signal<bool>) -> Self {
     RisingTrigger {
       output: new_signal(false),
-      input,
+      input: Rc::clone(input),
     }
   }
 }
