@@ -9,13 +9,28 @@ use boxer::block::*;
 use std::io::{self};
 
 fn render(char: u8, char2: u8, signal: usize, width: usize) {
+  let mut printed = 0;
+  let quarterways = width >> 2;
+  let mut next_div = quarterways;
+
+  print!("|");
   for _ in 0..signal {
+    if printed == next_div {
+      print!("|");
+      next_div = next_div + quarterways;
+    }
     print!("{}", char as char);
+    printed = printed + 1;
   }
   for _ in 0..(width - signal) {
+    if printed == next_div {
+      print!("|");
+      next_div = next_div + quarterways;
+    }
     print!("{}", char2 as char);
+    printed = printed + 1;
   }
-  println!("");
+  println!("|");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,8 +138,17 @@ fn main() -> io::Result<()> {
     let mut sample_and_hold = SampleAndHold::new(add.output(), clock.output(), never.output());
     held_value.set_input(&sample_and_hold.output());
 
+    // let mut blocks: Vec<&dyn Block<T>> = Vec::new();
+    // blocks.push(&square);
+    // blocks.push(&select);
+    // blocks.push(&held_value);
+    // blocks.push(&div_held_value_by_itwo);
+    // blocks.push(&div_new_input_by_itwo);
+    // blocks.push(&add);
+    // blocks.push(&sample_and_hold);
 
     for _ in 0..511 {
+      //blocks.iter_mut().for_each(|b| b.step());
       clock.step();
       square.step();
       select.step();
