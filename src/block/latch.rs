@@ -136,3 +136,38 @@ impl Block<bool> for DFlipFlop {
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct TFlipFlop {
+  output: Signal<bool>,
+  input: Signal<bool>,
+  clock: Signal<bool>,
+  last_clock: bool,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl TFlipFlop {
+  pub fn new(input: &Signal<bool>, clock: &Signal<bool>) -> Self {
+    TFlipFlop {
+      output: new_signal(false),
+      input: Rc::clone(input),
+      clock: Rc::clone(clock),
+      last_clock: false,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block<bool> for TFlipFlop {
+  fn step(&mut self) {
+    if self.last_clock && !*self.clock.borrow().read() {
+      if *self.input.borrow().read() {
+        self.output.borrow_mut().set(!*self.output.borrow().read());
+      }
+    }
+    self.last_clock = *self.clock.borrow().read();
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
+}
