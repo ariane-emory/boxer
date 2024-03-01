@@ -1,12 +1,12 @@
 use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Wire<T: Copy + Default> {
+pub struct Jump<T: Copy + Default> {
   pub output: Signal<T>,
   input: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> Block<T> for Wire<T> {
+impl<T: Copy + Default> Block<T> for Jump<T> {
   fn step(&mut self) {
     self.output.borrow_mut().set(*self.input.borrow().read());
   }
@@ -16,9 +16,9 @@ impl<T: Copy + Default> Block<T> for Wire<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> Wire<T> {
+impl<T: Copy + Default> Jump<T> {
   pub fn new(input: &Signal<T>) -> Self {
-    Wire {
+    Jump {
       output: new_signal(Default::default()),
       input: Rc::clone(input),
     }
