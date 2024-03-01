@@ -45,13 +45,12 @@ fn main() -> io::Result<()> {
   // println!("");
 
   let one = Value::new(1);
-  let mut fast_square = SquareWave::new(one.output());
+  let mut clock = SquareWave::new(one.output());
 
   if false {
     let counter_reset = block::Value::new(false);
     let counter_max = Value::new(40);
-    let mut counter =
-      Counter::new(fast_square.output(), counter_reset.output(), counter_max.output());
+    let mut counter = Counter::new(clock.output(), counter_reset.output(), counter_max.output());
 
     let mut add = block::MathAdd::new(counter.output(), one.output());
 
@@ -65,7 +64,7 @@ fn main() -> io::Result<()> {
     let mut select = Select::new(square.output(), zero.output(), max.output());
 
     for _x in 0..255 {
-      fast_square.step();
+      clock.step();
       counter.step();
       add.step();
       div.step();
@@ -79,7 +78,7 @@ fn main() -> io::Result<()> {
       }
 
       // println!("");
-      // println!("counter input:  {}", fast_square.output.borrow().read());
+      // println!("counter input:  {}", clock.output.borrow().read());
       // println!("counter output: {}", counter.output().borrow().read());
       // println!("add output:     {}", add.output().borrow().read());
       // println!("square period:  {}", square.period.borrow().read());
@@ -96,8 +95,7 @@ fn main() -> io::Result<()> {
   {
     let counter_max = Value::new(40);
     let mut counter_reset = Jump::new();
-    let mut counter =
-      Counter::new(fast_square.output(), counter_reset.output(), counter_max.output());
+    let mut counter = Counter::new(clock.output(), counter_reset.output(), counter_max.output());
 
     let mut sr_set = Jump::new();
     let mut sr_reset = Jump::new();
@@ -125,7 +123,7 @@ fn main() -> io::Result<()> {
     for _ in 0..1024 {
       // println!("");
 
-      fast_square.step();
+      clock.step();
       counter.step();
       not_latched.step();
       max_and_latched.step();
