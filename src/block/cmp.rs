@@ -9,11 +9,13 @@ pub struct GreaterThan<T: std::cmp::PartialOrd + Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    GreaterThan {
+    let mut r = GreaterThan {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,11 +42,13 @@ pub struct LessThan<T: std::cmp::PartialOrd + Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    LessThan {
+    let mut r = LessThan {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,11 +75,13 @@ pub struct Equal<T: std::cmp::PartialEq + Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> Equal<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    Equal {
+    let mut r = Equal {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,11 +108,13 @@ pub struct NotEqual<T: std::cmp::PartialEq + Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    NotEqual {
+    let mut r = NotEqual {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
