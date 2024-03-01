@@ -22,16 +22,16 @@ fn main() -> io::Result<()> {
   adder.step();
   subber.step();
 
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
+  println!("Adder: {}", adder.output().borrow().read());
+  println!("Subber: {}", subber.output().borrow().read());
 
   left.output.borrow_mut().set(8);
 
   adder.step();
   subber.step();
 
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
+  println!("Adder: {}", adder.output().borrow().read());
+  println!("Subber: {}", subber.output().borrow().read());
 
   let counter_input = Value::new(false);
   let counter_reset = block::Value::new(false);
@@ -45,7 +45,7 @@ fn main() -> io::Result<()> {
   for _ in 0..10 {
     counter.step();
     println!("counter_input: {}", counter_input.output.borrow().read());
-    println!("Counter: {}", counter.output.borrow().read());
+    println!("Counter: {}", counter.output().borrow().read());
 
     let counter_is_at_max = *counter.at_max.borrow().read();
 
@@ -56,8 +56,8 @@ fn main() -> io::Result<()> {
         .set(!*counter_input.output.borrow().read());
     }
 
-    let counter_input_val = *counter_input.output.borrow().read();
-    counter_input.output.borrow_mut().set(!counter_input_val);
+    let counter_input_val = *counter_input.output().borrow().read();
+    counter_input.output().borrow_mut().set(!counter_input_val);
   }
 
 
