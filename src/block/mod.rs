@@ -352,20 +352,20 @@ impl<'a> Block for LogicNor<'a> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct RiseCounter<'a> {
+  pub count: BlockOutput<usize>,
+  pub at_max: BlockOutput<bool>,
   input: &'a BlockOutput<bool>,
   max: &'a BlockOutput<usize>,
-  count: BlockOutput<usize>,
-  at_max: BlockOutput<bool>,
   last_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> RiseCounter<'a> {
   pub fn new(input: &'a BlockOutput<bool>, max: &'a BlockOutput<usize>) -> Self {
     RiseCounter {
-      input,
-      max,
       count: BlockOutput::new(0),
       at_max: BlockOutput::new(false),
+      input,
+      max,
       last_state: false,
     }
   }

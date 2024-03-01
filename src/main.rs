@@ -12,7 +12,7 @@ mod simple_geo;
 mod util;
 mod simple_matrix;
 
-use block::*;
+//use block::*;
 use process_file::*;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
@@ -81,22 +81,22 @@ fn main() -> io::Result<()> {
     println!("Leftover line: {:?}", line);
   }
 
-  let one = block::Value::new(1);
-  let five = block::Value::new(5);
-  let mut adder = block::MathAdd::new(&one.output, &five.output);
-  println!("Adder: {}", adder.output.read());
-  adder.step();
-  println!("Adder: {}", adder.output.read());
+  // let one = block::Value::new(1);
+  // let five = block::Value::new(5);
+  // let mut adder = block::MathAdd::new(&one.output, &five.output);
+  // println!("Adder: {}", adder.output.read());
+  // adder.step();
+  // println!("Adder: {}", adder.output.read());
 
-  let flip = block::Value::new(false);
-  let ten = block::Value::new(10);
-  let ctr = block::RiseCounter::new(&flip.output, &ten.output);
-  println!("Ctr: {}", ctr.output.read());
-  ctr.step();
-  println!("Ctr: {}", ctr.output.read());
-  flip.ouput.set(true);
-  ctr.step();
-  println!("Ctr: {}", ctr.output.read());
+  // let mut flip = block::Value::new(false);
+  // let ten = block::Value::new(10);
+  // let mut ctr = block::RiseCounter::new(&flip.output, &ten.output);
+  // println!("Ctr: {}", ctr.count.read());
+  // ctr.step();
+  // println!("Ctr: {}", ctr.count.read());
+  // flip.output.set(true);
+  // ctr.step();
+  // println!("Ctr: {}", ctr.count.read());
 
   Ok(())
 }
