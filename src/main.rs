@@ -89,13 +89,21 @@ fn main() -> io::Result<()> {
   let mut subber = block::MathSub::new(&twenty.output, &adder.output);
 
   println!("Adder: {}", adder.output.borrow().read());
+  println!("Subber: {}", subber.output.borrow().read());
+
   adder.step();
+  subber.step();
+
   println!("Adder: {}", adder.output.borrow().read());
+  println!("Subber: {}", subber.output.borrow().read());
 
   left.output.borrow_mut().set(8);
 
   adder.step();
+  subber.step();
+
   println!("Adder: {}", adder.output.borrow().read());
+  println!("Subber: {}", subber.output.borrow().read());
 
 
   // let five = block::Value::new(5);
