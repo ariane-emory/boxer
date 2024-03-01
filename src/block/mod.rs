@@ -4,6 +4,7 @@ pub mod counter;
 pub mod latch;
 pub mod logic;
 pub mod math;
+pub mod random;
 pub mod timer;
 pub mod trigger;
 
@@ -11,6 +12,7 @@ pub use cmp::*;
 pub use counter::*;
 pub use logic::*;
 pub use math::*;
+pub use random::*;
 pub use timer::*;
 pub use trigger::*;
 //pub use latch::*;
@@ -107,30 +109,6 @@ impl<T: Copy> Block<T> for Select<T> {
   }
 
   fn output(&self) -> &Signal<T> {
-    &self.output
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct RandomUsize {
-  pub output: Signal<usize>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl RandomUsize {
-  pub fn new() -> Self {
-    RandomUsize {
-      output: new_signal(0),
-    }
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<usize> for RandomUsize {
-  fn step(&mut self) {
-    self.output.borrow_mut().set(rand::random());
-  }
-
-  fn output(&self) -> &Signal<usize> {
     &self.output
   }
 }
