@@ -153,3 +153,65 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for MathMod<T> {
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathLShift {
+  pub output: Signal<usize>,
+  input_value: Signal<usize>,
+  input_shift: Signal<usize>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl MathLShift {
+  pub fn new(input_value: &Signal<usize>, input_shift: &Signal<usize>) -> Self {
+    MathLShift {
+      output: Rc::new(RefCell::new(BlockOutput::new(0))),
+      input_value: Rc::clone(input_value),
+      input_shift: Rc::clone(input_shift),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block<usize> for MathLShift {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(*self.input_value.borrow().read() << *self.input_shift.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<usize> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathRShift {
+  pub output: Signal<usize>,
+  input_value: Signal<usize>,
+  input_shift: Signal<usize>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl MathRShift {
+  pub fn new(input_value: &Signal<usize>, input_shift: &Signal<usize>) -> Self {
+    MathRShift {
+      output: Rc::new(RefCell::new(BlockOutput::new(0))),
+      input_value: Rc::clone(input_value),
+      input_shift: Rc::clone(input_shift),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block<usize> for MathRShift {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(*self.input_value.borrow().read() >> *self.input_shift.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<usize> {
+    &self.output
+  }
+}
