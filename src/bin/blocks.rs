@@ -10,44 +10,27 @@ use std::io::{self};
 
 fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut printed = 0;
-  let halfways = width / 2;
+  let three_quarterways = 3 * width >> 2;
+  let halfways = width >> 1;
+  let quarterways = width >> 2;
 
+  print!("|");
   for _ in 0..signal {
-    if printed == halfways {
+    if printed == quarterways || printed == halfways || printed == three_quarterways {
       print!("|");
     }
     print!("{}", char as char);
     printed = printed + 1;
   }
   for _ in 0..(width - signal) {
-    if printed == halfways {
+    if printed == quarterways || printed == halfways || printed == three_quarterways {
       print!("|");
     }
     print!("{}", char2 as char);
     printed = printed + 1;
   }
-  println!("");
+  println!("|");
 }
-
-// fn render(char: u8, char2: u8, signal: usize, width: usize) {
-//   let halfway = width / 2;
-//   for i in 0..signal {
-//     print!("{}", char as char);
-//     if i == halfway - 1 {
-//       print!("|");
-//     }
-//   }
-//   if signal <= halfway {
-//     print!("|");
-//   }
-//   for i in 0..(width - signal) {
-//     if i == halfway - signal {
-//       print!("|");
-//     }
-//     print!("{}", char2 as char);
-//   }
-//   println!("");
-// }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
