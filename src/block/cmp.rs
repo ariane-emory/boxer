@@ -14,6 +14,7 @@ impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
+
     r.step();
     r
   }
@@ -47,6 +48,7 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
+
     r.step();
     r
   }
@@ -80,6 +82,7 @@ impl<T: std::cmp::PartialEq + Copy> Equal<T> {
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
+
     r.step();
     r
   }
@@ -113,6 +116,7 @@ impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
+
     r.step();
     r
   }

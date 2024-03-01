@@ -9,11 +9,14 @@ pub struct Add<T: std::ops::Add<Output = T> + Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    Add {
+    let mut r = Add {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,11 +43,14 @@ pub struct Sub<T: std::ops::Sub<Output = T> + Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    Sub {
+    let mut r = Sub {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,11 +77,14 @@ pub struct Mul<T: std::ops::Mul<Output = T> + Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    Mul {
+    let mut r = Mul {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,11 +111,14 @@ pub struct Div<T: std::ops::Div<Output = T> + Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    Div {
+    let mut r = Div {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,11 +145,14 @@ pub struct Mod<T: std::ops::Rem<Output = T> + Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
   pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    Mod {
+    let mut r = Mod {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,11 +179,14 @@ pub struct LShift {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl LShift {
   pub fn new(input_value: &Signal<usize>, input_shift: &Signal<usize>) -> Self {
-    LShift {
+    let mut r = LShift {
       output: Rc::new(RefCell::new(BlockOutput::new(0))),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,11 +213,14 @@ pub struct RShift {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl RShift {
   pub fn new(input_value: &Signal<usize>, input_shift: &Signal<usize>) -> Self {
-    RShift {
+    let mut r = RShift {
       output: Rc::new(RefCell::new(BlockOutput::new(0))),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
