@@ -83,7 +83,7 @@ fn main() -> io::Result<()> {
   }
 
   let mut left = block::Value::new(1);
-  let mut adder = block::MathAdd::new(&left.output, &five.output);
+  let mut adder = block::MathAdd::new(&left.output, &left.output);
 
 
   // let five = block::Value::new(5);
