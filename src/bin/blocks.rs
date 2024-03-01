@@ -44,7 +44,7 @@ fn main() -> io::Result<()> {
   let one = Value::new(1);
   let mut fast_square = SquareWave::new(one.output());
 
-  {
+  if false {
     let counter_reset = block::Value::new(false);
     let counter_max = Value::new(40);
     let mut counter = Counter::new(
@@ -90,6 +90,23 @@ fn main() -> io::Result<()> {
 
       // let counter_input_val = *counter_input.output().borrow().read();
       // counter_input.output().borrow_mut().set(!counter_input_val);
+    }
+  }
+
+  {
+    let counter_reset = block::Value::new(false);
+    let counter_max = Value::new(40);
+    let mut counter = Counter::new(
+      fast_square.output(),
+      counter_reset.output(),
+      counter_max.output(),
+    );
+
+    for _ in 0..255 {
+      fast_square.step();
+      counter.step();
+
+      render(b'x', counter.output());
     }
   }
 
