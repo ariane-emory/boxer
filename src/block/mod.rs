@@ -587,25 +587,25 @@ impl Block for TOF {
 }
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// // Basically an IEC 61131-3 'TP' block, which holds it's input for a set number of steps after it rises.
-// struct TP {
-//   pub output: Signal<bool>,
-//   input: Signal<bool>,
-//   count_from: Signal<usize>,
-//   count: Signal<usize>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl TP {
-//   pub fn new(input: Signal<bool>, count_from: Signal<usize>) -> Self {
-//     TP {
-//       output: new_signal(false),
-//       input,
-//       count_from,
-//       count: new_signal(0),
-//     }
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Basically an IEC 61131-3 'TP' block, which holds it's input for a set number of steps after it rises.
+struct TP {
+  pub output: Signal<bool>,
+  pub count: Signal<usize>,
+  input: Signal<bool>,
+  count_from: Signal<usize>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl TP {
+  pub fn new(input: &Signal<bool>, count_from: &Signal<usize>) -> Self {
+    TP {
+      output: new_signal(false),
+      count: new_signal(0),
+      input: Rc::clone(input),
+      count_from: Rc::clone(count_from),
+    }
+  }
+}
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
