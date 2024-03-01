@@ -354,73 +354,82 @@ impl Block for LogicNot {
   }
 }
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct LogicXor {
-//   pub output: Signal<bool>,
-//   left: Signal<bool>,
-//   right: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl LogicXor {
-//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
-//     LogicXor {
-//       left,
-//       right,
-//       output: new_signal(false),
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for LogicXor {
-//   fn step(&mut self) {
-//     self.output.borrow_mut().set(*self.left.borrow().read() ^ *self.right.borrow().read());
-//   }
-// }
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct LogicNor {
-//   pub output: Signal<bool>,
-//   left: Signal<bool>,
-//   right: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl LogicNor {
-//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
-//     LogicNor {
-//       left,
-//       right,
-//       output: new_signal(false),
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for LogicNor {
-//   fn step(&mut self) {
-//     self.output.borrow_mut().set(!(*self.left.borrow().read() || *self.right.borrow().read()));
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct LogicXor {
+  pub output: Signal<bool>,
+  left: Signal<bool>,
+  right: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl LogicXor {
+  pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
+    LogicXor {
+      output: new_signal(false),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for LogicXor {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() ^ *self.right.borrow().read());
+  }
+}
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct RiseCounter {
-//   pub count: BlockOutput<usize>,
-//   pub at_max: Signal<bool>,
-//   input: Signal<bool>,
-//   max: &'a BlockOutput<usize>,
-//   last_state: bool,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl RiseCounter {
-//   pub fn new(input: Signal<bool>, max: &'a BlockOutput<usize>) -> Self {
-//     RiseCounter {
-//       count: new_signal(0),
-//       at_max: new_signal(false),
-//       input,
-//       max,
-//       last_state: false,
-//     }
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct LogicNor {
+  pub output: Signal<bool>,
+  left: Signal<bool>,
+  right: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl LogicNor {
+  pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
+    LogicNor {
+      output: new_signal(false),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for LogicNor {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct RiseCounter {
+  pub count: Signal<usize>,
+  pub at_max: Signal<bool>,
+  input: Signal<bool>,
+  max: Signal<usize>,
+  last_state: bool,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl RiseCounter {
+  pub fn new(input: &Signal<bool>, max: &Signal<usize>) -> Self {
+    RiseCounter {
+      count: new_signal(0),
+      at_max: new_signal(false),
+      input: Rc::clone(input),
+      max: Rc::clone(max),
+      last_state: false,
+    }
+  }
+}
+
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl Block for RiseCounter {
