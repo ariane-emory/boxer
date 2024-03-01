@@ -1,15 +1,15 @@
 use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct LogicOr {
+pub struct LogicalOr {
   pub output: Signal<bool>,
   left: Signal<bool>,
   right: Signal<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LogicOr {
+impl LogicalOr {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    LogicOr {
+    LogicalOr {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -17,7 +17,7 @@ impl LogicOr {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for LogicOr {
+impl Block<bool> for LogicalOr {
   fn step(&mut self) {
     self
       .output
@@ -32,15 +32,15 @@ impl Block<bool> for LogicOr {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct LogicAnd {
+pub struct LogicalAnd {
   pub output: Signal<bool>,
   left: Signal<bool>,
   right: Signal<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LogicAnd {
+impl LogicalAnd {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    LogicAnd {
+    LogicalAnd {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -48,7 +48,7 @@ impl LogicAnd {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for LogicAnd {
+impl Block<bool> for LogicalAnd {
   fn step(&mut self) {
     self
       .output
@@ -63,21 +63,21 @@ impl Block<bool> for LogicAnd {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct LogicNot {
+pub struct LogicalNot {
   pub output: Signal<bool>,
   input: Signal<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LogicNot {
+impl LogicalNot {
   pub fn new(input: &Signal<bool>) -> Self {
-    LogicNot {
+    LogicalNot {
       output: new_signal(false),
       input: Rc::clone(input),
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for LogicNot {
+impl Block<bool> for LogicalNot {
   fn step(&mut self) {
     self.output.borrow_mut().set(!*self.input.borrow().read());
   }
@@ -89,15 +89,15 @@ impl Block<bool> for LogicNot {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct LogicXor {
+struct LogicalXor {
   pub output: Signal<bool>,
   left: Signal<bool>,
   right: Signal<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LogicXor {
+impl LogicalXor {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    LogicXor {
+    LogicalXor {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -105,7 +105,7 @@ impl LogicXor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for LogicXor {
+impl Block<bool> for LogicalXor {
   fn step(&mut self) {
     self
       .output
@@ -120,15 +120,15 @@ impl Block<bool> for LogicXor {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct LogicNor {
+struct LogicalNor {
   pub output: Signal<bool>,
   left: Signal<bool>,
   right: Signal<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl LogicNor {
+impl LogicalNor {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    LogicNor {
+    LogicalNor {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -136,7 +136,7 @@ impl LogicNor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for LogicNor {
+impl Block<bool> for LogicalNor {
   fn step(&mut self) {
     self
       .output

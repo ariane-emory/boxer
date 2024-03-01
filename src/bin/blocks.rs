@@ -101,19 +101,16 @@ fn main() -> io::Result<()> {
     let mut sr_reset = Jump::new();
     let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
 
-    let mut sub = MathSub::new(counter_max.output(), counter.output());
-    // let mut select = Select::new(delay2.output(), counter.output(), sub.output());
-    let mut select = Select::new(sr.output(), counter.output(), sub.output());
+    let mut not_latched = LogicalNot::new(sr.output());
+    let mut max_and_latched = LogicalAnd::new(&counter.at_max, sr.output());
+    let mut max_and_not_latched = LogicalAnd::new(&counter.at_max, not_latched.output());
 
-    let mut not_latched = LogicNot::new(sr.output());
-    let mut max_and_latched = LogicAnd::new(&counter.at_max, sr.output());
-    let mut max_and_not_latched = LogicAnd::new(&counter.at_max, not_latched.output());
-
-    let mut counter_reset_delay = UnitDelay::new(&counter.at_max);
-
-    counter_reset.input = Some(counter_reset_delay.output().clone());
+    counter_reset.input = Some(counter.at_max.clone());
     sr_set.input = Some(max_and_not_latched.output().clone());
     sr_reset.input = Some(max_and_latched.output().clone());
+
+    let mut sub = MathSub::new(counter_max.output(), counter.output());
+    let mut select = Select::new(sr.output(), counter.output(), sub.output());
 
     for _ in 0..1024 {
       // println!("");
@@ -126,8 +123,6 @@ fn main() -> io::Result<()> {
       sr.step();
       sub.step();
       select.step();
-
-      counter_reset_delay.step();
       counter_reset.step();
       sr_set.step();
       sr_reset.step();
