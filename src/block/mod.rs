@@ -53,9 +53,9 @@ impl<T: Copy> Block for Value<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
-  pub output: Rc<RefCell<BlockOutput<T>>>,
-  left: Rc<RefCell<BlockOutput<T>>>,
-  right: Rc<RefCell<BlockOutput<T>>>,
+  pub output: RCBO<T>,
+  left: RCBO<T>,
+  right: RCBO<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
@@ -69,7 +69,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
-  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
     MathAdd {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -81,9 +81,9 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
-  pub output: Rc<RefCell<BlockOutput<T>>>,
-  left: Rc<RefCell<BlockOutput<T>>>,
-  right: Rc<RefCell<BlockOutput<T>>>,
+  pub output: RCBO<T>,
+  left: RCBO<T>,
+  right: RCBO<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
@@ -97,7 +97,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
-  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
     MathSub {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -109,9 +109,9 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
-  pub output: Rc<RefCell<BlockOutput<T>>>,
-  left: Rc<RefCell<BlockOutput<T>>>,
-  right: Rc<RefCell<BlockOutput<T>>>,
+  pub output: RCBO<T>,
+  left: RCBO<T>,
+  right: RCBO<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
@@ -125,7 +125,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
-  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
     MathMul {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -137,9 +137,9 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
-  pub output: Rc<RefCell<BlockOutput<T>>>,
-  left: Rc<RefCell<BlockOutput<T>>>,
-  right: Rc<RefCell<BlockOutput<T>>>,
+  pub output: RCBO<T>,
+  left: RCBO<T>,
+  right: RCBO<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
@@ -153,7 +153,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
-  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
     MathDiv {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -165,9 +165,9 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMod<T: std::ops::Rem<Output = T> + Copy + Default> {
-  pub output: Rc<RefCell<BlockOutput<T>>>,
-  left: Rc<RefCell<BlockOutput<T>>>,
-  right: Rc<RefCell<BlockOutput<T>>>,
+  pub output: RCBO<T>,
+  left: RCBO<T>,
+  right: RCBO<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
@@ -181,7 +181,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
-  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
     MathMod {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
