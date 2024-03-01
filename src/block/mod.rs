@@ -306,100 +306,103 @@ impl Block for LogicOr {
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct LogicAnd {
+  pub output: Signal<bool>,
+  left: Signal<bool>,
+  right: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl LogicAnd {
+  pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
+    LogicAnd {
+      output: new_signal(false),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for LogicAnd {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() && *self.right.borrow().read());
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct LogicNot {
+  pub output: Signal<bool>,
+  input: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl LogicNot {
+  pub fn new(input: &Signal<bool>) -> Self {
+    LogicNot {
+      output: new_signal(false),
+      input: Rc::clone(input),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for LogicNot {
+  fn step(&mut self) {
+    self.output.borrow_mut().set(!*self.input.borrow().read());
+  }
+}
+
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct LogicAnd<'a> {
+// struct LogicXor {
+//   pub output: Signal<bool>,
 //   left: Signal<bool>,
 //   right: Signal<bool>,
-//   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> LogicAnd<'a> {
-//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
-//     LogicAnd {
-//       left,
-//       right,
-//       output: BlockOutput::new(false),
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for LogicAnd<'a> {
-//   fn step(&mut self) {
-//     self.output.borrow().set(*self.left.borrow().read() && *self.right.borrow().read());
-//   }
-// }
-
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct LogicNot<'a> {
-//   input: Signal<bool>,
-//   pub output: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> LogicNot<'a> {
-//   pub fn new(input: Signal<bool>) -> Self {
-//     LogicNot {
-//       input,
-//       output: BlockOutput::new(false),
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for LogicNot<'a> {
-//   fn step(&mut self) {
-//     self.output.borrow().set(!*self.input.borrow().read());
-//   }
-// }
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct LogicXor<'a> {
-//   pub output: Signal<bool>,
-//   left: Signal<bool>,
-//   right: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> LogicXor<'a> {
+// impl LogicXor {
 //   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
 //     LogicXor {
 //       left,
 //       right,
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for LogicXor<'a> {
+// impl Block for LogicXor {
 //   fn step(&mut self) {
-//     self.output.borrow().set(*self.left.borrow().read() ^ *self.right.borrow().read());
+//     self.output.borrow_mut().set(*self.left.borrow().read() ^ *self.right.borrow().read());
 //   }
 // }
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct LogicNor<'a> {
+// struct LogicNor {
 //   pub output: Signal<bool>,
 //   left: Signal<bool>,
 //   right: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> LogicNor<'a> {
+// impl LogicNor {
 //   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
 //     LogicNor {
 //       left,
 //       right,
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for LogicNor<'a> {
+// impl Block for LogicNor {
 //   fn step(&mut self) {
-//     self.output.borrow().set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+//     self.output.borrow_mut().set(!(*self.left.borrow().read() || *self.right.borrow().read()));
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct RiseCounter<'a> {
+// pub struct RiseCounter {
 //   pub count: BlockOutput<usize>,
 //   pub at_max: Signal<bool>,
 //   input: Signal<bool>,
@@ -407,11 +410,11 @@ impl Block for LogicOr {
 //   last_state: bool,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> RiseCounter<'a> {
+// impl RiseCounter {
 //   pub fn new(input: Signal<bool>, max: &'a BlockOutput<usize>) -> Self {
 //     RiseCounter {
-//       count: BlockOutput::new(0),
-//       at_max: BlockOutput::new(false),
+//       count: new_signal(0),
+//       at_max: new_signal(false),
 //       input,
 //       max,
 //       last_state: false,
@@ -420,7 +423,7 @@ impl Block for LogicOr {
 // }
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for RiseCounter<'a> {
+// impl Block for RiseCounter {
 //   fn step(&mut self) {
 //     let read = *self.input.borrow().read();
 
@@ -440,58 +443,58 @@ impl Block for LogicOr {
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct RisingTrigger<'a> {
+// pub struct RisingTrigger {
 //   input: Signal<bool>,
 //   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> RisingTrigger<'a> {
+// impl RisingTrigger {
 //   pub fn new(input: Signal<bool>) -> Self {
 //     RisingTrigger {
 //       input,
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for RisingTrigger<'a> {
+// impl Block for RisingTrigger {
 //   fn step(&mut self) {
 //     let last_state = *self.input.borrow().read();
 //     let input = *self.input.borrow().read();
 
 //     if input && !last_state {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //     } else {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     }
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct FallingTrigger<'a> {
+// pub struct FallingTrigger {
 //   input: Signal<bool>,
 //   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> FallingTrigger<'a> {
+// impl FallingTrigger {
 //   pub fn new(input: Signal<bool>) -> Self {
 //     FallingTrigger {
 //       input,
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for FallingTrigger<'a> {
+// impl Block for FallingTrigger {
 //   fn step(&mut self) {
 //     let last_state = *self.input.borrow().read();
 //     let input = *self.input.borrow().read();
 
 //     if !input && last_state {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //     } else {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     }
 //   }
 // }
@@ -505,39 +508,39 @@ impl Block for LogicOr {
 // impl RandomUsize {
 //   pub fn new() -> Self {
 //     RandomUsize {
-//       output: BlockOutput::new(0),
+//       output: new_signal(0),
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl Block for RandomUsize {
 //   fn step(&mut self) {
-//     self.output.borrow().set(rand::random());
+//     self.output.borrow_mut().set(rand::random());
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
-// pub struct TON<'a> {
+// pub struct TON {
 //   pub output: Signal<bool>,
 //   pub count: BlockOutput<usize>,
 //   delay: &'a BlockOutput<usize>,
 //   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> TON<'a> {
+// impl TON {
 //   pub fn new(delay: &'a BlockOutput<usize>, reset: Signal<bool>) -> Self {
 //     TON {
-//       output: BlockOutput::new(false),
-//       count: BlockOutput::new(0),
+//       output: new_signal(false),
+//       count: new_signal(0),
 //       delay,
 //       reset,
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for TON<'a> {
+// impl Block for TON {
 //   fn step(&mut self) {
 //     if *self.reset.borrow().read() {
 //       self.count.set(0);
@@ -548,9 +551,9 @@ impl Block for LogicOr {
 //     }
 
 //     if *self.count.borrow().read() >= *self.delay.borrow().read() {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //     } else {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     }
 //   }
 // }
@@ -558,25 +561,25 @@ impl Block for LogicOr {
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
-// pub struct TOF<'a> {
+// pub struct TOF {
 //   pub output: Signal<bool>,
 //   pub count: BlockOutput<usize>,
 //   delay: &'a BlockOutput<usize>,
 //   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> TOF<'a> {
+// impl TOF {
 //   pub fn new(delay: &'a BlockOutput<usize>, reset: Signal<bool>) -> Self {
 //     TOF {
-//       output: BlockOutput::new(false),
-//       count: BlockOutput::new(0),
+//       output: new_signal(false),
+//       count: new_signal(0),
 //       delay,
 //       reset,
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for TOF<'a> {
+// impl Block for TOF {
 //   fn step(&mut self) {
 //     if *self.reset.borrow().read() {
 //       self.count.set(0);
@@ -587,9 +590,9 @@ impl Block for LogicOr {
 //     }
 
 //     if *self.count.borrow().read() >= *self.delay.borrow().read() {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     } else {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //     }
 //   }
 // }
@@ -597,93 +600,93 @@ impl Block for LogicOr {
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // // Basically an IEC 61131-3 'TP' block, which holds it's input for a set number of steps after it rises.
-// struct TP<'a> {
+// struct TP {
 //   pub output: Signal<bool>,
 //   input: Signal<bool>,
 //   count_from: &'a BlockOutput<usize>,
 //   count: BlockOutput<usize>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> TP<'a> {
+// impl TP {
 //   pub fn new(input: Signal<bool>, count_from: &'a BlockOutput<usize>) -> Self {
 //     TP {
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //       input,
 //       count_from,
-//       count: BlockOutput::new(0),
+//       count: new_signal(0),
 //     }
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for TP<'a> {
+// impl Block for TP {
 //   fn step(&mut self) {
 //     if *self.input.borrow().read() {
 //       self.count.set(*self.count_from.borrow().read());
 //     }
 
 //     if *self.count.borrow().read() > 0usize {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //       self.count.set(self.count.borrow().read() - 1);
 //     } else {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     }
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct SRLatch<'a> {
+// struct SRLatch {
 //   pub output: Signal<bool>,
 //   set: Signal<bool>,
 //   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> SRLatch<'a> {
+// impl SRLatch {
 //   pub fn new(set: Signal<bool>, reset: Signal<bool>) -> Self {
 //     SRLatch {
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //       set,
 //       reset,
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for SRLatch<'a> {
+// impl Block for SRLatch {
 //   fn step(&mut self) {
 //     if *self.set.borrow().read() {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //     } else if *self.reset.borrow().read() {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     }
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// struct RSLatch<'a> {
+// struct RSLatch {
 //   pub output: Signal<bool>,
 //   set: Signal<bool>,
 //   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> RSLatch<'a> {
+// impl RSLatch {
 //   pub fn new(set: Signal<bool>, reset: Signal<bool>) -> Self {
 //     RSLatch {
-//       output: BlockOutput::new(false),
+//       output: new_signal(false),
 //       set,
 //       reset,
 //     }
 //   }
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a> Block for RSLatch<'a> {
+// impl Block for RSLatch {
 //   fn step(&mut self) {
 //     if *self.reset.borrow().read() {
-//       self.output.borrow().set(false);
+//       self.output.borrow_mut().set(false);
 //     } else if *self.set.borrow().read() {
-//       self.output.borrow().set(true);
+//       self.output.borrow_mut().set(true);
 //     }
 //   }
 // }
