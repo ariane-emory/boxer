@@ -12,13 +12,13 @@ pub struct UpCounter {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl UpCounter {
-  pub fn new(input: &Signal<bool>, reset: &Signal<bool>, max: &Signal<usize>) -> Self {
+  pub fn new(input: &impl Block<bool>, reset: &impl Block<bool>, max: &impl Block<usize>) -> Self {
     UpCounter {
       output: new_signal(0),
       at_max: new_signal(false),
-      input: Rc::clone(input),
-      reset: Rc::clone(reset),
-      max: Rc::clone(max),
+      input: Rc::clone(input.output()),
+      reset: Rc::clone(reset.output()),
+      max: Rc::clone(max.output()),
       last_input_state: false,
       last_reset_state: false,
     }

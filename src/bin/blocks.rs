@@ -50,7 +50,7 @@ fn main() -> io::Result<()> {
   if false {
     let counter_reset = block::Value::new(false);
     let counter_max = Value::new(128);
-    let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
+    let mut counter = UpCounter::new(&clock, &counter_reset, &counter_max);
 
     let mut add = block::Add::new(counter.output(), one.output());
 
@@ -95,7 +95,7 @@ fn main() -> io::Result<()> {
   {
     let counter_max = Value::new(128);
     let mut counter_reset = Feedback::new();
-    let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
+    let mut counter = UpCounter::new(&clock, &counter_reset, &counter_max);
     let mut sr_set = Feedback::new();
     let mut sr_reset = Feedback::new();
     let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
