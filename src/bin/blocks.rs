@@ -93,7 +93,7 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let counter_max = Value::new(40);
+    let counter_max = Value::new(48);
     let mut counter_reset = Jump::new();
     let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
 
