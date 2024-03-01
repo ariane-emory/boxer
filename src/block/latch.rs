@@ -62,3 +62,37 @@ impl Block<bool> for RSLatch {
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct GenericRSLatch<T: Copy + Default> {
+  pub output: Signal<T>,
+  set: Signal<bool>,
+  reset: Signal<bool>,
+  input: Signal<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> GenericRSLatch<T> {
+  pub fn new(set: &Signal<bool>, reset: &Signal<bool>, input: &Signal<T>) -> Self {
+    GenericRSLatch {
+      output: new_signal(Default::default()),
+      set: Rc::clone(set),
+      reset: Rc::clone(reset),
+      input: Rc::clone(input),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> Block<T> for GenericRSLatch<T> {
+  fn step(&mut self) {
+    if *self.reset.borrow().read() {
+      self.output.borrow_mut().set(Default::default());
+    } else if *self.set.borrow().read() {
+      self.output.borrow_mut().set(*self.input.borrow().read());
+    }
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
+  }
+}
