@@ -55,7 +55,6 @@ pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
   left: Rc<RefCell<BlockOutput<T>>>,
   right: Rc<RefCell<BlockOutput<T>>>,
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
   fn step(&mut self) {
@@ -84,7 +83,6 @@ pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
   left: Rc<RefCell<BlockOutput<T>>>,
   right: Rc<RefCell<BlockOutput<T>>>,
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
   fn step(&mut self) {
