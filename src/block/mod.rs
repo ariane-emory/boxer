@@ -70,7 +70,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
   pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
     MathAdd {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: Rc::clone(left),
+      left: left.clone(),
       right: Rc::clone(right),
     }
   }
