@@ -17,7 +17,7 @@ impl<T: Copy + Default> Feedback<T> {
 
   pub fn set_input(&mut self, input: &Signal<T>) {
     self.input = Some(input.clone());
-    self.output.borrow_mut().set(*input.borrow().read());
+    self.step();
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

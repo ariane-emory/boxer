@@ -9,11 +9,14 @@ pub struct Or {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Or {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    Or {
+    let mut r = Or {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,11 +43,14 @@ pub struct And {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl And {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    And {
+    let mut r = And {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,32 +69,6 @@ impl Block<bool> for And {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Not {
-  output: Signal<bool>,
-  input: Signal<bool>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Not {
-  pub fn new(input: &Signal<bool>) -> Self {
-    Not {
-      output: new_signal(false),
-      input: Rc::clone(input),
-    }
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for Not {
-  fn step(&mut self) {
-    self.output.borrow_mut().set(!*self.input.borrow().read());
-  }
-
-  fn output(&self) -> &Signal<bool> {
-    &self.output
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 struct Xor {
   output: Signal<bool>,
   left: Signal<bool>,
@@ -97,11 +77,14 @@ struct Xor {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Xor {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    Xor {
+    let mut r = Xor {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,11 +111,14 @@ struct Nor {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Nor {
   pub fn new(left: &Signal<bool>, right: &Signal<bool>) -> Self {
-    Nor {
+    let mut r = Nor {
       output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
-    }
+    };
+
+    r.step();
+    r
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,6 +128,35 @@ impl Block<bool> for Nor {
       .output
       .borrow_mut()
       .set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+  }
+
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct Not {
+  output: Signal<bool>,
+  input: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Not {
+  pub fn new(input: &Signal<bool>) -> Self {
+    let mut r = Not {
+      output: new_signal(false),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block<bool> for Not {
+  fn step(&mut self) {
+    self.output.borrow_mut().set(!*self.input.borrow().read());
   }
 
   fn output(&self) -> &Signal<bool> {
