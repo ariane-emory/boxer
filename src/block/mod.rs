@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 pub mod cmp;
 pub mod counter;
-pub mod jump;
+pub mod feedback;
 pub mod latch;
-pub mod logic;
+pub mod logical;
 pub mod math;
 pub mod random;
 pub mod select;
@@ -14,9 +14,9 @@ pub mod waveform;
 
 pub use cmp::*;
 pub use counter::*;
-// pub use latch::*;
-pub use jump::*;
-pub use logic::*;
+pub use feedback::*;
+pub use latch::*;
+pub use logical::*;
 pub use math::*;
 pub use random::*;
 pub use select::*;

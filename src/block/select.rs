@@ -2,7 +2,7 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Select<T: Copy> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   which: Signal<bool>,
   left: Signal<T>,
   right: Signal<T>,
@@ -22,9 +22,9 @@ impl<T: Copy> Select<T> {
 impl<T: Copy> Block<T> for Select<T> {
   fn step(&mut self) {
     if *self.which.borrow().read() {
-      self.output.borrow_mut().set(*self.left.borrow().read());
-    } else {
       self.output.borrow_mut().set(*self.right.borrow().read());
+    } else {
+      self.output.borrow_mut().set(*self.left.borrow().read());
     }
   }
 
@@ -36,7 +36,7 @@ impl<T: Copy> Block<T> for Select<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Max<T: Copy + PartialOrd> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -67,7 +67,7 @@ impl<T: Copy + PartialOrd> Block<T> for Max<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Min<T: Copy + PartialOrd> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -98,7 +98,7 @@ impl<T: Copy + PartialOrd> Block<T> for Min<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Limit<T: Copy + PartialOrd> {
-  pub output: Signal<T>,
+  output: Signal<T>,
   input: Signal<T>,
   min: Signal<T>,
   max: Signal<T>,
