@@ -105,9 +105,9 @@ fn main() -> io::Result<()> {
     let mut max_and_latched = And::new(counter.at_max(), sr.output());
     let mut max_and_not_latched = And::new(counter.at_max(), not_latched.output());
 
-    counter_reset.input = Some(counter.at_max.clone());
-    sr_set.input = Some(max_and_not_latched.output().clone());
-    sr_reset.input = Some(max_and_latched.output().clone());
+    counter_reset.set_input(&counter.at_max);
+    sr_set.set_input(&max_and_not_latched.output());
+    sr_reset.set_input(&max_and_latched.output());
 
     let mut sub = Sub::new(counter_max.output(), counter.output());
     let mut select = Select::new(sr.output(), counter.output(), sub.output());

@@ -2,8 +2,8 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Jump<T: Copy + Default> {
-  pub output: Signal<T>,
-  pub input: Option<Signal<T>>,
+  output: Signal<T>,
+  input: Option<Signal<T>>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Jump<T> {
@@ -22,8 +22,8 @@ impl<T: Copy + Default> Jump<T> {
     //}
   }
 
-  pub fn set_input(&mut self, input: Signal<T>) {
-    self.input = Some(input);
+  pub fn set_input(&mut self, input: &Signal<T>) {
+    self.input = Some(input.clone());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
