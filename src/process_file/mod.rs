@@ -9,8 +9,8 @@ use std::rc::Rc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 pub fn process_file(
   path: &str,
-  process_horiz: Box<dyn Fn(&Point, &u8)>,
-  process_vert: Box<dyn Fn(&Point, &u8)>,
+  process_horiz: impl Fn(&Point, &u8),
+  process_vert: impl Fn(&Point, &u8),
 ) -> io::Result<()> {
   let max_len = max_line_len(path)?;
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
@@ -28,16 +28,14 @@ pub fn process_file(
 pub fn make_process_file_fun<'a>(
   line_body_char: u8,
   custom_printer: impl Fn(Point, u8) + 'a,
-) -> (
-  Rc<RefCell<ConnectedLineMaker>>,
-  Box<impl Fn(&Point, &u8) + 'a>,
-) {
+) -> (Rc<RefCell<ConnectedLineMaker>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(line_body_char);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
   (
     rc_lm,
-    Box::new(move |pos: &Point, byte: &u8| {
+    //    Box::new(
+    move |pos: &Point, byte: &u8| {
       if pos.col == 0 {
         println!("");
       }
@@ -48,6 +46,6 @@ pub fn make_process_file_fun<'a>(
 
       custom_printer(*pos, *byte);
       rc_lm_twin.borrow_mut().process(pos, *byte);
-    }),
+    }, //),
   )
 }
