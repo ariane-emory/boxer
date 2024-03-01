@@ -66,4 +66,7 @@ pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
 pub trait Block<T: Copy> {
   fn step(&mut self);
   fn output(&self) -> &Signal<T>;
+  fn output_value(&self) -> T {
+    *self.output().borrow().read()
+  }
 }
