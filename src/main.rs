@@ -83,15 +83,15 @@ fn main() -> io::Result<()> {
   }
 
   let mut left = block::Value::new(1);
-  let five = block::Value::new(5);
-  let mut adder = block::MathAdd::new(&left.output, &five.output);
+  // let five = block::Value::new(5);
+  // let mut adder = block::MathAdd::new(&left.output, &five.output);
 
-  println!("Adder: {}", adder.output.read());
-  adder.step();
-  println!("Adder: {}", adder.output.read());
-  left.output.set(2);
-  adder.step();
-  println!("Adder: {}", adder.output.read());
+  // println!("Adder: {}", adder.output.read());
+  // adder.step();
+  // println!("Adder: {}", adder.output.read());
+  // left.output.set(2);
+  // adder.step();
+  // println!("Adder: {}", adder.output.read());
 
   // let mut flip = block::Value::new(false);
   // let ten = block::Value::new(10);
