@@ -1,8 +1,12 @@
 #![allow(dead_code)]
 #![allow(unused_imports)]
-//use rand;
+pub mod math;
+
+pub use math::*;
+use rand;
 use std::cell::RefCell;
 use std::rc::Rc;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct BlockOutput<T: Copy> {
@@ -22,10 +26,14 @@ impl<T: Copy> BlockOutput<T> {
     self.value = value;
   }
 }
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type Signal<T> = Rc<RefCell<BlockOutput<T>>>;
+pub type Signal<T> = Rc<RefCell<BlockOutput<T>>>;
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn new_signal<T: Copy>(value: T) -> Signal<T> {
+pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
   Rc::new(RefCell::new(BlockOutput::new(value)))
 }
 
@@ -55,167 +63,6 @@ impl<T: Copy> Block<T> for Value<T> {
 
   fn output(&self) -> &Signal<T> {
     &self.output
-  }
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
-  left: Signal<T>,
-  right: Signal<T>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for MathAdd<T> {
-  fn step(&mut self) {
-    println!("MathAdd::step");
-    self
-      .output
-      .borrow_mut()
-      .set(*self.left.borrow().read() + *self.right.borrow().read());
-  }
-
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
-  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathAdd {
-      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: Rc::clone(left),
-      right: Rc::clone(right),
-    }
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
-  left: Signal<T>,
-  right: Signal<T>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for MathSub<T> {
-  fn step(&mut self) {
-    println!("MathSub::step");
-    self
-      .output
-      .borrow_mut()
-      .set(*self.left.borrow().read() - *self.right.borrow().read());
-  }
-
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
-  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathSub {
-      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: Rc::clone(left),
-      right: Rc::clone(right),
-    }
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
-  left: Signal<T>,
-  right: Signal<T>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for MathMul<T> {
-  fn step(&mut self) {
-    println!("MathMul::step");
-    self
-      .output
-      .borrow_mut()
-      .set(*self.left.borrow().read() * *self.right.borrow().read());
-  }
-
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
-  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathMul {
-      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: Rc::clone(left),
-      right: Rc::clone(right),
-    }
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
-  left: Signal<T>,
-  right: Signal<T>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for MathDiv<T> {
-  fn step(&mut self) {
-    println!("MathDiv::step");
-    self
-      .output
-      .borrow_mut()
-      .set(*self.left.borrow().read() / *self.right.borrow().read());
-  }
-
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
-  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathDiv {
-      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: Rc::clone(left),
-      right: Rc::clone(right),
-    }
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct MathMod<T: std::ops::Rem<Output = T> + Copy + Default> {
-  pub output: Signal<T>,
-  left: Signal<T>,
-  right: Signal<T>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for MathMod<T> {
-  fn step(&mut self) {
-    println!("MathMod::step");
-    self
-      .output
-      .borrow_mut()
-      .set(*self.left.borrow().read() % *self.right.borrow().read());
-  }
-
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
-  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
-    MathMod {
-      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: Rc::clone(left),
-      right: Rc::clone(right),
-    }
   }
 }
 
