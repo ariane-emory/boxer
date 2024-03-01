@@ -4,24 +4,9 @@
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
 
-<<<<<<< HEAD:src/main.rs
-mod block;
-mod line_makers; //::connected_line_maker;
-mod process_file;
-mod simple_geo;
-#[macro_use]
-mod util;
-mod simple_matrix;
-
-use block::*;
-use process_file::*;
-use simple_geo::find_rectangles;
-use simple_geo::line_methods::*;
-=======
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::line_methods::*;
->>>>>>> rough:src/bin/main.rs
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,18 +26,10 @@ fn main() -> io::Result<()> {
     // RefCell scope:
     {
       let (vert_linemaker, process_vert) = make_process_file_fun(b'|', |pos, byte| {
-        println!(
-          "Vert:    {:?}: '{}'",
-          pos.flip().offset_by(LINE_OFFSET, 0),
-          byte as char
-        );
+        println!("Vert:    {:?}: '{}'", pos.flip().offset_by(LINE_OFFSET, 0), byte as char);
       });
       let (horiz_linemaker, process_horiz) = make_process_file_fun(b'-', |pos, byte| {
-        println!(
-          "Horiz:   {:?}: '{}'",
-          pos.offset_by(LINE_OFFSET, 0),
-          byte as char
-        );
+        println!("Horiz:   {:?}: '{}'", pos.offset_by(LINE_OFFSET, 0), byte as char);
       });
 
       process_file(filename, process_horiz, process_vert)?;
@@ -87,27 +64,6 @@ fn main() -> io::Result<()> {
   for line in leftover_lines.iter() {
     println!("Leftover line: {:?}", line);
   }
-<<<<<<< HEAD:src/main.rs
 
-  let lef = block::Value::new(1);
-  let five = block::Value::new(5);
-  let mut adder = block::MathAdd::new(&lef.output, &five.output);
-
-  println!("Adder: {}", adder.output.read());
-  adder.step();
-  println!("Adder: {}", adder.output.read());
-
-  // let mut flip = block::Value::new(false);
-  // let ten = block::Value::new(10);
-  // let mut ctr = block::RiseCounter::new(&flip.output, &ten.output);
-  // println!("Ctr: {}", ctr.count.read());
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
-  // flip.output.set(true);
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
-
-=======
->>>>>>> rough:src/bin/main.rs
   Ok(())
 }
