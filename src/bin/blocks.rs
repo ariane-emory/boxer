@@ -44,51 +44,53 @@ fn main() -> io::Result<()> {
   let one = Value::new(1);
   let mut fast_square = SquareWave::new(one.output());
 
-  let counter_reset = block::Value::new(false);
-  let counter_max = Value::new(40);
-  let mut counter = Counter::new(
-    fast_square.output(),
-    counter_reset.output(),
-    counter_max.output(),
-  );
+  {
+    let counter_reset = block::Value::new(false);
+    let counter_max = Value::new(40);
+    let mut counter = Counter::new(
+      fast_square.output(),
+      counter_reset.output(),
+      counter_max.output(),
+    );
 
-  let mut add = block::MathAdd::new(counter.output(), one.output());
+    let mut add = block::MathAdd::new(counter.output(), one.output());
 
-  let two = Value::new(2);
-  let mut div = MathDiv::new(add.output(), two.output());
+    let two = Value::new(2);
+    let mut div = MathDiv::new(add.output(), two.output());
 
-  let mut square = SquareWave::new(div.output());
+    let mut square = SquareWave::new(div.output());
 
-  let max = Value::new(128);
-  let zero = Value::new(0);
-  let mut select = Select::new(square.output(), zero.output(), max.output());
+    let max = Value::new(128);
+    let zero = Value::new(0);
+    let mut select = Select::new(square.output(), zero.output(), max.output());
 
-  for _x in 0..255 {
-    fast_square.step();
-    counter.step();
-    add.step();
-    div.step();
-    square.step();
-    select.step();
-
-    if *counter.at_max.borrow().read() {
-      counter_reset.output.borrow_mut().set(true);
+    for _x in 0..255 {
+      fast_square.step();
       counter.step();
-      counter_reset.output.borrow_mut().set(false);
+      add.step();
+      div.step();
+      square.step();
+      select.step();
+
+      if *counter.at_max.borrow().read() {
+        counter_reset.output.borrow_mut().set(true);
+        counter.step();
+        counter_reset.output.borrow_mut().set(false);
+      }
+
+      // println!("");
+      // println!("counter input:  {}", fast_square.output.borrow().read());
+      // println!("counter output: {}", counter.output().borrow().read());
+      // println!("add output:     {}", add.output().borrow().read());
+      // println!("square period:  {}", square.period.borrow().read());
+      // println!("square output:  {}", square.output().borrow().read());
+      // println!("select output:  {}", select.output().borrow().read());
+
+      render(b'x', select.output());
+
+      // let counter_input_val = *counter_input.output().borrow().read();
+      // counter_input.output().borrow_mut().set(!counter_input_val);
     }
-
-    // println!("");
-    // println!("counter input:  {}", fast_square.output.borrow().read());
-    // println!("counter output: {}", counter.output().borrow().read());
-    // println!("add output:     {}", add.output().borrow().read());
-    // println!("square period:  {}", square.period.borrow().read());
-    // println!("square output:  {}", square.output().borrow().read());
-    // println!("select output:  {}", select.output().borrow().read());
-
-    render(b'x', select.output());
-
-    // let counter_input_val = *counter_input.output().borrow().read();
-    // counter_input.output().borrow_mut().set(!counter_input_val);
   }
 
   Ok(())
