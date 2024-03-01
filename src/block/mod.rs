@@ -105,6 +105,62 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
+  pub output: Rc<RefCell<BlockOutput<T>>>,
+  left: Rc<RefCell<BlockOutput<T>>>,
+  right: Rc<RefCell<BlockOutput<T>>>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
+  fn step(&mut self) {
+    println!("MathMul::step");
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() * *self.right.borrow().read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
+  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+    MathMul {
+      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
+  pub output: Rc<RefCell<BlockOutput<T>>>,
+  left: Rc<RefCell<BlockOutput<T>>>,
+  right: Rc<RefCell<BlockOutput<T>>>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
+  fn step(&mut self) {
+    println!("MathDiv::step");
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() / *self.right.borrow().read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
+  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+    MathDiv {
+      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
+
+
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
