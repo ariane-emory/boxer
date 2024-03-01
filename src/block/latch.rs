@@ -20,8 +20,10 @@ impl SRLatch {
 impl Block<bool> for SRLatch {
   fn step(&mut self) {
     if *self.set.borrow().read() {
+      println!("Set!");
       self.output.borrow_mut().set(true);
     } else if *self.reset.borrow().read() {
+      println!("Reset!");
       self.output.borrow_mut().set(false);
     }
   }

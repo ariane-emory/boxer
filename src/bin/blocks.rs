@@ -1,5 +1,5 @@
 // #![allow(unreachable_code)]
-// #![allow(unused_variables)]
+#![allow(unused_variables)]
 // #![allow(unused_imports)]
 // #![allow(unused_mut)]
 // #![allow(dead_code)]
@@ -8,9 +8,12 @@ use boxer::block;
 use boxer::block::*;
 use std::io::{self};
 
-fn render(char: u8, signal: &Signal<usize>) {
+fn render(char: u8, char2: u8, signal: &Signal<usize>, width: &Signal<usize>) {
   for _ in 0..*signal.borrow().read() {
     print!("{}", char as char);
+  }
+  for _ in 0..(*width.borrow().read() - *signal.borrow().read()) {
+    print!("{}", char2 as char);
   }
   println!("");
 }
@@ -47,11 +50,8 @@ fn main() -> io::Result<()> {
   if false {
     let counter_reset = block::Value::new(false);
     let counter_max = Value::new(40);
-    let mut counter = Counter::new(
-      fast_square.output(),
-      counter_reset.output(),
-      counter_max.output(),
-    );
+    let mut counter =
+      Counter::new(fast_square.output(), counter_reset.output(), counter_max.output());
 
     let mut add = block::MathAdd::new(counter.output(), one.output());
 
@@ -86,7 +86,7 @@ fn main() -> io::Result<()> {
       // println!("square output:  {}", square.output().borrow().read());
       // println!("select output:  {}", select.output().borrow().read());
 
-      render(b'x', select.output());
+      render(b'x', b'-', select.output(), counter_max.output());
 
       // let counter_input_val = *counter_input.output().borrow().read();
       // counter_input.output().borrow_mut().set(!counter_input_val);
@@ -96,28 +96,30 @@ fn main() -> io::Result<()> {
   {
     let counter_max = Value::new(40);
     let mut counter_reset = Jump::new();
-    let mut counter = Counter::new(
-      fast_square.output(),
-      counter_reset.output(),
-      counter_max.output(),
-    );
+    let mut counter =
+      Counter::new(fast_square.output(), counter_reset.output(), counter_max.output());
 
     let mut sr_set = Jump::new();
     let mut sr_reset = Jump::new();
     let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
 
     let mut sub = MathSub::new(counter_max.output(), counter.output());
+    let mut delay = UnitDelay::new(sr.output());
+    let mut delay2 = UnitDelay::new(delay.output());
+    let mut delay3 = UnitDelay::new(delay2.output());
+    // let mut select = Select::new(delay2.output(), counter.output(), sub.output());
     let mut select = Select::new(sr.output(), counter.output(), sub.output());
 
     let mut not_latched = LogicNot::new(sr.output());
-    let mut max_and_not_latched = LogicAnd::new(&counter.at_max, not_latched.output());
     let mut max_and_latched = LogicAnd::new(&counter.at_max, sr.output());
+    let mut max_and_not_latched = LogicAnd::new(&counter.at_max, not_latched.output());
 
     counter_reset.input = Some(counter.at_max.clone());
     sr_set.input = Some(max_and_not_latched.output().clone());
     sr_reset.input = Some(max_and_latched.output().clone());
 
     for _ in 0..1024 {
+      sub.step();
       fast_square.step();
       counter.step();
       not_latched.step();
@@ -126,18 +128,23 @@ fn main() -> io::Result<()> {
       sr_set.step();
       sr_reset.step();
       sr.step();
+      delay.step();
+      delay2.step();
+      delay3.step();
       select.step();
       counter_reset.step();
-      sub.step();
-      render(b'x', select.output());
+      render(b'x', b'-', select.output(), counter_max.output());
 
-      // println!("counter:        {}", counter.output().borrow().read());
-      // println!("counter.at_max: {}", counter.at_max.borrow().read());
-      // println!("sr_reset:       {}", sr_reset.output().borrow().read());
-      // println!("sr:             {}", sr.output().borrow().read());
-      // println!("sub:            {}", sub.output().borrow().read());
-      // println!("select:         {}", select.output().borrow().read());
-      // println!("not_latched:    {}", not_latched.output().borrow().read());
+      println!("counter:             {}", counter.output().borrow().read());
+      println!("counter.at_max:      {}", counter.at_max.borrow().read());
+      println!("counter reset:       {}", counter_reset.output().borrow().read());
+      println!("sr_reset:            {}", sr_reset.output().borrow().read());
+      println!("sr:                  {}", sr.output().borrow().read());
+      println!("sub:                 {}", sub.output().borrow().read());
+      println!("select:              {}", select.output().borrow().read());
+      println!("not_latched:         {}", not_latched.output().borrow().read());
+      println!("max_and_latched:     {}", max_and_latched.output().borrow().read());
+      println!("max_and_not_latched: {}", max_and_not_latched.output().borrow().read());
     }
   }
 

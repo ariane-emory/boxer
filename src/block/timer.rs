@@ -140,7 +140,7 @@ impl Block<bool> for TP {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // This delays it's input by once cycle:
-struct UnitDelay<T: Copy + Default> {
+pub struct UnitDelay<T: Copy + Default> {
   pub output: Signal<T>,
   input: Signal<T>,
   previous: Signal<T>,
