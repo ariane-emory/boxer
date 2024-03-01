@@ -126,9 +126,9 @@ fn main() -> io::Result<()> {
       sr_set.step();
       sr_reset.step();
       sr.step();
-      sub.step();
       select.step();
       counter_reset.step();
+      sub.step();
       render(b'x', select.output());
 
       // println!("counter:        {}", counter.output().borrow().read());
