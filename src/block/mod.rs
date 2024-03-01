@@ -164,7 +164,7 @@ impl<T: std::cmp::PartialOrd + Copy> Block<bool> for LessThan<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct RiseCounter {
+pub struct Counter {
   pub output: Signal<usize>,
   pub at_max: Signal<bool>,
   input: Signal<bool>,
@@ -172,9 +172,9 @@ pub struct RiseCounter {
   last_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl RiseCounter {
+impl Counter {
   pub fn new(input: &Signal<bool>, max: &Signal<usize>) -> Self {
-    RiseCounter {
+    Counter {
       output: new_signal(0),
       at_max: new_signal(false),
       input: Rc::clone(input),

@@ -45,7 +45,7 @@ fn main() -> io::Result<()> {
 
   // let mut flip = block::Value::new(false);
   // let ten = block::Value::new(10);
-  // let mut ctr = block::RiseCounter::new(&flip.output, &ten.output);
+  // let mut ctr = block::Counter::new(&flip.output, &ten.output);
   // println!("Ctr: {}", ctr.count.read());
   // ctr.step();
   // println!("Ctr: {}", ctr.count.read());
