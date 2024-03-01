@@ -29,12 +29,12 @@ impl<T: Copy> BlockOutput<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type RCBO<T> = Rc<RefCell<BlockOutput<T>>>;
+type Rcbo<T> = Rc<RefCell<BlockOutput<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Value<T: Copy> {
-  pub output: RCBO<T>,
+  pub output: Rcbo<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Value<T> {
@@ -53,9 +53,9 @@ impl<T: Copy> Block for Value<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
-  pub output: RCBO<T>,
-  left: RCBO<T>,
-  right: RCBO<T>,
+  pub output: Rcbo<T>,
+  left: Rcbo<T>,
+  right: Rcbo<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
@@ -69,7 +69,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
-  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
+  pub fn new(left: &Rcbo<T>, right: &Rcbo<T>) -> Self {
     MathAdd {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -81,9 +81,9 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
-  pub output: RCBO<T>,
-  left: RCBO<T>,
-  right: RCBO<T>,
+  pub output: Rcbo<T>,
+  left: Rcbo<T>,
+  right: Rcbo<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
@@ -97,7 +97,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
-  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
+  pub fn new(left: &Rcbo<T>, right: &Rcbo<T>) -> Self {
     MathSub {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -109,9 +109,9 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
-  pub output: RCBO<T>,
-  left: RCBO<T>,
-  right: RCBO<T>,
+  pub output: Rcbo<T>,
+  left: Rcbo<T>,
+  right: Rcbo<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
@@ -125,7 +125,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
-  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
+  pub fn new(left: &Rcbo<T>, right: &Rcbo<T>) -> Self {
     MathMul {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -137,9 +137,9 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
-  pub output: RCBO<T>,
-  left: RCBO<T>,
-  right: RCBO<T>,
+  pub output: Rcbo<T>,
+  left: Rcbo<T>,
+  right: Rcbo<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
@@ -153,7 +153,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
-  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
+  pub fn new(left: &Rcbo<T>, right: &Rcbo<T>) -> Self {
     MathDiv {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -165,9 +165,9 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMod<T: std::ops::Rem<Output = T> + Copy + Default> {
-  pub output: RCBO<T>,
-  left: RCBO<T>,
-  right: RCBO<T>,
+  pub output: Rcbo<T>,
+  left: Rcbo<T>,
+  right: Rcbo<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
@@ -181,7 +181,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
-  pub fn new(left: &RCBO<T>, right: &RCBO<T>) -> Self {
+  pub fn new(left: &Rcbo<T>, right: &Rcbo<T>) -> Self {
     MathMod {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -194,16 +194,16 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct Select<'a, T: Copy> {
 //   selector: &'a BlockOutput<bool>,
-//   left: &'a BlockOutput<T>,
-//   right: &'a BlockOutput<T>,
+//   left: Rcbo<T>,
+//   right: Rcbo<T>,
 //   pub output: BlockOutput<T>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a, T: Copy> Select<'a, T> {
 //   pub fn new(
 //     selector: &'a BlockOutput<bool>,
-//     left: &'a BlockOutput<T>,
-//     right: &'a BlockOutput<T>,
+//     left: Rcbo<T>,
+//     right: Rcbo<T>,
 //   ) -> Self {
 //     Select {
 //       selector,
@@ -228,12 +228,12 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct GreaterThan<'a, T: std::cmp::PartialOrd + Copy> {
 //   pub output: BlockOutput<bool>,
-//   left: &'a BlockOutput<T>,
-//   right: &'a BlockOutput<T>,
+//   left: Rcbo<T>,
+//   right: Rcbo<T>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a, T: std::cmp::PartialOrd + Copy> GreaterThan<'a, T> {
-//   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+//   pub fn new(left: Rcbo<T>, right: Rcbo<T>) -> Self {
 //     GreaterThan {
 //       output: BlockOutput::new(false),
 //       left,
@@ -252,12 +252,12 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct LessThan<'a, T: std::cmp::PartialOrd + Copy> {
 //   pub output: BlockOutput<bool>,
-//   left: &'a BlockOutput<T>,
-//   right: &'a BlockOutput<T>,
+//   left: Rcbo<T>,
+//   right: Rcbo<T>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a, T: std::cmp::PartialOrd + Copy> LessThan<'a, T> {
-//   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
+//   pub fn new(left: Rcbo<T>, right: Rcbo<T>) -> Self {
 //     LessThan {
 //       output: BlockOutput::new(false),
 //       left,
