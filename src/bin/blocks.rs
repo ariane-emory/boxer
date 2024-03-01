@@ -59,6 +59,14 @@ fn main() -> io::Result<()> {
     counter_input.output().borrow_mut().set(!counter_input_val);
   }
 
+  let eight = Value::new(8);
+  let mut square = SquareWave::new(eight.output());
+
+  for _ in 0..30 {
+    println!("square output:  {}", square.output().borrow().read());
+    square.step();
+  }
+
 
   Ok(())
 }

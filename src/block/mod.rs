@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 pub mod cmp;
 pub mod counter;
+pub mod jump;
 pub mod latch;
 pub mod logic;
 pub mod math;
@@ -9,11 +10,12 @@ pub mod select;
 pub mod timer;
 pub mod trigger;
 pub mod value;
-pub mod jump;
+pub mod waveform;
 
 pub use cmp::*;
 pub use counter::*;
 // pub use latch::*;
+pub use jump::*;
 pub use logic::*;
 pub use math::*;
 pub use random::*;
@@ -21,7 +23,7 @@ pub use select::*;
 pub use timer::*;
 pub use trigger::*;
 pub use value::*;
-pub use jump::*;
+pub use waveform::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;
