@@ -8,7 +8,7 @@ use boxer::block;
 use boxer::block::*;
 use std::io::{self};
 
-fn render(signal: &Signal<usize>, char: u8) {
+fn render(char: u8, signal: &Signal<usize>) {
   for _ in 0..*signal.borrow().read() {
     print!("{}", char as char);
   }
@@ -85,11 +85,7 @@ fn main() -> io::Result<()> {
     // println!("square output:  {}", square.output().borrow().read());
     // println!("select output:  {}", select.output().borrow().read());
 
-    render(select.output(), b'x');
-    // for _ in 0..*select.output().borrow().read() {
-    //   print!("x");
-    // }
-    // println!("");
+    render(b'x', select.output());
 
     // let counter_input_val = *counter_input.output().borrow().read();
     // counter_input.output().borrow_mut().set(!counter_input_val);
