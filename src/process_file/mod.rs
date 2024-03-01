@@ -32,20 +32,17 @@ pub fn make_process_file_fun<'a>(
   let lm = ConnectedLineMaker::new(line_body_char);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
-  (
-    rc_lm,
-    //    Box::new(
-    move |pos: &Point, byte: &u8| {
-      if pos.col == 0 {
-        println!("");
-      }
 
-      if 0 != (*byte & 128) {
-        panic!("Found non-ASCII byte {} at {:?}", byte, pos);
-      }
+  (rc_lm, move |pos: &Point, byte: &u8| {
+    if pos.col == 0 {
+      println!("");
+    }
 
-      custom_printer(*pos, *byte);
-      rc_lm_twin.borrow_mut().process(pos, *byte);
-    }, //),
-  )
+    if 0 != (*byte & 128) {
+      panic!("Found non-ASCII byte {} at {:?}", byte, pos);
+    }
+
+    custom_printer(*pos, *byte);
+    rc_lm_twin.borrow_mut().process(pos, *byte);
+  })
 }
