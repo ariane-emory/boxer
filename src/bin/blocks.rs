@@ -1,16 +1,8 @@
-#![allow(unreachable_code)]
-#![allow(unused_variables)]
-#![allow(unused_imports)]
-#![allow(unused_mut)]
+// #![allow(unreachable_code)]
+// #![allow(unused_variables)]
+// #![allow(unused_imports)]
+// #![allow(unused_mut)]
 //#![allow(dead_code)]
-
-// mod block;
-// mod line_makers;
-// mod process_file;
-// mod simple_geo;
-// #[macro_use]
-// mod util;
-// mod simple_matrix;
 
 use boxer::block;
 use boxer::block::*;
