@@ -110,9 +110,6 @@ fn main() -> io::Result<()> {
     let mut max_and_not_latched = LogicAnd::new(&counter.at_max, not_latched.output());
 
     let mut delay = UnitDelay::new(max_and_not_latched.output());
-    let mut delay2 = UnitDelay::new(delay.output());
-    let mut delay3 = UnitDelay::new(delay2.output());
-    let mut delay4 = UnitDelay::new(delay3.output());
 
     let mut counter_reset_delay = UnitDelay::new(&counter.at_max);
 
@@ -129,9 +126,6 @@ fn main() -> io::Result<()> {
       max_and_latched.step();
       max_and_not_latched.step();
       delay.step();
-      delay2.step();
-      delay3.step();
-      delay4.step();
       sr.step();
       sub.step();
       select.step();
