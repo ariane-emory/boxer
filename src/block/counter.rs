@@ -1,7 +1,7 @@
 use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Counter {
+pub struct UpCounter {
   pub output: Signal<usize>,
   pub at_max: Signal<bool>,
   input: Signal<bool>,
@@ -11,9 +11,9 @@ pub struct Counter {
   last_reset_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Counter {
+impl UpCounter {
   pub fn new(input: &Signal<bool>, reset: &Signal<bool>, max: &Signal<usize>) -> Self {
-    Counter {
+    UpCounter {
       output: new_signal(0),
       at_max: new_signal(false),
       input: Rc::clone(input),
@@ -25,7 +25,7 @@ impl Counter {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<usize> for Counter {
+impl Block<usize> for UpCounter {
   fn step(&mut self) {
     let output_val = *self.output.borrow().read();
     let max_val = *self.max.borrow().read();

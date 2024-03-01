@@ -7,7 +7,7 @@ use std::io::{self, BufRead, BufReader};
 #[derive(Debug, PartialEq, Eq)]
 pub enum Rotation {
   Clockwise,
-  CounterClockwise,
+  UpCounterClockwise,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
