@@ -15,7 +15,6 @@ fn main() -> io::Result<()> {
   let twenty = block::Value::new(20);
   let mut adder = block::MathAdd::new(&left.output, &left.output);
   let mut subber = block::MathSub::new(&twenty.output, &adder.output);
-  let always_false = block::Value::new(false);
 
   println!("Adder: {}", adder.output.borrow().read());
   println!("Subber: {}", subber.output.borrow().read());
@@ -34,17 +33,31 @@ fn main() -> io::Result<()> {
   println!("Adder: {}", adder.output.borrow().read());
   println!("Subber: {}", subber.output.borrow().read());
 
-  let flip = Value::new(false);
-  let max = Value::new(100);
-  let mut counter = Counter::new(&flip.output, &always_false.output, &max.output);
+  let counter_input = Value::new(false);
+  let counter_reset = block::Value::new(false);
+  let counter_max = Value::new(100);
+  let mut counter = Counter::new(
+    &counter_input.output,
+    &counter_reset.output,
+    &counter_max.output,
+  );
 
   for _ in 0..10 {
     counter.step();
-    println!("flip: {}", flip.output.borrow().read());
+    println!("counter_input: {}", counter_input.output.borrow().read());
     println!("Counter: {}", counter.output.borrow().read());
 
-    let flip_val = *flip.output.borrow().read();
-    flip.output.borrow_mut().set(!flip_val);
+    let counter_is_at_max = *counter.at_max.borrow().read();
+
+    if counter_is_at_max {
+      counter_input
+        .output
+        .borrow_mut()
+        .set(!*counter_input.output.borrow().read());
+    }
+
+    let counter_input_val = *counter_input.output.borrow().read();
+    counter_input.output.borrow_mut().set(!counter_input_val);
   }
 
 
