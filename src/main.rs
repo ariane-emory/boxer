@@ -83,8 +83,10 @@ fn main() -> io::Result<()> {
     println!("Leftover line: {:?}", line);
   }
 
+  let mut twenty = block::Value::new(20);
   let mut left = block::Value::new(1);
   let mut adder = block::MathAdd::new(&left.output, &left.output);
+  let mut subber = block::MathSub::new(&twenty.output, &adder.output);
 
   println!("Adder: {}", adder.output.borrow().read());
   adder.step();

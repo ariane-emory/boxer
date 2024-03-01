@@ -47,7 +47,6 @@ impl<T: Copy> Block for Value<T> {
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
   pub output: RefCell<BlockOutput<T>>,
@@ -69,6 +68,35 @@ impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T>
 impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
   pub fn new(left: &'a RefCell<BlockOutput<T>>, right: &'a RefCell<BlockOutput<T>>) -> Self {
     MathAdd {
+      output: RefCell::new(BlockOutput::new(Default::default())),
+      left: left,
+      right: right,
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathSub<'a, T: std::ops::Sub<Output = T> + Copy + Default> {
+  pub output: RefCell<BlockOutput<T>>,
+  left: &'a RefCell<BlockOutput<T>>,
+  right: &'a RefCell<BlockOutput<T>>,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<'a, T> {
+  fn step(&mut self) {
+    println!("MathSub::step");
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() - *self.right.borrow().read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> MathSub<'a, T> {
+  pub fn new(left: &'a RefCell<BlockOutput<T>>, right: &'a RefCell<BlockOutput<T>>) -> Self {
+    MathSub {
       output: RefCell::new(BlockOutput::new(Default::default())),
       left: left,
       right: right,
