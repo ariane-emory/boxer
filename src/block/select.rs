@@ -95,3 +95,38 @@ impl<T: Copy + PartialOrd> Block<T> for Min<T> {
     &self.output
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct Limit<T: Copy + PartialOrd> {
+  pub output: Signal<T>,
+  input: Signal<T>,
+  min: Signal<T>,
+  max: Signal<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + PartialOrd> Limit<T> {
+  pub fn new(input: &Signal<T>, min: &Signal<T>, max: &Signal<T>) -> Self {
+    Limit {
+      output: new_signal(*input.borrow().read()),
+      input: Rc::clone(input),
+      min: Rc::clone(min),
+      max: Rc::clone(max),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + PartialOrd> Block<T> for Limit<T> {
+  fn step(&mut self) {
+    if *self.input.borrow().read() < *self.min.borrow().read() {
+      self.output.borrow_mut().set(*self.min.borrow().read());
+    } else if *self.input.borrow().read() > *self.max.borrow().read() {
+      self.output.borrow_mut().set(*self.max.borrow().read());
+    } else {
+      self.output.borrow_mut().set(*self.input.borrow().read());
+    }
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
+  }
+}
