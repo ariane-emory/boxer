@@ -62,9 +62,15 @@ fn main() -> io::Result<()> {
   let eight = Value::new(8);
   let mut square = SquareWave::new(eight.output());
 
+  let zero = Value::new(0);
+  let max = Value::new(255);
+  let mut select = Select::new(square.output(), zero.output(), max.output());
+
   for _ in 0..30 {
     println!("square output:  {}", square.output().borrow().read());
+    println!("select output:  {}", select.output().borrow().read());
     square.step();
+    select.step();
   }
 
 
