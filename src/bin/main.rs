@@ -83,49 +83,5 @@ fn main() -> io::Result<()> {
   for line in leftover_lines.iter() {
     println!("Leftover line: {:?}", line);
   }
-
-  // loop {
-  let mut left = block::Value::new(1);
-  let mut twenty = block::Value::new(20);
-  let mut adder = block::MathAdd::new(&left.output, &left.output);
-  let mut subber = block::MathSub::new(&twenty.output, &adder.output);
-
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
-
-  adder.step();
-  subber.step();
-
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
-
-  left.output.borrow_mut().set(8);
-
-  adder.step();
-  subber.step();
-
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
-  // }
-
-  // let five = block::Value::new(5);
-
-  // println!("Adder: {}", adder.output.read());
-  // adder.step();
-  // println!("Adder: {}", adder.output.read());
-  // left.output.set(2);
-  // adder.step();
-  // println!("Adder: {}", adder.output.read());
-
-  // let mut flip = block::Value::new(false);
-  // let ten = block::Value::new(10);
-  // let mut ctr = block::RiseCounter::new(&flip.output, &ten.output);
-  // println!("Ctr: {}", ctr.count.read());
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
-  // flip.output.set(true);
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
-
   Ok(())
 }
