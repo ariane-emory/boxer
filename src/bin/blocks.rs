@@ -102,23 +102,42 @@ fn main() -> io::Result<()> {
       counter_max.output(),
     );
 
-    let mut sr = SRLatch::new(&counter.at_max.clone(), &Value::new(false).output());
+    let mut sr_set = Jump::new();
+    let mut sr_reset = Jump::new();
+    let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
+
     let mut sub = MathSub::new(counter_max.output(), counter.output());
     let mut select = Select::new(sr.output(), counter.output(), sub.output());
-    let mut and = LogicAnd::new(counter.at_max.clone(), LogicNot::new(sr.output()).output());
+
+    let mut not_latched = LogicNot::new(sr.output());
+    let mut max_and_not_latched = LogicAnd::new(&counter.at_max, not_latched.output());
+    let mut max_and_latched = LogicAnd::new(&counter.at_max, sr.output());
 
     counter_reset.input = Some(counter.at_max.clone());
+    sr_set.input = Some(max_and_not_latched.output().clone());
+    sr_reset.input = Some(max_and_latched.output().clone());
 
-    for _ in 0..255 {
-      counter_reset.step();
+    for _ in 0..1024 {
       fast_square.step();
       counter.step();
+      not_latched.step();
+      max_and_latched.step();
+      max_and_not_latched.step();
+      sr_set.step();
+      sr_reset.step();
       sr.step();
       sub.step();
       select.step();
+      counter_reset.step();
       render(b'x', select.output());
 
-      //println!("latch: {}", sr.output().borrow().read());
+      // println!("counter:        {}", counter.output().borrow().read());
+      // println!("counter.at_max: {}", counter.at_max.borrow().read());
+      // println!("sr_reset:       {}", sr_reset.output().borrow().read());
+      // println!("sr:             {}", sr.output().borrow().read());
+      // println!("sub:            {}", sub.output().borrow().read());
+      // println!("select:         {}", select.output().borrow().read());
+      // println!("not_latched:    {}", not_latched.output().borrow().read());
     }
   }
 

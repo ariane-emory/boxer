@@ -136,3 +136,33 @@ impl Block<bool> for TP {
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// This delays it's input by once cycle:
+struct UnitDelay<T: Copy + Default> {
+  pub output: Signal<T>,
+  input: Signal<T>,
+  previous: Signal<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> UnitDelay<T> {
+  pub fn new(input: &Signal<T>) -> Self {
+    UnitDelay {
+      output: new_signal(Default::default()),
+      input: Rc::clone(input),
+      previous: new_signal(Default::default()),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> Block<T> for UnitDelay<T> {
+  fn step(&mut self) {
+    self.previous.borrow_mut().set(*self.input.borrow().read());
+    self.output.borrow_mut().set(*self.previous.borrow().read());
+  }
+
+  fn output(&self) -> &Signal<T> {
+    &self.output
+  }
+}
