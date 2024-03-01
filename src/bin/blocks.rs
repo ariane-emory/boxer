@@ -104,7 +104,7 @@ fn main() -> io::Result<()> {
 
     let mut sr = SRLatch::new(&counter.at_max.clone(), &Value::new(false).output());
     let mut sub = MathSub::new(counter_max.output(), counter.output());
-    let select = Select::new(sr.output(), sub.output(), counter.output());
+    let mut select = Select::new(sr.output(), counter.output(), sub.output());
 
     counter_reset.input = Some(counter.at_max.clone());
 
@@ -113,10 +113,12 @@ fn main() -> io::Result<()> {
       fast_square.step();
       counter.step();
       sr.step();
+      sub.step();
+      select.step();
       //render(b'x', counter.output());
       render(b'x', select.output());
 
-      println!("latch: {}", sr.output().borrow().read());
+      //println!("latch: {}", sr.output().borrow().read());
     }
   }
 
