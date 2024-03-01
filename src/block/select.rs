@@ -22,9 +22,9 @@ impl<T: Copy> Select<T> {
 impl<T: Copy> Block<T> for Select<T> {
   fn step(&mut self) {
     if *self.which.borrow().read() {
-      self.output.borrow_mut().set(*self.left.borrow().read());
-    } else {
       self.output.borrow_mut().set(*self.right.borrow().read());
+    } else {
+      self.output.borrow_mut().set(*self.left.borrow().read());
     }
   }
 

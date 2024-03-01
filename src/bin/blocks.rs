@@ -38,7 +38,7 @@ fn main() -> io::Result<()> {
   let mut fast_square = SquareWave::new(one.output());
 
   let counter_reset = block::Value::new(false);
-  let counter_max = Value::new(8);
+  let counter_max = Value::new(32);
   let mut counter = Counter::new(
     fast_square.output(),
     counter_reset.output(),
@@ -47,17 +47,20 @@ fn main() -> io::Result<()> {
 
   let mut adder = block::MathAdd::new(counter.output(), one.output());
 
-  let mut square = SquareWave::new(counter.output());
+  let two = Value::new(2);
+  let mut div = MathDiv::new(adder.output(), two.output());
 
-  let max = Value::new(64);
+  let mut square = SquareWave::new(div.output());
+
+  let max = Value::new(128);
   let zero = Value::new(0);
   let mut select = Select::new(square.output(), zero.output(), max.output());
 
-
-  for _x in 0..128 {
+  for _x in 0..255 {
     fast_square.step();
     counter.step();
     adder.step();
+    div.step();
     square.step();
     select.step();
 
@@ -68,17 +71,17 @@ fn main() -> io::Result<()> {
     }
 
     println!("");
-    println!("counter input:  {}", fast_square.output.borrow().read());
-    println!("counter output: {}", counter.output().borrow().read());
-    println!("adder output:   {}", adder.output().borrow().read());
-    println!("square period:  {}", square.period.borrow().read());
-    println!("square output:  {}", square.output().borrow().read());
-    println!("select output:  {}", select.output().borrow().read());
+    // println!("counter input:  {}", fast_square.output.borrow().read());
+    // println!("counter output: {}", counter.output().borrow().read());
+    // println!("adder output:   {}", adder.output().borrow().read());
+    // println!("square period:  {}", square.period.borrow().read());
+    // println!("square output:  {}", square.output().borrow().read());
+    // println!("select output:  {}", select.output().borrow().read());
 
-    // for _ in 0..*select.output().borrow().read() {
-    //   print!("x");
-    // }
-    // println!("");
+    for _ in 0..*select.output().borrow().read() {
+      print!("x");
+    }
+    println!("");
 
     // let counter_input_val = *counter_input.output().borrow().read();
     // counter_input.output().borrow_mut().set(!counter_input_val);
