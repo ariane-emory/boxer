@@ -1,9 +1,10 @@
-#![allow(unreachable_code)]
-//#![allow(unused_imports)]
-//#![allow(unused_variables)]
-//#![allow(unused_mut)]
-//#![allow(dead_code)]
+// #![allow(unreachable_code)]
+// #![allow(unused_variables)]
+// #![allow(unused_imports)]
+// #![allow(unused_mut)]
+// #![allow(dead_code)]
 
+<<<<<<< HEAD:src/main.rs
 mod block;
 mod line_makers; //::connected_line_maker;
 mod process_file;
@@ -16,6 +17,11 @@ use block::*;
 use process_file::*;
 use simple_geo::find_rectangles;
 use simple_geo::line_methods::*;
+=======
+use boxer::process_file::*;
+use boxer::simple_geo::find_rectangles;
+use boxer::simple_geo::line_methods::*;
+>>>>>>> rough:src/bin/main.rs
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +87,7 @@ fn main() -> io::Result<()> {
   for line in leftover_lines.iter() {
     println!("Leftover line: {:?}", line);
   }
+<<<<<<< HEAD:src/main.rs
 
   let lef = block::Value::new(1);
   let five = block::Value::new(5);
@@ -100,5 +107,7 @@ fn main() -> io::Result<()> {
   // ctr.step();
   // println!("Ctr: {}", ctr.count.read());
 
+=======
+>>>>>>> rough:src/bin/main.rs
   Ok(())
 }
