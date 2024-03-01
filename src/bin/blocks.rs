@@ -8,29 +8,36 @@ use boxer::block;
 use boxer::block::*;
 use std::io::{self};
 
+fn render(signal: &Signal<usize>, char: u8) {
+  for _ in 0..*signal.borrow().read() {
+    print!("{}", char as char);
+  }
+  println!("");
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   // loop {
   // let left = block::Value::new(1);
   // let twenty = block::Value::new(20);
-  // let mut adder = block::MathAdd::new(left.output(), left.output());
-  // let mut subber = block::MathSub::new(twenty.output(), adder.output());
+  // let mut add = block::MathAdd::new(left.output(), left.output());
+  // let mut subber = block::MathSub::new(twenty.output(), add.output());
 
-  // println!("Adder: {}", adder.output().borrow().read());
+  // println!("Add: {}", add.output().borrow().read());
   // println!("Subber: {}", subber.output().borrow().read());
 
-  // adder.step();
+  // add.step();
   // subber.step();
 
-  // println!("Adder: {}", adder.output().borrow().read());
+  // println!("Add: {}", add.output().borrow().read());
   // println!("Subber: {}", subber.output().borrow().read());
 
   // left.output.borrow_mut().set(8);
 
-  // adder.step();
+  // add.step();
   // subber.step();
 
-  // println!("Adder: {}", adder.output().borrow().read());
+  // println!("Add: {}", add.output().borrow().read());
   // println!("Subber: {}", subber.output().borrow().read());
   // println!("");
 
@@ -38,17 +45,17 @@ fn main() -> io::Result<()> {
   let mut fast_square = SquareWave::new(one.output());
 
   let counter_reset = block::Value::new(false);
-  let counter_max = Value::new(32);
+  let counter_max = Value::new(40);
   let mut counter = Counter::new(
     fast_square.output(),
     counter_reset.output(),
     counter_max.output(),
   );
 
-  let mut adder = block::MathAdd::new(counter.output(), one.output());
+  let mut add = block::MathAdd::new(counter.output(), one.output());
 
   let two = Value::new(2);
-  let mut div = MathDiv::new(adder.output(), two.output());
+  let mut div = MathDiv::new(add.output(), two.output());
 
   let mut square = SquareWave::new(div.output());
 
@@ -59,7 +66,7 @@ fn main() -> io::Result<()> {
   for _x in 0..255 {
     fast_square.step();
     counter.step();
-    adder.step();
+    add.step();
     div.step();
     square.step();
     select.step();
@@ -73,15 +80,16 @@ fn main() -> io::Result<()> {
     // println!("");
     // println!("counter input:  {}", fast_square.output.borrow().read());
     // println!("counter output: {}", counter.output().borrow().read());
-    // println!("adder output:   {}", adder.output().borrow().read());
+    // println!("add output:     {}", add.output().borrow().read());
     // println!("square period:  {}", square.period.borrow().read());
     // println!("square output:  {}", square.output().borrow().read());
     // println!("select output:  {}", select.output().borrow().read());
 
-    for _ in 0..*select.output().borrow().read() {
-      print!("x");
-    }
-    println!("");
+    render(select.output(), b'x');
+    // for _ in 0..*select.output().borrow().read() {
+    //   print!("x");
+    // }
+    // println!("");
 
     // let counter_input_val = *counter_input.output().borrow().read();
     // counter_input.output().borrow_mut().set(!counter_input_val);
