@@ -22,6 +22,10 @@ impl TON {
   pub fn count_output(&self) -> &Signal<usize> {
     &self.count_output
   }
+
+  pub fn count_output_value(&self) -> usize {
+    *self.count_output.borrow().read()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block<bool> for TON {
@@ -72,6 +76,10 @@ impl TOF {
   pub fn count_output(&self) -> &Signal<usize> {
     &self.count_output
   }
+
+  pub fn count_output_value(&self) -> usize {
+    *self.count_output.borrow().read()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block<bool> for TOF {
@@ -121,6 +129,10 @@ impl TP {
 
   pub fn count_output(&self) -> &Signal<usize> {
     &self.count_output
+  }
+
+  pub fn count_output_value(&self) -> usize {
+    *self.count_output.borrow().read()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

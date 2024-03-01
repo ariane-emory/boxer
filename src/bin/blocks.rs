@@ -62,7 +62,7 @@ fn main() -> io::Result<()> {
       // println!("square output:  {}", square.output().borrow().read());
       // println!("select output:  {}", select.output().borrow().read());
 
-      render(b'x', b'-', *select.output().borrow().read(), *max.output().borrow().read());
+      render(b'x', b'-', select.output_value(), max.output_value());
     }
   }
 
@@ -97,18 +97,18 @@ fn main() -> io::Result<()> {
       sr_set.step();
       sr_reset.step();
 
-      // println!("counter:             {}", counter.output().borrow().read());
+      // println!("counter:             {}", counter.output_value());
       // println!("counter.at_max:      {}", counter.at_max.borrow().read());
-      // println!("counter reset:       {}", counter_reset.output().borrow().read());
-      // println!("sr_reset:            {}", sr_reset.output().borrow().read());
-      // println!("sr:                  {}", sr.output().borrow().read());
-      // println!("sub:                 {}", sub.output().borrow().read());
-      // println!("select:              {}", select.output().borrow().read());
-      // println!("not_latched:         {}", not_latched.output().borrow().read());
-      // println!("max_and_latched:     {}", max_and_latched.output().borrow().read());
-      // println!("max_and_not_latched: {}", max_and_not_latched.output().borrow().read());
+      // println!("counter reset:       {}", counter_reset.output_value());
+      // println!("sr_reset:            {}", sr_reset.output_value());
+      // println!("sr:                  {}", sr.output_value());
+      // println!("sub:                 {}", sub.output_value());
+      // println!("select:              {}", select.output_value());
+      // println!("not_latched:         {}", not_latched.output_value());
+      // println!("max_and_latched:     {}", max_and_latched.output_value());
+      // println!("max_and_not_latched: {}", max_and_not_latched.output_value());
 
-      render(b'x', b'-', *select.output().borrow().read(), *max.output().borrow().read());
+      render(b'x', b'-', select.output_value(), max.output_value());
     }
   }
 
@@ -135,21 +135,16 @@ fn main() -> io::Result<()> {
       sample_and_hold.step();
 
       // println!("");
-      // println!("counter input:  {}", clock.output().borrow().read());
-      // println!("counter output: {}", counter.output().borrow().read());
-      // println!("add output:     {}", add.output().borrow().read());
-      // println!("square period:  {}", square.period().borrow().read());
-      // println!("square output:  {}", square.output().borrow().read());
-      // println!("select output:  {}", select.output().borrow().read());
-      // println!("s&h output:  {}", sample_and_hold.output().borrow().read());
+      // println!("counter input:  {}", clock.output_value());
+      // println!("counter output: {}", counter.output_value());
+      // println!("add output:     {}", add.output_value());
+      // println!("square period:  {}", square.period.output_value());
+      // println!("square output:  {}", square.output_value());
+      // println!("select output:  {}", select.output_value());
+      // println!("s&h output:  {}", sample_and_hold.output_value());
       //render(b'x', b'-', select.output(), imax.output());
 
-      render(
-        b'x',
-        b'-',
-        *add.output().borrow().read() as usize,
-        *imax.output().borrow().read() as usize,
-      );
+      render(b'x', b'-', add.output_value() as usize, imax.output_value() as usize);
     }
   }
   //  }

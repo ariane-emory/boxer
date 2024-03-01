@@ -27,6 +27,10 @@ impl UpCounter {
   pub fn at_max(&self) -> &Signal<bool> {
     &self.at_max
   }
+
+  pub fn at_max_value(&self) -> bool {
+    *self.at_max.borrow().read()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block<usize> for UpCounter {
