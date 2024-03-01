@@ -174,7 +174,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() / *self.right.borrow().read());
+      .set(*self.left.borrow().read() % *self.right.borrow().read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
