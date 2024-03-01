@@ -13,45 +13,66 @@ fn main() -> io::Result<()> {
   // loop {
   let left = block::Value::new(1);
   let twenty = block::Value::new(20);
-  let mut adder = block::MathAdd::new(&left.output, &left.output);
-  let mut subber = block::MathSub::new(&twenty.output, &adder.output);
+  let mut adder = block::MathAdd::new(left.output(), left.output());
+  let mut subber = block::MathSub::new(twenty.output(), adder.output());
 
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
+  println!("Adder: {}", adder.output().borrow().read());
+  println!("Subber: {}", subber.output().borrow().read());
 
   adder.step();
   subber.step();
 
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
+  println!("Adder: {}", adder.output().borrow().read());
+  println!("Subber: {}", subber.output().borrow().read());
 
   left.output.borrow_mut().set(8);
 
   adder.step();
   subber.step();
 
-  println!("Adder: {}", adder.output.borrow().read());
-  println!("Subber: {}", subber.output.borrow().read());
-  // }
+  println!("Adder: {}", adder.output().borrow().read());
+  println!("Subber: {}", subber.output().borrow().read());
+  println!("");
 
-  // let five = block::Value::new(5);
+  let counter_input = Value::new(false);
+  let counter_reset = block::Value::new(false);
+  let counter_max = Value::new(10);
+  let mut counter = Counter::new(
+    counter_input.output(),
+    counter_reset.output(),
+    counter_max.output(),
+  );
 
-  // println!("Adder: {}", adder.output.read());
-  // adder.step();
-  // println!("Adder: {}", adder.output.read());
-  // left.output.set(2);
-  // adder.step();
-  // println!("Adder: {}", adder.output.read());
+  for _ in 0..30 {
+    println!("counter input:  {}", counter_input.output.borrow().read());
+    println!("counter output: {}", counter.output().borrow().read());
 
-  // let mut flip = block::Value::new(false);
-  // let ten = block::Value::new(10);
-  // let mut ctr = block::Counter::new(&flip.output, &ten.output);
-  // println!("Ctr: {}", ctr.count.read());
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
-  // flip.output.set(true);
-  // ctr.step();
-  // println!("Ctr: {}", ctr.count.read());
+    counter.step();
+
+    if *counter.at_max.borrow().read() {
+      counter_reset.output.borrow_mut().set(true);
+      counter.step();
+      counter_reset.output.borrow_mut().set(false);
+    }
+
+    let counter_input_val = *counter_input.output().borrow().read();
+    counter_input.output().borrow_mut().set(!counter_input_val);
+  }
+
+  let eight = Value::new(8);
+  let mut square = SquareWave::new(eight.output());
+
+  let zero = Value::new(0);
+  let max = Value::new(255);
+  let mut select = Select::new(square.output(), zero.output(), max.output());
+
+  for _ in 0..30 {
+    println!("square output:  {}", square.output().borrow().read());
+    println!("select output:  {}", select.output().borrow().read());
+    square.step();
+    select.step();
+  }
+
 
   Ok(())
 }
