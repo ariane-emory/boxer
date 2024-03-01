@@ -94,7 +94,7 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let counter_reset = block::Value::new(false);
+    let mut counter_reset = block::Jump::new();
     let counter_max = Value::new(40);
     let mut counter = Counter::new(
       fast_square.output(),
@@ -104,12 +104,27 @@ fn main() -> io::Result<()> {
 
     let mut eql = Equal::new(counter.output(), counter_max.output());
 
+    let clone = eql.output().clone();
+    counter_reset.set_input(clone.clone());
+
     for _ in 0..255 {
+      counter_reset.step();
       fast_square.step();
       counter.step();
       eql.step();
 
       render(b'x', counter.output());
+
+      // println!(
+      //   "{}",
+      //   if *eql.output().borrow().read() {
+      //     "YES"
+      //   } else {
+      //     "no"
+      //   }
+      // );
+
+      // println!("{}", if *clone.borrow().read() { "YES" } else { "no" });
     }
   }
 

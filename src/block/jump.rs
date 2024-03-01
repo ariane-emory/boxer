@@ -21,6 +21,10 @@ impl<T: Copy + Default> Jump<T> {
     }
     //}
   }
+
+  pub fn set_input(&mut self, input: Signal<T>) {
+    self.input = Some(input);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Block<T> for Jump<T> {
