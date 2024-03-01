@@ -105,6 +105,16 @@ fn main() -> io::Result<()> {
   }
 
   {
+    let div_input = Feedback<isize>::new();
+    let add_left_input = Feedback<isize>::new();
+
+    let two = Value<isize>::new(2);
+    let div_by_two = Div<isize>::new(div_input, two.output());
+
+    
+    let add = Add::new(add_left_input.output(), div_by_two.output());
+    let sample_and_hold = SampleAndHold::new(add.output(), clock.output());
+    
     let sixteen = Value::new(16);
     let mut square = SquareWave::new(sixteen.output());
     let max = Value::new(128);
