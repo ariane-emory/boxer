@@ -11,6 +11,10 @@ impl<T: Copy> Value<T> {
       output: Rc::new(RefCell::new(BlockOutput::new(value))),
     }
   }
+
+  pub fn set(&mut self, value: T) {
+    self.output.borrow_mut().set(value);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Block<T> for Value<T> {
