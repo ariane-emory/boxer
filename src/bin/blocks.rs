@@ -33,16 +33,19 @@ fn main() -> io::Result<()> {
   println!("Adder: {}", adder.output.borrow().read());
   println!("Subber: {}", subber.output.borrow().read());
 
-  let mut flip = Value::new(false);
-  let mut max = Value::new(100);
+  let flip = Value::new(false);
+  let max = Value::new(100);
   let mut counter = Counter::new(&flip.output, &max.output);
 
   for _ in 0..10 {
     counter.step();
     println!("flip: {}", flip.output.borrow().read());
     println!("Counter: {}", counter.output.borrow().read());
-    flip.output.borrow_mut().set(!flip.output.borrow().read());
+
+    let flip_val = *flip.output.borrow().read();
+    flip.output.borrow_mut().set(!flip_val);
   }
+
 
   Ok(())
 }
