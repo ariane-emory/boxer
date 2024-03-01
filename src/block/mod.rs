@@ -8,6 +8,7 @@ pub mod random;
 pub mod select;
 pub mod timer;
 pub mod trigger;
+pub mod value;
 
 pub use cmp::*;
 pub use counter::*;
@@ -18,10 +19,10 @@ pub use random::*;
 pub use select::*;
 pub use timer::*;
 pub use trigger::*;
+pub use value::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct BlockOutput<T: Copy> {
@@ -57,26 +58,4 @@ pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
 pub trait Block<T: Copy> {
   fn step(&mut self);
   fn output(&self) -> &Signal<T>;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct Value<T: Copy> {
-  pub output: Signal<T>,
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Value<T> {
-  pub fn new(value: T) -> Self {
-    Value {
-      output: Rc::new(RefCell::new(BlockOutput::new(value))),
-    }
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Block<T> for Value<T> {
-  fn step(&mut self) {}
-
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
 }
