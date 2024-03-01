@@ -49,7 +49,7 @@ fn main() -> io::Result<()> {
 
   if false {
     let counter_reset = block::Value::new(false);
-    let counter_max = Value::new(40);
+    let counter_max = Value::new(128);
     let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
 
     let mut add = block::Add::new(counter.output(), one.output());
