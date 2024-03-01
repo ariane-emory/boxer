@@ -102,8 +102,8 @@ fn main() -> io::Result<()> {
     let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
 
     let mut not_latched = Not::new(sr.output());
-    let mut max_and_latched = And::new(&counter.at_max, sr.output());
-    let mut max_and_not_latched = And::new(&counter.at_max, not_latched.output());
+    let mut max_and_latched = And::new(counter.at_max(), sr.output());
+    let mut max_and_not_latched = And::new(counter.at_max(), not_latched.output());
 
     counter_reset.input = Some(counter.at_max.clone());
     sr_set.input = Some(max_and_not_latched.output().clone());

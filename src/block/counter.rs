@@ -23,6 +23,10 @@ impl UpCounter {
       last_reset_state: false,
     }
   }
+
+  pub fn at_max(&self) -> &Signal<bool> {
+    &self.at_max
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block<usize> for UpCounter {
