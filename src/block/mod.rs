@@ -11,19 +11,21 @@ pub trait Block {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct BlockOutput<T: Copy> {
-  value: RefCell<T>,
+  value: T,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> BlockOutput<T> {
   pub fn new(value: T) -> Self {
-    BlockOutput {
-      value: RefCell::new(value),
-    }
+    BlockOutput { value }
   }
 
-  pub fn read(&self) -> T { *self.value.borrow() }
+  pub fn read(&self) -> &T {
+    &self.value
+  }
 
-  pub fn set(&mut self, value: T) { *self.value.borrow_mut() = value; }
+  pub fn set(&mut self, value: T) {
+    self.value = value;
+  }
 }
 
 
@@ -32,13 +34,13 @@ impl<T: Copy> BlockOutput<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Value<T: Copy> {
-  pub output: BlockOutput<T>,
+  pub output: RefCell<BlockOutput<T>>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
     Value {
-      output: BlockOutput::new(value),
+      output: RefCell::new(BlockOutput::new(value)),
     }
   }
 }
