@@ -20,56 +20,31 @@ fn render(char: u8, char2: u8, signal: &Signal<usize>, width: &Signal<usize>) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  // loop {
-  // let left = block::Value::new(1);
-  // let twenty = block::Value::new(20);
-  // let mut add = block::Add::new(left.output(), left.output());
-  // let mut subber = block::Sub::new(twenty.output(), add.output());
-
-  // println!("Add: {}", add.output().borrow().read());
-  // println!("Subber: {}", subber.output().borrow().read());
-
-  // add.step();
-  // subber.step();
-
-  // println!("Add: {}", add.output().borrow().read());
-  // println!("Subber: {}", subber.output().borrow().read());
-
-  // left.output.borrow_mut().set(8);
-
-  // add.step();
-  // subber.step();
-
-  // println!("Add: {}", add.output().borrow().read());
-  // println!("Subber: {}", subber.output().borrow().read());
-  // println!("");
-
   let one = Value::new(1);
   let mut clock = SquareWave::new(one.output());
 
-  if false {
-    let counter_reset = block::Value::new(false);
+  {
+    let mut counter_reset = Feedback::new();
     let counter_max = Value::new(128);
     let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
-
     let mut add = block::Add::new(counter.output(), one.output());
-
     let two = Value::new(2);
     let mut div = Div::new(add.output(), two.output());
-
     let mut square = SquareWave::new(div.output());
-
     let max = Value::new(128);
     let zero = Value::new(0);
     let mut select = Select::new(square.output(), zero.output(), max.output());
 
-    for _x in 0..255 {
+    counter_reset.set_input(&counter.at_max());
+
+    for _ in 0..511 {
       clock.step();
       counter.step();
       add.step();
       div.step();
       square.step();
       select.step();
+      counter_reset.step();
 
       if *counter.at_max().borrow().read() {
         counter_reset.output().borrow_mut().set(true);
@@ -92,7 +67,7 @@ fn main() -> io::Result<()> {
     }
   }
 
-  {
+  if false {
     let counter_max = Value::new(128);
     let mut counter_reset = Feedback::new();
     let mut counter = UpCounter::new(clock.output(), &counter_reset.output(), counter_max.output());
