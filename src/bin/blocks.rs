@@ -27,7 +27,6 @@ fn main() -> io::Result<()> {
     let mut counter_reset = Feedback::new();
     let counter_max = Value::new(64);
     let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
-    let one = Value::new(0);
     let mut add = block::Add::new(counter.output(), one.output());
     let two = Value::new(2);
     let mut div = Div::new(add.output(), two.output());
@@ -102,6 +101,30 @@ fn main() -> io::Result<()> {
       // println!("max_and_latched:     {}", max_and_latched.output().borrow().read());
       // println!("max_and_not_latched: {}", max_and_not_latched.output().borrow().read());
       render(b'x', b'-', select.output(), counter_max.output());
+    }
+  }
+
+  {
+    let sixteen = Value::new(16);
+    let mut square = SquareWave::new(sixteen.output());
+    let max = Value::new(128);
+    let zero = Value::new(0);
+    let mut select = Select::new(square.output(), zero.output(), max.output());
+
+    for _ in 0..511 {
+      clock.step();
+      square.step();
+      select.step();
+
+      // println!("");
+      // println!("counter input:  {}", clock.output().borrow().read());
+      // println!("counter output: {}", counter.output().borrow().read());
+      // println!("add output:     {}", add.output().borrow().read());
+      // println!("square period:  {}", square.period().borrow().read());
+      // println!("square output:  {}", square.output().borrow().read());
+      // println!("select output:  {}", select.output().borrow().read());
+
+      render(b'x', b'-', select.output(), max.output());
     }
   }
 
