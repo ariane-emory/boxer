@@ -38,20 +38,21 @@ impl Block<usize> for Counter {
     let reset_rose = reset_val && !last_reset_state_val;
 
     if reset_rose {
-      println!("Reset rose..");
+      println!("  Reset rose..");
       self.output.borrow_mut().set(0);
       self.at_max.borrow_mut().set(false);
     } else if at_max_val {
-      println!("At max!");
+      println!("  At max!");
       return;
-    }
-    if input_rose {
-      println!("Reset rose..");
+    } else if input_rose {
+      println!("  Input rose..");
       self.output.borrow_mut().set(output_val + 1);
 
       if output_val + 1 == max_val {
         self.at_max.borrow_mut().set(true);
       }
+    } else {
+      println!("  Nothing interesting happened..");
     }
   }
 

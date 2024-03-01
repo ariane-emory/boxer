@@ -32,6 +32,7 @@ fn main() -> io::Result<()> {
 
   println!("Adder: {}", adder.output().borrow().read());
   println!("Subber: {}", subber.output().borrow().read());
+  println!("");
 
   let counter_input = Value::new(false);
   let counter_reset = block::Value::new(false);
@@ -43,9 +44,10 @@ fn main() -> io::Result<()> {
   );
 
   for _ in 0..40 {
-    counter.step();
     println!("counter_input: {}", counter_input.output.borrow().read());
     println!("Counter: {}", counter.output().borrow().read());
+
+    counter.step();
 
     if *counter.at_max.borrow().read() {
       counter_reset.output.borrow_mut().set(true);
