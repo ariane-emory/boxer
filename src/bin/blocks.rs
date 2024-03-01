@@ -46,11 +46,11 @@ fn main() -> io::Result<()> {
       select.step();
       counter_reset.step();
 
-      if *counter.at_max().borrow().read() {
-        counter_reset.output().borrow_mut().set(true);
-        counter.step();
-        counter_reset.output().borrow_mut().set(false);
-      }
+      // if *counter.at_max().borrow().read() {
+      //   counter_reset.output().borrow_mut().set(true);
+      //   counter.step();
+      //   counter_reset.output().borrow_mut().set(false);
+      // }
 
       // println!("");
       // println!("counter input:  {}", clock.output.borrow().read());
