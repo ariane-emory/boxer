@@ -48,6 +48,7 @@ impl<T: Copy> Block for Value<T> {
 }
 
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
   pub output: Rc<RefCell<BlockOutput<T>>>,
@@ -70,68 +71,42 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
   pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
     MathAdd {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
-      left: left.clone(),
+      left: Rc::clone(left),
       right: Rc::clone(right),
     }
   }
 }
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct MathSub<'a, T: std::ops::Sub<Output = T> + Copy + Default> {
-//   pub output: RefCell<BlockOutput<T>>,
-//   left: &'a RefCell<BlockOutput<T>>,
-//   right: &'a RefCell<BlockOutput<T>>,
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
+  pub output: Rc<RefCell<BlockOutput<T>>>,
+  left: Rc<RefCell<BlockOutput<T>>>,
+  right: Rc<RefCell<BlockOutput<T>>>,
+}
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<'a, T> {
-//   fn step(&mut self) {
-//     println!("MathSub::step");
-//     self
-//       .output
-//       .borrow_mut()
-//       .set(*self.left.borrow().read() - *self.right.borrow().read());
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> MathSub<'a, T> {
-//   pub fn new(left: &'a RefCell<BlockOutput<T>>, right: &'a RefCell<BlockOutput<T>>) -> Self {
-//     MathSub {
-//       output: RefCell::new(BlockOutput::new(Default::default())),
-//       left: left,
-//       right: right,
-//     }
-//   }
-// }
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
+  fn step(&mut self) {
+    println!("MathSub::step");
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() - *self.right.borrow().read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
+  pub fn new(left: &Rc<RefCell<BlockOutput<T>>>, right: &Rc<RefCell<BlockOutput<T>>>) -> Self {
+    MathSub {
+      output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
 
 
-
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct MathSub<'a, T: std::ops::Sub<Output = T> + Copy + Default> {
-//   pub output: BlockOutput<T>,
-//   left: &'a BlockOutput<T>,
-//   right: &'a BlockOutput<T>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<'a, T> {
-//   fn step(&mut self) {
-//     self.output.set(*self.left.read() - *self.right.read());
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Sub<Output = T> + Copy + Default> MathSub<'a, T> {
-//   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
-//     MathSub {
-//       output: BlockOutput::new(Default::default()),
-//       left,
-//       right,
-//     }
-//   }
-// }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
