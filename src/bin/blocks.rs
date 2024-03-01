@@ -93,24 +93,21 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let counter_max = Value::new(48);
-    let mut counter_reset = Jump::new();
+    let counter_max = Value::new(128);
+    let mut counter_reset = Feedback::new();
     let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
-
-    let mut sr_set = Jump::new();
-    let mut sr_reset = Jump::new();
+    let mut sr_set = Feedback::new();
+    let mut sr_reset = Feedback::new();
     let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
-
     let mut not_latched = Not::new(sr.output());
-    let mut max_and_latched = And::new(counter.at_max(), sr.output());
-    let mut max_and_not_latched = And::new(counter.at_max(), not_latched.output());
-
-    counter_reset.set_input(&counter.at_max());
-    sr_set.set_input(&max_and_not_latched.output());
-    sr_reset.set_input(&max_and_latched.output());
-
+    let mut counter_at_max_and_latched = And::new(counter.at_max(), sr.output());
+    let mut counter_at_max_and_not_latched = And::new(counter.at_max(), not_latched.output());
     let mut sub = Sub::new(counter_max.output(), counter.output());
     let mut select = Select::new(sr.output(), counter.output(), sub.output());
+
+    counter_reset.set_input(&counter.at_max());
+    sr_set.set_input(&counter_at_max_and_not_latched.output());
+    sr_reset.set_input(&counter_at_max_and_latched.output());
 
     for _ in 0..1024 {
       // println!("");
@@ -118,8 +115,8 @@ fn main() -> io::Result<()> {
       clock.step();
       counter.step();
       not_latched.step();
-      max_and_latched.step();
-      max_and_not_latched.step();
+      counter_at_max_and_latched.step();
+      counter_at_max_and_not_latched.step();
       sr.step();
       sub.step();
       select.step();
