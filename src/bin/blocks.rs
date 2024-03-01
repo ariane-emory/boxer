@@ -38,7 +38,7 @@ fn main() -> io::Result<()> {
 
     counter_reset.set_input(&counter.at_max());
 
-    for _ in 0..1023 {
+    for _ in 0..511 {
       clock.step();
       counter.step();
       add.step();
@@ -76,7 +76,7 @@ fn main() -> io::Result<()> {
     sr_set.set_input(&counter_at_max_and_not_latched.output());
     sr_reset.set_input(&counter_at_max_and_latched.output());
 
-    for _ in 0..1024 {
+    for _ in 0..511 {
       // println!("");
 
       clock.step();
