@@ -3,7 +3,7 @@ use crate::block::*;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct SquareWave {
   pub output: Signal<bool>,
-  period: Signal<usize>,
+  pub period: Signal<usize>,
   count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ impl Block<bool> for SquareWave {
 
     self.count = self.count + 1;
 
-    if self.count == period {
+    if self.count >= period {
       self.output.borrow_mut().set(!last_output);
       self.count = 0;
     }

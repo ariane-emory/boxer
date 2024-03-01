@@ -19,7 +19,6 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Block<T> for MathAdd<T> {
   fn step(&mut self) {
-    println!("MathAdd::step");
     self
       .output
       .borrow_mut()
@@ -51,7 +50,6 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Block<T> for MathSub<T> {
   fn step(&mut self) {
-    println!("MathSub::step");
     self
       .output
       .borrow_mut()
@@ -83,7 +81,6 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Block<T> for MathMul<T> {
   fn step(&mut self) {
-    println!("MathMul::step");
     self
       .output
       .borrow_mut()
@@ -115,7 +112,6 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Block<T> for MathDiv<T> {
   fn step(&mut self) {
-    println!("MathDiv::step");
     self
       .output
       .borrow_mut()
@@ -147,7 +143,6 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Block<T> for MathMod<T> {
   fn step(&mut self) {
-    println!("MathMod::step");
     self
       .output
       .borrow_mut()
