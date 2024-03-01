@@ -86,14 +86,14 @@ fn main() -> io::Result<()> {
   let mut left = block::Value::new(1);
   let mut adder = block::MathAdd::new(&left.output, &left.output);
 
-  println!("Adder: {}", adder.output.read());
+  println!("Adder: {}", adder.output.borrow().read());
   adder.step();
-  println!("Adder: {}", adder.output.read());
+  println!("Adder: {}", adder.output.borrow().read());
 
   left.output.borrow_mut().set(8);
 
   adder.step();
-  println!("Adder: {}", adder.output.read());
+  println!("Adder: {}", adder.output.borrow().read());
 
 
   // let five = block::Value::new(5);
