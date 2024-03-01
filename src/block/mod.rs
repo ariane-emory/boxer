@@ -191,34 +191,6 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 }
 
 
-
-
-
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct MathMod<'a, T: std::ops::Rem<Output = T> + Copy + Default> {
-//   pub output: BlockOutput<T>,
-//   left: &'a BlockOutput<T>,
-//   right: &'a BlockOutput<T>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<'a, T> {
-//   fn step(&mut self) {
-//     self.output.set(*self.left.read() % *self.right.read());
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Rem<Output = T> + Copy + Default> MathMod<'a, T> {
-//   pub fn new(left: &'a BlockOutput<T>, right: &'a BlockOutput<T>) -> Self {
-//     MathMod {
-//       output: BlockOutput::new(Default::default()),
-//       left,
-//       right,
-//     }
-//   }
-// }
-
-
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct Select<'a, T: Copy> {
 //   selector: &'a BlockOutput<bool>,
