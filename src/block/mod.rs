@@ -11,13 +11,13 @@ pub mod trigger;
 
 pub use cmp::*;
 pub use counter::*;
+// pub use latch::*;
 pub use logic::*;
 pub use math::*;
 pub use random::*;
 pub use select::*;
 pub use timer::*;
 pub use trigger::*;
-//pub use latch::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;
