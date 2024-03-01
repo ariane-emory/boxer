@@ -431,53 +431,33 @@ impl RiseCounter {
 }
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for RiseCounter {
-//   fn step(&mut self) {
-//     let read = *self.input.borrow().read();
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct RisingTrigger {
+  pub output: Signal<bool>,
+  input: Signal<bool>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl RisingTrigger {
+  pub fn new(input: &Signal<bool>) -> Self {
+    RisingTrigger {
+      output: new_signal(false),
+      input,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl Block for RisingTrigger {
+  fn step(&mut self) {
+    let last_state = *self.input.borrow().read();
+    let input = *self.input.borrow().read();
 
-//     if self.count.borrow().read() == self.max.borrow().read() {
-//       self.at_max.set(true);
-//     } else {
-//       self.at_max.set(false);
-//     }
-
-//     if (!*self.at_max.borrow().read()) && *self.input.borrow().read() && !self.last_state {
-//       self.count.set(self.count.borrow().read() + 1);
-//     }
-
-//     self.last_state = read;
-//   }
-// }
-
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct RisingTrigger {
-//   input: Signal<bool>,
-//   pub output: Signal<bool>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl RisingTrigger {
-//   pub fn new(input: Signal<bool>) -> Self {
-//     RisingTrigger {
-//       input,
-//       output: new_signal(false),
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl Block for RisingTrigger {
-//   fn step(&mut self) {
-//     let last_state = *self.input.borrow().read();
-//     let input = *self.input.borrow().read();
-
-//     if input && !last_state {
-//       self.output.borrow_mut().set(true);
-//     } else {
-//       self.output.borrow_mut().set(false);
-//     }
-//   }
-// }
+    if input && !last_state {
+      self.output.borrow_mut().set(true);
+    } else {
+      self.output.borrow_mut().set(false);
+    }
+  }
+}
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
