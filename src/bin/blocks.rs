@@ -94,37 +94,26 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let mut counter_reset = block::Jump::new();
     let counter_max = Value::new(40);
+    let mut counter_reset = Jump::new();
     let mut counter = Counter::new(
       fast_square.output(),
       counter_reset.output(),
       counter_max.output(),
     );
 
-    let mut eql = Equal::new(counter.output(), counter_max.output());
+    let mut sr = SRLatch::new(&counter.at_max.clone(), &Value::new(false).output());
 
-    let clone = eql.output().clone();
-    counter_reset.set_input(clone.clone());
+    counter_reset.input = Some(counter.at_max.clone());
 
     for _ in 0..255 {
       counter_reset.step();
       fast_square.step();
       counter.step();
-      eql.step();
-
+      sr.step();
       render(b'x', counter.output());
 
-      // println!(
-      //   "{}",
-      //   if *eql.output().borrow().read() {
-      //     "YES"
-      //   } else {
-      //     "no"
-      //   }
-      // );
-
-      // println!("{}", if *clone.borrow().read() { "YES" } else { "no" });
+      println!("latch: {}", sr.output().borrow().read());
     }
   }
 

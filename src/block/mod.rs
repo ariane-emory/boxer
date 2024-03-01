@@ -14,8 +14,8 @@ pub mod waveform;
 
 pub use cmp::*;
 pub use counter::*;
-// pub use latch::*;
 pub use jump::*;
+pub use latch::*;
 pub use logic::*;
 pub use math::*;
 pub use random::*;

@@ -1,7 +1,7 @@
 use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct SRLatch {
+pub struct SRLatch {
   pub output: Signal<bool>,
   set: Signal<bool>,
   reset: Signal<bool>,
@@ -33,7 +33,7 @@ impl Block<bool> for SRLatch {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct RSLatch {
+pub struct RSLatch {
   pub output: Signal<bool>,
   set: Signal<bool>,
   reset: Signal<bool>,
