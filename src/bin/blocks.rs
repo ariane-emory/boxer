@@ -11,28 +11,28 @@ use std::io::{self};
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   // loop {
-  let left = block::Value::new(1);
-  let twenty = block::Value::new(20);
-  let mut adder = block::MathAdd::new(left.output(), left.output());
-  let mut subber = block::MathSub::new(twenty.output(), adder.output());
+  // let left = block::Value::new(1);
+  // let twenty = block::Value::new(20);
+  // let mut adder = block::MathAdd::new(left.output(), left.output());
+  // let mut subber = block::MathSub::new(twenty.output(), adder.output());
 
-  println!("Adder: {}", adder.output().borrow().read());
-  println!("Subber: {}", subber.output().borrow().read());
+  // println!("Adder: {}", adder.output().borrow().read());
+  // println!("Subber: {}", subber.output().borrow().read());
 
-  adder.step();
-  subber.step();
+  // adder.step();
+  // subber.step();
 
-  println!("Adder: {}", adder.output().borrow().read());
-  println!("Subber: {}", subber.output().borrow().read());
+  // println!("Adder: {}", adder.output().borrow().read());
+  // println!("Subber: {}", subber.output().borrow().read());
 
-  left.output.borrow_mut().set(8);
+  // left.output.borrow_mut().set(8);
 
-  adder.step();
-  subber.step();
+  // adder.step();
+  // subber.step();
 
-  println!("Adder: {}", adder.output().borrow().read());
-  println!("Subber: {}", subber.output().borrow().read());
-  println!("");
+  // println!("Adder: {}", adder.output().borrow().read());
+  // println!("Subber: {}", subber.output().borrow().read());
+  // println!("");
 
   let counter_input = Value::new(false);
   let counter_reset = block::Value::new(false);
