@@ -11,7 +11,7 @@ pub struct SampleAndHold<T: Copy + Default> {
 impl<T: Copy + Default> SampleAndHold<T> {
   pub fn new(input: &Signal<T>, set: &Signal<bool>, reset: &Signal<bool>) -> Self {
     SampleAndHold {
-      output: new_signal(*input.borrow().read()),
+      output: new_signal(Default::default()),
       input: Rc::clone(input),
       set: Rc::clone(set),
       reset: Rc::clone(reset),
