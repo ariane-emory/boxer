@@ -37,7 +37,7 @@ fn main() -> io::Result<()> {
 
     counter_reset.set_input(&counter.at_max());
 
-    for _ in 0..511 {
+    for _ in 0..1023 {
       clock.step();
       counter.step();
       add.step();
