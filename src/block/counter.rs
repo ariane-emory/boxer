@@ -2,8 +2,8 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct UpCounter {
-  pub output: Signal<usize>,
-  pub at_max: Signal<bool>,
+  output: Signal<usize>,
+  at_max: Signal<bool>,
   input: Signal<bool>,
   reset: Signal<bool>,
   max: Signal<usize>,

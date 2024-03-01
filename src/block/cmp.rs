@@ -2,7 +2,7 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct GreaterThan<T: std::cmp::PartialOrd + Copy> {
-  pub output: Signal<bool>,
+  output: Signal<bool>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -33,7 +33,7 @@ impl<T: std::cmp::PartialOrd + Copy> Block<bool> for GreaterThan<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct LessThan<T: std::cmp::PartialOrd + Copy> {
-  pub output: Signal<bool>,
+  output: Signal<bool>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -64,7 +64,7 @@ impl<T: std::cmp::PartialOrd + Copy> Block<bool> for LessThan<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Equal<T: std::cmp::PartialEq + Copy> {
-  pub output: Signal<bool>,
+  output: Signal<bool>,
   left: Signal<T>,
   right: Signal<T>,
 }
@@ -95,7 +95,7 @@ impl<T: std::cmp::PartialEq + Copy> Block<bool> for Equal<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct NotEqual<T: std::cmp::PartialEq + Copy> {
-  pub output: Signal<bool>,
+  output: Signal<bool>,
   left: Signal<T>,
   right: Signal<T>,
 }

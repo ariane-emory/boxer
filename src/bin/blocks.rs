@@ -71,7 +71,7 @@ fn main() -> io::Result<()> {
       square.step();
       select.step();
 
-      if *counter.at_max.borrow().read() {
+      if *counter.at_max().borrow().read() {
         counter_reset.output.borrow_mut().set(true);
         counter.step();
         counter_reset.output.borrow_mut().set(false);
@@ -105,7 +105,7 @@ fn main() -> io::Result<()> {
     let mut max_and_latched = And::new(counter.at_max(), sr.output());
     let mut max_and_not_latched = And::new(counter.at_max(), not_latched.output());
 
-    counter_reset.set_input(&counter.at_max);
+    counter_reset.set_input(&counter.at_max());
     sr_set.set_input(&max_and_not_latched.output());
     sr_reset.set_input(&max_and_latched.output());
 
