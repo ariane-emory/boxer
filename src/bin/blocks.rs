@@ -35,25 +35,22 @@ fn main() -> io::Result<()> {
 
   let counter_input = Value::new(false);
   let counter_reset = block::Value::new(false);
-  let counter_max = Value::new(100);
+  let counter_max = Value::new(10);
   let mut counter = Counter::new(
     counter_input.output(),
     counter_reset.output(),
     counter_max.output(),
   );
 
-  for _ in 0..10 {
+  for _ in 0..40 {
     counter.step();
     println!("counter_input: {}", counter_input.output.borrow().read());
     println!("Counter: {}", counter.output().borrow().read());
 
-    let counter_is_at_max = *counter.at_max.borrow().read();
-
-    if counter_is_at_max {
-      counter_input
-        .output
-        .borrow_mut()
-        .set(!*counter_input.output.borrow().read());
+    if *counter.at_max.borrow().read() {
+      counter_reset.output.borrow_mut().set(true);
+      counter.step();
+      counter_reset.output.borrow_mut().set(false);
     }
 
     let counter_input_val = *counter_input.output().borrow().read();
