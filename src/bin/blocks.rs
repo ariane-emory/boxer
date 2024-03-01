@@ -116,7 +116,9 @@ fn main() -> io::Result<()> {
     let mut delay3 = UnitDelay::new(delay2.output());
     let mut delay4 = UnitDelay::new(delay3.output());
 
-    counter_reset.input = Some(counter.at_max.clone());
+    let mut counter_reset_delay = UnitDelay::new(&counter.at_max);
+
+    counter_reset.input = Some(counter_reset_delay.output().clone());
     sr_set.input = Some(max_and_not_latched.output().clone());
     sr_reset.input = Some(max_and_latched.output().clone());
 
@@ -133,6 +135,7 @@ fn main() -> io::Result<()> {
       delay2.step();
       delay3.step();
       delay4.step();
+      counter_reset();
       select.step();
       counter_reset.step();
       sr_set.step();
