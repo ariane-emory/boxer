@@ -29,12 +29,16 @@ impl<T: Copy> BlockOutput<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type Rcrcbo<T> = Rc<RefCell<BlockOutput<T>>>;
+type Signal<T> = Rc<RefCell<BlockOutput<T>>>;
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn new_signal<T: Copy>(value: T) -> Signal<T> {
+  Rc::new(RefCell::new(BlockOutput::new(value)))
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Value<T: Copy> {
-  pub output: Rcrcbo<T>,
+  pub output: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Value<T> {
@@ -53,9 +57,9 @@ impl<T: Copy> Block for Value<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathAdd<T: std::ops::Add<Output = T> + Copy + Default> {
-  pub output: Rcrcbo<T>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  pub output: Signal<T>,
+  left: Signal<T>,
+  right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
@@ -69,7 +73,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
-  pub fn new(left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
     MathAdd {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -81,9 +85,9 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> MathAdd<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathSub<T: std::ops::Sub<Output = T> + Copy + Default> {
-  pub output: Rcrcbo<T>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  pub output: Signal<T>,
+  left: Signal<T>,
+  right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
@@ -97,7 +101,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Block for MathSub<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
-  pub fn new(left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
     MathSub {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -109,9 +113,9 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> MathSub<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMul<T: std::ops::Mul<Output = T> + Copy + Default> {
-  pub output: Rcrcbo<T>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  pub output: Signal<T>,
+  left: Signal<T>,
+  right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
@@ -125,7 +129,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Block for MathMul<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
-  pub fn new(left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
     MathMul {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -137,9 +141,9 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> MathMul<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathDiv<T: std::ops::Div<Output = T> + Copy + Default> {
-  pub output: Rcrcbo<T>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  pub output: Signal<T>,
+  left: Signal<T>,
+  right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
@@ -153,7 +157,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Block for MathDiv<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
-  pub fn new(left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
     MathDiv {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -165,9 +169,9 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> MathDiv<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct MathMod<T: std::ops::Rem<Output = T> + Copy + Default> {
-  pub output: Rcrcbo<T>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  pub output: Signal<T>,
+  left: Signal<T>,
+  right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
@@ -181,7 +185,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Block for MathMod<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
-  pub fn new(left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
     MathMod {
       output: Rc::new(RefCell::new(BlockOutput::new(Default::default()))),
       left: Rc::clone(left),
@@ -193,14 +197,14 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> MathMod<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Select<T: Copy> {
-  which: Rcrcbo<bool>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  which: Signal<bool>,
+  left: Signal<T>,
+  right: Signal<T>,
   pub output: BlockOutput<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Select<T> {
-  pub fn new(which: &Rcrcbo<bool>, left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(which: &Signal<bool>, left: &Signal<T>, right: &Signal<T>) -> Self {
     Select {
       which: Rc::clone(which),
       left: Rc::clone(left),
@@ -222,22 +226,16 @@ impl<T: Copy> Block for Select<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn rcrcbo_new<T: Copy>(value: T) -> Rcrcbo<T> {
-  Rc::new(RefCell::new(BlockOutput::new(value)))
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct GreaterThan<T: std::cmp::PartialOrd + Copy> {
-  pub output: Rcrcbo<bool>,
-  left: Rcrcbo<T>,
-  right: Rcrcbo<T>,
+  pub output: Signal<bool>,
+  left: Signal<T>,
+  right: Signal<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
-  pub fn new(left: &Rcrcbo<T>, right: &Rcrcbo<T>) -> Self {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
     GreaterThan {
-      output: rcrcbo_new(false),
+      output: new_signal(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     }
@@ -254,39 +252,42 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 }
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct LessThan<T: std::cmp::PartialOrd + Copy> {
-//   pub output: BlockOutput<bool>,
-//   left: Rcrcbo<T>,
-//   right: Rcrcbo<T>,
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
-//   pub fn new(left: Rcrcbo<T>, right: Rcrcbo<T>) -> Self {
-//     LessThan {
-//       output: BlockOutput::new(false),
-//       left,
-//       right,
-//     }
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<T: std::cmp::PartialOrd + Copy> Block for LessThan<T> {
-//   fn step(&mut self) {
-//     self.output.set(*self.left.borrow().read() < *self.right.borrow().read());
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct LessThan<T: std::cmp::PartialOrd + Copy> {
+  pub output: Signal<bool>,
+  left: Signal<T>,
+  right: Signal<T>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
+  pub fn new(left: &Signal<T>, right: &Signal<T>) -> Self {
+    LessThan {
+      output: new_signal(false),
+      left: Rc::clone(left),
+      right: Rc::clone(right),
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy> Block for LessThan<T> {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() < *self.right.borrow().read());
+  }
+}
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct LogicOr<'a> {
-//   left: Rcrcbo<bool>,
-//   right: Rcrcbo<bool>,
-//   pub output: BlockOutput<bool>,
+//   left: Signal<bool>,
+//   right: Signal<bool>,
+//   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> LogicOr<'a> {
-//   pub fn new(left: Rcrcbo<bool>, right: Rcrcbo<bool>) -> Self {
+//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
 //     LogicOr {
 //       left,
 //       right,
@@ -297,20 +298,20 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> Block for LogicOr<'a> {
 //   fn step(&mut self) {
-//     self.output.set(*self.left.borrow().read() || *self.right.borrow().read());
+//     self.output.borrow().set(*self.left.borrow().read() || *self.right.borrow().read());
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct LogicAnd<'a> {
-//   left: Rcrcbo<bool>,
-//   right: Rcrcbo<bool>,
-//   pub output: BlockOutput<bool>,
+//   left: Signal<bool>,
+//   right: Signal<bool>,
+//   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> LogicAnd<'a> {
-//   pub fn new(left: Rcrcbo<bool>, right: Rcrcbo<bool>) -> Self {
+//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
 //     LogicAnd {
 //       left,
 //       right,
@@ -321,19 +322,19 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> Block for LogicAnd<'a> {
 //   fn step(&mut self) {
-//     self.output.set(*self.left.borrow().read() && *self.right.borrow().read());
+//     self.output.borrow().set(*self.left.borrow().read() && *self.right.borrow().read());
 //   }
 // }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct LogicNot<'a> {
-//   input: Rcrcbo<bool>,
-//   pub output: BlockOutput<bool>,
+//   input: Signal<bool>,
+//   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> LogicNot<'a> {
-//   pub fn new(input: Rcrcbo<bool>) -> Self {
+//   pub fn new(input: Signal<bool>) -> Self {
 //     LogicNot {
 //       input,
 //       output: BlockOutput::new(false),
@@ -343,19 +344,19 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> Block for LogicNot<'a> {
 //   fn step(&mut self) {
-//     self.output.set(!*self.input.borrow().read());
+//     self.output.borrow().set(!*self.input.borrow().read());
 //   }
 // }
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // struct LogicXor<'a> {
-//   pub output: BlockOutput<bool>,
-//   left: Rcrcbo<bool>,
-//   right: Rcrcbo<bool>,
+//   pub output: Signal<bool>,
+//   left: Signal<bool>,
+//   right: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> LogicXor<'a> {
-//   pub fn new(left: Rcrcbo<bool>, right: Rcrcbo<bool>) -> Self {
+//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
 //     LogicXor {
 //       left,
 //       right,
@@ -366,19 +367,19 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> Block for LogicXor<'a> {
 //   fn step(&mut self) {
-//     self.output.set(*self.left.borrow().read() ^ *self.right.borrow().read());
+//     self.output.borrow().set(*self.left.borrow().read() ^ *self.right.borrow().read());
 //   }
 // }
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // struct LogicNor<'a> {
-//   pub output: BlockOutput<bool>,
-//   left: Rcrcbo<bool>,
-//   right: Rcrcbo<bool>,
+//   pub output: Signal<bool>,
+//   left: Signal<bool>,
+//   right: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> LogicNor<'a> {
-//   pub fn new(left: Rcrcbo<bool>, right: Rcrcbo<bool>) -> Self {
+//   pub fn new(left: Signal<bool>, right: Signal<bool>) -> Self {
 //     LogicNor {
 //       left,
 //       right,
@@ -389,7 +390,7 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> Block for LogicNor<'a> {
 //   fn step(&mut self) {
-//     self.output.set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+//     self.output.borrow().set(!(*self.left.borrow().read() || *self.right.borrow().read()));
 //   }
 // }
 
@@ -397,14 +398,14 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct RiseCounter<'a> {
 //   pub count: BlockOutput<usize>,
-//   pub at_max: BlockOutput<bool>,
-//   input: Rcrcbo<bool>,
+//   pub at_max: Signal<bool>,
+//   input: Signal<bool>,
 //   max: &'a BlockOutput<usize>,
 //   last_state: bool,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> RiseCounter<'a> {
-//   pub fn new(input: Rcrcbo<bool>, max: &'a BlockOutput<usize>) -> Self {
+//   pub fn new(input: Signal<bool>, max: &'a BlockOutput<usize>) -> Self {
 //     RiseCounter {
 //       count: BlockOutput::new(0),
 //       at_max: BlockOutput::new(false),
@@ -437,12 +438,12 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct RisingTrigger<'a> {
-//   input: Rcrcbo<bool>,
-//   pub output: BlockOutput<bool>,
+//   input: Signal<bool>,
+//   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> RisingTrigger<'a> {
-//   pub fn new(input: Rcrcbo<bool>) -> Self {
+//   pub fn new(input: Signal<bool>) -> Self {
 //     RisingTrigger {
 //       input,
 //       output: BlockOutput::new(false),
@@ -456,9 +457,9 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 //     let input = *self.input.borrow().read();
 
 //     if input && !last_state {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //     } else {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     }
 //   }
 // }
@@ -466,12 +467,12 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // pub struct FallingTrigger<'a> {
-//   input: Rcrcbo<bool>,
-//   pub output: BlockOutput<bool>,
+//   input: Signal<bool>,
+//   pub output: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> FallingTrigger<'a> {
-//   pub fn new(input: Rcrcbo<bool>) -> Self {
+//   pub fn new(input: Signal<bool>) -> Self {
 //     FallingTrigger {
 //       input,
 //       output: BlockOutput::new(false),
@@ -485,9 +486,9 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 //     let input = *self.input.borrow().read();
 
 //     if !input && last_state {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //     } else {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     }
 //   }
 // }
@@ -508,7 +509,7 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl Block for RandomUsize {
 //   fn step(&mut self) {
-//     self.output.set(rand::random());
+//     self.output.borrow().set(rand::random());
 //   }
 // }
 
@@ -516,14 +517,14 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number of cycles.
 // pub struct TON<'a> {
-//   pub output: BlockOutput<bool>,
+//   pub output: Signal<bool>,
 //   pub count: BlockOutput<usize>,
 //   delay: &'a BlockOutput<usize>,
-//   reset: Rcrcbo<bool>,
+//   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> TON<'a> {
-//   pub fn new(delay: &'a BlockOutput<usize>, reset: Rcrcbo<bool>) -> Self {
+//   pub fn new(delay: &'a BlockOutput<usize>, reset: Signal<bool>) -> Self {
 //     TON {
 //       output: BlockOutput::new(false),
 //       count: BlockOutput::new(0),
@@ -544,9 +545,9 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 //     }
 
 //     if *self.count.borrow().read() >= *self.delay.borrow().read() {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //     } else {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     }
 //   }
 // }
@@ -555,14 +556,14 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number of cycles.
 // pub struct TOF<'a> {
-//   pub output: BlockOutput<bool>,
+//   pub output: Signal<bool>,
 //   pub count: BlockOutput<usize>,
 //   delay: &'a BlockOutput<usize>,
-//   reset: Rcrcbo<bool>,
+//   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> TOF<'a> {
-//   pub fn new(delay: &'a BlockOutput<usize>, reset: Rcrcbo<bool>) -> Self {
+//   pub fn new(delay: &'a BlockOutput<usize>, reset: Signal<bool>) -> Self {
 //     TOF {
 //       output: BlockOutput::new(false),
 //       count: BlockOutput::new(0),
@@ -583,9 +584,9 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 //     }
 
 //     if *self.count.borrow().read() >= *self.delay.borrow().read() {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     } else {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //     }
 //   }
 // }
@@ -594,14 +595,14 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // // Basically an IEC 61131-3 'TP' block, which holds it's input for a set number of steps after it rises.
 // struct TP<'a> {
-//   pub output: BlockOutput<bool>,
-//   input: Rcrcbo<bool>,
+//   pub output: Signal<bool>,
+//   input: Signal<bool>,
 //   count_from: &'a BlockOutput<usize>,
 //   count: BlockOutput<usize>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> TP<'a> {
-//   pub fn new(input: Rcrcbo<bool>, count_from: &'a BlockOutput<usize>) -> Self {
+//   pub fn new(input: Signal<bool>, count_from: &'a BlockOutput<usize>) -> Self {
 //     TP {
 //       output: BlockOutput::new(false),
 //       input,
@@ -620,10 +621,10 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 //     }
 
 //     if *self.count.borrow().read() > 0usize {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //       self.count.set(self.count.borrow().read() - 1);
 //     } else {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     }
 //   }
 // }
@@ -631,13 +632,13 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // struct SRLatch<'a> {
-//   pub output: BlockOutput<bool>,
-//   set: Rcrcbo<bool>,
-//   reset: Rcrcbo<bool>,
+//   pub output: Signal<bool>,
+//   set: Signal<bool>,
+//   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> SRLatch<'a> {
-//   pub fn new(set: Rcrcbo<bool>, reset: Rcrcbo<bool>) -> Self {
+//   pub fn new(set: Signal<bool>, reset: Signal<bool>) -> Self {
 //     SRLatch {
 //       output: BlockOutput::new(false),
 //       set,
@@ -649,9 +650,9 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // impl<'a> Block for SRLatch<'a> {
 //   fn step(&mut self) {
 //     if *self.set.borrow().read() {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //     } else if *self.reset.borrow().read() {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     }
 //   }
 // }
@@ -659,13 +660,13 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // struct RSLatch<'a> {
-//   pub output: BlockOutput<bool>,
-//   set: Rcrcbo<bool>,
-//   reset: Rcrcbo<bool>,
+//   pub output: Signal<bool>,
+//   set: Signal<bool>,
+//   reset: Signal<bool>,
 // }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////
 // impl<'a> RSLatch<'a> {
-//   pub fn new(set: Rcrcbo<bool>, reset: Rcrcbo<bool>) -> Self {
+//   pub fn new(set: Signal<bool>, reset: Signal<bool>) -> Self {
 //     RSLatch {
 //       output: BlockOutput::new(false),
 //       set,
@@ -677,9 +678,9 @@ impl<T: std::cmp::PartialOrd + Copy> Block for GreaterThan<T> {
 // impl<'a> Block for RSLatch<'a> {
 //   fn step(&mut self) {
 //     if *self.reset.borrow().read() {
-//       self.output.set(false);
+//       self.output.borrow().set(false);
 //     } else if *self.set.borrow().read() {
-//       self.output.set(true);
+//       self.output.borrow().set(true);
 //     }
 //   }
 // }
