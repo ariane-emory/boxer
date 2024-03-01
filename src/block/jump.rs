@@ -3,24 +3,35 @@ use crate::block::*;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct Jump<T: Copy + Default> {
   pub output: Signal<T>,
-  input: Signal<T>,
+  input: Option<Signal<T>>,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> Jump<T> {
+  pub fn new(input: Option<Signal<T>>) -> Self {
+    if let Some(input) = input {
+      Jump {
+        output: new_signal(Default::default()),
+        input: Some(Rc::clone(&input)),
+      }
+    } else {
+      Jump {
+        output: new_signal(Default::default()),
+        input: None,
+      }
+    }
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Block<T> for Jump<T> {
   fn step(&mut self) {
-    self.output.borrow_mut().set(*self.input.borrow().read());
+    if let Some(input) = &self.input {
+      self.output.borrow_mut().set(*input.borrow().read());
+    } else {
+      self.output.borrow_mut().set(Default::default());
+    }
   }
 
   fn output(&self) -> &Signal<T> {
     &self.output
-  }
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> Jump<T> {
-  pub fn new(input: &Signal<T>) -> Self {
-    Jump {
-      output: new_signal(Default::default()),
-      input: Rc::clone(input),
-    }
   }
 }
