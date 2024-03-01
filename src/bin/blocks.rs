@@ -25,8 +25,9 @@ fn main() -> io::Result<()> {
 
   {
     let mut counter_reset = Feedback::new();
-    let counter_max = Value::new(128);
+    let counter_max = Value::new(64);
     let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
+    let one = Value::new(0);
     let mut add = block::Add::new(counter.output(), one.output());
     let two = Value::new(2);
     let mut div = Div::new(add.output(), two.output());
@@ -46,28 +47,19 @@ fn main() -> io::Result<()> {
       select.step();
       counter_reset.step();
 
-      // if *counter.at_max().borrow().read() {
-      //   counter_reset.output().borrow_mut().set(true);
-      //   counter.step();
-      //   counter_reset.output().borrow_mut().set(false);
-      // }
-
       // println!("");
-      // println!("counter input:  {}", clock.output.borrow().read());
+      // println!("counter input:  {}", clock.output().borrow().read());
       // println!("counter output: {}", counter.output().borrow().read());
       // println!("add output:     {}", add.output().borrow().read());
-      // println!("square period:  {}", square.period.borrow().read());
+      // println!("square period:  {}", square.period().borrow().read());
       // println!("square output:  {}", square.output().borrow().read());
       // println!("select output:  {}", select.output().borrow().read());
 
-      render(b'x', b'-', select.output(), counter_max.output());
-
-      // let counter_input_val = *counter_input.output().borrow().read();
-      // counter_input.output().borrow_mut().set(!counter_input_val);
+      render(b'x', b'-', select.output(), max.output());
     }
   }
 
-  if false {
+  {
     let counter_max = Value::new(128);
     let mut counter_reset = Feedback::new();
     let mut counter = UpCounter::new(clock.output(), &counter_reset.output(), counter_max.output());
