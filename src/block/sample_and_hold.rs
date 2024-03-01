@@ -1,7 +1,7 @@
 use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-struct SampleAndHold<T: Copy + Default> {
+pub struct SampleAndHold<T: Copy + Default> {
   output: Signal<T>,
   set: Signal<bool>,
   reset: Signal<bool>,
@@ -21,10 +21,10 @@ impl<T: Copy + Default> SampleAndHold<T> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Block<T> for SampleAndHold<T> {
   fn step(&mut self) {
-    if *self.reset.borrow().read() {
-      self.output.borrow_mut().set(Default::default());
-    } else if *self.set.borrow().read() {
+    if *self.set.borrow().read() {
       self.output.borrow_mut().set(*self.input.borrow().read());
+    } else if *self.reset.borrow().read() {
+      self.output.borrow_mut().set(Default::default());
     }
   }
 
