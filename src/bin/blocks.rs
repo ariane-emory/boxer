@@ -102,9 +102,12 @@ fn main() -> io::Result<()> {
       counter_max.output(),
     );
 
+    let mut eql = Equal::new(counter.output(), counter_max.output());
+
     for _ in 0..255 {
       fast_square.step();
       counter.step();
+      eql.step();
 
       render(b'x', counter.output());
     }
