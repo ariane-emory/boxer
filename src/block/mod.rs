@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 pub mod logic;
 pub mod math;
+pub mod timer;
 pub mod trigger;
 
 pub use logic::*;
