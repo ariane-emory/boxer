@@ -104,9 +104,6 @@ fn main() -> io::Result<()> {
     let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
 
     let mut sub = MathSub::new(counter_max.output(), counter.output());
-    let mut delay = UnitDelay::new(sr.output());
-    let mut delay2 = UnitDelay::new(delay.output());
-    let mut delay3 = UnitDelay::new(delay2.output());
     // let mut select = Select::new(delay2.output(), counter.output(), sub.output());
     let mut select = Select::new(sr.output(), counter.output(), sub.output());
 
@@ -114,26 +111,33 @@ fn main() -> io::Result<()> {
     let mut max_and_latched = LogicAnd::new(&counter.at_max, sr.output());
     let mut max_and_not_latched = LogicAnd::new(&counter.at_max, not_latched.output());
 
+    let mut delay = UnitDelay::new(max_and_not_latched.output());
+    let mut delay2 = UnitDelay::new(delay.output());
+    let mut delay3 = UnitDelay::new(delay2.output());
+    let mut delay4 = UnitDelay::new(delay3.output());
+
     counter_reset.input = Some(counter.at_max.clone());
     sr_set.input = Some(max_and_not_latched.output().clone());
     sr_reset.input = Some(max_and_latched.output().clone());
 
     for _ in 0..1024 {
+      println!("");
+
       sub.step();
       fast_square.step();
       counter.step();
       not_latched.step();
       max_and_latched.step();
       max_and_not_latched.step();
-      sr_set.step();
-      sr_reset.step();
-      sr.step();
       delay.step();
       delay2.step();
       delay3.step();
+      delay4.step();
       select.step();
       counter_reset.step();
-      render(b'x', b'-', select.output(), counter_max.output());
+      sr_set.step();
+      sr_reset.step();
+      sr.step();
 
       println!("counter:             {}", counter.output().borrow().read());
       println!("counter.at_max:      {}", counter.at_max.borrow().read());
@@ -145,6 +149,7 @@ fn main() -> io::Result<()> {
       println!("not_latched:         {}", not_latched.output().borrow().read());
       println!("max_and_latched:     {}", max_and_latched.output().borrow().read());
       println!("max_and_not_latched: {}", max_and_not_latched.output().borrow().read());
+      render(b'x', b'-', select.output(), counter_max.output());
     }
   }
 

@@ -31,7 +31,7 @@ impl Block<usize> for Counter {
     let max_val = *self.max.borrow().read();
     let input_val = *self.input.borrow().read();
     let reset_val = *self.reset.borrow().read();
-    let at_max_val = *self.at_max.borrow().read();
+    let at_max = max_val == output_val;
     let last_input_state_val = self.last_input_state;
     let last_reset_state_val = self.last_reset_state;
     let input_rose = input_val && !last_input_state_val;
@@ -40,20 +40,18 @@ impl Block<usize> for Counter {
     self.last_input_state = input_val;
     self.last_reset_state = reset_val;
 
+    self.at_max.borrow_mut().set(at_max);
+
     if reset_rose {
-      // println!("  Reset rose..");
+      println!("Reset rose..");
       self.output.borrow_mut().set(0);
       self.at_max.borrow_mut().set(false);
-    } else if at_max_val {
-      // println!("  At max!");
+    } else if at_max {
+      println!("At max!");
       return;
     } else if input_rose {
       // println!("  Input rose..");
       self.output.borrow_mut().set(output_val + 1);
-
-      if output_val + 1 == max_val {
-        self.at_max.borrow_mut().set(true);
-      }
     } else {
       // println!("  Nothing interesting happened..");
     }
