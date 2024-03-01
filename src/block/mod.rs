@@ -52,32 +52,32 @@ impl<T: Copy> Block for Value<T> {
 
 
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
-//   pub output: BlockOutput<T>,
-//   left: &'a RefCell<BlockOutput<T>>,
-//   right: &'a RefCell<BlockOutput<T>>,
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub struct MathAdd<'a, T: std::ops::Add<Output = T> + Copy + Default> {
+  pub output: BlockOutput<T>,
+  left: &'a RefCell<BlockOutput<T>>,
+  right: &'a RefCell<BlockOutput<T>>,
+}
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T> {
-//   fn step(&mut self) {
-//     println!("MathAdd::step");
-//     self
-//       .output
-//       .set(*self.left.borrow().read() + *self.right.borrow().read());
-//   }
-// }
-// ////////////////////////////////////////////////////////////////////////////////////////////////////
-// impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
-//   pub fn new(left: &'a RefCell<BlockOutput<T>>, right: &'a RefCell<BlockOutput<T>>) -> Self {
-//     MathAdd {
-//       output: BlockOutput::new(Default::default()),
-//       left: left,
-//       right: right,
-//     }
-//   }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Add<Output = T> + Copy + Default> Block for MathAdd<'a, T> {
+  fn step(&mut self) {
+    println!("MathAdd::step");
+    self
+      .output
+      .set(*self.left.borrow().read() + *self.right.borrow().read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<'a, T: std::ops::Add<Output = T> + Copy + Default> MathAdd<'a, T> {
+  pub fn new(left: &'a RefCell<BlockOutput<T>>, right: &'a RefCell<BlockOutput<T>>) -> Self {
+    MathAdd {
+      output: BlockOutput::new(Default::default()),
+      left: left,
+      right: right,
+    }
+  }
+}
 
 
 
