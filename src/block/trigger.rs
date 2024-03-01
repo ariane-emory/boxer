@@ -17,10 +17,7 @@ impl RisingTrigger {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block<bool> for RisingTrigger {
   fn step(&mut self) {
-    let last_state = *self.input.borrow().read();
-    let input = *self.input.borrow().read();
-
-    if input && !last_state {
+    if *self.input.borrow().read() && !*self.input.borrow().read() {
       self.output.borrow_mut().set(true);
     } else {
       self.output.borrow_mut().set(false);
@@ -50,10 +47,7 @@ impl FallingTrigger {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Block<bool> for FallingTrigger {
   fn step(&mut self) {
-    let last_state = *self.input.borrow().read();
-    let input = *self.input.borrow().read();
-
-    if !input && last_state {
+    if !*self.input.borrow().read() && *self.input.borrow().read() {
       self.output.borrow_mut().set(true);
     } else {
       self.output.borrow_mut().set(false);
