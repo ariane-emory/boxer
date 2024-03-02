@@ -97,50 +97,52 @@ fn main() -> io::Result<()> {
   //   }
   // }
 
-  // {
-  //   let mut counter_reset = Feedback::new();
-  //   let mut counter = UpCounter::new(clock.output(), &counter_reset.output(), max.output());
-  //   let mut sr_set = Feedback::new();
-  //   let mut sr_reset = Feedback::new();
-  //   let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
-  //   let mut not_latched = Not::new(sr.output());
-  //   let mut counter_at_max_and_latched = And::new(counter.at_max(), sr.output());
-  //   let mut counter_at_max_and_not_latched = And::new(counter.at_max(), not_latched.output());
-  //   let mut sub = Sub::new(max.output(), counter.output());
-  //   let mut select = Select::new(sr.output(), counter.output(), sub.output());
+  {
+    let mut clock = SquareWave::new(one.output());
+    let mut counter_reset = Feedback::new();
+    let mut counter = UpCounter::new(clock.output(), &counter_reset.output(), max.output());
+    let mut sr_set = Feedback::new();
+    let mut sr_reset = Feedback::new();
+    let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
+    let mut not_latched = Not::new(sr.output());
+    let mut counter_at_max_and_latched = And::new(counter.at_max(), sr.output());
+    let mut counter_at_max_and_not_latched = And::new(counter.at_max(), not_latched.output());
+    let mut sub = Sub::new(max.output(), counter.output());
+    let mut select = Select::new(sr.output(), counter.output(), sub.output());
 
-  //   counter_reset.set_input(&counter.at_max());
-  //   sr_set.set_input(&counter_at_max_and_not_latched.output());
-  //   sr_reset.set_input(&counter_at_max_and_latched.output());
+    counter_reset.set_input(&counter.at_max());
+    sr_set.set_input(&counter_at_max_and_not_latched.output());
+    sr_reset.set_input(&counter_at_max_and_latched.output());
 
-  //   for _ in 0..511 {
-  //     // println!("");
+    for _ in 0..511 {
+      // println!("");
 
-  //     clock.step();
-  //     counter.step();
-  //     not_latched.step();
-  //     counter_at_max_and_latched.step();
-  //     counter_at_max_and_not_latched.step();
-  //     sr.step();
-  //     sub.step();
-  //     select.step();
-  //     counter_reset.step();
-  //     sr_set.step();
-  //     sr_reset.step();
+      clock.step();
+      counter.step();
+      not_latched.step();
+      counter_at_max_and_latched.step();
+      counter_at_max_and_not_latched.step();
+      sr.step();
+      sub.step();
+      select.step();
+      counter_reset.step();
+      sr_set.step();
+      sr_reset.step();
 
-  //     // println!("counter:             {}", counter.output_value());
-  //     // println!("counter.at_max:      {}", counter.at_max.borrow().read());
-  //     // println!("counter reset:       {}", counter_reset.output_value());
-  //     // println!("sr_reset:            {}", sr_reset.output_value());
-  //     // println!("sr:                  {}", sr.output_value());
-  //     // println!("sub:                 {}", sub.output_value());
-  //     // println!("select:              {}", select.output_value());
-  //     // println!("not_latched:         {}", not_latched.output_value());
-  //     // println!("max_and_latched:     {}", max_and_latched.output_value());
-  //     // println!("max_and_not_latched: {}", max_and_not_latched.output_value());
+      // println!("counter:             {}", counter.output_value());
+      // println!("counter.at_max:      {}", counter.at_max.borrow().read());
+      // println!("counter reset:       {}", counter_reset.output_value());
+      // println!("sr_reset:            {}", sr_reset.output_value());
+      // println!("sr:                  {}", sr.output_value());
+      // println!("sub:                 {}", sub.output_value());
+      // println!("select:              {}", select.output_value());
+      // println!("not_latched:         {}", not_latched.output_value());
+      // println!("max_and_latched:     {}", max_and_latched.output_value());
+      // println!("max_and_not_latched: {}", max_and_not_latched.output_value());
 
-  //     render(b'x', b'-', select.output_value(), max.output_
-
+      render(b'x', b'-', select.output_value(), max.output_value());
+    }
+  }
   {
     let clock = new_rcrc(SquareWave::new(one.output()));
     let square = new_rcrc(SquareWave::new(sixteen.output()));
