@@ -142,7 +142,6 @@ fn main() -> io::Result<()> {
     let mut sample_and_hold = Rc::new(RefCell::new(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output())));
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
-    // let steppable_obj: Rc<RefCell<dyn Steppable>> =
     let mut blocks: Vec<Rc<RefCell<dyn Steppable>>> = Vec::new();
     let steppable_obj: Rc<RefCell<dyn Steppable>> = clock.clone();
     blocks.push(steppable_obj);
@@ -162,26 +161,7 @@ fn main() -> io::Result<()> {
     blocks.push(steppable_obj);
 
     for _ in 0..511 {
-      //blocks.iter_mut().for_each(|b| b.step());
-      clock.borrow_mut().step();
-      square.borrow_mut().step();
-      select.borrow_mut().step();
-      held_value.borrow_mut().step();
-      div_new_input_by_itwo.borrow_mut().step();
-      div_held_value_by_itwo.borrow_mut().step();
-      add.borrow_mut().step();
-      sample_and_hold.borrow_mut().step();
-
-      // println!("");
-      // println!("counter input:  {}", clock.output_value());
-      // println!("counter output: {}", counter.output_value());
-      // println!("add output:     {}", add.output_value());
-      // println!("square period:  {}", square.period.output_value());
-      // println!("square output:  {}", square.output_value());
-      // println!("select output:  {}", select.output_value());
-      // println!("s&h output:  {}", sample_and_hold.output_value());
-      //render(b'x', b'-', select.output(), imax.output());
-
+      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
       render(b'x', b'-', add.borrow_mut().output_value() as usize, imax.output_value() as usize);
     }
   }
