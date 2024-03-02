@@ -142,6 +142,7 @@ fn main() -> io::Result<()> {
     let mut sample_and_hold = Rc::new(RefCell::new(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output())));
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
+    // let steppable_obj: Rc<RefCell<dyn Steppable>> =
     let mut blocks: Vec<&dyn HasSignal<T>> = Vec::new();
     blocks.push(&clock);
     blocks.push(&square);
