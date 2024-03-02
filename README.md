@@ -1,4 +1,4 @@
-# A thing that almost parses ASCII-formatted IEC-61131-3 Function HasSignal Diagrams
+# A thing that almost parses ASCII-formatted IEC-61131-3 Function Block Diagrams
 
 It doesn't have vertical connections, the ability for connections to cross over each other, or airwire I/O source/sinks yet, but they're coming soon.
 
