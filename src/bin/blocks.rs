@@ -11,6 +11,21 @@ use std::cell::RefCell;
 use std::io::{self};
 use std::rc::Rc;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+type SteppableRc = Rc<RefCell<dyn Steppable>>;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: &Rc<RefCell<T>>) {
+  let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
+  blocks.push(steppable_item);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
+  Rc::new(RefCell::new(item))
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut printed = 0;
   let quarterways = width >> 2;
@@ -35,7 +50,6 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
   }
   println!("|");
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
@@ -130,17 +144,6 @@ fn main() -> io::Result<()> {
   //     render(b'x', b'-', select.output_value(), max.output_
 
   {
-    type SteppableRc = Rc<RefCell<dyn Steppable>>;
-
-    fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: &Rc<RefCell<T>>) {
-      let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
-      blocks.push(steppable_item);
-    }
-
-    fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
-      Rc::new(RefCell::new(item))
-    }
-
     let mut clock = new_rcrc(SquareWave::new(one.output()));
     let mut square = new_rcrc(SquareWave::new(sixteen.output()));
     let mut select = new_rcrc(Select::new(square.borrow_mut().output(), izero.output(), imax.output()));
