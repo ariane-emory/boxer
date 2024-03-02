@@ -144,10 +144,6 @@ fn main() -> io::Result<()> {
 
     type SteppableRc = Rc<RefCell<dyn Steppable>>;
 
-    // fn add_to_steppables(blocks: &mut Vec<SteppableRc>, item: &SteppableRc) {
-    //   blocks.push(item.clone());
-    // }
-
     fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: Rc<RefCell<T>>) {
       let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
       blocks.push(steppable_item);
@@ -160,8 +156,11 @@ fn main() -> io::Result<()> {
     add_to_steppables(&mut blocks, held_value);
     add_to_steppables(&mut blocks, div_held_value_by_itwo);
     add_to_steppables(&mut blocks, div_new_input_by_itwo);
+
     let steppable_obj: SteppableRc = add.clone();
     blocks.push(steppable_obj);
+    // add_to_steppables(&mut blocks, add);
+
     add_to_steppables(&mut blocks, sample_and_hold);
 
     for _ in 0..511 {
