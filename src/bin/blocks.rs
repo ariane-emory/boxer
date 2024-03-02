@@ -74,6 +74,20 @@ fn main() -> io::Result<()> {
 
     counter_reset.borrow_mut().set_input(&counter.borrow_mut().at_max());
 
+    let mut blocks: Vec<RcRcSteppable> = Vec::new();
+    add_to_rcrc_steppable_vec(&mut blocks, &one);
+    add_to_rcrc_steppable_vec(&mut blocks, &max);
+    add_to_rcrc_steppable_vec(&mut blocks, &clock);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_reset);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_max);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter);
+    add_to_rcrc_steppable_vec(&mut blocks, &add);
+    add_to_rcrc_steppable_vec(&mut blocks, &two);
+    add_to_rcrc_steppable_vec(&mut blocks, &div);
+    add_to_rcrc_steppable_vec(&mut blocks, &square);
+    add_to_rcrc_steppable_vec(&mut blocks, &zero);
+    add_to_rcrc_steppable_vec(&mut blocks, &select);
+
     for _ in 0..511 {
       one.borrow_mut().step();
       max.borrow_mut().step();
