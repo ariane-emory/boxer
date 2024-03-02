@@ -98,21 +98,23 @@ fn main() -> io::Result<()> {
   // }
 
   {
-    let mut clock = SquareWave::new(one.output());
-    let mut counter_reset = Feedback::new();
-    let mut counter = UpCounter::new(clock.output(), &counter_reset.output(), max.output());
-    let mut sr_set = Feedback::new();
-    let mut sr_reset = Feedback::new();
-    let mut sr = SRLatch::new(sr_set.output(), sr_reset.output());
-    let mut not_latched = Not::new(sr.output());
-    let mut counter_at_max_and_latched = And::new(counter.at_max(), sr.output());
-    let mut counter_at_max_and_not_latched = And::new(counter.at_max(), not_latched.output());
-    let mut sub = Sub::new(max.output(), counter.output());
-    let mut select = Select::new(sr.output(), counter.output(), sub.output());
+    let one = new_rcrc(Value::new(1));
+    let max = new_rcrc(Value::new(128));
+    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
+    let counter_reset = new_rcrc(Feedback::new());
+    let counter = new_rcrc(UpCounter::new(clock.borrow_mut().output(), &counter_reset.borrow_mut().output(), max.borrow_mut().output()));
+    let sr_set = new_rcrc(Feedback::new());
+    let sr_reset = new_rcrc(Feedback::new());
+    let sr = new_rcrc(SRLatch::new(sr_set.borrow_mut().output(), sr_reset.borrow_mut().output()));
+    let not_latched = new_rcrc(Not::new(sr.borrow_mut().output()));
+    let counter_at_max_and_latched = new_rcrc(And::new(counter.borrow_mut().at_max(), sr.borrow_mut().output()));
+    let counter_at_max_and_not_latched = new_rcrc(And::new(counter.borrow_mut().at_max(), not_latched.borrow_mut().output()));
+    let sub = new_rcrc(Sub::new(max.borrow_mut().output(), counter.borrow_mut().output()));
+    let select = new_rcrc(Select::new(sr.borrow_mut().output(), counter.borrow_mut().output(), sub.borrow_mut().output()));
 
-    counter_reset.set_input(&counter.at_max());
-    sr_set.set_input(&counter_at_max_and_not_latched.output());
-    sr_reset.set_input(&counter_at_max_and_latched.output());
+    counter_reset.borrow_mut().set_input(&counter.borrow_mut().at_max());
+    sr_set.borrow_mut().set_input(&counter_at_max_and_not_latched.borrow_mut().output());
+    sr_reset.borrow_mut().set_input(&counter_at_max_and_latched.borrow_mut().output());
 
     for _ in 0..511 {
       // println!("");
