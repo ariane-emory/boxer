@@ -156,8 +156,7 @@ fn main() -> io::Result<()> {
     let mut blocks: Vec<SteppableRc> = Vec::new();
     add_to_steppables(&mut blocks, clock);
     add_to_steppables(&mut blocks, square);
-    let steppable_obj: SteppableRc = select.clone();
-    blocks.push(steppable_obj);
+    add_to_steppables(&mut blocks, select);
     let steppable_obj: SteppableRc = held_value.clone();
     blocks.push(steppable_obj);
     let steppable_obj: SteppableRc = div_held_value_by_itwo.clone();
