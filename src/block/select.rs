@@ -22,7 +22,7 @@ impl<T: Copy> Select<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> HasSignal<T> for Select<T> {
+impl<T: Copy> Steppable for Select<T> {
   fn step(&mut self) {
     if *self.which.borrow().read() {
       self.output.borrow_mut().set(*self.right.borrow().read());
@@ -30,7 +30,9 @@ impl<T: Copy> HasSignal<T> for Select<T> {
       self.output.borrow_mut().set(*self.left.borrow().read());
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy> HasSignal<T> for Select<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -54,7 +56,7 @@ impl<T: Copy + PartialOrd> Max<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + PartialOrd> HasSignal<T> for Max<T> {
+impl<T: Copy + PartialOrd> Steppable for Max<T> {
   fn step(&mut self) {
     if *self.right.borrow().read() > *self.left.borrow().read() {
       self.output.borrow_mut().set(*self.right.borrow().read());
@@ -62,7 +64,9 @@ impl<T: Copy + PartialOrd> HasSignal<T> for Max<T> {
       self.output.borrow_mut().set(*self.left.borrow().read());
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + PartialOrd> HasSignal<T> for Max<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -85,7 +89,7 @@ impl<T: Copy + PartialOrd> Min<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + PartialOrd> HasSignal<T> for Min<T> {
+impl<T: Copy + PartialOrd> Steppable for Min<T> {
   fn step(&mut self) {
     if *self.right.borrow().read() < *self.left.borrow().read() {
       self.output.borrow_mut().set(*self.right.borrow().read());
@@ -93,7 +97,9 @@ impl<T: Copy + PartialOrd> HasSignal<T> for Min<T> {
       self.output.borrow_mut().set(*self.left.borrow().read());
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + PartialOrd> HasSignal<T> for Min<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -118,7 +124,7 @@ impl<T: Copy + PartialOrd> Limit<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + PartialOrd> HasSignal<T> for Limit<T> {
+impl<T: Copy + PartialOrd> Steppable for Limit<T> {
   fn step(&mut self) {
     if *self.input.borrow().read() < *self.min.borrow().read() {
       self.output.borrow_mut().set(*self.min.borrow().read());
@@ -128,7 +134,9 @@ impl<T: Copy + PartialOrd> HasSignal<T> for Limit<T> {
       self.output.borrow_mut().set(*self.input.borrow().read());
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + PartialOrd> HasSignal<T> for Limit<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
