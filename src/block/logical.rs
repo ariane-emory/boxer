@@ -20,14 +20,16 @@ impl Or {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for Or {
+impl Steppable for Or {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() || *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for Or {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -54,14 +56,16 @@ impl And {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for And {
+impl Steppable for And {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() && *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for And {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
