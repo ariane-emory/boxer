@@ -28,7 +28,7 @@ impl TON {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TON {
+impl Steppable for TON {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
@@ -47,7 +47,9 @@ impl HasSignal<bool> for TON {
       self.output.borrow_mut().set(false);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for TON {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -82,7 +84,7 @@ impl TOF {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TOF {
+impl Steppable for TOF {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
@@ -101,7 +103,9 @@ impl HasSignal<bool> for TOF {
       self.output.borrow_mut().set(true);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for TOF {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -136,7 +140,7 @@ impl TP {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TP {
+impl Steppable for TP {
   fn step(&mut self) {
     if *self.input.borrow().read() {
       self
@@ -155,7 +159,15 @@ impl HasSignal<bool> for TP {
       self.output.borrow_mut().set(false);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for TP {
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for TP {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
