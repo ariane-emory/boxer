@@ -158,8 +158,7 @@ fn main() -> io::Result<()> {
     add_to_steppables(&mut blocks, square);
     add_to_steppables(&mut blocks, select);
     add_to_steppables(&mut blocks, held_value);
-    let steppable_obj: SteppableRc = div_held_value_by_itwo.clone();
-    blocks.push(steppable_obj);
+    add_to_steppables(&mut blocks, div_held_value_by_itwo);
     let steppable_obj: SteppableRc = div_new_input_by_itwo.clone();
     blocks.push(steppable_obj);
     let steppable_obj: SteppableRc = add.clone();
