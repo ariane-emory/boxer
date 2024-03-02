@@ -3,5 +3,5 @@ tab_spaces = 2
 fn_single_line = false
 blank_lines_upper_bound = 8
 unstable_features = true
-fn_call_width = 200
-max_width = 200
+fn_call_width = 128
+max_width = 128
