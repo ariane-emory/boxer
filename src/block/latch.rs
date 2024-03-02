@@ -17,7 +17,7 @@ impl SRLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for SRLatch {
+impl HasSignal<bool> for SRLatch {
   fn step(&mut self) {
     if *self.set.borrow().read() {
       self.output.borrow_mut().set(true);
@@ -49,7 +49,7 @@ impl RSLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for RSLatch {
+impl HasSignal<bool> for RSLatch {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.output.borrow_mut().set(false);
@@ -85,7 +85,7 @@ impl JKFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for JKFlipFlop {
+impl HasSignal<bool> for JKFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !*self.clock.borrow().read() {
       if *self.j_input.borrow().read() && *self.k_input.borrow().read() {
@@ -124,7 +124,7 @@ impl DFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for DFlipFlop {
+impl HasSignal<bool> for DFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !*self.clock.borrow().read() {
       self.output.borrow_mut().set(*self.input.borrow().read());
@@ -157,7 +157,7 @@ impl TFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for TFlipFlop {
+impl HasSignal<bool> for TFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !*self.clock.borrow().read() {
       if *self.input.borrow().read() {

@@ -15,7 +15,7 @@ impl RisingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for RisingTrigger {
+impl HasSignal<bool> for RisingTrigger {
   fn step(&mut self) {
     if *self.input.borrow().read() && !*self.input.borrow().read() {
       self.output.borrow_mut().set(true);
@@ -45,7 +45,7 @@ impl FallingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for FallingTrigger {
+impl HasSignal<bool> for FallingTrigger {
   fn step(&mut self) {
     if !*self.input.borrow().read() && *self.input.borrow().read() {
       self.output.borrow_mut().set(true);

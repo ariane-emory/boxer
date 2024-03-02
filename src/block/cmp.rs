@@ -20,7 +20,7 @@ impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> Block<bool> for GreaterThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for GreaterThan<T> {
   fn step(&mut self) {
     self
       .output
@@ -54,7 +54,7 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> Block<bool> for LessThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for LessThan<T> {
   fn step(&mut self) {
     self
       .output
@@ -88,7 +88,7 @@ impl<T: std::cmp::PartialEq + Copy> Equal<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> Block<bool> for Equal<T> {
+impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for Equal<T> {
   fn step(&mut self) {
     self
       .output
@@ -122,7 +122,7 @@ impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> Block<bool> for NotEqual<T> {
+impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for NotEqual<T> {
   fn step(&mut self) {
     self
       .output

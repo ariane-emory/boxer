@@ -16,7 +16,7 @@ impl RandomUsize {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<usize> for RandomUsize {
+impl HasSignal<usize> for RandomUsize {
   fn step(&mut self) {
     self.output.borrow_mut().set(rand::random());
   }

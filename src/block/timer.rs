@@ -28,7 +28,7 @@ impl TON {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for TON {
+impl HasSignal<bool> for TON {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
@@ -82,7 +82,7 @@ impl TOF {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for TOF {
+impl HasSignal<bool> for TOF {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
@@ -136,7 +136,7 @@ impl TP {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for TP {
+impl HasSignal<bool> for TP {
   fn step(&mut self) {
     if *self.input.borrow().read() {
       self

@@ -33,7 +33,7 @@ impl UpCounter {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<usize> for UpCounter {
+impl HasSignal<usize> for UpCounter {
   fn step(&mut self) {
     let output_val = *self.output.borrow().read();
     let max_val = *self.max.borrow().read();

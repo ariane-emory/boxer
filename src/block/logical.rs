@@ -20,7 +20,7 @@ impl Or {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for Or {
+impl HasSignal<bool> for Or {
   fn step(&mut self) {
     self
       .output
@@ -54,7 +54,7 @@ impl And {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for And {
+impl HasSignal<bool> for And {
   fn step(&mut self) {
     self
       .output
@@ -88,7 +88,7 @@ impl Xor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for Xor {
+impl HasSignal<bool> for Xor {
   fn step(&mut self) {
     self
       .output
@@ -122,7 +122,7 @@ impl Nor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for Nor {
+impl HasSignal<bool> for Nor {
   fn step(&mut self) {
     self
       .output
@@ -154,7 +154,7 @@ impl Not {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Block<bool> for Not {
+impl HasSignal<bool> for Not {
   fn step(&mut self) {
     self.output.borrow_mut().set(!*self.input.borrow().read());
   }

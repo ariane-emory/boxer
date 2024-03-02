@@ -8,7 +8,7 @@ pub struct Value<T: Copy> {
 impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
     Value {
-      output: Rc::new(RefCell::new(BlockOutput::new(value))),
+      output: Rc::new(RefCell::new(SignalOutput::new(value))),
     }
   }
 
@@ -17,7 +17,7 @@ impl<T: Copy> Value<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Block<T> for Value<T> {
+impl<T: Copy> HasSignal<T> for Value<T> {
   fn step(&mut self) {}
 
   fn output(&self) -> &Signal<T> {

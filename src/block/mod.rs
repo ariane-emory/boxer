@@ -33,13 +33,13 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct BlockOutput<T: Copy> {
+pub struct SignalOutput<T: Copy> {
   value: T,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BlockOutput<T> {
+impl<T: Copy> SignalOutput<T> {
   pub fn new(value: T) -> Self {
-    BlockOutput { value }
+    SignalOutput { value }
   }
 
   pub fn read(&self) -> &T {
@@ -53,17 +53,17 @@ impl<T: Copy> BlockOutput<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub type Signal<T> = Rc<RefCell<BlockOutput<T>>>;
+pub type Signal<T> = Rc<RefCell<SignalOutput<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
-  Rc::new(RefCell::new(BlockOutput::new(value)))
+  Rc::new(RefCell::new(SignalOutput::new(value)))
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Block<T: Copy> {
+pub trait HasSignal<T: Copy> {
   fn step(&mut self);
   fn output(&self) -> &Signal<T>;
   fn output_value(&self) -> T {
@@ -79,9 +79,9 @@ pub trait Steppable {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Steppable for T
 where
-  T: Block<T>,
+  T: HasSignal<T>,
 {
   fn step(&mut self) {
-    Block::<T>::step(self);
+    HasSignal::<T>::step(self);
   }
 }
