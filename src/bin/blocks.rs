@@ -88,7 +88,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
     for _ in 0..511 {
-      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
+      blocks.iter().for_each(|b| b.borrow_mut().step());
       render(
         b'x',
         b'-',
@@ -101,8 +101,6 @@ fn main() -> io::Result<()> {
   {
     let izero = new_rcrc(Value::new(0));
     let max = new_rcrc(Value::new(128));
-    let imax =
-      new_rcrc(Value::<isize>::new(max.borrow_mut().output_value() as isize));
     let one = new_rcrc(Value::new(1));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
     let counter_reset = new_rcrc(Feedback::new());
@@ -149,7 +147,6 @@ fn main() -> io::Result<()> {
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
     push_onto_vec_of_rcrc_steppable(&mut blocks, &izero);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &imax);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_reset);
@@ -167,7 +164,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
     for _ in 0..511 {
-      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
+      blocks.iter().for_each(|b| b.borrow_mut().step());
       render(
         b'x',
         b'-',
@@ -232,7 +229,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sample_and_hold);
 
     for _ in 0..511 {
-      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
+      blocks.iter().for_each(|b| b.borrow_mut().step());
       render(
         b'x',
         b'-',

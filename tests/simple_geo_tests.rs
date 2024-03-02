@@ -523,16 +523,16 @@ mod tests {
     assert!(line11.overlaps(&rect1));
     assert!(line11.overlaps(&lower_rect));
 
-    // A horizontal line that isn't properly touching rect1 and rect2 because it
-    // strikes their corners:
+    // A horizontal line that isn't properly touching rect1 and rect2 because
+    // it strikes their corners:
     let line12 = Line::new(Point::new(10, 10), Point::new(10, 30)).unwrap();
     assert!(!line12.touches(&rect1));
     assert!(line12.overlaps(&rect1));
     assert!(!line12.touches(&rect2));
     assert!(line12.overlaps(&rect2));
 
-    // A vertical line that isn't properly touching rect1 and lower_rect because
-    // it strikes their corners:
+    // A vertical line that isn't properly touching rect1 and lower_rect
+    // because it strikes their corners:
     let line13 = Line::new(Point::new(10, 10), Point::new(30, 10)).unwrap();
     assert!(!line13.touches(&rect1));
     assert!(line13.overlaps(&rect1));
