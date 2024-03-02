@@ -132,14 +132,15 @@ fn main() -> io::Result<()> {
   // }
 
   {
+    let mut clock = Rc::new(RefCell::new(SquareWave::new(one.output())));
     let mut square = Rc::new(RefCell::new(SquareWave::new(sixteen.output())));
-    let mut select = Rc::new(RefCell::new(Select::new(square.output(), izero.output(), imax.output())));
+    let mut select = Rc::new(RefCell::new(Select::new(square.borrow_mut().output(), izero.output(), imax.output())));
     let mut held_value = Rc::new(RefCell::new(Feedback::<isize>::new()));
-    let mut div_held_value_by_itwo = Rc::new(RefCell::new(Div::<isize>::new(held_value.output(), itwo.output())));
-    let mut div_new_input_by_itwo = Rc::new(RefCell::new(Div::<isize>::new(select.output(), itwo.output())));
-    let mut add = Rc::new(RefCell::new(Add::new(div_held_value_by_itwo.output(), div_new_input_by_itwo.output())));
-    let mut sample_and_hold = Rc::new(RefCell::new(SampleAndHold::new(add.output(), clock.output(), never.output())));
-    held_value.borrow_mut().set_input(&sample_and_hold.output());
+    let mut div_held_value_by_itwo = Rc::new(RefCell::new(Div::<isize>::new(held_value.borrow_mut().output(), itwo.output())));
+    let mut div_new_input_by_itwo = Rc::new(RefCell::new(Div::<isize>::new(select.borrow_mut().output(), itwo.output())));
+    let mut add = Rc::new(RefCell::new(Add::new(div_held_value_by_itwo.borrow_mut().output(), div_new_input_by_itwo.borrow_mut().output())));
+    let mut sample_and_hold = Rc::new(RefCell::new(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output())));
+    held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
     // let mut blocks: Vec<&dyn HasSignal<T>> = Vec::new();
     // blocks.push(&square);
