@@ -127,11 +127,16 @@ fn main() -> io::Result<()> {
   //     // println!("max_and_latched:     {}", max_and_latched.output_value());
   //     // println!("max_and_not_latched: {}", max_and_not_latched.output_value());
 
-  //     render(b'x', b'-', select.output_value(), max.output_value());
-  //   }
-  // }
+  //     render(b'x', b'-', select.output_value(), max.output_
 
   {
+    type SteppableRc = Rc<RefCell<dyn Steppable>>;
+
+    fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: &Rc<RefCell<T>>) {
+      let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
+      blocks.push(steppable_item);
+    }
+
     let mut clock = Rc::new(RefCell::new(SquareWave::new(one.output())));
     let mut square = Rc::new(RefCell::new(SquareWave::new(sixteen.output())));
     let mut select = Rc::new(RefCell::new(Select::new(square.borrow_mut().output(), izero.output(), imax.output())));
@@ -142,26 +147,15 @@ fn main() -> io::Result<()> {
     let mut sample_and_hold = Rc::new(RefCell::new(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output())));
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
-    type SteppableRc = Rc<RefCell<dyn Steppable>>;
-
-    fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: Rc<RefCell<T>>) {
-      let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
-      blocks.push(steppable_item);
-    }
-
     let mut blocks: Vec<SteppableRc> = Vec::new();
-    add_to_steppables(&mut blocks, clock);
-    add_to_steppables(&mut blocks, square);
-    add_to_steppables(&mut blocks, select);
-    add_to_steppables(&mut blocks, held_value);
-    add_to_steppables(&mut blocks, div_held_value_by_itwo);
-    add_to_steppables(&mut blocks, div_new_input_by_itwo);
-
-    let steppable_obj: SteppableRc = add.clone();
-    blocks.push(steppable_obj);
-    // add_to_steppables(&mut blocks, add);
-
-    add_to_steppables(&mut blocks, sample_and_hold);
+    add_to_steppables(&mut blocks, &clock);
+    add_to_steppables(&mut blocks, &square);
+    add_to_steppables(&mut blocks, &select);
+    add_to_steppables(&mut blocks, &held_value);
+    add_to_steppables(&mut blocks, &div_held_value_by_itwo);
+    add_to_steppables(&mut blocks, &div_new_input_by_itwo);
+    add_to_steppables(&mut blocks, &add);
+    add_to_steppables(&mut blocks, &sample_and_hold);
 
     for _ in 0..511 {
       blocks.iter_mut().for_each(|b| b.borrow_mut().step());
