@@ -137,7 +137,11 @@ fn main() -> io::Result<()> {
       blocks.push(steppable_item);
     }
 
-    let mut clock = Rc::new(RefCell::new(SquareWave::new(one.output())));
+    fn new_rcrc<T: 'static>(item: T) -> Rc<RefCell<T>> {
+      Rc::new(RefCell::new(item))
+    }
+
+    let mut clock = new_rcrc(SquareWave::new(one.output()));
     let mut square = Rc::new(RefCell::new(SquareWave::new(sixteen.output())));
     let mut select = Rc::new(RefCell::new(Select::new(square.borrow_mut().output(), izero.output(), imax.output())));
     let mut held_value = Rc::new(RefCell::new(Feedback::<isize>::new()));
