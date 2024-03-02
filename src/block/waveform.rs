@@ -9,16 +9,12 @@ pub struct SquareWave {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl SquareWave {
   pub fn new(period: &Signal<usize>) -> Self {
-    SquareWave {
-      output: new_signal(false),
-      period: Rc::clone(period),
-      count: 0,
-    }
+    SquareWave { output: new_signal(false),
+                 period: Rc::clone(period),
+                 count: 0 }
   }
 
-  pub fn period(&self) -> &Signal<usize> {
-    &self.period
-  }
+  pub fn period(&self) -> &Signal<usize> { &self.period }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for SquareWave {
@@ -36,7 +32,5 @@ impl Steppable for SquareWave {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for SquareWave {
-  fn output(&self) -> &Signal<bool> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<bool> { &self.output }
 }

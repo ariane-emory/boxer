@@ -14,9 +14,10 @@ pub enum Rotation {
 //pub use Rotation::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn rotate_matrix<T>(matrix: &[Vec<T>], rot: Rotation) -> Vec<Vec<T>>
-where
-  T: Copy,
+pub fn rotate_matrix<T>(matrix: &[Vec<T>],
+                        rot: Rotation)
+                        -> Vec<Vec<T>>
+  where T: Copy
 {
   let num_rows = matrix.len();
 
@@ -41,9 +42,11 @@ where
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn normalize_matrix_width<T>(byte_matrix: &Vec<Vec<T>>, len: usize, val: T) -> Vec<Vec<T>>
-where
-  T: Copy,
+pub fn normalize_matrix_width<T>(byte_matrix: &Vec<Vec<T>>,
+                                 len: usize,
+                                 val: T)
+                                 -> Vec<Vec<T>>
+  where T: Copy
 {
   let mut new_matrix = Vec::new();
 
@@ -153,12 +156,14 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait MatrixEachable<T> {
-  fn each(&self, process: impl Fn(&Point, &T));
+  fn each(&self,
+          process: impl Fn(&Point, &T));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T> MatrixEachable<T> for Vec<Vec<T>> {
-  fn each(&self, process: impl Fn(&Point, &T)) {
+  fn each(&self,
+          process: impl Fn(&Point, &T)) {
     let mut pos = Point::new(0, 0);
 
     for line in 0..self.len() {

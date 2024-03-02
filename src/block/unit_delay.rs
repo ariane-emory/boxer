@@ -10,11 +10,9 @@ pub struct UnitDelay<T: Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> UnitDelay<T> {
   pub fn new(input: &Signal<T>) -> Self {
-    UnitDelay {
-      output: new_signal(Default::default()),
-      input: Rc::clone(input),
-      previous: new_signal(Default::default()),
-    }
+    UnitDelay { output: new_signal(Default::default()),
+                input: Rc::clone(input),
+                previous: new_signal(Default::default()) }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +24,5 @@ impl<T: Copy + Default> Steppable for UnitDelay<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> HasSignal<T> for UnitDelay<T> {
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<T> { &self.output }
 }

@@ -8,14 +8,13 @@ pub struct Feedback<T: Copy + Default> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Feedback<T> {
   pub fn new() -> Self {
-    Feedback {
-      output: new_signal(Default::default()),
-      input: None,
-    }
+    Feedback { output: new_signal(Default::default()),
+               input: None }
     //}
   }
 
-  pub fn set_input(&mut self, input: &Signal<T>) {
+  pub fn set_input(&mut self,
+                   input: &Signal<T>) {
     self.input = Some(input.clone());
     self.step();
   }
@@ -30,7 +29,5 @@ impl<T: Copy + Default> Steppable for Feedback<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> HasSignal<T> for Feedback<T> {
-  fn output(&self) -> &Signal<T> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<T> { &self.output }
 }

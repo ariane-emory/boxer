@@ -7,7 +7,9 @@ pub struct Size {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Size {
-  pub fn new(height: usize, width: usize) -> Size {
+  pub fn new(height: usize,
+             width: usize)
+             -> Size {
     Size { height, width }
   }
 
@@ -23,11 +25,7 @@ impl Size {
     }
   }
 
-  pub fn is_tall(&self) -> bool {
-    self.height > self.width
-  }
+  pub fn is_tall(&self) -> bool { self.height > self.width }
 
-  pub fn is_wide(&self) -> bool {
-    self.height < self.width
-  }
+  pub fn is_wide(&self) -> bool { self.height < self.width }
 }

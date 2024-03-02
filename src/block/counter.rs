@@ -12,25 +12,22 @@ pub struct UpCounter {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl UpCounter {
-  pub fn new(input: &Signal<bool>, reset: &Signal<bool>, max: &Signal<usize>) -> Self {
-    UpCounter {
-      output: new_signal(0),
-      at_max: new_signal(false),
-      input: Rc::clone(input),
-      reset: Rc::clone(reset),
-      max: Rc::clone(max),
-      last_input_state: false,
-      last_reset_state: false,
-    }
+  pub fn new(input: &Signal<bool>,
+             reset: &Signal<bool>,
+             max: &Signal<usize>)
+             -> Self {
+    UpCounter { output: new_signal(0),
+                at_max: new_signal(false),
+                input: Rc::clone(input),
+                reset: Rc::clone(reset),
+                max: Rc::clone(max),
+                last_input_state: false,
+                last_reset_state: false }
   }
 
-  pub fn at_max(&self) -> &Signal<bool> {
-    &self.at_max
-  }
+  pub fn at_max(&self) -> &Signal<bool> { &self.at_max }
 
-  pub fn at_max_value(&self) -> bool {
-    *self.at_max.borrow().read()
-  }
+  pub fn at_max_value(&self) -> bool { *self.at_max.borrow().read() }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for UpCounter {
@@ -67,7 +64,5 @@ impl Steppable for UpCounter {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<usize> for UpCounter {
-  fn output(&self) -> &Signal<usize> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<usize> { &self.output }
 }

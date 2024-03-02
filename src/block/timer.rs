@@ -10,22 +10,18 @@ pub struct TON {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl TON {
-  pub fn new(delay: &Signal<usize>, reset: &Signal<bool>) -> Self {
-    TON {
-      output: new_signal(false),
-      count_output: new_signal(0),
-      delay: Rc::clone(delay),
-      reset: Rc::clone(reset),
-    }
+  pub fn new(delay: &Signal<usize>,
+             reset: &Signal<bool>)
+             -> Self {
+    TON { output: new_signal(false),
+          count_output: new_signal(0),
+          delay: Rc::clone(delay),
+          reset: Rc::clone(reset) }
   }
 
-  pub fn count_output(&self) -> &Signal<usize> {
-    &self.count_output
-  }
+  pub fn count_output(&self) -> &Signal<usize> { &self.count_output }
 
-  pub fn count_output_value(&self) -> usize {
-    *self.count_output.borrow().read()
-  }
+  pub fn count_output_value(&self) -> usize { *self.count_output.borrow().read() }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TON {
@@ -33,10 +29,9 @@ impl Steppable for TON {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
     } else if *self.output.borrow().read() {
-      self
-        .count_output
-        .borrow_mut()
-        .set(self.count_output.borrow().read() + 1);
+      self.count_output
+          .borrow_mut()
+          .set(self.count_output.borrow().read() + 1);
     } else {
       self.count_output.borrow_mut().set(0);
     }
@@ -50,9 +45,7 @@ impl Steppable for TON {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for TON {
-  fn output(&self) -> &Signal<bool> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<bool> { &self.output }
 }
 
 
@@ -66,22 +59,18 @@ pub struct TOF {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl TOF {
-  pub fn new(delay: &Signal<usize>, reset: &Signal<bool>) -> Self {
-    TOF {
-      output: new_signal(false),
-      count_output: new_signal(0),
-      delay: Rc::clone(delay),
-      reset: Rc::clone(reset),
-    }
+  pub fn new(delay: &Signal<usize>,
+             reset: &Signal<bool>)
+             -> Self {
+    TOF { output: new_signal(false),
+          count_output: new_signal(0),
+          delay: Rc::clone(delay),
+          reset: Rc::clone(reset) }
   }
 
-  pub fn count_output(&self) -> &Signal<usize> {
-    &self.count_output
-  }
+  pub fn count_output(&self) -> &Signal<usize> { &self.count_output }
 
-  pub fn count_output_value(&self) -> usize {
-    *self.count_output.borrow().read()
-  }
+  pub fn count_output_value(&self) -> usize { *self.count_output.borrow().read() }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TOF {
@@ -89,10 +78,9 @@ impl Steppable for TOF {
     if *self.reset.borrow().read() {
       self.count_output.borrow_mut().set(0);
     } else if !*self.output.borrow().read() {
-      self
-        .count_output
-        .borrow_mut()
-        .set(self.count_output.borrow().read() + 1);
+      self.count_output
+          .borrow_mut()
+          .set(self.count_output.borrow().read() + 1);
     } else {
       self.count_output.borrow_mut().set(0);
     }
@@ -106,9 +94,7 @@ impl Steppable for TOF {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for TOF {
-  fn output(&self) -> &Signal<bool> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<bool> { &self.output }
 }
 
 
@@ -122,39 +108,33 @@ struct TP {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl TP {
-  pub fn new(input: &Signal<bool>, count_from: &Signal<usize>) -> Self {
-    TP {
-      output: new_signal(false),
-      count_output: new_signal(0),
-      input: Rc::clone(input),
-      count_from: Rc::clone(count_from),
-    }
+  pub fn new(input: &Signal<bool>,
+             count_from: &Signal<usize>)
+             -> Self {
+    TP { output: new_signal(false),
+         count_output: new_signal(0),
+         input: Rc::clone(input),
+         count_from: Rc::clone(count_from) }
   }
 
-  pub fn count_output(&self) -> &Signal<usize> {
-    &self.count_output
-  }
+  pub fn count_output(&self) -> &Signal<usize> { &self.count_output }
 
-  pub fn count_output_value(&self) -> usize {
-    *self.count_output.borrow().read()
-  }
+  pub fn count_output_value(&self) -> usize { *self.count_output.borrow().read() }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TP {
   fn step(&mut self) {
     if *self.input.borrow().read() {
-      self
-        .count_output
-        .borrow_mut()
-        .set(*self.count_from.borrow().read());
+      self.count_output
+          .borrow_mut()
+          .set(*self.count_from.borrow().read());
     }
 
     if *self.count_output.borrow().read() > 0usize {
       self.output.borrow_mut().set(true);
-      self
-        .count_output
-        .borrow_mut()
-        .set(self.count_output.borrow().read() - 1);
+      self.count_output
+          .borrow_mut()
+          .set(self.count_output.borrow().read() - 1);
     } else {
       self.output.borrow_mut().set(false);
     }
@@ -162,7 +142,5 @@ impl Steppable for TP {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for TP {
-  fn output(&self) -> &Signal<bool> {
-    &self.output
-  }
+  fn output(&self) -> &Signal<bool> { &self.output }
 }

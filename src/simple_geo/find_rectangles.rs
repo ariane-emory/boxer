@@ -6,11 +6,9 @@ use std::fmt::Debug;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Free functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn find_rectangles<T: LineMethods + Debug>(
-  lines: &Vec<T>,
-  rects: &mut Vec<Rectangle>,
-  leftover_lines: &mut Vec<T>,
-) {
+pub fn find_rectangles<T: LineMethods + Debug>(lines: &Vec<T>,
+                                               rects: &mut Vec<Rectangle>,
+                                               leftover_lines: &mut Vec<T>) {
   let mut sorted_lines: Vec<T> = lines.to_vec();
   sorted_lines.sort();
 
@@ -23,18 +21,14 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
     for other_line in &lines_deque {
       if let Some(_) = line.is_coaligned_with(other_line) {
-        noisy_println!(
-          "Found coaligned lines: \n   {:?}\n   {:?}",
-          line,
-          other_line
-        );
+        noisy_println!("Found coaligned lines: \n   {:?}\n   {:?}", line, other_line);
 
-        let connected_lines: Vec<&T> = lines_deque
-          .iter()
-          .filter(|&tested_line| {
-            line.is_connected_to(tested_line) && other_line.is_connected_to(tested_line)
-          })
-          .collect();
+        let connected_lines: Vec<&T> = lines_deque.iter()
+                                                  .filter(|&tested_line| {
+                                                    line.is_connected_to(tested_line)
+                                                    && other_line.is_connected_to(tested_line)
+                                                  })
+                                                  .collect();
 
         match connected_lines[..] {
           [first_side, second_side] => {
