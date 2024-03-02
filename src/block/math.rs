@@ -236,14 +236,16 @@ impl RShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for RShift {
+impl Steppable for RShift {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.input_value.borrow().read() >> *self.input_shift.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<usize> for RShift {
   fn output(&self) -> &Signal<usize> {
     &self.output
   }
