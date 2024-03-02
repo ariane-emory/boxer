@@ -62,7 +62,7 @@ fn main() -> io::Result<()> {
   let ithree = Value::<isize>::new(3);
   let itwo = Value::<isize>::new(2);
   let izero = Value::new(0);
-  let mut clock = SquareWave::new(one.output());
+  let clock = SquareWave::new(one.output());
 
   //loop {
   // {
@@ -144,14 +144,14 @@ fn main() -> io::Result<()> {
   //     render(b'x', b'-', select.output_value(), max.output_
 
   {
-    let mut clock = new_rcrc(SquareWave::new(one.output()));
-    let mut square = new_rcrc(SquareWave::new(sixteen.output()));
-    let mut select = new_rcrc(Select::new(square.borrow_mut().output(), izero.output(), imax.output()));
-    let mut held_value = new_rcrc(Feedback::<isize>::new());
-    let mut div_held_value_by_itwo = new_rcrc(Div::<isize>::new(held_value.borrow_mut().output(), itwo.output()));
-    let mut div_new_input_by_itwo = new_rcrc(Div::<isize>::new(select.borrow_mut().output(), itwo.output()));
-    let mut add = new_rcrc(Add::new(div_held_value_by_itwo.borrow_mut().output(), div_new_input_by_itwo.borrow_mut().output()));
-    let mut sample_and_hold = new_rcrc(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output()));
+    let clock = new_rcrc(SquareWave::new(one.output()));
+    let square = new_rcrc(SquareWave::new(sixteen.output()));
+    let select = new_rcrc(Select::new(square.borrow_mut().output(), izero.output(), imax.output()));
+    let held_value = new_rcrc(Feedback::<isize>::new());
+    let div_held_value_by_itwo = new_rcrc(Div::<isize>::new(held_value.borrow_mut().output(), itwo.output()));
+    let div_new_input_by_itwo = new_rcrc(Div::<isize>::new(select.borrow_mut().output(), itwo.output()));
+    let add = new_rcrc(Add::new(div_held_value_by_itwo.borrow_mut().output(), div_new_input_by_itwo.borrow_mut().output()));
+    let sample_and_hold = new_rcrc(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output()));
 
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
