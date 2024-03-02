@@ -116,32 +116,23 @@ fn main() -> io::Result<()> {
     sr_set.borrow_mut().set_input(&counter_at_max_and_not_latched.borrow_mut().output());
     sr_reset.borrow_mut().set_input(&counter_at_max_and_latched.borrow_mut().output());
 
+    let mut blocks: Vec<RcRcSteppable> = Vec::new();
+    add_to_rcrc_steppable_vec(&mut blocks, &one);
+    add_to_rcrc_steppable_vec(&mut blocks, &max);
+    add_to_rcrc_steppable_vec(&mut blocks, &clock);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_reset);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter);
+    add_to_rcrc_steppable_vec(&mut blocks, &sr_set);
+    add_to_rcrc_steppable_vec(&mut blocks, &sr_reset);
+    add_to_rcrc_steppable_vec(&mut blocks, &sr);
+    add_to_rcrc_steppable_vec(&mut blocks, &not_latched);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_at_max_and_latched);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_at_max_and_not_latched);
+    add_to_rcrc_steppable_vec(&mut blocks, &sub);
+    add_to_rcrc_steppable_vec(&mut blocks, &select);
+
     for _ in 0..511 {
-      // println!("");
-
-      clock.step();
-      counter.step();
-      not_latched.step();
-      counter_at_max_and_latched.step();
-      counter_at_max_and_not_latched.step();
-      sr.step();
-      sub.step();
-      select.step();
-      counter_reset.step();
-      sr_set.step();
-      sr_reset.step();
-
-      // println!("counter:             {}", counter.output_value());
-      // println!("counter.at_max:      {}", counter.at_max.borrow().read());
-      // println!("counter reset:       {}", counter_reset.output_value());
-      // println!("sr_reset:            {}", sr_reset.output_value());
-      // println!("sr:                  {}", sr.output_value());
-      // println!("sub:                 {}", sub.output_value());
-      // println!("select:              {}", select.output_value());
-      // println!("not_latched:         {}", not_latched.output_value());
-      // println!("max_and_latched:     {}", max_and_latched.output_value());
-      // println!("max_and_not_latched: {}", max_and_not_latched.output_value());
-
+      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
       render(b'x', b'-', select.output_value(), max.output_value());
     }
   }
