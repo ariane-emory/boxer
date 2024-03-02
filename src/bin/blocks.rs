@@ -162,8 +162,7 @@ fn main() -> io::Result<()> {
     add_to_steppables(&mut blocks, div_new_input_by_itwo);
     let steppable_obj: SteppableRc = add.clone();
     blocks.push(steppable_obj);
-    let steppable_obj: SteppableRc = sample_and_hold.clone();
-    blocks.push(steppable_obj);
+    add_to_steppables(&mut blocks, sample_and_hold);
 
     for _ in 0..511 {
       blocks.iter_mut().for_each(|b| b.borrow_mut().step());
