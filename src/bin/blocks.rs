@@ -36,13 +36,6 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  // let never = Value::new(false);
-  // let itwo = Value::<isize>::new(2);
-  // let ifour = Value::<isize>::new(4);
-
-  // let ithree = Value::<isize>::new(3);
-
-  //loop {
   {
     let one = new_rcrc(Value::new(1));
     let max = new_rcrc(Value::new(128));
