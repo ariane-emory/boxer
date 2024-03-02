@@ -20,14 +20,16 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> HasSignal<T> for Add<T> {
+impl<T: std::ops::Add<Output = T> + Copy + Default> Steppable for Add<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() + *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Add<Output = T> + Copy + Default> HasSignal<T> for Add<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
