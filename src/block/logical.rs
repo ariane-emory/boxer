@@ -162,12 +162,9 @@ impl Not {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Steppable for Nor {
+impl Steppable for Not {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+    self.output.borrow_mut().set(!*self.input.borrow().read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
