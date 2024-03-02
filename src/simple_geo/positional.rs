@@ -1,30 +1,43 @@
 use crate::simple_geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
+pub trait Positional:
+  Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
   fn top_left(&self) -> Point;
 
   fn bottom_right(&self) -> Point;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   fn top_side(&self) -> Line {
-    Line::new(self.top_left(), Point::new(self.top_left().line, self.bottom_right().col))
-      .unwrap()
+    Line::new(
+      self.top_left(),
+      Point::new(self.top_left().line, self.bottom_right().col),
+    )
+    .unwrap()
   }
 
   fn bottom_side(&self) -> Line {
-    Line::new(Point::new(self.bottom_right().line, self.top_left().col), self.bottom_right())
-      .unwrap()
+    Line::new(
+      Point::new(self.bottom_right().line, self.top_left().col),
+      self.bottom_right(),
+    )
+    .unwrap()
   }
 
   fn left_side(&self) -> Line {
-    Line::new(self.top_left(), Point::new(self.bottom_right().line, self.top_left().col))
-      .unwrap()
+    Line::new(
+      self.top_left(),
+      Point::new(self.bottom_right().line, self.top_left().col),
+    )
+    .unwrap()
   }
 
   fn right_side(&self) -> Line {
-    Line::new(Point::new(self.top_left().line, self.bottom_right().col), self.bottom_right())
-      .unwrap()
+    Line::new(
+      Point::new(self.top_left().line, self.bottom_right().col),
+      self.bottom_right(),
+    )
+    .unwrap()
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,10 +139,10 @@ pub trait Positional: Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
     &self,
     other: &impl Positional,
   ) -> bool {
-    let horizontal_overlap =
-      self.left_bound() <= other.right_bound() && self.right_bound() >= other.left_bound();
-    let vertical_overlap =
-      self.upper_bound() <= other.lower_bound() && self.lower_bound() >= other.upper_bound();
+    let horizontal_overlap = self.left_bound() <= other.right_bound()
+      && self.right_bound() >= other.left_bound();
+    let vertical_overlap = self.upper_bound() <= other.lower_bound()
+      && self.lower_bound() >= other.upper_bound();
 
     horizontal_overlap && vertical_overlap
   }

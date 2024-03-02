@@ -161,9 +161,12 @@ mod tests {
     assert!(Line::new(Point::new(0, 0), Point::new(2, 1)).is_err());
     assert!(Line::new(Point::new(0, 0), Point::new(1, 2)).is_err());
 
-    let upper_horizontal = Line::new(Point::new(0, 0), Point::new(0, 4)).unwrap();
-    let lower_horizontal = Line::new(Point::new(2, 0), Point::new(2, 4)).unwrap();
-    let offset_horizontal = Line::new(Point::new(5, 1), Point::new(5, 5)).unwrap();
+    let upper_horizontal =
+      Line::new(Point::new(0, 0), Point::new(0, 4)).unwrap();
+    let lower_horizontal =
+      Line::new(Point::new(2, 0), Point::new(2, 4)).unwrap();
+    let offset_horizontal =
+      Line::new(Point::new(5, 1), Point::new(5, 5)).unwrap();
     //   012345
     // 0 xxxxx_
     // 1 ______
@@ -174,7 +177,8 @@ mod tests {
 
     let left_vertical = Line::new(Point::new(0, 0), Point::new(4, 0)).unwrap();
     let right_vertical = Line::new(Point::new(0, 4), Point::new(4, 4)).unwrap();
-    let offset_vertical = Line::new(Point::new(1, 5), Point::new(5, 5)).unwrap();
+    let offset_vertical =
+      Line::new(Point::new(1, 5), Point::new(5, 5)).unwrap();
     //   012345
     // 0 x___x_
     // 1 x___xx
@@ -298,7 +302,9 @@ mod tests {
     assert!(left_vertical.is_perpendicular_to(&offset_horizontal));
 
     assert!(upper_horizontal.is_horizontally_coaligned_with(&lower_horizontal));
-    assert!(!upper_horizontal.is_horizontally_coaligned_with(&offset_horizontal));
+    assert!(
+      !upper_horizontal.is_horizontally_coaligned_with(&offset_horizontal)
+    );
     assert!(!upper_horizontal.is_vertically_coaligned_with(&left_vertical));
     assert!(!upper_horizontal.is_vertically_coaligned_with(&right_vertical));
     assert!(!upper_horizontal.is_vertically_coaligned_with(&offset_vertical));
@@ -344,8 +350,10 @@ mod tests {
     assert!(Rectangle::new(Point::new(0, 0), Point::new(2, 2)).is_ok());
 
     let rect = Rectangle::new(Point::new(10, 0), Point::new(15, 5)).unwrap();
-    let overlapping_rect = Rectangle::new(Point::new(13, 3), Point::new(18, 8)).unwrap();
-    let nonoverlapping_rect = Rectangle::new(Point::new(16, 16), Point::new(20, 20)).unwrap();
+    let overlapping_rect =
+      Rectangle::new(Point::new(13, 3), Point::new(18, 8)).unwrap();
+    let nonoverlapping_rect =
+      Rectangle::new(Point::new(16, 16), Point::new(20, 20)).unwrap();
 
     assert!(rect.width() == 6);
     assert!(rect.height() == 6);
@@ -466,7 +474,8 @@ mod tests {
     assert!(line6.overlaps(&rect1));
     assert!(line6.overlaps(&rect2));
 
-    let lower_rect = Rectangle::new(Point::new(30, 10), Point::new(40, 20)).unwrap();
+    let lower_rect =
+      Rectangle::new(Point::new(30, 10), Point::new(40, 20)).unwrap();
 
     // A vertical line touching the bottom edge of rect1 and the top edge of lower_rect (but not overlapping with either):
     let line7 = Line::new(Point::new(20, 15), Point::new(30, 15)).unwrap();
@@ -568,7 +577,10 @@ mod tests {
         bottom_right: Point::new(7, 7)
       }
     );
-    assert_eq!(rects[1], Rectangle::new(Point::new(4, 3), Point::new(9, 16)).unwrap());
+    assert_eq!(
+      rects[1],
+      Rectangle::new(Point::new(4, 3), Point::new(9, 16)).unwrap()
+    );
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -86,6 +86,7 @@ pub fn push_onto_vec_rcrc_steppable<T: 'static + Steppable>(
   blocks: &mut Vec<RcRcSteppable>,
   item: &Rc<RefCell<T>>,
 ) {
-  let steppable_item: RcRcSteppable = item.clone() as Rc<RefCell<dyn Steppable>>;
+  let steppable_item: RcRcSteppable =
+    item.clone() as Rc<RefCell<dyn Steppable>>;
   blocks.push(steppable_item);
 }

@@ -144,10 +144,15 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
 
     if self.len() > 0 {
       s.push_str(" ");
-      s.push_str(format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string()).as_str());
+      s.push_str(
+        format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string())
+          .as_str(),
+      );
 
       for l in &self[1..] {
-        s.push_str(format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str());
+        s.push_str(
+          format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str(),
+        );
       }
       s.push_str(" ");
     }

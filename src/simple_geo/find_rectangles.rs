@@ -23,25 +23,36 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
     for other_line in &lines_deque {
       if let Some(_) = line.is_coaligned_with(other_line) {
-        noisy_println!("Found coaligned lines: \n   {:?}\n   {:?}", line, other_line);
+        noisy_println!(
+          "Found coaligned lines: \n   {:?}\n   {:?}",
+          line,
+          other_line
+        );
 
         let connected_lines: Vec<&T> = lines_deque
           .iter()
           .filter(|&tested_line| {
-            line.is_connected_to(tested_line) && other_line.is_connected_to(tested_line)
+            line.is_connected_to(tested_line)
+              && other_line.is_connected_to(tested_line)
           })
           .collect();
 
         match connected_lines[..] {
           [first_side, second_side] => {
-            noisy_println!("\nWith sides:\n   {:?}\n   {:?}", first_side, second_side);
+            noisy_println!(
+              "\nWith sides:\n   {:?}\n   {:?}",
+              first_side,
+              second_side
+            );
 
             // Put the component lines in a vec and sort them so we can find the top left
             // and bottom right corners at opposite ends of the vec.
-            let mut tmp_vec: Vec<&T> = vec![&line, other_line, first_side, second_side];
+            let mut tmp_vec: Vec<&T> =
+              vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
 
-            let rect = Rectangle::new(tmp_vec[0].start(), tmp_vec[3].end()).unwrap();
+            let rect =
+              Rectangle::new(tmp_vec[0].start(), tmp_vec[3].end()).unwrap();
 
             rects.push(rect);
 

@@ -220,10 +220,9 @@ impl LShift {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for LShift {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(*self.input_value.borrow().read() << *self.input_shift.borrow().read());
+    self.output.borrow_mut().set(
+      *self.input_value.borrow().read() << *self.input_shift.borrow().read(),
+    );
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,10 +258,9 @@ impl RShift {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl Steppable for RShift {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(*self.input_value.borrow().read() >> *self.input_shift.borrow().read());
+    self.output.borrow_mut().set(
+      *self.input_value.borrow().read() >> *self.input_shift.borrow().read(),
+    );
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
