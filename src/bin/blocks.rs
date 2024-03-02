@@ -71,16 +71,16 @@ impl<T: Copy> SaysHello<T> for ThingWithValue<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  let one = Value::new(1);
-  let never = Value::new(false);
-  let sixteen = Value::new(16);
-  let max = Value::new(128);
-  let ifour = Value::<isize>::new(4);
-  let imax = Value::<isize>::new(max.output_value() as isize);
-  let ithree = Value::<isize>::new(3);
-  let itwo = Value::<isize>::new(2);
-  let izero = Value::new(0);
-  let mut clock = SquareWave::new(one.output());
+  // let one = Value::new(1);
+  // let never = Value::new(false);
+  // let sixteen = Value::new(16);
+  // let max = Value::new(128);
+  // let ifour = Value::<isize>::new(4);
+  // let imax = Value::<isize>::new(max.output_value() as isize);
+  // let ithree = Value::<isize>::new(3);
+  // let itwo = Value::<isize>::new(2);
+  // let izero = Value::new(0);
+  // let mut clock = SquareWave::new(one.output());
 
   //loop {
   // {
