@@ -142,7 +142,7 @@ fn main() -> io::Result<()> {
     }
 
     let mut clock = new_rcrc(SquareWave::new(one.output()));
-    let mut square = Rc::new(RefCell::new(SquareWave::new(sixteen.output())));
+    let mut square = new_rcrc(SquareWave::new(sixteen.output()));
     let mut select = Rc::new(RefCell::new(Select::new(square.borrow_mut().output(), izero.output(), imax.output())));
     let mut held_value = Rc::new(RefCell::new(Feedback::<isize>::new()));
     let mut div_held_value_by_itwo = Rc::new(RefCell::new(Div::<isize>::new(held_value.borrow_mut().output(), itwo.output())));
