@@ -309,22 +309,27 @@ mod tests {
     assert!(!left_vertical.is_horizontally_coaligned_with(&lower_horizontal));
     assert!(!left_vertical.is_horizontally_coaligned_with(&offset_horizontal));
 
-    assert!(upper_horizontal.is_coaligned_with(&lower_horizontal)
-                            .is_some());
-    assert!(upper_horizontal.is_coaligned_with(&offset_horizontal)
-                            .is_none());
+    assert!(upper_horizontal
+      .is_coaligned_with(&lower_horizontal)
+      .is_some());
+    assert!(upper_horizontal
+      .is_coaligned_with(&offset_horizontal)
+      .is_none());
     assert!(upper_horizontal.is_coaligned_with(&left_vertical).is_none());
-    assert!(upper_horizontal.is_coaligned_with(&right_vertical)
-                            .is_none());
-    assert!(upper_horizontal.is_coaligned_with(&offset_vertical)
-                            .is_none());
+    assert!(upper_horizontal
+      .is_coaligned_with(&right_vertical)
+      .is_none());
+    assert!(upper_horizontal
+      .is_coaligned_with(&offset_vertical)
+      .is_none());
 
     assert!(left_vertical.is_coaligned_with(&right_vertical).is_some());
     assert!(left_vertical.is_coaligned_with(&offset_vertical).is_none());
     assert!(left_vertical.is_coaligned_with(&upper_horizontal).is_none());
     assert!(left_vertical.is_coaligned_with(&lower_horizontal).is_none());
-    assert!(left_vertical.is_coaligned_with(&offset_horizontal)
-                         .is_none());
+    assert!(left_vertical
+      .is_coaligned_with(&offset_horizontal)
+      .is_none());
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -354,43 +359,63 @@ mod tests {
 
     let rect1 = Rectangle::new(Point::new(10, 10), Point::new(20, 20)).unwrap();
 
-    assert_eq!(rect1.contained_rectangle().unwrap(),
-               Rectangle::new(Point::new(11, 11), Point::new(19, 19)).unwrap());
+    assert_eq!(
+      rect1.contained_rectangle().unwrap(),
+      Rectangle::new(Point::new(11, 11), Point::new(19, 19)).unwrap()
+    );
 
-    assert_eq!(Rectangle::new(Point::new(0, 0), Point::new(2, 2)).unwrap()
-                                                                 .contained_rectangle()
-                                                                 .unwrap(),
-               Rectangle { top_left: Point::new(1, 1),
-                           bottom_right: Point::new(1, 1) });
+    assert_eq!(
+      Rectangle::new(Point::new(0, 0), Point::new(2, 2))
+        .unwrap()
+        .contained_rectangle()
+        .unwrap(),
+      Rectangle {
+        top_left: Point::new(1, 1),
+        bottom_right: Point::new(1, 1)
+      }
+    );
 
-    assert_eq!(Rectangle::new(Point::new(0, 0), Point::new(2, 2)).unwrap()
-                                                                 .contained_rectangle()
-                                                                 .unwrap(),
-               Rectangle { top_left: Point::new(1, 1),
-                           bottom_right: Point::new(1, 1) });
+    assert_eq!(
+      Rectangle::new(Point::new(0, 0), Point::new(2, 2))
+        .unwrap()
+        .contained_rectangle()
+        .unwrap(),
+      Rectangle {
+        top_left: Point::new(1, 1),
+        bottom_right: Point::new(1, 1)
+      }
+    );
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   #[should_panic]
-  fn rectangle_panic_test_1() { Rectangle::new(Point::new(0, 0), Point::new(1, 1)).unwrap(); }
+  fn rectangle_panic_test_1() {
+    Rectangle::new(Point::new(0, 0), Point::new(1, 1)).unwrap();
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   #[should_panic]
   fn rectangle_panic_test_2() {
-    Rectangle { top_left: Point::new(1, 1),
-                bottom_right: Point::new(1, 1) }.contained_rectangle()
-                                                .unwrap();
+    Rectangle {
+      top_left: Point::new(1, 1),
+      bottom_right: Point::new(1, 1),
+    }
+    .contained_rectangle()
+    .unwrap();
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   #[should_panic]
   fn rectangle_panic_test_3() {
-    Rectangle { top_left: Point::new(1, 1),
-                bottom_right: Point::new(5, 1) }.contained_rectangle()
-                                                .unwrap();
+    Rectangle {
+      top_left: Point::new(1, 1),
+      bottom_right: Point::new(5, 1),
+    }
+    .contained_rectangle()
+    .unwrap();
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -508,14 +533,16 @@ mod tests {
     // 8    x     x
     // 9    xxxxxxx
 
-    let lines = vec![Line::new(Point::new(0, 0), Point::new(0, 7)).unwrap(),
-                     Line::new(Point::new(4, 3), Point::new(4, 16)).unwrap(),
-                     Line::new(Point::new(7, 0), Point::new(7, 7)).unwrap(),
-                     Line::new(Point::new(9, 3), Point::new(9, 16)).unwrap(),
-                     Line::new(Point::new(0, 0), Point::new(7, 0)).unwrap(),
-                     Line::new(Point::new(0, 7), Point::new(7, 7)).unwrap(),
-                     Line::new(Point::new(4, 3), Point::new(9, 3)).unwrap(),
-                     Line::new(Point::new(4, 16), Point::new(9, 16)).unwrap(),];
+    let lines = vec![
+      Line::new(Point::new(0, 0), Point::new(0, 7)).unwrap(),
+      Line::new(Point::new(4, 3), Point::new(4, 16)).unwrap(),
+      Line::new(Point::new(7, 0), Point::new(7, 7)).unwrap(),
+      Line::new(Point::new(9, 3), Point::new(9, 16)).unwrap(),
+      Line::new(Point::new(0, 0), Point::new(7, 0)).unwrap(),
+      Line::new(Point::new(0, 7), Point::new(7, 7)).unwrap(),
+      Line::new(Point::new(4, 3), Point::new(9, 3)).unwrap(),
+      Line::new(Point::new(4, 16), Point::new(9, 16)).unwrap(),
+    ];
 
     let mut leftover_lines = Vec::new();
     let mut rects = Vec::new();
@@ -534,9 +561,13 @@ mod tests {
 
     assert!(rects.len() == 2);
     assert!(leftover_lines.len() == 0);
-    assert_eq!(rects[0],
-               Rectangle { top_left: Point::new(0, 0),
-                           bottom_right: Point::new(7, 7) });
+    assert_eq!(
+      rects[0],
+      Rectangle {
+        top_left: Point::new(0, 0),
+        bottom_right: Point::new(7, 7)
+      }
+    );
     assert_eq!(rects[1], Rectangle::new(Point::new(4, 3), Point::new(9, 16)).unwrap());
   }
 }

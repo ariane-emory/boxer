@@ -28,6 +28,7 @@ fn main() -> io::Result<()> {
       let (vert_linemaker, process_vert) = make_process_file_fun(b'|', |pos, byte| {
         println!("Vert:    {:?}: '{}'", pos.flip().offset_by(LINE_OFFSET, 0), byte as char);
       });
+
       let (horiz_linemaker, process_horiz) = make_process_file_fun(b'-', |pos, byte| {
         println!("Horiz:   {:?}: '{}'", pos.offset_by(LINE_OFFSET, 0), byte as char);
       });

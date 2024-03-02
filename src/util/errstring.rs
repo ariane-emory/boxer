@@ -13,14 +13,19 @@ impl Error for ErrString {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl fmt::Display for ErrString {
-  fn fmt(&self,
-         f: &mut fmt::Formatter)
-         -> fmt::Result {
+  fn fmt(
+    &self,
+    f: &mut fmt::Formatter,
+  ) -> fmt::Result {
     write!(f, "Error: {}", self.string)
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ErrString {
-  pub fn new(string: &str) -> ErrString { ErrString { string: string.to_string() } }
+  pub fn new(string: &str) -> ErrString {
+    ErrString {
+      string: string.to_string(),
+    }
+  }
 }

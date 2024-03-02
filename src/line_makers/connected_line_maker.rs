@@ -12,14 +12,18 @@ pub struct ConnectedLineMaker {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLineMaker {
   pub fn new(line_body_char: u8) -> ConnectedLineMaker {
-    ConnectedLineMaker { lines: Vec::new(),
-                         line_begin: None,
-                         line_body_char }
+    ConnectedLineMaker {
+      lines: Vec::new(),
+      line_begin: None,
+      line_body_char,
+    }
   }
 
-  pub fn process(&mut self,
-                 pos: &Point,
-                 byte: u8) {
+  pub fn process(
+    &mut self,
+    pos: &Point,
+    byte: u8,
+  ) {
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art lines like '+----+'.-
     // When a '+' is observed and line_begin is None, the current position is recorded.
     // If line begin is set and the current character is the same as line_body_char, the

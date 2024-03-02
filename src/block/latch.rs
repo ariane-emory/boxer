@@ -8,12 +8,15 @@ pub struct SRLatch {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl SRLatch {
-  pub fn new(set: &Signal<bool>,
-             reset: &Signal<bool>)
-             -> Self {
-    SRLatch { output: new_signal(false),
-              set: Rc::clone(set),
-              reset: Rc::clone(reset) }
+  pub fn new(
+    set: &Signal<bool>,
+    reset: &Signal<bool>,
+  ) -> Self {
+    SRLatch {
+      output: new_signal(false),
+      set: Rc::clone(set),
+      reset: Rc::clone(reset),
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,7 +31,9 @@ impl Steppable for SRLatch {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for SRLatch {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }
 
 
@@ -40,12 +45,15 @@ pub struct RSLatch {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl RSLatch {
-  pub fn new(set: &Signal<bool>,
-             reset: &Signal<bool>)
-             -> Self {
-    RSLatch { output: new_signal(false),
-              set: Rc::clone(set),
-              reset: Rc::clone(reset) }
+  pub fn new(
+    set: &Signal<bool>,
+    reset: &Signal<bool>,
+  ) -> Self {
+    RSLatch {
+      output: new_signal(false),
+      set: Rc::clone(set),
+      reset: Rc::clone(reset),
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +68,9 @@ impl Steppable for RSLatch {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for RSLatch {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }
 
 
@@ -74,15 +84,18 @@ pub struct JKFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl JKFlipFlop {
-  pub fn new(j_input: &Signal<bool>,
-             k_input: &Signal<bool>,
-             clock: &Signal<bool>)
-             -> Self {
-    JKFlipFlop { output: new_signal(false),
-                 j_input: Rc::clone(j_input),
-                 k_input: Rc::clone(k_input),
-                 clock: Rc::clone(clock),
-                 last_clock: false }
+  pub fn new(
+    j_input: &Signal<bool>,
+    k_input: &Signal<bool>,
+    clock: &Signal<bool>,
+  ) -> Self {
+    JKFlipFlop {
+      output: new_signal(false),
+      j_input: Rc::clone(j_input),
+      k_input: Rc::clone(k_input),
+      clock: Rc::clone(clock),
+      last_clock: false,
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +115,9 @@ impl Steppable for JKFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for JKFlipFlop {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }
 
 
@@ -115,13 +130,16 @@ pub struct DFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl DFlipFlop {
-  pub fn new(input: &Signal<bool>,
-             clock: &Signal<bool>)
-             -> Self {
-    DFlipFlop { output: new_signal(false),
-                input: Rc::clone(input),
-                clock: Rc::clone(clock),
-                last_clock: false }
+  pub fn new(
+    input: &Signal<bool>,
+    clock: &Signal<bool>,
+  ) -> Self {
+    DFlipFlop {
+      output: new_signal(false),
+      input: Rc::clone(input),
+      clock: Rc::clone(clock),
+      last_clock: false,
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +153,9 @@ impl Steppable for DFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for DFlipFlop {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }
 
 
@@ -148,13 +168,16 @@ pub struct TFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl TFlipFlop {
-  pub fn new(input: &Signal<bool>,
-             clock: &Signal<bool>)
-             -> Self {
-    TFlipFlop { output: new_signal(false),
-                input: Rc::clone(input),
-                clock: Rc::clone(clock),
-                last_clock: false }
+  pub fn new(
+    input: &Signal<bool>,
+    clock: &Signal<bool>,
+  ) -> Self {
+    TFlipFlop {
+      output: new_signal(false),
+      input: Rc::clone(input),
+      clock: Rc::clone(clock),
+      last_clock: false,
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,5 +193,7 @@ impl Steppable for TFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for TFlipFlop {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }

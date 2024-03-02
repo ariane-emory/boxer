@@ -7,11 +7,15 @@ pub struct Value<T: Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
-    Value { output: Rc::new(RefCell::new(SignalOutput::new(value))) }
+    Value {
+      output: Rc::new(RefCell::new(SignalOutput::new(value))),
+    }
   }
 
-  pub fn set(&mut self,
-             value: T) {
+  pub fn set(
+    &mut self,
+    value: T,
+  ) {
     self.output.borrow_mut().set(value);
   }
 }
@@ -21,5 +25,7 @@ impl<T: Copy> Steppable for Value<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> HasSignal<T> for Value<T> {
-  fn output(&self) -> &Signal<T> { &self.output }
+  fn output(&self) -> &Signal<T> {
+    &self.output
+  }
 }

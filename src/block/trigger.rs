@@ -8,8 +8,10 @@ pub struct RisingTrigger {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl RisingTrigger {
   pub fn new(input: &Signal<bool>) -> Self {
-    RisingTrigger { output: new_signal(false),
-                    input: Rc::clone(input) }
+    RisingTrigger {
+      output: new_signal(false),
+      input: Rc::clone(input),
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +26,9 @@ impl Steppable for RisingTrigger {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for RisingTrigger {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }
 
 
@@ -36,8 +40,10 @@ pub struct FallingTrigger {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl FallingTrigger {
   pub fn new(input: &Signal<bool>) -> Self {
-    FallingTrigger { output: new_signal(false),
-                     input: Rc::clone(input) }
+    FallingTrigger {
+      output: new_signal(false),
+      input: Rc::clone(input),
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,5 +58,7 @@ impl Steppable for FallingTrigger {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl HasSignal<bool> for FallingTrigger {
-  fn output(&self) -> &Signal<bool> { &self.output }
+  fn output(&self) -> &Signal<bool> {
+    &self.output
+  }
 }

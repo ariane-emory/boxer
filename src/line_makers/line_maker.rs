@@ -13,15 +13,19 @@ pub struct LineMaker {
 impl LineMaker {
   #[allow(dead_code)]
   pub fn new(line_body_char: u8) -> LineMaker {
-    LineMaker { lines: Vec::new(),
-                line_begin: None,
-                line_body_char }
+    LineMaker {
+      lines: Vec::new(),
+      line_begin: None,
+      line_body_char,
+    }
   }
 
   #[allow(dead_code)]
-  pub fn process(&mut self,
-                 pos: &Point,
-                 byte: u8) {
+  pub fn process(
+    &mut self,
+    pos: &Point,
+    byte: u8,
+  ) {
     // Feed a character to the LineMaker: this looks for ASCII art lines like '+----+'.-
     // When a '+' is observed and line_begin is None, the current position is recorded.
     // If line begin is set and the current character is the same as line_body_char, the
