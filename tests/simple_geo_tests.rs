@@ -432,42 +432,48 @@ mod tests {
     let rect1 = Rectangle::new(Point::new(10, 10), Point::new(20, 20)).unwrap();
     let rect2 = Rectangle::new(Point::new(10, 30), Point::new(20, 40)).unwrap();
 
-    // A horizontal line touching the right edge of rect1 and the left edge of rect2:
+    // A horizontal line touching the right edge of rect1 and the left edge of
+    // rect2:
     let line1 = Line::new(Point::new(15, 20), Point::new(15, 30)).unwrap();
     assert!(line1.touches(&rect1));
     assert!(line1.touches(&rect2));
     assert!(line1.overlaps(&rect1));
     assert!(line1.overlaps(&rect2));
 
-    // A horizontal line touching the right edge of rect1 that doesn't quite reach the left edge of rect2:
+    // A horizontal line touching the right edge of rect1 that doesn't quite
+    // reach the left edge of rect2:
     let line2 = Line::new(Point::new(15, 20), Point::new(15, 29)).unwrap();
     assert!(line2.touches(&rect1));
     assert!(!line2.touches(&rect2));
     assert!(line2.overlaps(&rect1));
     assert!(!line2.overlaps(&rect2));
 
-    // A horizontal line touching the left edge of rect2 that doesn't quite reach the right edge of rect2:
+    // A horizontal line touching the left edge of rect2 that doesn't quite
+    // reach the right edge of rect2:
     let line3 = Line::new(Point::new(15, 21), Point::new(15, 30)).unwrap();
     assert!(!line3.touches(&rect1));
     assert!(line3.touches(&rect2));
     assert!(!line3.overlaps(&rect1));
     assert!(line3.overlaps(&rect2));
 
-    // A horizontal line between rect1 and the left edge of rect2 that overlaps with rect1:
+    // A horizontal line between rect1 and the left edge of rect2 that overlaps
+    // with rect1:
     let line4 = Line::new(Point::new(15, 19), Point::new(15, 30)).unwrap();
     assert!(!line4.touches(&rect1));
     assert!(line4.touches(&rect2));
     assert!(line4.overlaps(&rect1));
     assert!(line4.overlaps(&rect2));
 
-    // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with rect2:
+    // A horizontal line between the right edge of rect1 and the left edge of
+    // rect2 that overlaps with rect2:
     let line5 = Line::new(Point::new(15, 20), Point::new(15, 31)).unwrap();
     assert!(line5.touches(&rect1));
     assert!(!line5.touches(&rect2));
     assert!(line5.overlaps(&rect1));
     assert!(line5.overlaps(&rect2));
 
-    // A horizontal line between the right edge of rect1 and the left edge of rect2 that overlaps with both:
+    // A horizontal line between the right edge of rect1 and the left edge of
+    // rect2 that overlaps with both:
     let line6 = Line::new(Point::new(15, 19), Point::new(15, 41)).unwrap();
     assert!(!line6.touches(&rect1));
     assert!(!line6.touches(&rect2));
@@ -477,49 +483,56 @@ mod tests {
     let lower_rect =
       Rectangle::new(Point::new(30, 10), Point::new(40, 20)).unwrap();
 
-    // A vertical line touching the bottom edge of rect1 and the top edge of lower_rect (but not overlapping with either):
+    // A vertical line touching the bottom edge of rect1 and the top edge of
+    // lower_rect (but not overlapping with either):
     let line7 = Line::new(Point::new(20, 15), Point::new(30, 15)).unwrap();
     assert!(line7.touches(&rect1));
     assert!(line7.touches(&lower_rect));
     assert!(line7.overlaps(&rect1));
     assert!(line7.overlaps(&lower_rect));
 
-    // A vertical line touching the bottom edge of rect1 that doesn't quite reach the top edge of lower_rect:
+    // A vertical line touching the bottom edge of rect1 that doesn't quite
+    // reach the top edge of lower_rect:
     let line8 = Line::new(Point::new(20, 15), Point::new(29, 15)).unwrap();
     assert!(line8.touches(&rect1));
     assert!(!line8.touches(&lower_rect));
     assert!(line8.overlaps(&rect1));
     assert!(!line8.overlaps(&lower_rect));
 
-    // A vertical line touching the top edge of lower_rect that doesn't quite reach the bottom edge of rect1:
+    // A vertical line touching the top edge of lower_rect that doesn't quite
+    // reach the bottom edge of rect1:
     let line9 = Line::new(Point::new(21, 15), Point::new(30, 15)).unwrap();
     assert!(!line9.touches(&rect1));
     assert!(line9.touches(&lower_rect));
     assert!(!line9.overlaps(&rect1));
     assert!(line9.overlaps(&lower_rect));
 
-    // A vertical line between rect1 and the top edge of lower_rect that overlaps with rect1:
+    // A vertical line between rect1 and the top edge of lower_rect that
+    // overlaps with rect1:
     let line10 = Line::new(Point::new(19, 15), Point::new(30, 15)).unwrap();
     assert!(!line10.touches(&rect1));
     assert!(line10.touches(&lower_rect));
     assert!(line10.overlaps(&rect1));
     assert!(line10.overlaps(&lower_rect));
 
-    // A vertical line between the bottom edge of rect1 and the top edge of lower_rect that overlaps with lower_rect:
+    // A vertical line between the bottom edge of rect1 and the top edge of
+    // lower_rect that overlaps with lower_rect:
     let line11 = Line::new(Point::new(20, 15), Point::new(31, 15)).unwrap();
     assert!(line11.touches(&rect1));
     assert!(!line11.touches(&lower_rect));
     assert!(line11.overlaps(&rect1));
     assert!(line11.overlaps(&lower_rect));
 
-    // A horizontal line that isn't properly touching rect1 and rect2 because it strikes their corners:
+    // A horizontal line that isn't properly touching rect1 and rect2 because it
+    // strikes their corners:
     let line12 = Line::new(Point::new(10, 10), Point::new(10, 30)).unwrap();
     assert!(!line12.touches(&rect1));
     assert!(line12.overlaps(&rect1));
     assert!(!line12.touches(&rect2));
     assert!(line12.overlaps(&rect2));
 
-    // A vertical line that isn't properly touching rect1 and lower_rect because it strikes their corners:
+    // A vertical line that isn't properly touching rect1 and lower_rect because
+    // it strikes their corners:
     let line13 = Line::new(Point::new(10, 10), Point::new(30, 10)).unwrap();
     assert!(!line13.touches(&rect1));
     assert!(line13.overlaps(&rect1));

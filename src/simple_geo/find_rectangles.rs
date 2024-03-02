@@ -3,9 +3,7 @@ use crate::simple_geo::*;
 use std::collections::VecDeque;
 use std::fmt::Debug;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Free functions
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 pub fn find_rectangles<T: LineMethods + Debug>(
   lines: &Vec<T>,
   rects: &mut Vec<Rectangle>,
@@ -45,8 +43,9 @@ pub fn find_rectangles<T: LineMethods + Debug>(
               second_side
             );
 
-            // Put the component lines in a vec and sort them so we can find the top left
-            // and bottom right corners at opposite ends of the vec.
+            // Put the component lines in a vec and sort them so we can find the
+            // top left and bottom right corners at opposite ends of
+            // the vec.
             let mut tmp_vec: Vec<&T> =
               vec![&line, other_line, first_side, second_side];
             tmp_vec.sort();
@@ -79,4 +78,4 @@ pub fn find_rectangles<T: LineMethods + Debug>(
     }
   }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////

@@ -47,17 +47,18 @@ fn main() -> io::Result<()> {
 
       println!("");
 
-      // we'll offset the line by one so that the line numbers are consistent with emacs'
-      // line numbering.
+      // we'll offset the line by one so that the line numbers are consistent
+      // with emacs' line numbering.
       for line in horiz_linemaker.borrow().lines.iter() {
         let line = line.offset_by(LINE_OFFSET, 0);
         println!("Horiz line: {:?}", line);
         all_lines.push(line);
       }
 
-      // we'll offset the line by one so that the line numbers are consistent with emacs'
-      // line numbering. we'll also need to flip the row and column on the vertical lines,
-      // since the LineMaker will have made horizontal lines.
+      // we'll offset the line by one so that the line numbers are consistent
+      // with emacs' line numbering. we'll also need to flip the row and
+      // column on the vertical lines, since the LineMaker will have made
+      // horizontal lines.
       for line in vert_linemaker.borrow().lines.iter() {
         let line = line.flip().offset_by(LINE_OFFSET, 0);
         println!("Vert line:  {:?}", line);

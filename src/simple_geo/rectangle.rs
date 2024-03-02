@@ -3,14 +3,14 @@ use std::cmp::max;
 use std::cmp::min;
 use std::fmt;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Rectangle {
   fn fmt(
     &self,
@@ -20,7 +20,7 @@ impl fmt::Debug for Rectangle {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 impl Positional for Rectangle {
   fn top_left(&self) -> Point {
     self.top_left
@@ -31,15 +31,16 @@ impl Positional for Rectangle {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
   pub fn new(
     start: Point,
     end: Point,
   ) -> GeoResult<Self> {
-    // we want the 'start' point to be the top left corner and the 'end' point to be the  bottom
-    // right corner... but, they might have been passed in a different order, so we're going to
-    // create our own points using the minimum/maximum line and column from the arguments:
+    // we want the 'start' point to be the top left corner and the 'end' point
+    // to be the  bottom right corner... but, they might have been passed in
+    // a different order, so we're going to create our own points using the
+    // minimum/maximum line and column from the arguments:
     let top_left =
       Point::new(min(start.line, end.line), min(start.col, end.col));
     let bottom_right =

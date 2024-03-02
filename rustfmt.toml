@@ -8,3 +8,5 @@ fn_call_width = 80
 max_width = 80
 #indent_style = "Visual"
 brace_style = "PreferSameLine"
+comment_width = 80
+wrap_comments = true
