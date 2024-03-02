@@ -33,7 +33,7 @@ impl UpCounter {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for UpCounter {
+impl Steppable for UpCounter {
   fn step(&mut self) {
     let output_val = *self.output.borrow().read();
     let max_val = *self.max.borrow().read();
@@ -64,7 +64,9 @@ impl HasSignal<usize> for UpCounter {
       // println!("  Nothing interesting happened..");
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<usize> for UpCounter {
   fn output(&self) -> &Signal<usize> {
     &self.output
   }
