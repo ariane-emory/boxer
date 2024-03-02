@@ -56,14 +56,16 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> HasSignal<T> for Sub<T> {
+impl<T: std::ops::Sub<Output = T> + Copy + Default> Steppable for Sub<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() - *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Sub<Output = T> + Copy + Default> HasSignal<T> for Sub<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -90,14 +92,16 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> HasSignal<T> for Mul<T> {
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Mul<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() * *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> HasSignal<T> for Mul<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -124,14 +128,16 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> HasSignal<T> for Div<T> {
+impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Div<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() / *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Div<Output = T> + Copy + Default> HasSignal<T> for Div<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
