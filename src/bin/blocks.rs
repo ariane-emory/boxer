@@ -150,6 +150,8 @@ fn main() -> io::Result<()> {
     // blocks.push(&add);
     // blocks.push(&sample_and_hold);
 
+    let mut blocks: Vec<Rc<RefCell<dyn Steppable>>> = Vec::new();
+
     for _ in 0..511 {
       //blocks.iter_mut().for_each(|b| b.step());
       clock.step();
