@@ -144,13 +144,18 @@ fn main() -> io::Result<()> {
 
     type SteppableRc = Rc<RefCell<dyn Steppable>>;
 
-    fn add_to_steppables(blocks: &mut Vec<SteppableRc>, item: &SteppableRc) {
-      blocks.push(item.clone());
+    // fn add_to_steppables(blocks: &mut Vec<SteppableRc>, item: &SteppableRc) {
+    //   blocks.push(item.clone());
+    // }
+
+    fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: Rc<RefCell<T>>) {
+      let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
+      blocks.push(steppable_item);
     }
 
     let mut blocks: Vec<SteppableRc> = Vec::new();
     let steppable_obj: SteppableRc = clock.clone();
-    blocks.push(steppable_obj);
+    add_to_steppables(&mut blocks, clock);
     let steppable_obj: SteppableRc = square.clone();
     blocks.push(steppable_obj);
     let steppable_obj: SteppableRc = select.clone();
