@@ -142,14 +142,15 @@ fn main() -> io::Result<()> {
     let mut sample_and_hold = Rc::new(RefCell::new(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output())));
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
-    // let mut blocks: Vec<&dyn HasSignal<T>> = Vec::new();
-    // blocks.push(&square);
-    // blocks.push(&select);
-    // blocks.push(&held_value);
-    // blocks.push(&div_held_value_by_itwo);
-    // blocks.push(&div_new_input_by_itwo);
-    // blocks.push(&add);
-    // blocks.push(&sample_and_hold);
+    let mut blocks: Vec<&dyn HasSignal<T>> = Vec::new();
+    blocks.push(&clock);
+    blocks.push(&square);
+    blocks.push(&select);
+    blocks.push(&held_value);
+    blocks.push(&div_held_value_by_itwo);
+    blocks.push(&div_new_input_by_itwo);
+    blocks.push(&add);
+    blocks.push(&sample_and_hold);
 
     let mut blocks: Vec<Rc<RefCell<dyn Steppable>>> = Vec::new();
 
