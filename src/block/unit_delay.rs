@@ -18,12 +18,14 @@ impl<T: Copy + Default> UnitDelay<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> HasSignal<T> for UnitDelay<T> {
+impl<T: Copy + Default> Steppable for UnitDelay<T> {
   fn step(&mut self) {
     self.previous.borrow_mut().set(*self.input.borrow().read());
     self.output.borrow_mut().set(*self.previous.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> HasSignal<T> for UnitDelay<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
