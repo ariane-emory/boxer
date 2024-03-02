@@ -166,9 +166,3 @@ impl HasSignal<bool> for TP {
     &self.output
   }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TP {
-  fn output(&self) -> &Signal<bool> {
-    &self.output
-  }
-}
