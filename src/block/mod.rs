@@ -39,10 +39,11 @@ pub struct SignalOutput<T: Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> SignalOutput<T> {
   pub fn new(value: T) -> Self { SignalOutput { value } }
-
   pub fn read(&self) -> &T { &self.value }
-
-  pub fn set(&mut self, value: T) { self.value = value; }
+  pub fn set(&mut self,
+             value: T) {
+    self.value = value;
+  }
 }
 
 
@@ -51,7 +52,9 @@ pub type Signal<T> = Rc<RefCell<SignalOutput<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn new_signal<T: Copy>(value: T) -> Signal<T> { Rc::new(RefCell::new(SignalOutput::new(value))) }
+pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
+  Rc::new(RefCell::new(SignalOutput::new(value)))
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +63,7 @@ pub trait HasSignal<T: Copy>: Steppable {
   fn output(&self) -> &Signal<T>;
   fn output_value(&self) -> T { *self.output().borrow().read() }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Steppable {
@@ -70,9 +74,9 @@ pub trait Steppable {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub fn push_onto_vec_rcrc_steppable<T: 'static + Steppable>(blocks: &mut Vec<RcRcSteppable>, item: &Rc<RefCell<T>>) {
+pub fn push_onto_vec_rcrc_steppable<T: 'static + Steppable>(blocks: &mut Vec<RcRcSteppable>,
+                                                            item: &Rc<RefCell<T>>) {
   let steppable_item: RcRcSteppable = item.clone() as Rc<RefCell<dyn Steppable>>;
   blocks.push(steppable_item);
 }

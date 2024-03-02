@@ -1,9 +1,9 @@
 fn_args_layout = "Vertical"
-fn_params_layout = "Tall"
+fn_params_layout = "Vertical"
 tab_spaces = 2
 fn_single_line = true
 blank_lines_upper_bound = 8
 unstable_features = true
-fn_call_width = 80
-max_width = 80
+fn_call_width = 95
+max_width = 95
 indent_style = "Visual"
