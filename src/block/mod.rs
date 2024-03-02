@@ -69,3 +69,9 @@ pub trait Steppable {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub fn add_to_rcrc_steppable_vec<T: 'static + Steppable>(blocks: &mut Vec<RcRcSteppable>, item: &Rc<RefCell<T>>) {
+  let steppable_item: RcRcSteppable = item.clone() as Rc<RefCell<dyn Steppable>>;
+  blocks.push(steppable_item);
+}

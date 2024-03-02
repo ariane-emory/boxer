@@ -6,15 +6,7 @@
 
 use boxer::block::*;
 use boxer::util::new_rcrc;
-use core::cell::RefCell;
 use std::io::{self};
-use std::rc::Rc;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-fn add_to_rcrc_steppable_vec<T: 'static + Steppable>(blocks: &mut Vec<RcRcSteppable>, item: &Rc<RefCell<T>>) {
-  let steppable_item: RcRcSteppable = item.clone() as Rc<RefCell<dyn Steppable>>;
-  blocks.push(steppable_item);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 fn render(char: u8, char2: u8, signal: usize, width: usize) {
