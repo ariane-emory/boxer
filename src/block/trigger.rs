@@ -15,15 +15,17 @@ impl RisingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for RisingTrigger {
+impl Steppable for RisingTrigger {
   fn step(&mut self) {
-    if *self.input.borrow().read() && !*self.input.borrow().read() {
+    if !*self.input.borrow().read() && *self.input.borrow().read() {
       self.output.borrow_mut().set(true);
     } else {
       self.output.borrow_mut().set(false);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for RisingTrigger {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -45,7 +47,7 @@ impl FallingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for FallingTrigger {
+impl Steppable for FallingTrigger {
   fn step(&mut self) {
     if !*self.input.borrow().read() && *self.input.borrow().read() {
       self.output.borrow_mut().set(true);
@@ -53,7 +55,9 @@ impl HasSignal<bool> for FallingTrigger {
       self.output.borrow_mut().set(false);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for FallingTrigger {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
