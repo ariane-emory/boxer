@@ -17,15 +17,17 @@ impl SRLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for SRLatch {
+impl Steppable for SRLatch {
   fn step(&mut self) {
-    if *self.set.borrow().read() {
-      self.output.borrow_mut().set(true);
-    } else if *self.reset.borrow().read() {
+    if *self.reset.borrow().read() {
       self.output.borrow_mut().set(false);
+    } else if *self.set.borrow().read() {
+      self.output.borrow_mut().set(true);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for SRLatch {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -49,7 +51,7 @@ impl RSLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for RSLatch {
+impl Steppable for RSLatch {
   fn step(&mut self) {
     if *self.reset.borrow().read() {
       self.output.borrow_mut().set(false);
@@ -57,7 +59,9 @@ impl HasSignal<bool> for RSLatch {
       self.output.borrow_mut().set(true);
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for RSLatch {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
