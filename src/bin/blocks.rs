@@ -130,7 +130,6 @@ fn main() -> io::Result<()> {
   {
     let mut square = SquareWave::new(sixteen.output());
     let mut select = Select::new(square.output(), izero.output(), imax.output());
-
     let mut held_value = Feedback::<isize>::new();
     let mut div_held_value_by_itwo = Div::<isize>::new(held_value.output(), itwo.output());
     let mut div_new_input_by_itwo = Div::<isize>::new(select.output(), itwo.output());
