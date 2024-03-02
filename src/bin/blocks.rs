@@ -1,12 +1,15 @@
-// #![allow(unreachable_code)]
+#![allow(unreachable_code)]
 #![allow(unused_variables)]
-// #![allow(unused_imports)]
-// #![allow(unused_mut)]
-// #![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(unused_mut)]
+#![allow(dead_code)]
 
 use boxer::block;
 use boxer::block::*;
+
+use std::cell::RefCell;
 use std::io::{self};
+use std::rc::Rc;
 
 fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut printed = 0;
@@ -160,49 +163,49 @@ fn main() -> io::Result<()> {
   //   }
   // }
 
-  {
-    let mut square = SquareWave::new(sixteen.output());
-    let mut select = Select::new(square.output(), izero.output(), imax.output());
-    let mut held_value = Feedback::<isize>::new();
-    let mut div_held_value_by_itwo = Div::<isize>::new(held_value.output(), itwo.output());
-    let mut div_new_input_by_itwo = Div::<isize>::new(select.output(), itwo.output());
-    let mut add = Add::new(div_held_value_by_itwo.output(), div_new_input_by_itwo.output());
-    let mut sample_and_hold = SampleAndHold::new(add.output(), clock.output(), never.output());
-    held_value.set_input(&sample_and_hold.output());
+  // {
+  //   let mut square = SquareWave::new(sixteen.output());
+  //   let mut select = Select::new(square.output(), izero.output(), imax.output());
+  //   let mut held_value = Feedback::<isize>::new();
+  //   let mut div_held_value_by_itwo = Div::<isize>::new(held_value.output(), itwo.output());
+  //   let mut div_new_input_by_itwo = Div::<isize>::new(select.output(), itwo.output());
+  //   let mut add = Add::new(div_held_value_by_itwo.output(), div_new_input_by_itwo.output());
+  //   let mut sample_and_hold = SampleAndHold::new(add.output(), clock.output(), never.output());
+  //   held_value.set_input(&sample_and_hold.output());
 
-    // let mut blocks: Vec<&dyn Block<T>> = Vec::new();
-    // blocks.push(&square);
-    // blocks.push(&select);
-    // blocks.push(&held_value);
-    // blocks.push(&div_held_value_by_itwo);
-    // blocks.push(&div_new_input_by_itwo);
-    // blocks.push(&add);
-    // blocks.push(&sample_and_hold);
+  //   // let mut blocks: Vec<&dyn Block<T>> = Vec::new();
+  //   // blocks.push(&square);
+  //   // blocks.push(&select);
+  //   // blocks.push(&held_value);
+  //   // blocks.push(&div_held_value_by_itwo);
+  //   // blocks.push(&div_new_input_by_itwo);
+  //   // blocks.push(&add);
+  //   // blocks.push(&sample_and_hold);
 
-    for _ in 0..511 {
-      //blocks.iter_mut().for_each(|b| b.step());
-      clock.step();
-      square.step();
-      select.step();
-      held_value.step();
-      div_new_input_by_itwo.step();
-      div_held_value_by_itwo.step();
-      add.step();
-      sample_and_hold.step();
+  //   for _ in 0..511 {
+  //     //blocks.iter_mut().for_each(|b| b.step());
+  //     clock.step();
+  //     square.step();
+  //     select.step();
+  //     held_value.step();
+  //     div_new_input_by_itwo.step();
+  //     div_held_value_by_itwo.step();
+  //     add.step();
+  //     sample_and_hold.step();
 
-      // println!("");
-      // println!("counter input:  {}", clock.output_value());
-      // println!("counter output: {}", counter.output_value());
-      // println!("add output:     {}", add.output_value());
-      // println!("square period:  {}", square.period.output_value());
-      // println!("square output:  {}", square.output_value());
-      // println!("select output:  {}", select.output_value());
-      // println!("s&h output:  {}", sample_and_hold.output_value());
-      //render(b'x', b'-', select.output(), imax.output());
+  //     // println!("");
+  //     // println!("counter input:  {}", clock.output_value());
+  //     // println!("counter output: {}", counter.output_value());
+  //     // println!("add output:     {}", add.output_value());
+  //     // println!("square period:  {}", square.period.output_value());
+  //     // println!("square output:  {}", square.output_value());
+  //     // println!("select output:  {}", select.output_value());
+  //     // println!("s&h output:  {}", sample_and_hold.output_value());
+  //     //render(b'x', b'-', select.output(), imax.output());
 
-      render(b'x', b'-', add.output_value() as usize, imax.output_value() as usize);
-    }
-  }
+  //     render(b'x', b'-', add.output_value() as usize, imax.output_value() as usize);
+  //   }
+  // }
   //  }
   Ok(())
 }
