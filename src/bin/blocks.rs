@@ -133,7 +133,7 @@ fn main() -> io::Result<()> {
 
     for _ in 0..511 {
       blocks.iter_mut().for_each(|b| b.borrow_mut().step());
-      render(b'x', b'-', select.output_value(), max.output_value());
+      render(b'x', b'-', select.borrow_mut().output_value(), max.borrow_mut().output_value());
     }
   }
   {
