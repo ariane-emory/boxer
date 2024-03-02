@@ -164,14 +164,16 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> HasSignal<T> for Mod<T> {
+impl<T: std::ops::Rem<Output = T> + Copy + Default> Steppable for Mod<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() % *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Rem<Output = T> + Copy + Default> HasSignal<T> for Mod<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -198,14 +200,16 @@ impl LShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for LShift {
+impl Steppable for LShift {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.input_value.borrow().read() << *self.input_shift.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<usize> for LShift {
   fn output(&self) -> &Signal<usize> {
     &self.output
   }
