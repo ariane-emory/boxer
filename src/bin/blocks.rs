@@ -89,15 +89,7 @@ fn main() -> io::Result<()> {
     add_to_rcrc_steppable_vec(&mut blocks, &select);
 
     for _ in 0..511 {
-      one.borrow_mut().step();
-      max.borrow_mut().step();
-      clock.borrow_mut().step();
-      counter.borrow_mut().step();
-      add.borrow_mut().step();
-      div.borrow_mut().step();
-      square.borrow_mut().step();
-      select.borrow_mut().step();
-      counter_reset.borrow_mut().step();
+      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
 
       // println!("");
       // println!("counter input:  {}", clock.output().borrow().read());
