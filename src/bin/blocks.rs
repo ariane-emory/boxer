@@ -144,6 +144,10 @@ fn main() -> io::Result<()> {
 
     type SteppableRc = Rc<RefCell<dyn Steppable>>;
 
+    fn add_to_steppables(blocks: &mut Vec<SteppableRc>, item: &SteppableRc) {
+      blocks.push(item.clone());
+    }
+
     let mut blocks: Vec<SteppableRc> = Vec::new();
     let steppable_obj: SteppableRc = clock.clone();
     blocks.push(steppable_obj);
