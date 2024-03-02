@@ -51,55 +51,55 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  let one = Value::new(1);
-  let never = Value::new(false);
-  let sixteen = Value::new(16);
-  let max = Value::new(128);
-  let ifour = Value::<isize>::new(4);
-  let imax = Value::<isize>::new(max.output_value() as isize);
-  let ithree = Value::<isize>::new(3);
-  let itwo = Value::<isize>::new(2);
-  let izero = Value::new(0);
-  let clock = SquareWave::new(one.output());
+  // let never = Value::new(false);
+  // let itwo = Value::<isize>::new(2);
+  // let ifour = Value::<isize>::new(4);
+
+  // let ithree = Value::<isize>::new(3);
 
   //loop {
-  // {
-  //   let mut counter_reset = Feedback::new();
-  //   let counter_max = Value::new(64);
-  //   let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
-  //   let mut add = block::Add::new(counter.output(), one.output());
-  //   let two = Value::new(2);
-  //   let mut div = Div::new(add.output(), two.output());
-  //   let mut square = SquareWave::new(div.output());
-  //   let zero = Value::new(0);
-  //   let mut select = Select::new(square.output(), zero.output(), max.output());
+  {
+    let max = new_rcrc(Value::new(128));
+    let zero = new_rcrc(Value::new(0));
+    let one = new_rcrc(Value::new(1));
+    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
+    let counter_reset = new_rcrc(Feedback::new());
+    let counter_max = new_rcrc(Value::new(64));
+    let counter = new_rcrc(UpCounter::new(clock.borrow_mut().output(), counter_reset.borrow_mut().output(), counter_max.borrow_mut().output()));
+    let add = new_rcrc(Add::new(counter.borrow_mut().output(), one.borrow_mut().output()));
+    let two = new_rcrc(Value::new(2));
+    let div = new_rcrc(Div::new(add.borrow_mut().output(), two.borrow_mut().output()));
+    let square = new_rcrc(SquareWave::new(div.borrow_mut().output()));
+    let zero = new_rcrc(Value::new(0));
+    let select = new_rcrc(Select::new(square.borrow_mut().output(), zero.borrow_mut().output(), max.borrow_mut().output()));
 
-  //   counter_reset.set_input(&counter.at_max());
+    counter_reset.borrow_mut().set_input(&counter.borrow_mut().at_max());
 
-  //   for _ in 0..511 {
-  //     clock.step();
-  //     counter.step();
-  //     add.step();
-  //     div.step();
-  //     square.step();
-  //     select.step();
-  //     counter_reset.step();
+    let mut blocks: Vec<RcRcSteppable> = Vec::new();
+    add_to_rcrc_steppable_vec(&mut blocks, &max);
+    add_to_rcrc_steppable_vec(&mut blocks, &zero);
+    add_to_rcrc_steppable_vec(&mut blocks, &one);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_reset);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter_max);
+    add_to_rcrc_steppable_vec(&mut blocks, &counter);
+    add_to_rcrc_steppable_vec(&mut blocks, &add);
+    add_to_rcrc_steppable_vec(&mut blocks, &two);
+    add_to_rcrc_steppable_vec(&mut blocks, &div);
+    add_to_rcrc_steppable_vec(&mut blocks, &square);
+    add_to_rcrc_steppable_vec(&mut blocks, &zero);
+    add_to_rcrc_steppable_vec(&mut blocks, &select);
 
-  //     // println!("");
-  //     // println!("counter input:  {}", clock.output().borrow().read());
-  //     // println!("counter output: {}", counter.output().borrow().read());
-  //     // println!("add output:     {}", add.output().borrow().read());
-  //     // println!("square period:  {}", square.period().borrow().read());
-  //     // println!("square output:  {}", square.output().borrow().read());
-  //     // println!("select output:  {}", select.output().borrow().read());
-
-  //     render(b'x', b'-', select.output_value(), max.output_value());
-  //   }
-  // }
+    for _ in 0..511 {
+      blocks.iter_mut().for_each(|b| b.borrow_mut().step());
+      render(b'x', b'-', select.borrow_mut().output_value(), max.borrow_mut().output_value());
+    }
+  }
 
   {
-    let one = new_rcrc(Value::new(1));
+    let izero = new_rcrc(Value::new(0));
     let max = new_rcrc(Value::new(128));
+    let imax = new_rcrc(Value::<isize>::new(max.borrow_mut().output_value() as isize));
+    let one = new_rcrc(Value::new(1));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
     let counter_reset = new_rcrc(Feedback::new());
     let counter = new_rcrc(UpCounter::new(clock.borrow_mut().output(), &counter_reset.borrow_mut().output(), max.borrow_mut().output()));
@@ -117,8 +117,10 @@ fn main() -> io::Result<()> {
     sr_reset.borrow_mut().set_input(&counter_at_max_and_latched.borrow_mut().output());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
-    add_to_rcrc_steppable_vec(&mut blocks, &one);
+    add_to_rcrc_steppable_vec(&mut blocks, &izero);
     add_to_rcrc_steppable_vec(&mut blocks, &max);
+    add_to_rcrc_steppable_vec(&mut blocks, &imax);
+    add_to_rcrc_steppable_vec(&mut blocks, &one);
     add_to_rcrc_steppable_vec(&mut blocks, &clock);
     add_to_rcrc_steppable_vec(&mut blocks, &counter_reset);
     add_to_rcrc_steppable_vec(&mut blocks, &counter);
@@ -138,20 +140,32 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let clock = new_rcrc(SquareWave::new(one.output()));
-    let square = new_rcrc(SquareWave::new(sixteen.output()));
-    let select = new_rcrc(Select::new(square.borrow_mut().output(), izero.output(), imax.output()));
+    let max = new_rcrc(Value::new(128));
+    let imax = new_rcrc(Value::<isize>::new(max.borrow_mut().output_value() as isize));
+    let one = new_rcrc(Value::new(1));
+    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
+    let sixteen = new_rcrc(Value::new(16));
+    let square = new_rcrc(SquareWave::new(sixteen.borrow_mut().output()));
+    let izero = new_rcrc(Value::new(0));
+    let select = new_rcrc(Select::new(square.borrow_mut().output(), izero.borrow_mut().output(), imax.borrow_mut().output()));
     let held_value = new_rcrc(Feedback::<isize>::new());
-    let div_held_value_by_itwo = new_rcrc(Div::<isize>::new(held_value.borrow_mut().output(), itwo.output()));
-    let div_new_input_by_itwo = new_rcrc(Div::<isize>::new(select.borrow_mut().output(), itwo.output()));
+    let never = new_rcrc(Value::new(false));
+    let itwo = new_rcrc(Value::<isize>::new(2));
+    let div_held_value_by_itwo = new_rcrc(Div::<isize>::new(held_value.borrow_mut().output(), itwo.borrow_mut().output()));
+    let div_new_input_by_itwo = new_rcrc(Div::<isize>::new(select.borrow_mut().output(), itwo.borrow_mut().output()));
     let add = new_rcrc(Add::new(div_held_value_by_itwo.borrow_mut().output(), div_new_input_by_itwo.borrow_mut().output()));
-    let sample_and_hold = new_rcrc(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.output()));
+    let sample_and_hold = new_rcrc(SampleAndHold::new(add.borrow_mut().output(), clock.borrow_mut().output(), never.borrow_mut().output()));
 
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
+    add_to_rcrc_steppable_vec(&mut blocks, &max);
+    add_to_rcrc_steppable_vec(&mut blocks, &imax);
+    add_to_rcrc_steppable_vec(&mut blocks, &one);
     add_to_rcrc_steppable_vec(&mut blocks, &clock);
+    add_to_rcrc_steppable_vec(&mut blocks, &sixteen);
     add_to_rcrc_steppable_vec(&mut blocks, &square);
+    add_to_rcrc_steppable_vec(&mut blocks, &izero);
     add_to_rcrc_steppable_vec(&mut blocks, &select);
     add_to_rcrc_steppable_vec(&mut blocks, &held_value);
     add_to_rcrc_steppable_vec(&mut blocks, &div_held_value_by_itwo);
@@ -161,7 +175,7 @@ fn main() -> io::Result<()> {
 
     for _ in 0..511 {
       blocks.iter_mut().for_each(|b| b.borrow_mut().step());
-      render(b'x', b'-', add.borrow_mut().output_value() as usize, imax.output_value() as usize);
+      render(b'x', b'-', add.borrow_mut().output_value() as usize, imax.borrow_mut().output_value() as usize);
     }
   }
   Ok(())
