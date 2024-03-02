@@ -143,17 +143,23 @@ fn main() -> io::Result<()> {
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
     // let steppable_obj: Rc<RefCell<dyn Steppable>> =
-    let mut blocks: Vec<&dyn HasSignal<T>> = Vec::new();
-    blocks.push(&clock);
-    blocks.push(&square);
-    blocks.push(&select);
-    blocks.push(&held_value);
-    blocks.push(&div_held_value_by_itwo);
-    blocks.push(&div_new_input_by_itwo);
-    blocks.push(&add);
-    blocks.push(&sample_and_hold);
-
     let mut blocks: Vec<Rc<RefCell<dyn Steppable>>> = Vec::new();
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = clock.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = square.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = select.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = held_value.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = div_held_value_by_itwo.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = div_new_input_by_itwo.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = add.clone();
+    blocks.push(steppable_obj);
+    let steppable_obj: Rc<RefCell<dyn Steppable>> = sample_and_hold.clone();
+    blocks.push(steppable_obj);
 
     for _ in 0..511 {
       //blocks.iter_mut().for_each(|b| b.step());
