@@ -92,9 +92,12 @@ impl Xor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Settable<bool> for Xor {
-  fn set(&self, value: bool) {
-    self.output.borrow_mut().set(value);
+impl Steppable for Xor {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set(*self.left.borrow().read() ^ *self.right.borrow().read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,12 +128,12 @@ impl Nor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl Steppable for Xor {
+impl Steppable for Nor {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() ^ *self.right.borrow().read());
+      .set(!(*self.left.borrow().read() || *self.right.borrow().read()));
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

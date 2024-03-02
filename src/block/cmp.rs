@@ -56,7 +56,7 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> Stebbable for LessThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> Steppable for LessThan<T> {
   fn step(&mut self) {
     self
       .output
@@ -92,7 +92,7 @@ impl<T: std::cmp::PartialEq + Copy> Equal<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> Stebbable for Equal<T> {
+impl<T: std::cmp::PartialEq + Copy> Steppable for Equal<T> {
   fn step(&mut self) {
     self
       .output
@@ -128,7 +128,7 @@ impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> Stebbable for NotEqual<T> {
+impl<T: std::cmp::PartialEq + Copy> Steppable for NotEqual<T> {
   fn step(&mut self) {
     self
       .output

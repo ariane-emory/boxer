@@ -21,7 +21,7 @@ impl SquareWave {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for SquareWave {
+impl Steppable for SquareWave {
   fn step(&mut self) {
     let last_output = *self.output.borrow().read();
     let period = *self.period.borrow().read();
@@ -33,7 +33,9 @@ impl HasSignal<bool> for SquareWave {
       self.count = 0;
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for SquareWave {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
