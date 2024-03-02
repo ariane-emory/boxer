@@ -47,17 +47,15 @@ fn main() -> io::Result<()> {
     let one = new_rcrc(Value::new(1));
     let max = new_rcrc(Value::new(128));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
-    let counter_reset = new_rcrc(Feedback::new());
-    let counter_max = new_rcrc(Value::new(64));
-    let counter = new_rcrc(UpCounter::new(
+    let ctr_reset = new_rcrc(Feedback::new());
+    let ctr_max = new_rcrc(Value::new(64));
+    let ctr = new_rcrc(UpCounter::new(
       clock.borrow_mut().output(),
-      counter_reset.borrow_mut().output(),
-      counter_max.borrow_mut().output(),
+      ctr_reset.borrow_mut().output(),
+      ctr_max.borrow_mut().output(),
     ));
-    let add = new_rcrc(Add::new(
-      counter.borrow_mut().output(),
-      one.borrow_mut().output(),
-    ));
+    let add =
+      new_rcrc(Add::new(ctr.borrow_mut().output(), one.borrow_mut().output()));
     let two = new_rcrc(Value::new(2));
     let div =
       new_rcrc(Div::new(add.borrow_mut().output(), two.borrow_mut().output()));
@@ -69,22 +67,20 @@ fn main() -> io::Result<()> {
       max.borrow_mut().output(),
     ));
 
-    counter_reset
-      .borrow_mut()
-      .set_input(&counter.borrow_mut().at_max());
+    ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &zero);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &two);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_reset);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_max);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &add);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &two);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &div);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &zero);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
     for _ in 0..511 {
@@ -99,14 +95,13 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let izero = new_rcrc(Value::new(0));
     let max = new_rcrc(Value::new(128));
     let one = new_rcrc(Value::new(1));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
-    let counter_reset = new_rcrc(Feedback::new());
-    let counter = new_rcrc(UpCounter::new(
+    let ctr_reset = new_rcrc(Feedback::new());
+    let ctr = new_rcrc(UpCounter::new(
       clock.borrow_mut().output(),
-      &counter_reset.borrow_mut().output(),
+      &ctr_reset.borrow_mut().output(),
       max.borrow_mut().output(),
     ));
     let sr_set = new_rcrc(Feedback::new());
@@ -116,50 +111,41 @@ fn main() -> io::Result<()> {
       sr_reset.borrow_mut().output(),
     ));
     let not_latched = new_rcrc(Not::new(sr.borrow_mut().output()));
-    let counter_at_max_and_latched = new_rcrc(And::new(
-      counter.borrow_mut().at_max(),
-      sr.borrow_mut().output(),
-    ));
-    let counter_at_max_and_not_latched = new_rcrc(And::new(
-      counter.borrow_mut().at_max(),
+    let ctr_at_max_and_latched =
+      new_rcrc(And::new(ctr.borrow_mut().at_max(), sr.borrow_mut().output()));
+    let ctr_at_max_and_not_latched = new_rcrc(And::new(
+      ctr.borrow_mut().at_max(),
       not_latched.borrow_mut().output(),
     ));
-    let sub = new_rcrc(Sub::new(
-      max.borrow_mut().output(),
-      counter.borrow_mut().output(),
-    ));
+    let sub =
+      new_rcrc(Sub::new(max.borrow_mut().output(), ctr.borrow_mut().output()));
     let select = new_rcrc(Select::new(
       sr.borrow_mut().output(),
-      counter.borrow_mut().output(),
+      ctr.borrow_mut().output(),
       sub.borrow_mut().output(),
     ));
 
-    counter_reset
-      .borrow_mut()
-      .set_input(&counter.borrow_mut().at_max());
+    ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
     sr_set
       .borrow_mut()
-      .set_input(&counter_at_max_and_not_latched.borrow_mut().output());
+      .set_input(&ctr_at_max_and_not_latched.borrow_mut().output());
     sr_reset
       .borrow_mut()
-      .set_input(&counter_at_max_and_latched.borrow_mut().output());
+      .set_input(&ctr_at_max_and_latched.borrow_mut().output());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &izero);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &izero);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_reset);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sr_set);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sr_reset);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sr);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &not_latched);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_at_max_and_latched);
-    push_onto_vec_of_rcrc_steppable(
-      &mut blocks,
-      &counter_at_max_and_not_latched,
-    );
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_at_max_and_latched);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_at_max_and_not_latched);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sub);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
@@ -214,13 +200,13 @@ fn main() -> io::Result<()> {
       .set_input(&sample_and_hold.borrow_mut().output());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &imax);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &imax);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &sixteen);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &izero);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &sixteen);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &izero);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &held_value);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &div_held_value_by_itwo);
