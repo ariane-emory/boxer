@@ -71,6 +71,9 @@ impl<T: Copy> SaysHello<T> for ThingWithValue<T> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
+  let int_thing = ThingWithValue::new(42);
+  let bool_thing = ThingWithValue::new(true);
+
   // let one = Value::new(1);
   // let never = Value::new(false);
   // let sixteen = Value::new(16);
@@ -207,5 +210,6 @@ fn main() -> io::Result<()> {
   //   }
   // }
   //  }
+
   Ok(())
 }
