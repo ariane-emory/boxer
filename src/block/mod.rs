@@ -84,7 +84,7 @@ pub trait Steppable {
 pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn push_onto_vec_rcrc_steppable<T: 'static + Steppable>(
+pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
   blocks: &mut Vec<RcRcSteppable>,
   item: &Rc<RefCell<T>>,
 ) {
