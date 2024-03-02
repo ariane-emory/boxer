@@ -32,7 +32,7 @@ impl Steppable for Or {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for Or {
+impl HasOutputSignal<bool> for Or {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -71,7 +71,7 @@ impl Steppable for And {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for And {
+impl HasOutputSignal<bool> for And {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -110,7 +110,7 @@ impl Steppable for Xor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for Xor {
+impl HasOutputSignal<bool> for Xor {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -149,7 +149,7 @@ impl Steppable for Nor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for Nor {
+impl HasOutputSignal<bool> for Nor {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -180,7 +180,7 @@ impl Steppable for Not {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for Not {
+impl HasOutputSignal<bool> for Not {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }

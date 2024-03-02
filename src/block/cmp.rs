@@ -32,7 +32,7 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for GreaterThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for GreaterThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> HasOutputSignal<bool> for GreaterThan<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -71,7 +71,7 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for LessThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for LessThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> HasOutputSignal<bool> for LessThan<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -110,7 +110,7 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for Equal<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for Equal<T> {
+impl<T: std::cmp::PartialEq + Copy> HasOutputSignal<bool> for Equal<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -149,7 +149,7 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for NotEqual<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for NotEqual<T> {
+impl<T: std::cmp::PartialEq + Copy> HasOutputSignal<bool> for NotEqual<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }

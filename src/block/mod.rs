@@ -66,7 +66,7 @@ pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait HasSignal<T: Copy>: Steppable {
+pub trait HasOutputSignal<T: Copy>: Steppable {
   fn output(&self) -> &Signal<T>;
 
   fn output_value(&self) -> T {

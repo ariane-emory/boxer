@@ -30,7 +30,7 @@ impl Steppable for SRLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for SRLatch {
+impl HasOutputSignal<bool> for SRLatch {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -67,7 +67,7 @@ impl Steppable for RSLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for RSLatch {
+impl HasOutputSignal<bool> for RSLatch {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -114,7 +114,7 @@ impl Steppable for JKFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for JKFlipFlop {
+impl HasOutputSignal<bool> for JKFlipFlop {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -152,7 +152,7 @@ impl Steppable for DFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for DFlipFlop {
+impl HasOutputSignal<bool> for DFlipFlop {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -192,7 +192,7 @@ impl Steppable for TFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TFlipFlop {
+impl HasOutputSignal<bool> for TFlipFlop {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }

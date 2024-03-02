@@ -25,7 +25,7 @@ impl Steppable for RisingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for RisingTrigger {
+impl HasOutputSignal<bool> for RisingTrigger {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -57,7 +57,7 @@ impl Steppable for FallingTrigger {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for FallingTrigger {
+impl HasOutputSignal<bool> for FallingTrigger {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }

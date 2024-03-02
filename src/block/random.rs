@@ -22,7 +22,7 @@ impl Steppable for RandomUsize {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for RandomUsize {
+impl HasOutputSignal<usize> for RandomUsize {
   fn output(&self) -> &Signal<usize> {
     &self.output
   }
