@@ -12,11 +12,11 @@ use std::io::{self};
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type SteppableRc = Rc<RefCell<dyn Steppable>>;
+type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-fn add_to_steppables<T: 'static + Steppable>(blocks: &mut Vec<SteppableRc>, item: &Rc<RefCell<T>>) {
-  let steppable_item: SteppableRc = item.clone() as Rc<RefCell<dyn Steppable>>;
+fn add_to_rcrc_steppable_vec<T: 'static + Steppable>(blocks: &mut Vec<RcRcSteppable>, item: &Rc<RefCell<T>>) {
+  let steppable_item: RcRcSteppable = item.clone() as Rc<RefCell<dyn Steppable>>;
   blocks.push(steppable_item);
 }
 
@@ -155,15 +155,15 @@ fn main() -> io::Result<()> {
 
     held_value.borrow_mut().set_input(&sample_and_hold.borrow_mut().output());
 
-    let mut blocks: Vec<SteppableRc> = Vec::new();
-    add_to_steppables(&mut blocks, &clock);
-    add_to_steppables(&mut blocks, &square);
-    add_to_steppables(&mut blocks, &select);
-    add_to_steppables(&mut blocks, &held_value);
-    add_to_steppables(&mut blocks, &div_held_value_by_itwo);
-    add_to_steppables(&mut blocks, &div_new_input_by_itwo);
-    add_to_steppables(&mut blocks, &add);
-    add_to_steppables(&mut blocks, &sample_and_hold);
+    let mut blocks: Vec<RcRcSteppable> = Vec::new();
+    add_to_rcrc_steppable_vec(&mut blocks, &clock);
+    add_to_rcrc_steppable_vec(&mut blocks, &square);
+    add_to_rcrc_steppable_vec(&mut blocks, &select);
+    add_to_rcrc_steppable_vec(&mut blocks, &held_value);
+    add_to_rcrc_steppable_vec(&mut blocks, &div_held_value_by_itwo);
+    add_to_rcrc_steppable_vec(&mut blocks, &div_new_input_by_itwo);
+    add_to_rcrc_steppable_vec(&mut blocks, &add);
+    add_to_rcrc_steppable_vec(&mut blocks, &sample_and_hold);
 
     for _ in 0..511 {
       blocks.iter_mut().for_each(|b| b.borrow_mut().step());
