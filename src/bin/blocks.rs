@@ -33,6 +33,39 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
   println!("|");
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+pub trait HasValue<T: Copy> {
+  fn get(&self) -> &T;
+  fn get_value(&self) -> T;
+}
+
+pub trait SaysHello<T> {
+  fn hello(&mut self);
+}
+
+pub struct ThingWithValue<T: Copy> {
+  value: T,
+}
+impl<T: Copy> ThingWithValue<T> {
+  pub fn new(value: T) -> Self {
+    ThingWithValue { value }
+  }
+}
+impl<T: Copy> HasValue<T> for ThingWithValue<T> {
+  fn get(&self) -> &T {
+    &self.value
+  }
+  fn get_value(&self) -> T {
+    self.value
+  }
+}
+impl<T: Copy> SaysHello<T> for ThingWithValue<T> {
+  fn hello(&mut self) {
+    println!("Hello, I'm a ThingWithValue with a value.");
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   let one = Value::new(1);
