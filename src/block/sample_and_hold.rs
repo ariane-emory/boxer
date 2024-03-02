@@ -19,7 +19,7 @@ impl<T: Copy + Default> SampleAndHold<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> HasSignal<T> for SampleAndHold<T> {
+impl<T: Copy + Default> Steppable for SampleAndHold<T> {
   fn step(&mut self) {
     if *self.set.borrow().read() {
       self.output.borrow_mut().set(*self.input.borrow().read());
@@ -27,7 +27,9 @@ impl<T: Copy + Default> HasSignal<T> for SampleAndHold<T> {
       self.output.borrow_mut().set(Default::default());
     }
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> HasSignal<T> for SampleAndHold<T> {
   fn output(&self) -> &Signal<T> {
     &self.output
   }
