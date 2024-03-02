@@ -20,14 +20,16 @@ impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for GreaterThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> Steppable for GreaterThan<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() > *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for GreaterThan<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -54,14 +56,16 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for LessThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> Stebbable for LessThan<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() < *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy> HasSignal<bool> for LessThan<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -88,14 +92,16 @@ impl<T: std::cmp::PartialEq + Copy> Equal<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for Equal<T> {
+impl<T: std::cmp::PartialEq + Copy> Stebbable for Equal<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() == *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for Equal<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -122,14 +128,16 @@ impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for NotEqual<T> {
+impl<T: std::cmp::PartialEq + Copy> Stebbable for NotEqual<T> {
   fn step(&mut self) {
     self
       .output
       .borrow_mut()
       .set(*self.left.borrow().read() != *self.right.borrow().read());
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialEq + Copy> HasSignal<bool> for NotEqual<T> {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }

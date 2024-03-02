@@ -63,8 +63,8 @@ pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub trait HasSignal<T: Copy> {
-  fn step(&mut self);
+pub trait HasSignal<T: Copy>: Steppable {
+  // fn step(&mut self);
   fn output(&self) -> &Signal<T>;
   fn output_value(&self) -> T {
     *self.output().borrow().read()
@@ -74,14 +74,4 @@ pub trait HasSignal<T: Copy> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub trait Steppable {
   fn step(&mut self);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Steppable for T
-where
-  T: HasSignal<T>,
-{
-  fn step(&mut self) {
-    HasSignal::<T>::step(self);
-  }
 }
