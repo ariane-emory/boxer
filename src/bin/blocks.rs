@@ -59,31 +59,31 @@ fn main() -> io::Result<()> {
 
   //loop {
   {
-    let one = Value::new(1);
-    let max = Value::new(128);
-    let mut clock = SquareWave::new(one.output());
-    let mut counter_reset = Feedback::new();
-    let counter_max = Value::new(64);
-    let mut counter = UpCounter::new(clock.output(), counter_reset.output(), counter_max.output());
-    let mut add = block::Add::new(counter.output(), one.output());
-    let two = Value::new(2);
-    let mut div = Div::new(add.output(), two.output());
-    let mut square = SquareWave::new(div.output());
-    let zero = Value::new(0);
-    let mut select = Select::new(square.output(), zero.output(), max.output());
+    let one = new_rcrc(Value::new(1));
+    let max = new_rcrc(Value::new(128));
+    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
+    let counter_reset = new_rcrc(Feedback::new());
+    let counter_max = new_rcrc(Value::new(64));
+    let counter = new_rcrc(UpCounter::new(clock.borrow_mut().output(), counter_reset.borrow_mut().output(), counter_max.borrow_mut().output()));
+    let add = new_rcrc(Add::new(counter.borrow_mut().output(), one.borrow_mut().output()));
+    let two = new_rcrc(Value::new(2));
+    let div = new_rcrc(Div::new(add.borrow_mut().output(), two.borrow_mut().output()));
+    let square = new_rcrc(SquareWave::new(div.borrow_mut().output()));
+    let zero = new_rcrc(Value::new(0));
+    let select = new_rcrc(Select::new(square.borrow_mut().output(), zero.borrow_mut().output(), max.borrow_mut().output()));
 
-    counter_reset.set_input(&counter.at_max());
+    counter_reset.borrow_mut().set_input(&counter.borrow_mut().at_max());
 
     for _ in 0..511 {
-      one.step();
-      max.step();
-      clock.step();
-      counter.step();
-      add.step();
-      div.step();
-      square.step();
-      select.step();
-      counter_reset.step();
+      one.borrow_mut().step();
+      max.borrow_mut().step();
+      clock.borrow_mut().step();
+      counter.borrow_mut().step();
+      add.borrow_mut().step();
+      div.borrow_mut().step();
+      square.borrow_mut().step();
+      select.borrow_mut().step();
+      counter_reset.borrow_mut().step();
 
       // println!("");
       // println!("counter input:  {}", clock.output().borrow().read());
@@ -93,7 +93,7 @@ fn main() -> io::Result<()> {
       // println!("square output:  {}", square.output().borrow().read());
       // println!("select output:  {}", select.output().borrow().read());
 
-      render(b'x', b'-', select.output_value(), max.output_value());
+      render(b'x', b'-', select.borrow_mut().output_value(), max.borrow_mut().output_value());
     }
   }
 
