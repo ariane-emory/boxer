@@ -154,7 +154,6 @@ fn main() -> io::Result<()> {
     }
 
     let mut blocks: Vec<SteppableRc> = Vec::new();
-    let steppable_obj: SteppableRc = clock.clone();
     add_to_steppables(&mut blocks, clock);
     let steppable_obj: SteppableRc = square.clone();
     blocks.push(steppable_obj);
