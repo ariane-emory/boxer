@@ -89,7 +89,7 @@ impl JKFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for JKFlipFlop {
+impl Steppable for JKFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !*self.clock.borrow().read() {
       if *self.j_input.borrow().read() && *self.k_input.borrow().read() {
@@ -102,7 +102,9 @@ impl HasSignal<bool> for JKFlipFlop {
     }
     self.last_clock = *self.clock.borrow().read();
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for JKFlipFlop {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -128,14 +130,16 @@ impl DFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for DFlipFlop {
+impl Steppable for DFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !*self.clock.borrow().read() {
       self.output.borrow_mut().set(*self.input.borrow().read());
     }
     self.last_clock = *self.clock.borrow().read();
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for DFlipFlop {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
@@ -161,7 +165,7 @@ impl TFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TFlipFlop {
+impl Steppable for TFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !*self.clock.borrow().read() {
       if *self.input.borrow().read() {
@@ -170,7 +174,9 @@ impl HasSignal<bool> for TFlipFlop {
     }
     self.last_clock = *self.clock.borrow().read();
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+impl HasSignal<bool> for TFlipFlop {
   fn output(&self) -> &Signal<bool> {
     &self.output
   }
