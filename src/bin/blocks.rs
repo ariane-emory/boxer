@@ -159,7 +159,10 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sr);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &not_latched);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_at_max_and_latched);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &counter_at_max_and_not_latched);
+    push_onto_vec_of_rcrc_steppable(
+      &mut blocks,
+      &counter_at_max_and_not_latched,
+    );
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sub);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
