@@ -136,6 +136,7 @@ fn main() -> io::Result<()> {
       render(b'x', b'-', select.borrow_mut().output_value(), max.borrow_mut().output_value());
     }
   }
+
   {
     let clock = new_rcrc(SquareWave::new(one.output()));
     let square = new_rcrc(SquareWave::new(sixteen.output()));
