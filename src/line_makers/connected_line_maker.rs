@@ -34,14 +34,15 @@ impl ConnectedLineMaker {
     self.line_begin_type = connection_type;
   }
 
-  fn complete_line(&mut self, pos: Point, connectection_type: ConnectionType) {
-    let line = ConnectedLine::new(
-      self.line_begin.unwrap(),
-      pos,
-      self.line_begin_type,
-      connectection_type,
-    )
-    .unwrap();
+  fn complete_line(
+    &mut self,
+    begin: Point,
+    end: Point,
+    connectection_type: ConnectionType,
+  ) {
+    let line =
+      ConnectedLine::new(begin, end, self.line_begin_type, connectection_type)
+        .unwrap();
     println!("         CREATE LINE: {:?}", line);
     self.lines.push(line);
     self.abort_line();
