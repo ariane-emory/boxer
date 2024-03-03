@@ -127,9 +127,14 @@ impl ConnectedLineMaker {
         self.complete_line(byte, begin, pos, Wall);
       }
       else if byte != self.line_body_char {
-        println!("         broke line, distance = {}!", pos.distance(&begin));
-        self.reset();
-        self.process(pos, byte);
+        if distance_ok {
+          self.complete_line(byte, begin, pos.offset_by(0, -1), Nothing);
+        }
+        else {
+          println!("         broke line, distance = {}!", pos.distance(&begin));
+          self.reset();
+          self.process(pos, byte);
+        }
       }
     }
     else {
