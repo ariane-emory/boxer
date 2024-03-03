@@ -42,6 +42,19 @@ pub trait Steppable {
 pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
 
 
+///////////////////////////////////////////////////////////////////////////////
+pub trait BorrowAndStep {
+  fn step(&mut self);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowAndStep for RcRcSteppable {
+  fn step(&mut self) {
+    self.borrow_mut().step();
+  }
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
   blocks: &mut Vec<RcRcSteppable>,
