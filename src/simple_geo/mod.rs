@@ -9,6 +9,7 @@ pub mod point;
 pub mod positional;
 pub mod rectangle;
 pub mod size;
+pub mod word;
 
 use crate::util::*;
 
@@ -21,5 +22,6 @@ pub use point::*;
 pub use positional::*;
 pub use rectangle::*;
 pub use size::*;
+pub use word::*;
 
 pub type GeoResult<T> = std::result::Result<T, ErrString>;

@@ -57,9 +57,9 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
             noisy_println!("\nNew Rectangle: {:?}", rect);
 
-            lines_to_remove.push(*other_line);
-            lines_to_remove.push(*first_side);
-            lines_to_remove.push(*second_side);
+            lines_to_remove.push(other_line.clone());
+            lines_to_remove.push(first_side.clone());
+            lines_to_remove.push(second_side.clone());
 
             found_a_rect = true;
 
@@ -73,7 +73,8 @@ pub fn find_rectangles<T: LineMethods + Debug>(
     if !found_a_rect {
       noisy_println!("No coaligned lines found for {:?}", line);
       leftover_lines.push(line);
-    } else {
+    }
+    else {
       lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
   }

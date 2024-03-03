@@ -2,7 +2,8 @@ use crate::simple_geo::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub trait Positional:
-  Clone + Copy + Eq + PartialEq + Ord + PartialOrd + Sized {
+  Clone + Eq + PartialEq + Ord + PartialOrd + Sized
+{
   fn top_left(&self) -> Point;
   fn bottom_right(&self) -> Point;
 
@@ -76,68 +77,41 @@ pub trait Positional:
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  fn is_left_aligned_with(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_left_aligned_with(&self, other: &impl Positional) -> bool {
     self.left_bound() == other.left_bound()
   }
 
-  fn is_right_aligned_with(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_right_aligned_with(&self, other: &impl Positional) -> bool {
     self.right_bound() == other.right_bound()
   }
 
-  fn is_top_aligned_with(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_top_aligned_with(&self, other: &impl Positional) -> bool {
     self.upper_bound() == other.upper_bound()
   }
 
-  fn is_bottom_aligned_with(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_bottom_aligned_with(&self, other: &impl Positional) -> bool {
     self.lower_bound() == other.lower_bound()
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  fn is_left_of(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_left_of(&self, other: &impl Positional) -> bool {
     self.right_bound() < other.left_bound()
   }
 
-  fn is_right_of(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_right_of(&self, other: &impl Positional) -> bool {
     !(self.is_left_of(other) || self.is_left_aligned_with(other))
   }
 
-  fn is_above(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_above(&self, other: &impl Positional) -> bool {
     self.lower_bound() < other.upper_bound()
   }
 
-  fn is_below(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn is_below(&self, other: &impl Positional) -> bool {
     !(self.is_above(other) || self.is_top_aligned_with(other))
   }
 
   ////////////////////////////////////////////////////////////////////////////////
-  fn overlaps(
-    &self,
-    other: &impl Positional,
-  ) -> bool {
+  fn overlaps(&self, other: &impl Positional) -> bool {
     let horizontal_overlap = self.left_bound() <= other.right_bound()
       && self.right_bound() >= other.left_bound();
     let vertical_overlap = self.upper_bound() <= other.lower_bound()
@@ -156,10 +130,7 @@ pub trait Positional:
   }
 
   ////////////////////////////////////////////////////////////////////////////////
-  fn point_is_corner(
-    &self,
-    point: &Point,
-  ) -> bool {
+  fn point_is_corner(&self, point: &Point) -> bool {
     point == &self.top_left()
       || point == &self.bottom_right()
       || point == &self.top_right()
