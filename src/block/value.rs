@@ -16,7 +16,7 @@ impl<T: Copy> Value<T> {
     &mut self,
     value: T,
   ) {
-    self.output.borrow_mut().set(value);
+    self.output.set(value);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
