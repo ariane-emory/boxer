@@ -27,7 +27,7 @@ fn perform_steps<T: Copy + std::fmt::Debug>(
     blocks.iter().for_each(|b| b.borrow_mut().step());
 
     if let Ok(us) = ctr.borrow().output_value().try_into() {
-      render(b'x', b'-', us, max.borrow().output_value());
+      render(b'x', b'-', us, max.output_value());
     } else {
       panic!("Error converting output value to usize.");
     }
