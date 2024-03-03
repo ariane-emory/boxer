@@ -47,12 +47,6 @@ impl ConnectedLineMaker {
     }
   }
 
-  fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    self.try_collect_word();
-    self.line_begin = Some(pos);
-    self.line_begin_type = connection_type;
-  }
-
   fn try_collect_word(&mut self) {
     if self.collect_words && self.current_word.len() > 0 {
       self.words.push(
@@ -73,6 +67,13 @@ impl ConnectedLineMaker {
     self.try_collect_word();
     self.line_begin = None;
     self.line_begin_type = Nothing;
+  }
+
+  fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
+    println!("Begin line at {:?}.", connection_type);
+    self.try_collect_word();
+    self.line_begin = Some(pos);
+    self.line_begin_type = connection_type;
   }
 
   fn complete_line(
@@ -139,11 +140,12 @@ impl ConnectedLineMaker {
     }
     else {
       if byte == b'+' {
-        println!("Begin line at Corner.");
         self.begin_line(pos, Corner);
       }
+      if byte == self.line_body_char {
+        self.begin_line(pos, Nothing);
+      }
       else if byte == self.wall_char {
-        println!("Begin line at Wall.");
         self.begin_line(pos, Wall);
       }
       else if self.collect_words && is_word_char(byte) {
@@ -155,6 +157,9 @@ impl ConnectedLineMaker {
           "Add char '{}', word = \"{}\".",
           byte as char, self.current_word
         );
+      }
+      else {
+        println!("Do nothing for '{}'.", byte as char);
       }
     }
 
