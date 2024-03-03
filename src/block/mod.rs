@@ -115,7 +115,7 @@ impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
+pub fn new_rcrc<T>(item: T) -> RcRefCell<T> {
   Rc::new(RefCell::new(item))
 }
 
