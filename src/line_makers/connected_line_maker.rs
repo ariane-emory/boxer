@@ -62,6 +62,12 @@ impl ConnectedLineMaker {
         println!("         CREATE LINE: {:?}", line);
         self.lines.push(line);
         self.abort_line();
+      } else if byte == self.wall_char && pos.distance(&begin) > 1 {
+        let line =
+          ConnectedLine::new(begin, *pos, self.line_begin_type, Wall).unwrap();
+        println!("         CREATE LINE: {:?}", line);
+        self.lines.push(line);
+        self.abort_line();
       } else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
         self.abort_line();
