@@ -16,8 +16,8 @@ impl TON {
     reset: &SignalRef<bool>,
   ) -> Self {
     TON {
-      output: new_signal(false),
-      count_output: new_signal(0),
+      output: new_signal_ref(false),
+      count_output: new_signal_ref(0),
       delay: Rc::clone(delay),
       reset: Rc::clone(reset),
     }
@@ -73,8 +73,8 @@ impl TOF {
     reset: &SignalRef<bool>,
   ) -> Self {
     TOF {
-      output: new_signal(false),
-      count_output: new_signal(0),
+      output: new_signal_ref(false),
+      count_output: new_signal_ref(0),
       delay: Rc::clone(delay),
       reset: Rc::clone(reset),
     }
@@ -130,8 +130,8 @@ impl TP {
     count_from: &SignalRef<usize>,
   ) -> Self {
     TP {
-      output: new_signal(false),
-      count_output: new_signal(0),
+      output: new_signal_ref(false),
+      count_output: new_signal_ref(0),
       input: Rc::clone(input),
       count_from: Rc::clone(count_from),
     }

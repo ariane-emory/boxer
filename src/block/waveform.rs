@@ -10,7 +10,7 @@ pub struct SquareWave {
 impl SquareWave {
   pub fn new(period: &SignalRef<usize>) -> Self {
     SquareWave {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       period: Rc::clone(period),
       count: 0,
     }

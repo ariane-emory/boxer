@@ -13,7 +13,7 @@ impl Or {
     right: &SignalRef<bool>,
   ) -> Self {
     let mut r = Or {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -49,7 +49,7 @@ impl And {
     right: &SignalRef<bool>,
   ) -> Self {
     let mut r = And {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -85,7 +85,7 @@ impl Xor {
     right: &SignalRef<bool>,
   ) -> Self {
     let mut r = Xor {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -121,7 +121,7 @@ impl Nor {
     right: &SignalRef<bool>,
   ) -> Self {
     let mut r = Nor {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -153,7 +153,7 @@ pub struct Not {
 impl Not {
   pub fn new(input: &SignalRef<bool>) -> Self {
     let mut r = Not {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       input: Rc::clone(input),
     };
 

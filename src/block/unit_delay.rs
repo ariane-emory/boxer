@@ -11,9 +11,9 @@ pub struct UnitDelay<T: Copy + Default> {
 impl<T: Copy + Default> UnitDelay<T> {
   pub fn new(input: &SignalRef<T>) -> Self {
     UnitDelay {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       input: Rc::clone(input),
-      previous: new_signal(Default::default()),
+      previous: new_signal_ref(Default::default()),
     }
   }
 }

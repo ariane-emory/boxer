@@ -15,7 +15,7 @@ impl<T: Copy + Default> SampleAndHold<T> {
     reset: &SignalRef<bool>,
   ) -> Self {
     SampleAndHold {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       input: Rc::clone(input),
       set: Rc::clone(set),
       reset: Rc::clone(reset),

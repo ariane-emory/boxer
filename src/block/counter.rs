@@ -18,8 +18,8 @@ impl UpCounter {
     max: &SignalRef<usize>,
   ) -> Self {
     UpCounter {
-      output: new_signal(0),
-      at_max: new_signal(false),
+      output: new_signal_ref(0),
+      at_max: new_signal_ref(false),
       input: Rc::clone(input),
       reset: Rc::clone(reset),
       max: Rc::clone(max),

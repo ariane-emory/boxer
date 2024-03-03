@@ -13,7 +13,7 @@ impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = GreaterThan {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -49,7 +49,7 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = LessThan {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -85,7 +85,7 @@ impl<T: std::cmp::PartialEq + Copy> Equal<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Equal {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -121,7 +121,7 @@ impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = NotEqual {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };

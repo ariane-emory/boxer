@@ -8,7 +8,7 @@ pub struct Value<T: Copy> {
 impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
     Value {
-      output: new_signal(value),
+      output: new_signal_ref(value),
     }
   }
 

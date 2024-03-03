@@ -8,7 +8,7 @@ pub struct RandomUsize {
 impl RandomUsize {
   pub fn new() -> Self {
     let mut r = RandomUsize {
-      output: new_signal(0),
+      output: new_signal_ref(0),
     };
 
     r.step();

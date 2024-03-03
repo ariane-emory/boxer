@@ -13,7 +13,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Add {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -51,7 +51,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Sub {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -89,7 +89,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Mul {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -127,7 +127,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Div {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -165,7 +165,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Mod {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -203,7 +203,7 @@ impl LShift {
     input_shift: &SignalRef<usize>,
   ) -> Self {
     let mut r = LShift {
-      output: new_signal(0),
+      output: new_signal_ref(0),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
     };
@@ -241,7 +241,7 @@ impl RShift {
     input_shift: &SignalRef<usize>,
   ) -> Self {
     let mut r = RShift {
-      output: new_signal(0),
+      output: new_signal_ref(0),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
     };
@@ -275,7 +275,7 @@ pub struct Abs {
 impl Abs {
   pub fn new(input: &SignalRef<isize>) -> Self {
     let mut r = Abs {
-      output: new_signal(0),
+      output: new_signal_ref(0),
       input: Rc::clone(input),
     };
 

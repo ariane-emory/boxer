@@ -9,7 +9,7 @@ pub struct RisingTrigger {
 impl RisingTrigger {
   pub fn new(input: &SignalRef<bool>) -> Self {
     RisingTrigger {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       input: Rc::clone(input),
     }
   }
@@ -41,7 +41,7 @@ pub struct FallingTrigger {
 impl FallingTrigger {
   pub fn new(input: &SignalRef<bool>) -> Self {
     FallingTrigger {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       input: Rc::clone(input),
     }
   }

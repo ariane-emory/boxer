@@ -26,7 +26,7 @@ pub type SignalRef<T> = RcRefCell<Signal<T>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn new_signal<T: Copy>(value: T) -> SignalRef<T> {
+pub fn new_signal_ref<T: Copy>(value: T) -> SignalRef<T> {
   new_rcrc(Signal::new(value))
 }
 

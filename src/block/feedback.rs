@@ -9,7 +9,7 @@ pub struct Feedback<T: Copy + Default> {
 impl<T: Copy + Default> Feedback<T> {
   pub fn new() -> Self {
     Feedback {
-      output: new_signal(Default::default()),
+      output: new_signal_ref(Default::default()),
       input: None,
     }
     //}

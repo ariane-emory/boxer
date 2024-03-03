@@ -15,7 +15,7 @@ impl<T: Copy> Select<T> {
     right: &SignalRef<T>,
   ) -> Self {
     let mut r = Select {
-      output: new_signal(left.read()),
+      output: new_signal_ref(left.read()),
       which: Rc::clone(which),
       left: Rc::clone(left),
       right: Rc::clone(right),
@@ -56,7 +56,7 @@ impl<T: Copy + PartialOrd> Max<T> {
     right: &SignalRef<T>,
   ) -> Self {
     Max {
-      output: new_signal(left.read()),
+      output: new_signal_ref(left.read()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     }
@@ -92,7 +92,7 @@ impl<T: Copy + PartialOrd> Min<T> {
     right: &SignalRef<T>,
   ) -> Self {
     Min {
-      output: new_signal(left.read()),
+      output: new_signal_ref(left.read()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     }
@@ -130,7 +130,7 @@ impl<T: Copy + PartialOrd> Limit<T> {
     max: &SignalRef<T>,
   ) -> Self {
     Limit {
-      output: new_signal(input.read()),
+      output: new_signal_ref(input.read()),
       input: Rc::clone(input),
       min: Rc::clone(min),
       max: Rc::clone(max),

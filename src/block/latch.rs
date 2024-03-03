@@ -13,7 +13,7 @@ impl SRLatch {
     reset: &SignalRef<bool>,
   ) -> Self {
     SRLatch {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       set: Rc::clone(set),
       reset: Rc::clone(reset),
     }
@@ -50,7 +50,7 @@ impl RSLatch {
     reset: &SignalRef<bool>,
   ) -> Self {
     RSLatch {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       set: Rc::clone(set),
       reset: Rc::clone(reset),
     }
@@ -90,7 +90,7 @@ impl JKFlipFlop {
     clock: &SignalRef<bool>,
   ) -> Self {
     JKFlipFlop {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       j_input: Rc::clone(j_input),
       k_input: Rc::clone(k_input),
       clock: Rc::clone(clock),
@@ -135,7 +135,7 @@ impl DFlipFlop {
     clock: &SignalRef<bool>,
   ) -> Self {
     DFlipFlop {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       input: Rc::clone(input),
       clock: Rc::clone(clock),
       last_clock: false,
@@ -173,7 +173,7 @@ impl TFlipFlop {
     clock: &SignalRef<bool>,
   ) -> Self {
     TFlipFlop {
-      output: new_signal(false),
+      output: new_signal_ref(false),
       input: Rc::clone(input),
       clock: Rc::clone(clock),
       last_clock: false,
