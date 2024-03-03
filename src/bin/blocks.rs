@@ -18,7 +18,7 @@ fn main() -> io::Result<()> {
 
     let one = Value::new(1).as_rcrc();
     let max = Value::new(MAX).as_rcrc();
-    let clock = SquareWave::new(one.borrow().output()).as_rcrc();
+    let clock = SquareWave::new(one.output()).as_rcrc();
     let ctr_reset = Feedback::new().as_rcrc();
     let ctr_max = Value::new(MAX).as_rcrc();
     let ctr = UpCounter::new(
