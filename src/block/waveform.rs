@@ -15,10 +15,6 @@ impl SquareWave {
       count: 0,
     }
   }
-
-  pub fn period(&self) -> &SignalRef<usize> {
-    &self.period
-  }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for SquareWave {
@@ -37,6 +33,52 @@ impl Steppable for SquareWave {
 ////////////////////////////////////////////////////////////////////////////////
 impl SteppableWithOutputSignal<bool> for SquareWave {
   fn output(&self) -> &SignalRef<bool> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct TriangleWave {
+  output: SignalRef<isize>,
+  period: SignalRef<usize>,
+  count: usize,
+  up: bool,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl TriangleWave {
+  pub fn new(period: &SignalRef<usize>) -> Self {
+    TriangleWave {
+      output: new_signal_ref(0),
+      period: Rc::clone(period),
+      count: 0,
+      up: true,
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for TriangleWave {
+  fn step(&mut self) {
+    let period = self.period.read();
+
+    if self.up {
+      self.count = self.count + 1;
+    } else {
+      self.count = self.count - 1;
+    }
+
+    if self.count >= period {
+      self.up = false;
+    } else if self.count <= 0 {
+      self.up = true;
+    }
+
+    self.output.set(self.count);
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<isize> for TriangleWave {
+  fn output(&self) -> &SignalRef<isize> {
     &self.output
   }
 }
