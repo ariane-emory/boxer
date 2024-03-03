@@ -304,7 +304,7 @@ impl Steppable for Abs {
     self
       .output
       .borrow_mut()
-      .set((*self.input.borrow().read()).abs() as usize);
+      .set((self.input.read()).abs() as usize);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
