@@ -163,7 +163,7 @@ impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndSetInputSignal<U: Copy> {
+pub trait BorrowAndSetInputSignal<U: Copy + Default> {
   fn set(&self, input: &SignalRef<U>);
 }
 
