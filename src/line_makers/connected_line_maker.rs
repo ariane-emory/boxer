@@ -15,13 +15,13 @@ fn is_word_char(byte: u8) -> bool {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker {
+  line_body_char: u8,
+  wall_char: u8,
+  collect_words: bool,
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
   line_begin: Option<Point>,
   line_begin_type: ConnectionType,
-  line_body_char: u8,
-  wall_char: u8,
-  collect_words: bool,
   current_word: String,
   current_word_begin: Point,
   prev_pos: Point,
@@ -34,13 +34,13 @@ impl ConnectedLineMaker {
     collect_words: bool,
   ) -> ConnectedLineMaker {
     ConnectedLineMaker {
+      line_body_char,
+      wall_char,
+      collect_words,
       lines: Vec::new(),
       words: Vec::new(),
       line_begin: None,
       line_begin_type: Corner,
-      line_body_char,
-      wall_char,
-      collect_words,
       current_word: String::new(),
       current_word_begin: Point::new(std::usize::MAX, std::usize::MAX),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
