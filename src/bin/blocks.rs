@@ -43,6 +43,7 @@ fn main() -> io::Result<()> {
 
       let one = Value::new(1).as_rcrc();
       let max = Value::new(MAX).as_rcrc();
+
       let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
       let ctr_max = Value::new(MAX).as_rcrc();
@@ -97,8 +98,9 @@ fn main() -> io::Result<()> {
     {
       println!("\nTriangle:");
 
-      let max = Value::new(MAX).as_rcrc();
       let one = Value::new(1).as_rcrc();
+      let max = Value::new(MAX).as_rcrc();
+
       let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
       let ctr =
@@ -139,19 +141,20 @@ fn main() -> io::Result<()> {
     {
       println!("\nSharktooth:");
 
-      let max = Value::new(MAX).as_rcrc();
-      let imax = Value::<isize>::new(max.output_value() as isize).as_rcrc();
-      let one = Value::new(1).as_rcrc();
-      let clock = Clock::new(&one.output()).as_rcrc();
-      let sixteen = Value::new(16).as_rcrc();
-      let square = Clock::new(&sixteen.output()).as_rcrc();
       let izero = Value::new(0).as_rcrc();
+      let one = Value::new(1).as_rcrc();
+      let max = Value::new(MAX).as_rcrc();
+      let itwo = Value::<isize>::new(2).as_rcrc();
+      let imax = Value::<isize>::new(max.output_value() as isize).as_rcrc();
+      let sixteen = Value::new(16).as_rcrc();
+
+      let clock = Clock::new(&one.output()).as_rcrc();
+      let square = Clock::new(&sixteen.output()).as_rcrc();
       let select =
         Select::new(&square.output(), &izero.output(), &imax.output())
           .as_rcrc();
       let held_value = Feedback::<isize>::new().as_rcrc();
       let never = Value::new(false).as_rcrc();
-      let itwo = Value::<isize>::new(2).as_rcrc();
       let div_held_value_by_itwo =
         Div::<isize>::new(&held_value.output(), &itwo.output()).as_rcrc();
       let div_new_input_by_itwo =
