@@ -106,7 +106,7 @@ impl<'a> ConnectedLineMaker<'a> {
     )
     .unwrap();
     println!("         CREATED LINE: {:?}", line);
-    self.lines.push(line);
+    self.lines.push((self.line_postprocessor)(line));
     self.reset();
     self.process(end, byte);
   }
