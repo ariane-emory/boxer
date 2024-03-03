@@ -409,3 +409,171 @@ impl<
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Clamp<T: std::cmp::PartialOrd + Copy + Default> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+  min: SignalRef<T>,
+  max: SignalRef<T>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy + Default> Clamp<T> {
+  pub fn new(
+    input: &SignalRef<T>,
+    min: &SignalRef<T>,
+    max: &SignalRef<T>,
+  ) -> Self {
+    let mut r = Clamp {
+      output: new_signal_ref(Default::default()),
+      input: Rc::clone(input),
+      min: Rc::clone(min),
+      max: Rc::clone(max),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy + Default> Steppable for Clamp<T> {
+  fn step(&mut self) {
+    let input = self.input.read();
+    let min = self.min.read();
+    let max = self.max.read();
+
+    if input < min {
+      self.output.set(min);
+    } else if input > max {
+      self.output.set(max);
+    } else {
+      self.output.set(input);
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::cmp::PartialOrd + Copy + Default> SteppableWithOutputSignal<T>
+  for Clamp<T>
+{
+  fn output(&self) -> &SignalRef<T> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// The Wrap block wraps  a value within a range. If the value is less than the
+// minimum, it will be set to the maximum. If the value is greater than the
+// maximum, it will be set to the minimum. If the value is within the range, it
+// will be left unchanged.
+pub struct Wrap<
+  T: std::ops::Add<Output = T>
+    + std::ops::Sub<Output = T>
+    + std::ops::Rem<Output = T>
+    + std::cmp::PartialOrd
+    + Copy
+    + Default,
+> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+  min: SignalRef<T>,
+  max: SignalRef<T>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<
+    T: std::ops::Add<Output = T>
+      + std::ops::Sub<Output = T>
+      + std::ops::Rem<Output = T>
+      + std::cmp::PartialOrd
+      + Copy
+      + Default,
+  > Wrap<T>
+{
+  pub fn new(
+    input: &SignalRef<T>,
+    min: &SignalRef<T>,
+    max: &SignalRef<T>,
+  ) -> Self {
+    let mut r = Wrap {
+      output: new_signal_ref(Default::default()),
+      input: Rc::clone(input),
+      min: Rc::clone(min),
+      max: Rc::clone(max),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<
+    T: std::ops::Add<Output = T>
+      + std::ops::Sub<Output = T>
+      + std::ops::Rem<Output = T>
+      + std::cmp::PartialOrd
+      + Copy
+      + Default,
+  > Steppable for Wrap<T>
+{
+  fn step(&mut self) {
+    let input = self.input.read();
+    let min = self.min.read();
+    let max = self.max.read();
+
+    if input < min {
+      self.output.set(max - (min - input) % (max - min));
+    } else if input > max {
+      self.output.set(min + (input - min) % (max - min));
+    } else {
+      self.output.set(input);
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<
+    T: std::ops::Add<Output = T>
+      + std::ops::Sub<Output = T>
+      + std::ops::Rem<Output = T>
+      + std::cmp::PartialOrd
+      + Copy
+      + Default,
+  > SteppableWithOutputSignal<T> for Wrap<T>
+{
+  fn output(&self) -> &SignalRef<T> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Sqrt<T: std::ops::Mul<Output = T> + Copy + Default> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Sqrt<T> {
+  pub fn new(input: &SignalRef<T>) -> Self {
+    let mut r = Sqrt {
+      output: new_signal_ref(Default::default()),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Sqrt<T> {
+  fn step(&mut self) {
+    self.output.set(self.input.read() * self.input.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
+  for Sqrt<T>
+{
+  fn output(&self) -> &SignalRef<T> {
+    &self.output
+  }
+}
