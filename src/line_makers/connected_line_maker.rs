@@ -16,12 +16,13 @@ fn is_word_char(byte: u8) -> bool {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-pub struct ConnectedLineMaker {
+pub struct ConnectedLineMaker<'a> {
   orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
+  postprocessor: Box<dyn Fn(ConnectedLine) -> ConnectedLine + 'a>,
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
   line_begin: Option<Point>,
@@ -31,20 +32,22 @@ pub struct ConnectedLineMaker {
   prev_pos: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-impl ConnectedLineMaker {
+impl<'a> ConnectedLineMaker<'a> {
   pub fn new(
     orientation: Orientation,
     line_body_char: u8,
     wall_char: u8,
     collect_words: bool,
     allow_length_one: bool,
-  ) -> ConnectedLineMaker {
+    postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
+  ) -> ConnectedLineMaker<'a> {
     ConnectedLineMaker {
       orientation,
       line_body_char,
       wall_char,
       collect_words,
       allow_length_one,
+      postprocessor: Box::new(postprocessor),
       lines: Vec::new(),
       words: Vec::new(),
       line_begin: None,

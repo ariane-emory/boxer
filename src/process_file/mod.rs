@@ -37,13 +37,14 @@ pub fn make_process_file_fun<'a>(
   allow_length_one: bool,
   postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   custom_printer: impl Fn(Point, u8) + 'a,
-) -> (Rc<RefCell<ConnectedLineMaker>>, impl Fn(&Point, &u8) + 'a) {
+) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(
     orientation,
     line_body_char,
     wall_char,
     collect_words,
     allow_length_one,
+    postprocessor,
   );
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
