@@ -24,13 +24,19 @@ fn perform_steps<T: Copy + std::fmt::Debug>(
 ) where
   T: TryInto<usize>, {
   for _ in 0..steps {
-    let us: usize = match ctr.borrow().output_value().try_into() {
-      Ok(value) => value,
-      Err(_) => panic!("Error converting output value to usize."),
-    };
+    // Convert this to an if let!
+    // let us: usize = match ctr.borrow().output_value().try_into() {
+    //   Ok(value) => value,
+    //   Err(_) => panic!("Error converting output value to usize."),
+    // };
 
     blocks.iter().for_each(|b| b.borrow_mut().step());
-    render(b'x', b'-', us, max.borrow().output_value());
+
+    if let Ok(us) = ctr.borrow().output_value().try_into() {
+      render(b'x', b'-', us, max.borrow().output_value());
+    } else {
+      panic!("Error converting output value to usize.");
+    }
   }
 }
 
