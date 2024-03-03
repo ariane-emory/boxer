@@ -328,7 +328,7 @@ impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub struct Map<
+pub struct Scale<
   T: std::ops::Add<Output = T>
     + std::ops::Sub<Output = T>
     + std::ops::Div<Output = T>
@@ -351,7 +351,7 @@ impl<
       + std::ops::Mul<Output = T>
       + Copy
       + Default,
-  > Map<T>
+  > Scale<T>
 {
   pub fn new(
     input: &SignalRef<T>,
@@ -360,7 +360,7 @@ impl<
     out_min: &SignalRef<T>,
     out_max: &SignalRef<T>,
   ) -> Self {
-    let mut r = Map {
+    let mut r = Scale {
       output: new_signal_ref(Default::default()),
       input: Rc::clone(input),
       in_min: Rc::clone(in_min),
@@ -381,7 +381,7 @@ impl<
       + std::ops::Mul<Output = T>
       + Copy
       + Default,
-  > Steppable for Map<T>
+  > Steppable for Scale<T>
 {
   fn step(&mut self) {
     let in_min = self.in_min.read();
@@ -403,7 +403,7 @@ impl<
       + std::ops::Mul<Output = T>
       + Copy
       + Default,
-  > SteppableWithOutputSignal<T> for Map<T>
+  > SteppableWithOutputSignal<T> for Scale<T>
 {
   fn output(&self) -> &SignalRef<T> {
     &self.output
