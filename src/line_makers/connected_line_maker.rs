@@ -5,14 +5,20 @@ use crate::simple_geo::Point;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-const WORD_CHARS: &str =
-  // Account for - being used as minus.
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=*/%_";
-
-
-////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
-  WORD_CHARS.as_bytes().contains(&byte)
+  const WORD_CHARS: &str =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=*/%_";
+  let result = WORD_CHARS.as_bytes().contains(&byte);
+  // let msg = if result {
+  //   "is word char"
+  // }
+  // else {
+  //   "is not word char"
+  // };
+
+  // println!("byte '{}' {}.", byte as char, msg);
+
+  result
 }
 
 
@@ -40,7 +46,7 @@ impl ConnectedLineMaker {
       line_begin_type: Corner,
       line_body_char,
       wall_char,
-      collect_words: collect_words,
+      collect_words,
       word: String::new(),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
@@ -85,6 +91,10 @@ impl ConnectedLineMaker {
     // attempt to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a
     // line).
+    if is_word_char(byte) {
+      panic!("Bang!");
+    }
+
     if self.collect_words && is_word_char(byte) {
       println!("Add char '{}', word = \"{}\".", byte as char, self.word);
       self.word.push(byte as char);
