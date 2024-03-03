@@ -53,7 +53,6 @@ pub type DynSteppableRef = RcRefCell<dyn Steppable>;
 pub trait BorrowAndStepSteppable {
   fn step(&self);
 }
-
 ////////////////////////////////////////////////////////////////////////////////
 impl BorrowAndStepSteppable for DynSteppableRef {
   fn step(&self) {
