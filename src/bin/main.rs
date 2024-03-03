@@ -69,7 +69,7 @@ fn main() -> io::Result<()> {
 
       // we'll offset the words too.
       for word in horiz_linemaker.borrow().words.iter() {
-        words.push(word.clone());
+        words.push(word.offset_by(LINE_OFFSET, 0));
       }
     } // End of RefCell scope.
 

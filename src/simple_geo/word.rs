@@ -28,9 +28,9 @@ impl Word {
     }
   }
 
-  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+  pub fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
     Self::new(
-      self.string.clone(),
+      &self.string,
       self.start.offset_by(line_offset, col_offset),
       self.end.offset_by(line_offset, col_offset),
     )
