@@ -279,3 +279,37 @@ impl HasOutputSignal<usize> for RShift {
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Abs {
+  output: Signal<usize>,
+  input: Signal<isize>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Abs {
+  pub fn new(input: &Signal<isize>) -> Self {
+    let mut r = Abs {
+      output: new_signal(0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for Abs {
+  fn step(&mut self) {
+    self
+      .output
+      .borrow_mut()
+      .set((*self.input.borrow().read()).abs() as usize);
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl HasOutputSignal<usize> for Abs {
+  fn output(&self) -> &Signal<usize> {
+    &self.output
+  }
+}
