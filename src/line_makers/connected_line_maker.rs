@@ -33,6 +33,7 @@ pub struct ConnectedLineMaker {
   wall_char: u8,
   collect_words: bool,
   current_word: String,
+  current_word_begin: Point,
   prev_pos: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,7 @@ impl ConnectedLineMaker {
       wall_char,
       collect_words,
       current_word: String::new(),
+      current_word_begin: Point::new(std::usize::MAX, std::usize::MAX),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
@@ -63,16 +65,19 @@ impl ConnectedLineMaker {
 
   fn try_collect_word(&mut self, _pos: Point) {
     if self.collect_words && self.current_word.len() > 0 {
-      let word_start = Point::new(
-        self.prev_pos.line,
-        self.prev_pos.col - self.current_word.len() + 1,
-      );
       println!(
         "Pushing word: {:?} @ {:?} → {:?}",
-        self.current_word, word_start, self.prev_pos
+        self.current_word, self.current_word_begin, self.prev_pos
       );
       self.words.push(
-        Word::new(&self.current_word, word_start, self.prev_pos).unwrap(),
+        Word::new(
+          &self.current_word,
+          self.current_word_begin,
+          self
+            .current_word_begin
+            .offset_by(0, (self.current_word.len() - 1) as isize),
+        )
+        .unwrap(),
       );
       self.current_word = String::new();
     }
@@ -152,6 +157,9 @@ impl ConnectedLineMaker {
         self.begin_line(pos, Wall);
       }
       else if self.collect_words && is_word_char(byte) {
+        if self.current_word.len() == 0 {
+          self.current_word_begin = pos;
+        }
         self.current_word.push(byte as char);
         println!(
           "Add char '{}', word = \"{}\".",
