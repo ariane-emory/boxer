@@ -3,7 +3,7 @@ use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////
 const WORD_CHARS: &str =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=+-*/%";
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=+-*/%_";
 
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd)]
