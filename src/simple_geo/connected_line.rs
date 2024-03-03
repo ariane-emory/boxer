@@ -14,7 +14,7 @@ pub struct ConnectedLine {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub enum ConnectionType {
   Nothing,
-  AnotherLine,
+  Corner,
   Wall,
   Variable,
 }

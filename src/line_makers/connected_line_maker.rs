@@ -1,6 +1,6 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
-use crate::simple_geo::ConnectionType::{AnotherLine, Nothing, Wall};
+use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +19,7 @@ impl ConnectedLineMaker {
     ConnectedLineMaker {
       lines: Vec::new(),
       line_begin: None,
-      line_begin_type: AnotherLine,
+      line_begin_type: Corner,
       line_body_char,
       wall_char,
       prev_pos: Point::new(1000, 1000),
@@ -76,12 +76,12 @@ impl ConnectedLineMaker {
 
       if byte == b'+' {
         if distance_ok {
-          self.complete_line(begin, pos, AnotherLine);
+          self.complete_line(begin, pos, Corner);
         }
         else {
           self.abort_line();
-          println!("Begin line at AnotherLine after line break!");
-          self.begin_line(pos, AnotherLine);
+          println!("Begin line at Corner after line break!");
+          self.begin_line(pos, Corner);
         }
       }
       else if byte == self.wall_char && distance_ok {
@@ -101,8 +101,8 @@ impl ConnectedLineMaker {
       // }
 
       if byte == b'+' {
-        println!("Begin line at AnotherLine.");
-        self.begin_line(pos, AnotherLine);
+        println!("Begin line at Corner.");
+        self.begin_line(pos, Corner);
       }
       else if byte == self.wall_char {
         println!("Begin line at Wall.");
