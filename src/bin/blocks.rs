@@ -5,45 +5,11 @@
 //#![allow(dead_code)]
 
 use boxer::block::*;
-use boxer::util::new_rcrc;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////
 const MAX: usize = 1 << 6;
 const STEPS: usize = MAX << 2;
-
-////////////////////////////////////////////////////////////////////////////////
-fn render(
-  char: u8,
-  char2: u8,
-  signal: usize,
-  width: usize,
-) {
-  let mut printed = 0;
-  let quarterways = width >> 2;
-  let mut next_div = quarterways;
-
-  print!("|");
-
-  for _ in 0..signal {
-    if printed == next_div {
-      print!("|");
-      next_div = next_div + quarterways;
-    }
-    print!("{}", char as char);
-    printed = printed + 1;
-  }
-
-  for _ in 0..(width - signal) {
-    if printed == next_div {
-      print!("|");
-      next_div = next_div + quarterways;
-    }
-    print!("{}", char2 as char);
-    printed = printed + 1;
-  }
-  println!("|");
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
@@ -60,8 +26,11 @@ fn main() -> io::Result<()> {
       ctr_reset.borrow_mut().output(),
       ctr_max.borrow_mut().output(),
     ));
+    let delay_ctr_at_max = new_rcrc(UnitDelay::new(ctr.borrow_mut().at_max()));
 
-    ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
+    ctr_reset
+      .borrow_mut()
+      .set_input(&delay_ctr_at_max.borrow_mut().output());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
     // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
@@ -70,6 +39,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &delay_ctr_at_max);
 
     for _ in 0..STEPS {
       blocks.iter().for_each(|b| b.borrow_mut().step());
@@ -270,4 +240,38 @@ fn main() -> io::Result<()> {
     }
   }
   Ok(())
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+fn render(
+  char: u8,
+  char2: u8,
+  signal: usize,
+  width: usize,
+) {
+  let mut printed = 0;
+  let quarterways = width >> 2;
+  let mut next_div = quarterways;
+
+  print!("|");
+
+  for _ in 0..signal {
+    if printed == next_div {
+      print!("|");
+      next_div = next_div + quarterways;
+    }
+    print!("{}", char as char);
+    printed = printed + 1;
+  }
+
+  for _ in 0..(width - signal) {
+    if printed == next_div {
+      print!("|");
+      next_div = next_div + quarterways;
+    }
+    print!("{}", char2 as char);
+    printed = printed + 1;
+  }
+  println!("|");
 }
