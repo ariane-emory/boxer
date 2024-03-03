@@ -37,6 +37,7 @@ pub use unit_delay::*;
 pub use value::*;
 pub use waveform::*;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 pub trait HasSignal<T: Copy>: Steppable {
   fn output(&self) -> &SignalRef<T>;
