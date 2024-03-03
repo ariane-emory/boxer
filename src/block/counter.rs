@@ -80,6 +80,7 @@ impl SteppableWithOutputSignal<usize> for UpCounter {
 ////////////////////////////////////////////////////////////////////////////////
 pub trait BorrowUpCounterRefAndGetAtMax {
   fn at_max(&self) -> SignalRef<bool>;
+
   fn at_max_value(&self) -> bool {
     self.at_max().read()
   }

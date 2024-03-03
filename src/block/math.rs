@@ -8,10 +8,7 @@ pub struct Add<T: std::ops::Add<Output = T> + Copy + Default> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = Add {
       output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
@@ -46,10 +43,7 @@ pub struct Sub<T: std::ops::Sub<Output = T> + Copy + Default> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = Sub {
       output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
@@ -84,10 +78,7 @@ pub struct Mul<T: std::ops::Mul<Output = T> + Copy + Default> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = Mul {
       output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
@@ -122,10 +113,7 @@ pub struct Div<T: std::ops::Div<Output = T> + Copy + Default> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = Div {
       output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
@@ -160,10 +148,7 @@ pub struct Mod<T: std::ops::Rem<Output = T> + Copy + Default> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = Mod {
       output: new_signal_ref(Default::default()),
       left: Rc::clone(left),
@@ -292,6 +277,68 @@ impl Steppable for Abs {
 ////////////////////////////////////////////////////////////////////////////////
 impl SteppableWithOutputSignal<usize> for Abs {
   fn output(&self) -> &SignalRef<usize> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct IsizeToUsize {
+  output: SignalRef<usize>,
+  input: SignalRef<isize>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl IsizeToUsize {
+  pub fn new(input: &SignalRef<isize>) -> Self {
+    let mut r = IsizeToUsize {
+      output: new_signal_ref(0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for IsizeToUsize {
+  fn step(&mut self) {
+    self.output.set(self.input.read() as usize);
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<usize> for IsizeToUsize {
+  fn output(&self) -> &SignalRef<usize> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct UsizeToIsize {
+  output: SignalRef<isize>,
+  input: SignalRef<usize>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl UsizeToIsize {
+  pub fn new(input: &SignalRef<usize>) -> Self {
+    let mut r = UsizeToIsize {
+      output: new_signal_ref(0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for UsizeToIsize {
+  fn step(&mut self) {
+    self.output.set(self.input.read() as isize);
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<isize> for UsizeToIsize {
+  fn output(&self) -> &SignalRef<isize> {
     &self.output
   }
 }
