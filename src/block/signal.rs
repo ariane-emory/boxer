@@ -32,12 +32,12 @@ pub fn new_signal_ref<T: Copy>(value: T) -> SignalRef<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndReadOrSetSignal<T> {
+pub trait BorrowSignalRefAndReadOrSetSignal<T> {
   fn read(&self) -> T;
   fn set(&self, value: T);
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
+impl<T: Copy> BorrowSignalRefAndReadOrSetSignal<T> for SignalRef<T> {
   fn read(&self) -> T {
     self.borrow().read()
   }
