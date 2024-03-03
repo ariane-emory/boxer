@@ -28,7 +28,7 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for GreaterThan<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() > *self.right.borrow().read());
+      .set(self.left.read() > self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for LessThan<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() < *self.right.borrow().read());
+      .set(self.left.read() < self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for Equal<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() == *self.right.borrow().read());
+      .set(self.left.read() == self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for NotEqual<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() != *self.right.borrow().read());
+      .set(self.left.read() != self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

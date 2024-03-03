@@ -28,24 +28,24 @@ impl TON {
   }
 
   pub fn count_output_value(&self) -> usize {
-    *self.count_output.borrow().read()
+    self.count_output.read()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TON {
   fn step(&mut self) {
-    if *self.reset.borrow().read() {
+    if self.reset.read() {
       self.count_output.borrow_mut().set(0);
-    } else if *self.output.borrow().read() {
+    } else if self.output.read() {
       self
         .count_output
         .borrow_mut()
-        .set(self.count_output.borrow().read() + 1);
+        .set(self.count_output.read() + 1);
     } else {
       self.count_output.borrow_mut().set(0);
     }
 
-    if *self.count_output.borrow().read() >= *self.delay.borrow().read() {
+    if self.count_output.read() >= self.delay.read() {
       self.output.borrow_mut().set(true);
     } else {
       self.output.borrow_mut().set(false);
@@ -88,24 +88,24 @@ impl TOF {
   }
 
   pub fn count_output_value(&self) -> usize {
-    *self.count_output.borrow().read()
+    self.count_output.read()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TOF {
   fn step(&mut self) {
-    if *self.reset.borrow().read() {
+    if self.reset.read() {
       self.count_output.borrow_mut().set(0);
-    } else if !*self.output.borrow().read() {
+    } else if !self.output.read() {
       self
         .count_output
         .borrow_mut()
-        .set(self.count_output.borrow().read() + 1);
+        .set(self.count_output.read() + 1);
     } else {
       self.count_output.borrow_mut().set(0);
     }
 
-    if *self.count_output.borrow().read() >= *self.delay.borrow().read() {
+    if self.count_output.read() >= self.delay.read() {
       self.output.borrow_mut().set(false);
     } else {
       self.output.borrow_mut().set(true);
@@ -148,25 +148,22 @@ impl TP {
   }
 
   pub fn count_output_value(&self) -> usize {
-    *self.count_output.borrow().read()
+    self.count_output.read()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TP {
   fn step(&mut self) {
-    if *self.input.borrow().read() {
-      self
-        .count_output
-        .borrow_mut()
-        .set(*self.count_from.borrow().read());
+    if self.input.read() {
+      self.count_output.borrow_mut().set(self.count_from.read());
     }
 
-    if *self.count_output.borrow().read() > 0usize {
+    if self.count_output.read() > 0usize {
       self.output.borrow_mut().set(true);
       self
         .count_output
         .borrow_mut()
-        .set(self.count_output.borrow().read() - 1);
+        .set(self.count_output.read() - 1);
     } else {
       self.output.borrow_mut().set(false);
     }

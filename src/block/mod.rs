@@ -109,7 +109,7 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
   fn output(&self) -> &Signal<T>;
 
   fn output_value(&self) -> T {
-    *self.output().borrow().read()
+    self.output().borrow().read()
   }
 
   fn as_rcrc(self) -> Rc<RefCell<Self>>
@@ -138,6 +138,6 @@ where
   }
 
   fn output_value(&self) -> U {
-    *self.output().borrow().read()
+    self.output().read()
   }
 }

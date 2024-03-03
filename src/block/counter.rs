@@ -33,16 +33,16 @@ impl UpCounter {
   }
 
   pub fn at_max_value(&self) -> bool {
-    *self.at_max.borrow().read()
+    self.at_max.read()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for UpCounter {
   fn step(&mut self) {
-    let output_val = *self.output.borrow().read();
-    let max_val = *self.max.borrow().read();
-    let input_val = *self.input.borrow().read();
-    let reset_val = *self.reset.borrow().read();
+    let output_val = self.output.read();
+    let max_val = self.max.read();
+    let input_val = self.input.read();
+    let reset_val = self.reset.read();
     let at_max = max_val == output_val;
     let last_input_state_val = self.last_input_state;
     let last_reset_state_val = self.last_reset_state;

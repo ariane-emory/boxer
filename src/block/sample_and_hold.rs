@@ -25,9 +25,9 @@ impl<T: Copy + Default> SampleAndHold<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Steppable for SampleAndHold<T> {
   fn step(&mut self) {
-    if *self.set.borrow().read() {
-      self.output.borrow_mut().set(*self.input.borrow().read());
-    } else if *self.reset.borrow().read() {
+    if self.set.read() {
+      self.output.borrow_mut().set(self.input.read());
+    } else if self.reset.read() {
       self.output.borrow_mut().set(Default::default());
     }
   }

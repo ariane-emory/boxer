@@ -20,8 +20,8 @@ impl<T: Copy + Default> UnitDelay<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Steppable for UnitDelay<T> {
   fn step(&mut self) {
-    self.previous.borrow_mut().set(*self.input.borrow().read());
-    self.output.borrow_mut().set(*self.previous.borrow().read());
+    self.previous.borrow_mut().set(self.input.read());
+    self.output.borrow_mut().set(self.previous.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

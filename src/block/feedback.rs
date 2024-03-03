@@ -27,7 +27,7 @@ impl<T: Copy + Default> Feedback<T> {
 impl<T: Copy + Default> Steppable for Feedback<T> {
   fn step(&mut self) {
     if let Some(input) = &self.input {
-      self.output.borrow_mut().set(*input.borrow().read());
+      self.output.borrow_mut().set(input.read());
     }
   }
 }

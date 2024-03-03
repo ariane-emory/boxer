@@ -28,7 +28,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Steppable for Add<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() + *self.right.borrow().read());
+      .set(self.left.read() + self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Steppable for Sub<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() - *self.right.borrow().read());
+      .set(self.left.read() - self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Mul<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() * *self.right.borrow().read());
+      .set(self.left.read() * self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Div<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() / *self.right.borrow().read());
+      .set(self.left.read() / self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +192,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Steppable for Mod<T> {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() % *self.right.borrow().read());
+      .set(self.left.read() % self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -230,9 +230,10 @@ impl LShift {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for LShift {
   fn step(&mut self) {
-    self.output.borrow_mut().set(
-      *self.input_value.borrow().read() << *self.input_shift.borrow().read(),
-    );
+    self
+      .output
+      .borrow_mut()
+      .set(self.input_value.read() << self.input_shift.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -268,9 +269,10 @@ impl RShift {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for RShift {
   fn step(&mut self) {
-    self.output.borrow_mut().set(
-      *self.input_value.borrow().read() >> *self.input_shift.borrow().read(),
-    );
+    self
+      .output
+      .borrow_mut()
+      .set(self.input_value.read() >> self.input_shift.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

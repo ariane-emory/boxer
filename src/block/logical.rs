@@ -28,7 +28,7 @@ impl Steppable for Or {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() || *self.right.borrow().read());
+      .set(self.left.read() || self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ impl Steppable for And {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() && *self.right.borrow().read());
+      .set(self.left.read() && self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ impl Steppable for Xor {
     self
       .output
       .borrow_mut()
-      .set(*self.left.borrow().read() ^ *self.right.borrow().read());
+      .set(self.left.read() ^ self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ impl Steppable for Nor {
     self
       .output
       .borrow_mut()
-      .set(!(*self.left.borrow().read() || *self.right.borrow().read()));
+      .set(!(self.left.read() || self.right.read()));
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +176,7 @@ impl Not {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for Not {
   fn step(&mut self) {
-    self.output.borrow_mut().set(!*self.input.borrow().read());
+    self.output.borrow_mut().set(!self.input.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

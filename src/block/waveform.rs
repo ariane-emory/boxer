@@ -23,8 +23,8 @@ impl SquareWave {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for SquareWave {
   fn step(&mut self) {
-    let last_output = *self.output.borrow().read();
-    let period = *self.period.borrow().read();
+    let last_output = self.output.read();
+    let period = self.period.read();
 
     self.count = self.count + 1;
 
