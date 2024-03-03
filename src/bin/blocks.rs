@@ -108,16 +108,17 @@ fn main() -> io::Result<()> {
       let sr_reset = Feedback::new().as_rcrc();
       let sr = SRLatch::new(&sr_set.output(), &sr_reset.output()).as_rcrc();
       let not_latched = Not::new(&sr.output()).as_rcrc();
-      let ctr_max_and_latched = And::new(&ctr.at_max(), &sr.output()).as_rcrc();
-      let ctr_max_and_not_latched =
+      let ctr_at_max_and_latched =
+        And::new(&ctr.at_max(), &sr.output()).as_rcrc();
+      let ctr_at_max_and_not_latched =
         And::new(&ctr.at_max(), &not_latched.output()).as_rcrc();
       let sub = Sub::new(&max.output(), &ctr.output()).as_rcrc();
       let select =
         Select::new(&sr.output(), &ctr.output(), &sub.output()).as_rcrc();
 
       ctr_reset.set_input(&ctr.at_max());
-      sr_set.set_input(&ctr_max_and_not_latched.output());
-      sr_reset.set_input(&ctr_max_and_latched.output());
+      sr_set.set_input(&ctr_at_max_and_not_latched.output());
+      sr_reset.set_input(&ctr_at_max_and_latched.output());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
@@ -127,8 +128,8 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sr_reset);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sr);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &not_latched);
-      push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max_and_latched);
-      push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max_and_not_latched);
+      push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_at_max_and_latched);
+      push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_at_max_and_not_latched);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sub);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
