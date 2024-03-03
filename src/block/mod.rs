@@ -150,7 +150,7 @@ pub trait BorrowSignalRef<U: Copy> {
 impl<T, U> BorrowSignalRef<U> for RcRefCell<T>
 where
   T: HasSignal<U> + ?Sized,
-  U: Copy, // Ensure U satisfies Copy
+  U: Copy,
 {
   fn output(&self) -> SignalRef<U> {
     self.borrow().output().clone()
