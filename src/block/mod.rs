@@ -9,6 +9,7 @@ pub mod random;
 pub mod sample_and_hold;
 pub mod select;
 pub mod signal;
+pub mod steppable;
 pub mod timer;
 pub mod trigger;
 pub mod unit_delay;
@@ -25,6 +26,7 @@ pub use random::*;
 pub use sample_and_hold::*;
 pub use select::*;
 pub use signal::*;
+pub use steppable::*;
 pub use timer::*;
 pub use trigger::*;
 pub use unit_delay::*;
@@ -35,40 +37,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait Steppable {
-  fn step(&mut self);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 pub type RcRefCell<T> = Rc<RefCell<T>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub type DynSteppableRef = RcRefCell<dyn Steppable>;
-
-
-///////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndStepSteppable {
-  fn step(&self);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-impl BorrowAndStepSteppable for DynSteppableRef {
-  fn step(&self) {
-    self.borrow_mut().step();
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
-  blocks: &mut Vec<DynSteppableRef>,
-  item: &RcRefCell<T>,
-) {
-  let steppable_item = item.clone() as DynSteppableRef;
-  blocks.push(steppable_item);
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////
