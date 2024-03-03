@@ -2,12 +2,12 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct RisingTrigger {
-  output: Signal<bool>,
-  input: Signal<bool>,
+  output: OutputSignalRef<bool>,
+  input: OutputSignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl RisingTrigger {
-  pub fn new(input: &Signal<bool>) -> Self {
+  pub fn new(input: &OutputSignalRef<bool>) -> Self {
     RisingTrigger {
       output: new_signal(false),
       input: Rc::clone(input),
@@ -26,7 +26,7 @@ impl Steppable for RisingTrigger {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl HasOutputSignal<bool> for RisingTrigger {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }
@@ -34,12 +34,12 @@ impl HasOutputSignal<bool> for RisingTrigger {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct FallingTrigger {
-  output: Signal<bool>,
-  input: Signal<bool>,
+  output: OutputSignalRef<bool>,
+  input: OutputSignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl FallingTrigger {
-  pub fn new(input: &Signal<bool>) -> Self {
+  pub fn new(input: &OutputSignalRef<bool>) -> Self {
     FallingTrigger {
       output: new_signal(false),
       input: Rc::clone(input),
@@ -58,7 +58,7 @@ impl Steppable for FallingTrigger {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl HasOutputSignal<bool> for FallingTrigger {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }

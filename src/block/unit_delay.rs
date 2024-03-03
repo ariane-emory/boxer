@@ -3,13 +3,13 @@ use crate::block::*;
 ////////////////////////////////////////////////////////////////////////////////
 // This delays it's input by once cycle:
 pub struct UnitDelay<T: Copy + Default> {
-  output: Signal<T>,
-  input: Signal<T>,
-  previous: Signal<T>,
+  output: OutputSignalRef<T>,
+  input: OutputSignalRef<T>,
+  previous: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> UnitDelay<T> {
-  pub fn new(input: &Signal<T>) -> Self {
+  pub fn new(input: &OutputSignalRef<T>) -> Self {
     UnitDelay {
       output: new_signal(Default::default()),
       input: Rc::clone(input),
@@ -26,7 +26,7 @@ impl<T: Copy + Default> Steppable for UnitDelay<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> HasOutputSignal<T> for UnitDelay<T> {
-  fn output(&self) -> &Signal<T> {
+  fn output(&self) -> &OutputSignalRef<T> {
     &self.output
   }
 }

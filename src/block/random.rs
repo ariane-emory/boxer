@@ -2,7 +2,7 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct RandomUsize {
-  output: Signal<usize>,
+  output: OutputSignalRef<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl RandomUsize {
@@ -23,7 +23,7 @@ impl Steppable for RandomUsize {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl HasOutputSignal<usize> for RandomUsize {
-  fn output(&self) -> &Signal<usize> {
+  fn output(&self) -> &OutputSignalRef<usize> {
     &self.output
   }
 }

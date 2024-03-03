@@ -2,13 +2,13 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct SquareWave {
-  output: Signal<bool>,
-  period: Signal<usize>,
+  output: OutputSignalRef<bool>,
+  period: OutputSignalRef<usize>,
   count: usize,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl SquareWave {
-  pub fn new(period: &Signal<usize>) -> Self {
+  pub fn new(period: &OutputSignalRef<usize>) -> Self {
     SquareWave {
       output: new_signal(false),
       period: Rc::clone(period),
@@ -16,7 +16,7 @@ impl SquareWave {
     }
   }
 
-  pub fn period(&self) -> &Signal<usize> {
+  pub fn period(&self) -> &OutputSignalRef<usize> {
     &self.period
   }
 }
@@ -36,7 +36,7 @@ impl Steppable for SquareWave {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl HasOutputSignal<bool> for SquareWave {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }

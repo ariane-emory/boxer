@@ -2,20 +2,17 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Value<T: Copy> {
-  output: Signal<T>,
+  output: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
     Value {
-      output: Rc::new(RefCell::new(OutputSignal::new(value))),
+      output: new_signal(value),
     }
   }
 
-  pub fn set(
-    &mut self,
-    value: T,
-  ) {
+  pub fn set(&mut self, value: T) {
     self.output.set(value);
   }
 }
@@ -25,7 +22,7 @@ impl<T: Copy> Steppable for Value<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy> HasOutputSignal<T> for Value<T> {
-  fn output(&self) -> &Signal<T> {
+  fn output(&self) -> &OutputSignalRef<T> {
     &self.output
   }
 }

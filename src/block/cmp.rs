@@ -2,15 +2,15 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct GreaterThan<T: std::cmp::PartialOrd + Copy> {
-  output: Signal<bool>,
-  left: Signal<T>,
-  right: Signal<T>,
+  output: OutputSignalRef<bool>,
+  left: OutputSignalRef<T>,
+  right: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
   pub fn new(
-    left: &Signal<T>,
-    right: &Signal<T>,
+    left: &OutputSignalRef<T>,
+    right: &OutputSignalRef<T>,
   ) -> Self {
     let mut r = GreaterThan {
       output: new_signal(false),
@@ -30,7 +30,7 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for GreaterThan<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> HasOutputSignal<bool> for GreaterThan<T> {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }
@@ -38,15 +38,15 @@ impl<T: std::cmp::PartialOrd + Copy> HasOutputSignal<bool> for GreaterThan<T> {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct LessThan<T: std::cmp::PartialOrd + Copy> {
-  output: Signal<bool>,
-  left: Signal<T>,
-  right: Signal<T>,
+  output: OutputSignalRef<bool>,
+  left: OutputSignalRef<T>,
+  right: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
   pub fn new(
-    left: &Signal<T>,
-    right: &Signal<T>,
+    left: &OutputSignalRef<T>,
+    right: &OutputSignalRef<T>,
   ) -> Self {
     let mut r = LessThan {
       output: new_signal(false),
@@ -66,7 +66,7 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for LessThan<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> HasOutputSignal<bool> for LessThan<T> {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }
@@ -74,15 +74,15 @@ impl<T: std::cmp::PartialOrd + Copy> HasOutputSignal<bool> for LessThan<T> {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Equal<T: std::cmp::PartialEq + Copy> {
-  output: Signal<bool>,
-  left: Signal<T>,
-  right: Signal<T>,
+  output: OutputSignalRef<bool>,
+  left: OutputSignalRef<T>,
+  right: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> Equal<T> {
   pub fn new(
-    left: &Signal<T>,
-    right: &Signal<T>,
+    left: &OutputSignalRef<T>,
+    right: &OutputSignalRef<T>,
   ) -> Self {
     let mut r = Equal {
       output: new_signal(false),
@@ -102,7 +102,7 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for Equal<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> HasOutputSignal<bool> for Equal<T> {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }
@@ -110,15 +110,15 @@ impl<T: std::cmp::PartialEq + Copy> HasOutputSignal<bool> for Equal<T> {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct NotEqual<T: std::cmp::PartialEq + Copy> {
-  output: Signal<bool>,
-  left: Signal<T>,
-  right: Signal<T>,
+  output: OutputSignalRef<bool>,
+  left: OutputSignalRef<T>,
+  right: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
   pub fn new(
-    left: &Signal<T>,
-    right: &Signal<T>,
+    left: &OutputSignalRef<T>,
+    right: &OutputSignalRef<T>,
   ) -> Self {
     let mut r = NotEqual {
       output: new_signal(false),
@@ -138,7 +138,7 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for NotEqual<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> HasOutputSignal<bool> for NotEqual<T> {
-  fn output(&self) -> &Signal<bool> {
+  fn output(&self) -> &OutputSignalRef<bool> {
     &self.output
   }
 }

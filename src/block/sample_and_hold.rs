@@ -2,17 +2,17 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct SampleAndHold<T: Copy + Default> {
-  output: Signal<T>,
-  set: Signal<bool>,
-  reset: Signal<bool>,
-  input: Signal<T>,
+  output: OutputSignalRef<T>,
+  set: OutputSignalRef<bool>,
+  reset: OutputSignalRef<bool>,
+  input: OutputSignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> SampleAndHold<T> {
   pub fn new(
-    input: &Signal<T>,
-    set: &Signal<bool>,
-    reset: &Signal<bool>,
+    input: &OutputSignalRef<T>,
+    set: &OutputSignalRef<bool>,
+    reset: &OutputSignalRef<bool>,
   ) -> Self {
     SampleAndHold {
       output: new_signal(Default::default()),
@@ -34,7 +34,7 @@ impl<T: Copy + Default> Steppable for SampleAndHold<T> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> HasOutputSignal<T> for SampleAndHold<T> {
-  fn output(&self) -> &Signal<T> {
+  fn output(&self) -> &OutputSignalRef<T> {
     &self.output
   }
 }
