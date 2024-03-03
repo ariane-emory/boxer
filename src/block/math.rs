@@ -612,3 +612,96 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Sin {
+  output: SignalRef<f64>,
+  input: SignalRef<f64>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Sin {
+  pub fn new(input: &SignalRef<f64>) -> Self {
+    let mut r = Sin {
+      output: new_signal_ref(0.0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for Sin {
+  fn step(&mut self) {
+    self.output.set(self.input.read().sin());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<f64> for Sin {
+  fn output(&self) -> &SignalRef<f64> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Cos {
+  output: SignalRef<f64>,
+  input: SignalRef<f64>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Cos {
+  pub fn new(input: &SignalRef<f64>) -> Self {
+    let mut r = Cos {
+      output: new_signal_ref(0.0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for Cos {
+  fn step(&mut self) {
+    self.output.set(self.input.read().cos());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<f64> for Cos {
+  fn output(&self) -> &SignalRef<f64> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Tan {
+  output: SignalRef<f64>,
+  input: SignalRef<f64>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Tan {
+  pub fn new(input: &SignalRef<f64>) -> Self {
+    let mut r = Tan {
+      output: new_signal_ref(0.0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for Tan {
+  fn step(&mut self) {
+    self.output.set(self.input.read().tan());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<f64> for Tan {
+  fn output(&self) -> &SignalRef<f64> {
+    &self.output
+  }
+}
