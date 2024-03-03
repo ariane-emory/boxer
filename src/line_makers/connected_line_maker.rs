@@ -1,6 +1,8 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
+use crate::simple_geo::Orientation;
+use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 
@@ -15,6 +17,7 @@ fn is_word_char(byte: u8) -> bool {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker {
+  orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
@@ -30,12 +33,14 @@ pub struct ConnectedLineMaker {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLineMaker {
   pub fn new(
+    orientation: Orientation,
     line_body_char: u8,
     wall_char: u8,
     collect_words: bool,
     allow_length_one: bool,
   ) -> ConnectedLineMaker {
     ConnectedLineMaker {
+      orientation,
       line_body_char,
       wall_char,
       collect_words,
@@ -86,9 +91,14 @@ impl ConnectedLineMaker {
     end: Point,
     connectection_type: ConnectionType,
   ) {
-    let line =
-      ConnectedLine::new(begin, end, self.line_begin_type, connectection_type)
-        .unwrap();
+    let line = ConnectedLine::new(
+      self.orientation,
+      begin,
+      end,
+      self.line_begin_type,
+      connectection_type,
+    )
+    .unwrap();
     println!("         CREATED LINE: {:?}", line);
     self.lines.push(line);
     self.reset();

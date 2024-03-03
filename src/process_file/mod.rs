@@ -1,4 +1,5 @@
 use crate::line_makers::ConnectedLineMaker;
+use crate::simple_geo::Orientation;
 use crate::simple_geo::Point;
 use crate::simple_matrix::*;
 use crate::util::max_line_len;
@@ -28,6 +29,7 @@ pub fn process_file(
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_file_fun<'a>(
+  orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
@@ -35,6 +37,7 @@ pub fn make_process_file_fun<'a>(
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(
+    orientation,
     line_body_char,
     wall_char,
     collect_words,

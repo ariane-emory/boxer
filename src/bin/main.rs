@@ -6,8 +6,9 @@
 
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
-use boxer::simple_geo::line_methods::*;
+use boxer::simple_geo::Orientation::*;
 //use boxer::simple_geo::Word;
+use boxer::simple_geo::LineMethods;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,23 +28,35 @@ fn main() -> io::Result<()> {
 
     // RefCell scope:
     {
-      let (vert_linemaker, process_vert) =
-        make_process_file_fun(b'|', b'-', false, false, |pos, byte| {
+      let (vert_linemaker, process_vert) = make_process_file_fun(
+        Vertical,
+        b'|',
+        b'-',
+        false,
+        false,
+        |pos, byte| {
           println!(
             "Vert:    {:?}: '{}'",
             pos.flip().offset_by(LINE_OFFSET, 0),
             byte as char
           );
-        });
+        },
+      );
 
-      let (horiz_linemaker, process_horiz) =
-        make_process_file_fun(b'-', b'|', true, true, |pos, byte| {
+      let (horiz_linemaker, process_horiz) = make_process_file_fun(
+        Horizontal,
+        b'-',
+        b'|',
+        true,
+        true,
+        |pos, byte| {
           println!(
             "Horiz:   {:?}: '{}'",
             pos.offset_by(LINE_OFFSET, 0),
             byte as char
           );
-        });
+        },
+      );
 
       process_file(filename, process_horiz, process_vert)?;
 
