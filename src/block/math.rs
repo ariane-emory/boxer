@@ -328,30 +328,45 @@ impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub struct Map {
-  output: SignalRef<isize>,
-  input: SignalRef<isize>,
-  input_min: SignalRef<isize>,
-  input_max: SignalRef<isize>,
-  output_min: SignalRef<isize>,
-  output_max: SignalRef<isize>,
+pub struct Map<
+  T: std::ops::Add<Output = T>
+    + std::ops::Sub<Output = T>
+    + std::ops::Div<Output = T>
+    + std::ops::Mul<Output = T>
+    + Copy
+    + Default,
+> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+  in_min: SignalRef<T>,
+  in_max: SignalRef<T>,
+  out_min: SignalRef<T>,
+  out_max: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl Map {
+impl<
+    T: std::ops::Add<Output = T>
+      + std::ops::Sub<Output = T>
+      + std::ops::Div<Output = T>
+      + std::ops::Mul<Output = T>
+      + Copy
+      + Default,
+  > Map<T>
+{
   pub fn new(
-    input: &SignalRef<isize>,
-    input_min: &SignalRef<isize>,
-    input_max: &SignalRef<isize>,
-    output_min: &SignalRef<isize>,
-    output_max: &SignalRef<isize>,
+    input: &SignalRef<T>,
+    in_min: &SignalRef<T>,
+    in_max: &SignalRef<T>,
+    out_min: &SignalRef<T>,
+    out_max: &SignalRef<T>,
   ) -> Self {
     let mut r = Map {
-      output: new_signal_ref(0),
+      output: new_signal_ref(Default::default()),
       input: Rc::clone(input),
-      input_min: Rc::clone(input_min),
-      input_max: Rc::clone(input_max),
-      output_min: Rc::clone(output_min),
-      output_max: Rc::clone(output_max),
+      in_min: Rc::clone(in_min),
+      in_max: Rc::clone(in_max),
+      out_min: Rc::clone(out_min),
+      out_max: Rc::clone(out_max),
     };
 
     r.step();
@@ -359,26 +374,38 @@ impl Map {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl Steppable for Map {
+impl<
+    T: std::ops::Add<Output = T>
+      + std::ops::Sub<Output = T>
+      + std::ops::Div<Output = T>
+      + std::ops::Mul<Output = T>
+      + Copy
+      + Default,
+  > Steppable for Map<T>
+{
   fn step(&mut self) {
+    let in_min = self.in_min.read();
+    let in_max = self.in_max.read();
+    let out_min = self.out_min.read();
+    let out_max = self.out_max.read();
     let input = self.input.read();
-    let input_min = self.input_min.read();
-    let input_max = self.input_max.read();
-    let output_min = self.output_min.read();
-    let output_max = self.output_max.read();
 
-    let input_range = input_max - input_min;
-    let output_range = output_max - output_min;
-
-    let output =
-      output_min + ((input - input_min) * output_range) / input_range;
-
-    self.output.set(output);
+    self.output.set(
+      (input - in_min) * (out_max - out_min) / (in_max - in_min) + out_min,
+    );
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl SteppableWithOutputSignal<isize> for Map {
-  fn output(&self) -> &SignalRef<isize> {
+impl<
+    T: std::ops::Add<Output = T>
+      + std::ops::Sub<Output = T>
+      + std::ops::Div<Output = T>
+      + std::ops::Mul<Output = T>
+      + Copy
+      + Default,
+  > SteppableWithOutputSignal<T> for Map<T>
+{
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
