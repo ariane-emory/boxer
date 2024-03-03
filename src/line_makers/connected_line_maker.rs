@@ -55,26 +55,25 @@ impl ConnectedLineMaker {
     }
   }
 
-  fn begin_line(&mut self, point: Point, connection_type: ConnectionType) {
-    self.try_collect_word();
-    self.line_begin = Some(point);
+  fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
+    self.try_collect_word(pos);
+    self.line_begin = Some(pos);
     self.line_begin_type = connection_type;
   }
 
-  fn try_collect_word(&mut self) {
+  fn try_collect_word(&mut self, pos: Point) {
     if self.collect_words && self.current_word.len() > 0 {
       println!("Pushing word: {}", self.current_word);
       self.current_word = String::new();
-      self.words.push(
-        Word::new(&self.current_word, Point::new(0, 0), Point::new(0, 0))
-          .unwrap(),
-      );
+      self
+        .words
+        .push(Word::new(&self.current_word, pos, pos).unwrap());
     }
     self.current_word = String::new();
   }
 
-  fn reset(&mut self) {
-    self.try_collect_word();
+  fn reset(&mut self, pos: Point) {
+    self.try_collect_word(pos);
     self.line_begin = None;
     self.line_begin_type = Nothing;
   }
@@ -91,8 +90,7 @@ impl ConnectedLineMaker {
         .unwrap();
     println!("         CREATED LINE: {:?}", line);
     self.lines.push(line);
-    self.reset();
-
+    self.reset(end);
     self.process(end, byte);
   }
 
@@ -109,7 +107,7 @@ impl ConnectedLineMaker {
     // line).
     if pos.line != self.prev_pos.line {
       println!("         new line, abort!");
-      self.reset();
+      self.reset(pos);
     }
 
     if let Some(begin) = self.line_begin {
@@ -123,7 +121,7 @@ impl ConnectedLineMaker {
           self.complete_line(byte, begin, pos, Corner);
         }
         else {
-          self.reset();
+          self.reset(pos);
           println!("Begin line at Corner after line break!");
           self.begin_line(pos, Corner);
         }
@@ -133,7 +131,7 @@ impl ConnectedLineMaker {
       }
       else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
-        self.reset();
+        self.reset(pos);
         self.process(pos, byte);
       }
     }
