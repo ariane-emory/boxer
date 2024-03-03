@@ -70,26 +70,6 @@ pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub struct Signal<T: Copy> {
-  value: T,
-}
-////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Signal<T> {
-  pub fn new(value: T) -> Self {
-    Signal { value }
-  }
-
-  pub fn read(&self) -> T {
-    self.value
-  }
-
-  pub fn set(&mut self, value: T) {
-    self.value = value;
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 pub fn new_rcrc<T>(item: T) -> RcRefCell<T> {
   Rc::new(RefCell::new(item))
 }
@@ -113,6 +93,26 @@ pub trait HasSignal<T: Copy>: Steppable {
     Self: Sized,
   {
     new_rcrc(self)
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Signal<T: Copy> {
+  value: T,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy> Signal<T> {
+  pub fn new(value: T) -> Self {
+    Signal { value }
+  }
+
+  pub fn read(&self) -> T {
+    self.value
+  }
+
+  pub fn set(&mut self, value: T) {
+    self.value = value;
   }
 }
 
