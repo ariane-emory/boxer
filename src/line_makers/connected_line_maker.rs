@@ -108,7 +108,7 @@ impl ConnectedLineMaker {
     }
 
     if let Some(begin) = self.line_begin {
-      // in order to ensure that the line is at least one character long, we
+      // in order to ensure that the line is at least two characters long, we
       // will need to check the distance between the current position and
       // the line begin position:
       let distance_ok = pos.distance(&begin) > 1;
