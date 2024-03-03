@@ -325,3 +325,60 @@ impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Map {
+  output: SignalRef<isize>,
+  input: SignalRef<isize>,
+  input_min: SignalRef<isize>,
+  input_max: SignalRef<isize>,
+  output_min: SignalRef<isize>,
+  output_max: SignalRef<isize>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Map {
+  pub fn new(
+    input: &SignalRef<isize>,
+    input_min: &SignalRef<isize>,
+    input_max: &SignalRef<isize>,
+    output_min: &SignalRef<isize>,
+    output_max: &SignalRef<isize>,
+  ) -> Self {
+    let mut r = Map {
+      output: new_signal_ref(0),
+      input: Rc::clone(input),
+      input_min: Rc::clone(input_min),
+      input_max: Rc::clone(input_max),
+      output_min: Rc::clone(output_min),
+      output_max: Rc::clone(output_max),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for Map {
+  fn step(&mut self) {
+    let input = self.input.read();
+    let input_min = self.input_min.read();
+    let input_max = self.input_max.read();
+    let output_min = self.output_min.read();
+    let output_max = self.output_max.read();
+
+    let input_range = input_max - input_min;
+    let output_range = output_max - output_min;
+
+    let output =
+      output_min + ((input - input_min) * output_range) / input_range;
+
+    self.output.set(output);
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<isize> for Map {
+  fn output(&self) -> &SignalRef<isize> {
+    &self.output
+  }
+}
