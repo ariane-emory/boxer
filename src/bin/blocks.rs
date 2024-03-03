@@ -19,7 +19,7 @@ const LOOP: bool = false;
 ////////////////////////////////////////////////////////////////////////////////
 fn perform_steps<T: Copy + std::fmt::Debug>(
   steps: usize,
-  blocks: &Vec<SteppableRef>,
+  blocks: &Vec<SteppableDynRef>,
   ctr: &Rc<RefCell<impl HasSignal<T>>>,
   max: &Rc<RefCell<impl HasSignal<usize>>>,
 ) where
@@ -53,7 +53,7 @@ fn main() -> io::Result<()> {
 
       ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
 
-      let mut blocks: Vec<SteppableRef> = Vec::new();
+      let mut blocks: Vec<SteppableDynRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
@@ -83,7 +83,7 @@ fn main() -> io::Result<()> {
 
       ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
 
-      let mut blocks: Vec<SteppableRef> = Vec::new();
+      let mut blocks: Vec<SteppableDynRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
@@ -126,7 +126,7 @@ fn main() -> io::Result<()> {
         .borrow_mut()
         .set_input(&ctr_at_max_and_latched.output());
 
-      let mut blocks: Vec<SteppableRef> = Vec::new();
+      let mut blocks: Vec<SteppableDynRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
@@ -173,7 +173,7 @@ fn main() -> io::Result<()> {
 
       held_value.borrow_mut().set_input(&sample_and_hold.output());
 
-      let mut blocks: Vec<SteppableRef> = Vec::new();
+      let mut blocks: Vec<SteppableDynRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);

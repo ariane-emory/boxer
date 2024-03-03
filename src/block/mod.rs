@@ -39,7 +39,7 @@ pub trait Steppable {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub type SteppableRef = Rc<RefCell<dyn Steppable>>;
+pub type SteppableDynRef = Rc<RefCell<dyn Steppable>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ pub trait BorrowAndStep {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-impl BorrowAndStep for SteppableRef {
+impl BorrowAndStep for SteppableDynRef {
   fn step(&self) {
     self.borrow_mut().step();
   }
@@ -57,10 +57,10 @@ impl BorrowAndStep for SteppableRef {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
-  blocks: &mut Vec<SteppableRef>,
+  blocks: &mut Vec<SteppableDynRef>,
   item: &Rc<RefCell<T>>,
 ) {
-  let steppable_item: SteppableRef =
+  let steppable_item: SteppableDynRef =
     item.clone() as Rc<RefCell<dyn Steppable>>;
 
   blocks.push(steppable_item);
