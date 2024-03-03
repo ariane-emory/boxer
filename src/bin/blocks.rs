@@ -205,15 +205,15 @@ fn main() -> io::Result<()> {
 
       perform_steps(STEPS, &blocks, &add, &max);
 
-      for _ in 0..STEPS {
-        blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(
-          b'x',
-          b'-',
-          add.output_value() as usize,
-          max.output_value() as usize,
-        );
-      }
+      // for _ in 0..STEPS {
+      //   blocks.iter().for_each(|b| b.borrow_mut().step());
+      //   render(
+      //     b'x',
+      //     b'-',
+      //     add.output_value() as usize,
+      //     max.output_value() as usize,
+      //   );
+      // }
     }
 
     if !LOOP {
