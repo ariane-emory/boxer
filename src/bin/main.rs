@@ -34,6 +34,7 @@ fn main() -> io::Result<()> {
         b'-',
         false,
         false,
+        |line| line,
         |pos, byte| {
           println!(
             "Vert:    {:?}: '{}'",
@@ -49,6 +50,7 @@ fn main() -> io::Result<()> {
         b'|',
         true,
         true,
+        |line| line,
         |pos, byte| {
           println!(
             "Horiz:   {:?}: '{}'",

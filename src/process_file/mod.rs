@@ -1,4 +1,5 @@
 use crate::line_makers::ConnectedLineMaker;
+use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::Orientation;
 use crate::simple_geo::Point;
 use crate::simple_matrix::*;
@@ -34,6 +35,7 @@ pub fn make_process_file_fun<'a>(
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
+  postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(
