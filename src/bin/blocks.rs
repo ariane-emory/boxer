@@ -18,8 +18,8 @@ const LOOP: bool = false;
 fn perform_steps<T: Copy + std::fmt::Debug>(
   steps: usize,
   blocks: &Vec<DynSteppableRef>,
-  ctr: &Rc<RefCell<impl HasSignal<T>>>,
-  max: &Rc<RefCell<impl HasSignal<usize>>>,
+  ctr: &RcRefCell<impl HasSignal<T>>,
+  max: &RcRefCell<impl HasSignal<usize>>,
 ) where
   T: TryInto<usize>,
 {
