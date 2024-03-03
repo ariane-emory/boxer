@@ -63,7 +63,7 @@ impl ConnectedLineMaker {
     // line).
 
     if pos.line != self.prev_pos.line {
-      println!("         new line, abor!");
+      println!("         new line, abort!");
       self.abort_line();
     }
 
@@ -76,6 +76,11 @@ impl ConnectedLineMaker {
 
       if distance_ok && byte == b'+' {
         self.complete_line(begin, pos, AnotherLine);
+      }
+      else if byte == b'+' {
+        self.abort_line();
+        println!("Begin line at AnotherLine after line break!");
+        self.begin_line(pos, AnotherLine);
       }
       else if distance_ok && byte == self.wall_char {
         self.complete_line(begin, pos, Wall);
@@ -94,9 +99,11 @@ impl ConnectedLineMaker {
       // }
 
       if byte == b'+' {
+        println!("Begin line at AnotherLine.");
         self.begin_line(pos, AnotherLine);
       }
       else if byte == self.wall_char {
+        println!("Begin line at Wall.");
         self.begin_line(pos, Wall);
       }
     }
