@@ -30,7 +30,7 @@ impl Word {
 ////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Word {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "Word(\"{:?}\")", self.string)
+    write!(f, "Word({}, {}, \"{:?}\")", self.start, self.end, self.string)
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
