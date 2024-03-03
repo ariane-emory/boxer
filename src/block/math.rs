@@ -304,7 +304,7 @@ impl Steppable for IsizeToUsize {
   fn step(&mut self) {
     let input = self.input.read();
 
-    // this should panic if the number is negative:
+    // panic if the number is negative:
     if input < 0 {
       panic!("IsizeToUsize: input is negative");
     }
@@ -340,6 +340,13 @@ impl UsizeToIsize {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for UsizeToIsize {
   fn step(&mut self) {
+    let input = self.input.read();
+
+    // panic if the value is to large to cast to usize:
+    if input > isize::max_value() as usize {
+      panic!("UsizeToIsize: input is too large to cast to isize");
+    }
+
     self.output.set(self.input.read() as isize);
   }
 }
