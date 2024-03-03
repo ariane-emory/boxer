@@ -23,7 +23,7 @@ pub struct ConnectedLineMaker {
   line_begin_type: ConnectionType,
   line_body_char: u8,
   wall_char: u8,
-  _collect_words: bool,
+  collect_words: bool,
   word: String,
   prev_pos: Point,
 }
@@ -40,7 +40,7 @@ impl ConnectedLineMaker {
       line_begin_type: Corner,
       line_body_char,
       wall_char,
-      _collect_words: collect_words,
+      collect_words: collect_words,
       word: String::new(),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
@@ -88,6 +88,14 @@ impl ConnectedLineMaker {
 
     if pos.line != self.prev_pos.line {
       println!("         new line, abort!");
+
+      if self.collect_words {
+        if self.word.len() > 0 {
+          println!("         word: {}", self.word);
+          self.word = String::new();
+        }
+      }
+
       self.reset();
     }
 
@@ -123,6 +131,10 @@ impl ConnectedLineMaker {
       else if byte == self.wall_char {
         println!("Begin line at Wall.");
         self.begin_line(pos, Wall);
+      }
+      else if self.collect_words && is_word_char(byte) {
+        println!("Add char '{}', word = \"{}\".", byte as char, self.word);
+        self.word.push(byte as char);
       }
     }
 
