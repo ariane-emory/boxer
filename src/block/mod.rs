@@ -82,7 +82,7 @@ pub type Signal<T> = Rc<RefCell<OutputSignal<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndReadOrSet<T: Copy> {
+pub trait BorroAndReadOrSet<T: Copy> {
   fn read(&self) -> T;
   fn set(
     &mut self,
@@ -90,7 +90,7 @@ pub trait BorrowAndReadOrSet<T: Copy> {
   );
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T> BorrowAndReadOrSet<T> for Signal<T>
+impl<T> BorroAndReadOrSet<T> for Signal<T>
 where
   T: Copy,
 {
@@ -105,6 +105,7 @@ where
     self.borrow_mut().set(value);
   }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
