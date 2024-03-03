@@ -70,7 +70,7 @@ impl Steppable for UpCounter {
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<usize> for UpCounter {
+impl SteppableOutputSignal<usize> for UpCounter {
   fn output(&self) -> &SignalRef<usize> {
     &self.output
   }

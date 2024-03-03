@@ -25,7 +25,7 @@ impl<T: Copy + Default> Steppable for UnitDelay<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> HasOutputSignal<T> for UnitDelay<T> {
+impl<T: Copy + Default> SteppableOutputSignal<T> for UnitDelay<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }

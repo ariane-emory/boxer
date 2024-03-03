@@ -21,7 +21,7 @@ impl<T: Copy> Steppable for Value<T> {
   fn step(&mut self) {}
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> HasOutputSignal<T> for Value<T> {
+impl<T: Copy> SteppableOutputSignal<T> for Value<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }

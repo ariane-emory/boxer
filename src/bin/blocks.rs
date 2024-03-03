@@ -18,8 +18,8 @@ const LOOP: bool = false;
 fn perform_steps<T: Copy>(
   steps: usize,
   blocks: &Vec<DynSteppableRef>,
-  ctr: &RcRefCell<impl HasOutputSignal<T>>,
-  max: &RcRefCell<impl HasOutputSignal<usize>>,
+  ctr: &RcRefCell<impl SteppableOutputSignal<T>>,
+  max: &RcRefCell<impl SteppableOutputSignal<usize>>,
 ) where
   T: TryInto<usize>,
 {
