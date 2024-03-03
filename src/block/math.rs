@@ -577,3 +577,38 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Pow<T: std::ops::Mul<Output = T> + Copy + Default> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+  exponent: SignalRef<T>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Pow<T> {
+  pub fn new(input: &SignalRef<T>, exponent: &SignalRef<T>) -> Self {
+    let mut r = Pow {
+      output: new_signal_ref(Default::default()),
+      input: Rc::clone(input),
+      exponent: Rc::clone(exponent),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Pow<T> {
+  fn step(&mut self) {
+    self.output.set(self.input.read() * self.exponent.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Mul<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
+  for Pow<T>
+{
+  fn output(&self) -> &SignalRef<T> {
+    &self.output
+  }
+}
