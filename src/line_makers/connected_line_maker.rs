@@ -10,7 +10,7 @@ use crate::simple_geo::Word;
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
   const WORD_CHARS: &str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:";
   WORD_CHARS.as_bytes().contains(&byte)
 }
 

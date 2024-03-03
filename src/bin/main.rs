@@ -77,9 +77,9 @@ fn main() -> io::Result<()> {
       // we'll offset the line by one so that the line numbers are consistent
       // with emacs' line numbering.
       for line in horiz_linemaker.borrow().lines.iter() {
-        let line = line.offset_by(LINE_OFFSET, 0);
+        //let line = line.offset_by(LINE_OFFSET, 0);
         println!("Horiz line: {:?}", line);
-        all_lines.push(line);
+        all_lines.push(*line);
       }
 
       // we'll offset the line by one so that the line numbers are consistent
@@ -87,14 +87,15 @@ fn main() -> io::Result<()> {
       // column on the vertical lines, since the LineMaker will have made
       // horizontal lines.
       for line in vert_linemaker.borrow().lines.iter() {
-        let line = line.flip().offset_by(LINE_OFFSET, 0);
+        //let line = line.flip().offset_by(LINE_OFFSET, 0);
         println!("Vert line:  {:?}", line);
-        all_lines.push(line);
+        all_lines.push(*line);
       }
 
       // we'll offset the words too.
       for word in horiz_linemaker.borrow().words.iter() {
         words.push(word.offset_by(LINE_OFFSET, 0));
+        words.push(word.clone()); // .offset_by(LINE_OFFSET, 0));
       }
     } // End of RefCell scope.
 
