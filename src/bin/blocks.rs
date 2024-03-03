@@ -9,6 +9,7 @@ use std::cell::RefCell;
 use std::io::{self};
 use std::rc::Rc;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 const MAX: usize = 1 << 6;
 const STEPS: usize = MAX << 2;
