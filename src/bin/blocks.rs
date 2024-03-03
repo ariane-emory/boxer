@@ -18,15 +18,12 @@ fn main() -> io::Result<()> {
 
     let one = Value::new(1).as_rcrc();
     let max = Value::new(MAX).as_rcrc();
-    let clock = SquareWave::new(one.output()).as_rcrc();
+    let clock = SquareWave::new(&one.output()).as_rcrc();
     let ctr_reset = Feedback::new().as_rcrc();
     let ctr_max = Value::new(MAX).as_rcrc();
-    let ctr = UpCounter::new(
-      clock.borrow().output(),
-      ctr_reset.borrow().output(),
-      ctr_max.borrow().output(),
-    )
-    .as_rcrc();
+    let ctr =
+      UpCounter::new(&clock.output(), &ctr_reset.output(), &ctr_max.output())
+        .as_rcrc();
 
     ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
 
@@ -54,26 +51,19 @@ fn main() -> io::Result<()> {
 
     let one = Value::new(1).as_rcrc();
     let max = Value::new(MAX).as_rcrc();
-    let clock = SquareWave::new(one.borrow().output()).as_rcrc();
+    let clock = SquareWave::new(&one.output()).as_rcrc();
     let ctr_reset = Feedback::new().as_rcrc();
     let ctr_max = Value::new(MAX).as_rcrc();
-    let ctr = UpCounter::new(
-      clock.borrow().output(),
-      ctr_reset.borrow().output(),
-      ctr_max.borrow().output(),
-    )
-    .as_rcrc();
-    let add = Add::new(ctr.borrow().output(), one.borrow().output()).as_rcrc();
+    let ctr =
+      UpCounter::new(&clock.output(), &ctr_reset.output(), &ctr_max.output())
+        .as_rcrc();
+    let add = Add::new(&ctr.output(), &one.output()).as_rcrc();
     let two = Value::new(2).as_rcrc();
-    let div = Div::new(add.borrow().output(), two.borrow().output()).as_rcrc();
-    let square = SquareWave::new(div.borrow().output()).as_rcrc();
+    let div = Div::new(&add.output(), &two.output()).as_rcrc();
+    let square = SquareWave::new(&div.output()).as_rcrc();
     let zero = Value::new(0).as_rcrc();
-    let select = Select::new(
-      square.borrow().output(),
-      zero.borrow().output(),
-      max.borrow().output(),
-    )
-    .as_rcrc();
+    let select =
+      Select::new(&square.output(), &zero.output(), &max.output()).as_rcrc();
 
     ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
 
