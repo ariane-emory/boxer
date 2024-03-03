@@ -81,10 +81,7 @@ impl<T: Copy> OutputSignal<T> {
     self.value
   }
 
-  pub fn set(
-    &mut self,
-    value: T,
-  ) {
+  pub fn set(&mut self, value: T) {
     self.value = value;
   }
 }
@@ -97,10 +94,7 @@ pub type Signal<T> = Rc<RefCell<OutputSignal<T>>>;
 ////////////////////////////////////////////////////////////////////////////////
 pub trait BorrowAndReadOrSet<T: Copy> {
   fn read(&self) -> T;
-  fn set(
-    &self,
-    value: T,
-  );
+  fn set(&self, value: T);
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T> BorrowAndReadOrSet<T> for Signal<T>
@@ -111,10 +105,7 @@ where
     self.borrow().read()
   }
 
-  fn set(
-    &self,
-    value: T,
-  ) {
+  fn set(&self, value: T) {
     self.borrow_mut().set(value);
   }
 }
@@ -141,7 +132,8 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
 
   fn as_rcrc(self) -> Rc<RefCell<Self>>
   where
-    Self: Sized, {
+    Self: Sized,
+  {
     new_rcrc(self)
   }
 }

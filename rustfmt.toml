@@ -1,6 +1,6 @@
 #fn_args_layout = "Vertical"
-fn_params_layout = "Vertical"
-brace_style = "PreferSameLine"
+fn_params_layout = "Tall"
+# brace_style = "PreferSameLine"
 fn_single_line = false
 unstable_features = true
 wrap_comments = true
