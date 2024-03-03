@@ -111,6 +111,7 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
 ////////////////////////////////////////////////////////////////////////////////
 pub trait BorrowOutputSignal<U: Copy> {
   fn output(&self) -> Signal<U>;
+  fn output_value(&self) -> U;
 }
 
 
@@ -122,5 +123,9 @@ where
 {
   fn output(&self) -> Signal<U> {
     self.borrow().output().clone()
+  }
+
+  fn output_value(&self) -> U {
+    *self.borrow().output().borrow().read()
   }
 }

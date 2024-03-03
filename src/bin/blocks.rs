@@ -10,6 +10,7 @@ use std::io::{self};
 ////////////////////////////////////////////////////////////////////////////////
 const MAX: usize = 1 << 6;
 const STEPS: usize = MAX << 2;
+const LOOP: bool = false;
 
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
@@ -206,6 +207,10 @@ fn main() -> io::Result<()> {
           imax.borrow().output_value() as usize,
         );
       }
+    }
+
+    if !LOOP {
+      break;
     }
   }
   Ok(())
