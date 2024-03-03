@@ -26,11 +26,8 @@ fn main() -> io::Result<()> {
       ctr_reset.borrow_mut().output(),
       ctr_max.borrow_mut().output(),
     ));
-    let delay_ctr_at_max = new_rcrc(UnitDelay::new(ctr.borrow_mut().at_max()));
 
-    ctr_reset
-      .borrow_mut()
-      .set_input(&delay_ctr_at_max.borrow_mut().output());
+    ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
 
     let mut blocks: Vec<RcRcSteppable> = Vec::new();
     // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
@@ -39,7 +36,6 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
-    push_onto_vec_of_rcrc_steppable(&mut blocks, &delay_ctr_at_max);
 
     for _ in 0..STEPS {
       blocks.iter().for_each(|b| b.borrow_mut().step());
