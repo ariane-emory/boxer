@@ -34,7 +34,11 @@ fn main() -> io::Result<()> {
         b'-',
         false,
         false,
-        Box::new(|line| line),
+        Box::new(|line| {
+          let l = line.flip().offset_by(LINE_OFFSET, 0);
+          println!("Changed {:?} into {:?}!", line, l);
+          l
+        }),
         Box::new(|word| word),
         |pos, byte| {
           println!(
@@ -51,7 +55,11 @@ fn main() -> io::Result<()> {
         b'|',
         true,
         true,
-        Box::new(|line| line),
+        Box::new(|line| {
+          let l = line.offset_by(LINE_OFFSET, 0);
+          println!("Changed {:?} into {:?}", line, l);
+          l
+        }),
         Box::new(|word| word),
         |pos, byte| {
           println!(
