@@ -179,3 +179,118 @@ impl BorrowDownCounterRefAndGetAtMin for RcRefCell<DownCounter> {
     self.borrow().at_min().clone()
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct UpDownCounter {
+  output: SignalRef<usize>,
+  at_max: SignalRef<bool>,
+  at_min: SignalRef<bool>,
+  clock: SignalRef<bool>,
+  reset: SignalRef<bool>,
+  max: SignalRef<usize>,
+  min: SignalRef<usize>,
+  last_clock_state: bool,
+  last_reset_state: bool,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl UpDownCounter {
+  pub fn new(
+    clock: &SignalRef<bool>,
+    reset: &SignalRef<bool>,
+    max: &SignalRef<usize>,
+    min: &SignalRef<usize>,
+  ) -> Self {
+    UpDownCounter {
+      output: new_signal_ref(0),
+      at_max: new_signal_ref(false),
+      at_min: new_signal_ref(false),
+      clock: Rc::clone(clock),
+      reset: Rc::clone(reset),
+      max: Rc::clone(max),
+      min: Rc::clone(min),
+      last_clock_state: false,
+      last_reset_state: false,
+    }
+  }
+
+  pub fn at_max(&self) -> &SignalRef<bool> {
+    &self.at_max
+  }
+
+  pub fn at_max_value(&self) -> bool {
+    self.at_max.read()
+  }
+
+  pub fn at_min(&self) -> &SignalRef<bool> {
+    &self.at_min
+  }
+
+  pub fn at_min_value(&self) -> bool {
+    self.at_min.read()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for UpDownCounter {
+  fn step(&mut self) {
+    let output_val = self.output.read();
+    let max_val = self.max.read();
+    let min_val = self.min.read();
+    let clock_val = self.clock.read();
+    let reset_val = self.reset.read();
+    let at_max = max_val == output_val;
+    let at_min = output_val == min_val;
+    let last_clock_state_val = self.last_clock_state;
+    let last_reset_state_val = self.last_reset_state;
+    let clock_rose = clock_val && !last_clock_state_val;
+    let reset_rose = reset_val && !last_reset_state_val;
+
+    self.last_clock_state = clock_val;
+    self.last_reset_state = reset_val;
+
+    self.at_max.set(at_max);
+    self.at_min.set(at_min);
+
+    if reset_rose {
+      self.output.set(min_val);
+      self.at_min.set(false);
+      self.at_max.set(false);
+    } else if at_max || at_min {
+      return;
+    } else if clock_rose {
+      self.output.set(output_val + 1);
+    }
+  }
+}
+///////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<usize> for UpDownCounter {
+  fn output(&self) -> &SignalRef<usize> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowUpDownCounterRefAndGetAtMaxAndAtMin {
+  fn at_max(&self) -> SignalRef<bool>;
+
+  fn at_max_value(&self) -> bool {
+    self.at_max().read()
+  }
+
+  fn at_min(&self) -> SignalRef<bool>;
+
+  fn at_min_value(&self) -> bool {
+    self.at_min().read()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowUpDownCounterRefAndGetAtMaxAndAtMin for RcRefCell<UpDownCounter> {
+  fn at_max(&self) -> SignalRef<bool> {
+    self.borrow().at_max().clone()
+  }
+
+  fn at_min(&self) -> SignalRef<bool> {
+    self.borrow().at_min().clone()
+  }
+}
