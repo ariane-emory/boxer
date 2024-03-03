@@ -71,8 +71,7 @@ impl ConnectedLineMaker {
       // in order to ensure that the line is at least one character long, we
       // need to check the distance between the current position and the
       // line begin position:
-      let distance_ok =
-        pos.distance(&begin) > 1 && (pos.line == self.prev_pos.line);
+      let distance_ok = pos.distance(&begin) > 1;
 
       if byte == b'+' {
         if distance_ok {
