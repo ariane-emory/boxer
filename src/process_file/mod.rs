@@ -20,6 +20,7 @@ pub fn process_file(
   rotated_matrix.reverse();
 
   rotated_matrix.each(process_vert);
+  println!("\n================================================================================");
   uniform_matrix.each(process_horiz);
 
   Ok(())

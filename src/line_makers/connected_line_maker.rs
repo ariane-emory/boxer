@@ -159,8 +159,18 @@ impl ConnectedLineMaker {
           byte as char, self.current_word
         );
       }
+      else if byte == b' ' {
+        println!(
+          "Reset for '{}',      holding {:?}.",
+          byte as char, self.current_word
+        );
+        self.reset();
+      }
       else {
-        println!("Do nothing for '{}'.", byte as char);
+        println!(
+          "Do nothing for '{}', holding {:?}.",
+          byte as char, self.current_word
+        );
       }
     }
 
