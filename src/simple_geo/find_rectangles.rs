@@ -14,7 +14,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
   let mut lines_deque: VecDeque<T> = VecDeque::from(sorted_lines);
   while let Some(line) = lines_deque.pop_front() {
-    noisy_println!("\nFind coaligned lines with {:?}...", line);
+    noisy_println!("\nFind coaligned lines with    {:?}...", line);
 
     let mut found_a_rect = false;
     let mut lines_to_remove: Vec<T> = Vec::new();
