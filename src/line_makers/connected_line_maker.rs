@@ -85,6 +85,10 @@ impl ConnectedLineMaker {
     // attempt to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a
     // line).
+    if self.collect_words && is_word_char(byte) {
+      println!("Add char '{}', word = \"{}\".", byte as char, self.word);
+      self.word.push(byte as char);
+    }
 
     if pos.line != self.prev_pos.line {
       println!("         new line, abort!");
