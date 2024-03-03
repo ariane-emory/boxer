@@ -26,14 +26,14 @@ impl ConnectedLineMaker {
     }
   }
 
-  fn abort_line(&mut self) {
-    self.line_begin = None;
-    self.line_begin_type = Nothing;
-  }
-
   fn begin_line(&mut self, point: Point, connection_type: ConnectionType) {
     self.line_begin = Some(point);
     self.line_begin_type = connection_type;
+  }
+
+  fn abort_line(&mut self) {
+    self.line_begin = None;
+    self.line_begin_type = Nothing;
   }
 
   fn complete_line(
@@ -68,6 +68,7 @@ impl ConnectedLineMaker {
       if pos.col == 0 {
         println!("         new line!");
         self.complete_line(begin, self.prev_pos, Nothing);
+        return;
       }
 
       // in order to ensure that the line is at least one character long, we
