@@ -15,10 +15,7 @@ impl<T: Copy + Default> Feedback<T> {
     //}
   }
 
-  pub fn set_input(
-    &mut self,
-    input: &SignalRef<T>,
-  ) {
+  pub fn set_input(&mut self, input: &SignalRef<T>) {
     self.input = Some(input.clone());
     self.step();
   }
@@ -35,5 +32,21 @@ impl<T: Copy + Default> Steppable for Feedback<T> {
 impl<T: Copy + Default> HasSignal<T> for Feedback<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowFeedbackRefAndSetInput<U: Copy + Default> {
+  fn set_input(&self, input: &SignalRef<U>);
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<U: Copy + Default> BorrowFeedbackRefAndSetInput<U>
+  for RcRefCell<Feedback<U>>
+where
+  U: Copy + Default,
+{
+  fn set_input(&self, input: &SignalRef<U>) {
+    self.borrow_mut().set_input(input);
   }
 }

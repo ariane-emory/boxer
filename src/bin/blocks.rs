@@ -119,13 +119,9 @@ fn main() -> io::Result<()> {
       let select =
         Select::new(&sr.output(), &ctr.output(), &sub.output()).as_rcrc();
 
-      ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
-      sr_set
-        .borrow_mut()
-        .set_input(&ctr_at_max_and_not_latched.output());
-      sr_reset
-        .borrow_mut()
-        .set_input(&ctr_at_max_and_latched.output());
+      ctr_reset.set_input(&ctr.borrow().at_max());
+      sr_set.set_input(&ctr_at_max_and_not_latched.output());
+      sr_reset.set_input(&ctr_at_max_and_latched.output());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
@@ -172,7 +168,7 @@ fn main() -> io::Result<()> {
         SampleAndHold::new(&add.output(), &clock.output(), &never.output())
           .as_rcrc();
 
-      held_value.borrow_mut().set_input(&sample_and_hold.output());
+      held_value.set_input(&sample_and_hold.output());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);

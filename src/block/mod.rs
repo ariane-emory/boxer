@@ -51,7 +51,6 @@ pub trait BorrowAndStepSteppable {
   fn step(&self);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 impl BorrowAndStepSteppable for DynSteppableRef {
   fn step(&self) {
@@ -156,20 +155,5 @@ where
 
   fn output_value(&self) -> U {
     self.output().read()
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndSetInput<U: Copy + Default> {
-  fn set_input(&self, input: &SignalRef<U>);
-}
-////////////////////////////////////////////////////////////////////////////////
-impl<U: Copy + Default> BorrowAndSetInput<U> for RcRefCell<Feedback<U>>
-where
-  U: Copy + Default,
-{
-  fn set_input(&self, input: &SignalRef<U>) {
-    self.borrow_mut().set_input(input);
   }
 }
