@@ -4,22 +4,21 @@ use crate::block::*;
 ////////////////////////////////////////////////////////////////////////////////
 pub trait Steppable {
   fn step(&mut self);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait HasSignal<T: Copy>: Steppable {
-  fn output(&self) -> &SignalRef<T>;
-
-  fn output_value(&self) -> T {
-    self.output().borrow().read()
-  }
-
   fn as_rcrc(self) -> RcRefCell<Self>
   where
     Self: Sized,
   {
     new_rcrc(self)
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait HasOutputSignal<T: Copy>: Steppable {
+  fn output(&self) -> &SignalRef<T>;
+
+  fn output_value(&self) -> T {
+    self.output().borrow().read()
   }
 }
 
@@ -34,7 +33,7 @@ pub trait BorrowSteppableRefAndGetOutput<U: Copy> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T, U> BorrowSteppableRefAndGetOutput<U> for RcRefCell<T>
 where
-  T: HasSignal<U>,
+  T: HasOutputSignal<U>,
   U: Copy,
 {
   fn output(&self) -> SignalRef<U> {

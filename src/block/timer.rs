@@ -50,7 +50,7 @@ impl Steppable for TON {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TON {
+impl HasOutputSignal<bool> for TON {
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
@@ -107,7 +107,7 @@ impl Steppable for TOF {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TOF {
+impl HasOutputSignal<bool> for TOF {
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
@@ -161,7 +161,7 @@ impl Steppable for TP {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<bool> for TP {
+impl HasOutputSignal<bool> for TP {
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }

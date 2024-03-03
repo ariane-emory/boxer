@@ -29,7 +29,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Steppable for Add<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> HasSignal<T>
+impl<T: std::ops::Add<Output = T> + Copy + Default> HasOutputSignal<T>
   for Add<T>
 {
   fn output(&self) -> &SignalRef<T> {
@@ -67,7 +67,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Steppable for Sub<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> HasSignal<T>
+impl<T: std::ops::Sub<Output = T> + Copy + Default> HasOutputSignal<T>
   for Sub<T>
 {
   fn output(&self) -> &SignalRef<T> {
@@ -105,7 +105,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Mul<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> HasSignal<T>
+impl<T: std::ops::Mul<Output = T> + Copy + Default> HasOutputSignal<T>
   for Mul<T>
 {
   fn output(&self) -> &SignalRef<T> {
@@ -143,7 +143,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Div<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> HasSignal<T>
+impl<T: std::ops::Div<Output = T> + Copy + Default> HasOutputSignal<T>
   for Div<T>
 {
   fn output(&self) -> &SignalRef<T> {
@@ -181,7 +181,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Steppable for Mod<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> HasSignal<T>
+impl<T: std::ops::Rem<Output = T> + Copy + Default> HasOutputSignal<T>
   for Mod<T>
 {
   fn output(&self) -> &SignalRef<T> {
@@ -221,7 +221,7 @@ impl Steppable for LShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for LShift {
+impl HasOutputSignal<usize> for LShift {
   fn output(&self) -> &SignalRef<usize> {
     &self.output
   }
@@ -259,7 +259,7 @@ impl Steppable for RShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for RShift {
+impl HasOutputSignal<usize> for RShift {
   fn output(&self) -> &SignalRef<usize> {
     &self.output
   }
@@ -290,7 +290,7 @@ impl Steppable for Abs {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasSignal<usize> for Abs {
+impl HasOutputSignal<usize> for Abs {
   fn output(&self) -> &SignalRef<usize> {
     &self.output
   }

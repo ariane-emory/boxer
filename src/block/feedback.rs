@@ -29,7 +29,7 @@ impl<T: Copy + Default> Steppable for Feedback<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> HasSignal<T> for Feedback<T> {
+impl<T: Copy + Default> HasOutputSignal<T> for Feedback<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }
