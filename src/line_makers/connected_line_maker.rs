@@ -70,9 +70,9 @@ impl ConnectedLineMaker {
       // line begin position:
       let distance_ok = pos.distance(&begin) > 1;
 
-      if byte == b'+' && distance_ok {
+      if distance_ok && byte == b'+' {
         self.complete_line(*pos, AnotherLine);
-      } else if byte == self.wall_char && distance_ok {
+      } else if distance_ok && byte == self.wall_char {
         self.complete_line(*pos, Wall);
       } else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
