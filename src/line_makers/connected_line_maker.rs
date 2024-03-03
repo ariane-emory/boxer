@@ -64,10 +64,10 @@ impl ConnectedLineMaker {
   fn try_collect_word(&mut self, pos: Point) {
     if self.collect_words && self.current_word.len() > 0 {
       println!("Pushing word: {}", self.current_word);
-      self.current_word = String::new();
       self
         .words
         .push(Word::new(&self.current_word, pos, pos).unwrap());
+      self.current_word = String::new();
     }
     self.current_word = String::new();
   }
