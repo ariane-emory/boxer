@@ -82,7 +82,7 @@ pub type Signal<T> = Rc<RefCell<OutputSignal<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorroAndReadOrSet<T: Copy> {
+pub trait BorrowAndReadOrSet<T: Copy> {
   fn read(&self) -> T;
   fn set(
     &mut self,
@@ -90,7 +90,7 @@ pub trait BorroAndReadOrSet<T: Copy> {
   );
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T> BorroAndReadOrSet<T> for Signal<T>
+impl<T> BorrowAndReadOrSet<T> for Signal<T>
 where
   T: Copy,
 {
