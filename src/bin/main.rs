@@ -67,6 +67,7 @@ fn main() -> io::Result<()> {
         all_lines.push(line);
       }
 
+      // we'll offset the words too.
       for word in horiz_linemaker.borrow().words.iter() {
         words.push(word.clone());
       }
