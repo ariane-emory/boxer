@@ -9,8 +9,8 @@ use boxer::util::new_rcrc;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////
-const STEPS: usize = 1 << 8;
 const MAX: usize = 1 << 6;
+const STEPS: usize = MAX << 2;
 
 ////////////////////////////////////////////////////////////////////////////////
 fn render(
@@ -54,7 +54,7 @@ fn main() -> io::Result<()> {
     let max = new_rcrc(Value::new(MAX));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
     let ctr_reset = new_rcrc(Feedback::new());
-    let ctr_max = new_rcrc(Value::new(64));
+    let ctr_max = new_rcrc(Value::new(MAX));
     let ctr = new_rcrc(UpCounter::new(
       clock.borrow_mut().output(),
       ctr_reset.borrow_mut().output(),
@@ -89,7 +89,7 @@ fn main() -> io::Result<()> {
     let max = new_rcrc(Value::new(MAX));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
     let ctr_reset = new_rcrc(Feedback::new());
-    let ctr_max = new_rcrc(Value::new(64));
+    let ctr_max = new_rcrc(Value::new(MAX));
     let ctr = new_rcrc(UpCounter::new(
       clock.borrow_mut().output(),
       ctr_reset.borrow_mut().output(),
