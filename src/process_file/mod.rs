@@ -29,11 +29,10 @@ pub fn process_file(
 pub fn make_process_file_fun<'a>(
   line_body_char: u8,
   wall_char: u8,
-  collect_alphanums: bool,
+  collect_words: bool,
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker>>, impl Fn(&Point, &u8) + 'a) {
-  let lm =
-    ConnectedLineMaker::new(line_body_char, wall_char, collect_alphanums);
+  let lm = ConnectedLineMaker::new(line_body_char, wall_char, collect_words);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
 
