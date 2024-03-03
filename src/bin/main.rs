@@ -76,6 +76,8 @@ fn main() -> io::Result<()> {
     find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
   } // End of all_lines scope.
 
+  println!("");
+
   for rect in rectangles.iter() {
     println!("Found rectangle: {:?}", rect);
   }
