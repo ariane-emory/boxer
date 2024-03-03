@@ -126,6 +126,6 @@ where
   }
 
   fn output_value(&self) -> U {
-    *self.borrow().output().borrow().read()
+    *self.output().borrow().read()
   }
 }
