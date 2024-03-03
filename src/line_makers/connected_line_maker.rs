@@ -34,15 +34,14 @@ impl ConnectedLineMaker {
     self.line_begin_type = connection_type;
   }
 
-  fn complete_line(
-    &mut self,
-    begin: Point,
-    end: Point,
-    connectection_type: ConnectionType,
-  ) {
-    let line =
-      ConnectedLine::new(begin, end, self.line_begin_type, connectection_type)
-        .unwrap();
+  fn complete_line(&mut self, end: Point, connectection_type: ConnectionType) {
+    let line = ConnectedLine::new(
+      self.line_begin.unwrap(),
+      end,
+      self.line_begin_type,
+      connectection_type,
+    )
+    .unwrap();
     println!("         CREATE LINE: {:?}", line);
     self.lines.push(line);
     self.abort_line();
@@ -72,18 +71,9 @@ impl ConnectedLineMaker {
       let distance_ok = pos.distance(&begin) > 1;
 
       if byte == b'+' && distance_ok {
-        let line =
-          ConnectedLine::new(begin, *pos, self.line_begin_type, AnotherLine)
-            .unwrap();
-        println!("         CREATE LINE: {:?}", line);
-        self.lines.push(line);
-        self.abort_line();
+        self.complete_line(*pos, AnotherLine);
       } else if byte == self.wall_char && distance_ok {
-        let line =
-          ConnectedLine::new(begin, *pos, self.line_begin_type, Wall).unwrap();
-        println!("         CREATE LINE: {:?}", line);
-        self.lines.push(line);
-        self.abort_line();
+        self.complete_line(*pos, Wall);
       } else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
         self.abort_line();
