@@ -1,5 +1,5 @@
 use crate::simple_geo::ConnectedLine;
-use crate::simple_geo::ConnectionType::Nothing;
+use crate::simple_geo::ConnectionType::{AnotherLine, Wall};
 use crate::simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,8 @@ impl ConnectedLineMaker {
       // need to check the distance between the current position and the
       // line begin position:
       if byte == b'+' && pos.distance(&begin) > 1 {
-        let line = ConnectedLine::new(begin, *pos, Nothing, Nothing).unwrap();
+        let line =
+          ConnectedLine::new(begin, *pos, AnotherLine, AnotherLine).unwrap();
         println!("         CREATE LINE: {:?}", line);
         self.lines.push(line);
         self.line_begin = None;

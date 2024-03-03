@@ -5,9 +5,8 @@ use std::fmt;
 #[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub enum ConnectionType {
   Nothing,
-  Line,
-  Input,
-  Output,
+  AnotherLine,
+  Wall,
   Variable,
 }
 
@@ -22,10 +21,7 @@ pub struct ConnectedLine {
 
 ////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for ConnectedLine {
-  fn fmt(
-    &self,
-    f: &mut fmt::Formatter,
-  ) -> fmt::Result {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     let prefix = if self.is_vertical() { "V" } else { "H" };
     write!(f, "{}{:?} ⇼ {:?}", prefix, self.start, self.end)
   }
@@ -54,11 +50,7 @@ impl LineMethods for ConnectedLine {
     .unwrap()
   }
 
-  fn offset_by(
-    &self,
-    line_offset: isize,
-    col_offset: isize,
-  ) -> Self {
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
     Self::new(
       self.start.offset_by(line_offset, col_offset),
       self.end.offset_by(line_offset, col_offset),
