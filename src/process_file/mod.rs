@@ -28,9 +28,10 @@ pub fn process_file(
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_file_fun<'a>(
   line_body_char: u8,
+  wall_char: u8,
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker>>, impl Fn(&Point, &u8) + 'a) {
-  let lm = ConnectedLineMaker::new(line_body_char);
+  let lm = ConnectedLineMaker::new(line_body_char, wall_char);
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
 
