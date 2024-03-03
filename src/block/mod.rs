@@ -119,6 +119,27 @@ pub trait HasSignal<T: Copy>: Steppable {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+pub type SignalRef<T> = RcRefCell<Signal<T>>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowAndReadOrSetSignal<T> {
+  fn read(&self) -> T;
+  fn set(&self, value: T);
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
+  fn read(&self) -> T {
+    self.borrow().read()
+  }
+
+  fn set(&self, value: T) {
+    self.borrow_mut().set(value);
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 pub trait BorrowSignalRef<U: Copy> {
   fn output(&self) -> SignalRef<U>;
   fn output_value(&self) -> U;
@@ -140,37 +161,15 @@ where
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub type SignalRef<T> = RcRefCell<Signal<T>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndReadOrSetSignal<T> {
-  fn read(&self) -> T;
-  fn set(&self, value: T);
+pub trait BorrowAndSetInput<U: Copy + Default> {
+  fn set_input(&self, input: &SignalRef<U>);
 }
-
-
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
-  fn read(&self) -> T {
-    self.borrow().read()
-  }
-
-  fn set(&self, value: T) {
-    self.borrow_mut().set(value);
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndSetInputSignal<U: Copy + Default> {
-  fn set(&self, input: &SignalRef<U>);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-impl<U: Copy + Default> BorrowAndSetInputSignal<U> for RcRefCell<Feedback<U>> {
-  fn set(&self, input: &SignalRef<U>) {
+impl<U: Copy + Default> BorrowAndSetInput<U> for RcRefCell<Feedback<U>>
+where
+  U: Copy + Default,
+{
+  fn set_input(&self, input: &SignalRef<U>) {
     self.borrow_mut().set_input(input);
   }
 }

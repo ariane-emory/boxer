@@ -23,7 +23,8 @@ fn perform_steps<T: Copy + std::fmt::Debug>(
   ctr: &Rc<RefCell<impl HasSignal<T>>>,
   max: &Rc<RefCell<impl HasSignal<usize>>>,
 ) where
-  T: TryInto<usize>, {
+  T: TryInto<usize>,
+{
   for _ in 0..steps {
     blocks.iter().for_each(|b| b.step());
 
@@ -51,7 +52,7 @@ fn main() -> io::Result<()> {
         UpCounter::new(&clock.output(), &ctr_reset.output(), &ctr_max.output())
           .as_rcrc();
 
-      ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
+      ctr_reset.set_input(&ctr.borrow().at_max());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
@@ -195,12 +196,7 @@ fn main() -> io::Result<()> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-fn render(
-  char: u8,
-  char2: u8,
-  signal: usize,
-  width: usize,
-) {
+fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut printed = 0;
   let quarterways = width >> 2;
   let mut next_div = quarterways;
