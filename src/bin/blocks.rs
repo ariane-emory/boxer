@@ -82,7 +82,7 @@ fn main() -> io::Result<()> {
       let select =
         Select::new(&square.output(), &zero.output(), &max.output()).as_rcrc();
 
-      ctr_reset.borrow_mut().set_input(&ctr.borrow().at_max());
+      ctr_reset.set_input(&ctr.borrow().at_max());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
