@@ -50,7 +50,7 @@ fn main() -> io::Result<()> {
         UpCounter::new(&clock.output(), &ctr_reset.output(), &ctr_max.output())
           .as_rcrc();
 
-      ctr_reset.set_input(&ctr.borrow().at_max());
+      ctr_reset.set_input(&ctr.at_max());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
@@ -80,7 +80,7 @@ fn main() -> io::Result<()> {
       let select =
         Select::new(&square.output(), &zero.output(), &max.output()).as_rcrc();
 
-      ctr_reset.set_input(&ctr.borrow().at_max());
+      ctr_reset.set_input(&ctr.at_max());
 
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
@@ -110,14 +110,14 @@ fn main() -> io::Result<()> {
       let sr = SRLatch::new(&sr_set.output(), &sr_reset.output()).as_rcrc();
       let not_latched = Not::new(&sr.output()).as_rcrc();
       let ctr_at_max_and_latched =
-        And::new(ctr.borrow().at_max(), &sr.output()).as_rcrc();
+        And::new(&ctr.at_max(), &sr.output()).as_rcrc();
       let ctr_at_max_and_not_latched =
-        And::new(ctr.borrow().at_max(), &not_latched.output()).as_rcrc();
+        And::new(&ctr.at_max(), &not_latched.output()).as_rcrc();
       let sub = Sub::new(&max.output(), &ctr.output()).as_rcrc();
       let select =
         Select::new(&sr.output(), &ctr.output(), &sub.output()).as_rcrc();
 
-      ctr_reset.set_input(&ctr.borrow().at_max());
+      ctr_reset.set_input(&ctr.at_max());
       sr_set.set_input(&ctr_at_max_and_not_latched.output());
       sr_reset.set_input(&ctr_at_max_and_latched.output());
 
