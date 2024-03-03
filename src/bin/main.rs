@@ -39,7 +39,7 @@ fn main() -> io::Result<()> {
           println!("Changed {:?} into {:?}!", line, l);
           l
         }),
-        Box::new(|word| word),
+        Box::new(|word| word.offset_by(LINE_OFFSET, 0)),
         |pos, byte| {
           println!(
             "Vert:    {:?}: '{}'",
@@ -60,7 +60,7 @@ fn main() -> io::Result<()> {
           println!("Changed {:?} into {:?}", line, l);
           l
         }),
-        Box::new(|word| word),
+        Box::new(|word| word.offset_by(LINE_OFFSET, 0)),
         |pos, byte| {
           println!(
             "Horiz:   {:?}: '{}'",
@@ -94,7 +94,7 @@ fn main() -> io::Result<()> {
 
       // we'll offset the words too.
       for word in horiz_linemaker.borrow().words.iter() {
-        words.push(word.offset_by(LINE_OFFSET, 0));
+        // words.push(word.offset_by(LINE_OFFSET, 0));
         words.push(word.clone()); // .offset_by(LINE_OFFSET, 0));
       }
     } // End of RefCell scope.

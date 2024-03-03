@@ -63,7 +63,7 @@ impl<'a> ConnectedLineMaker<'a> {
 
   fn try_collect_word(&mut self) {
     if self.collect_words && self.current_word.len() > 0 {
-      self.words.push(
+      self.words.push((self.word_postprocessor)(
         Word::new(
           &self.current_word,
           self.current_word_begin,
@@ -72,7 +72,7 @@ impl<'a> ConnectedLineMaker<'a> {
             .offset_by(0, (self.current_word.len() - 1) as isize),
         )
         .unwrap(),
-      );
+      ))
     }
     self.current_word = String::new();
   }
