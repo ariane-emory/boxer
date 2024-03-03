@@ -45,6 +45,6 @@ pub fn make_process_file_fun<'a>(
     }
 
     custom_printer(*pos, *byte);
-    rc_lm_twin.borrow_mut().process(pos, *byte);
+    rc_lm_twin.borrow_mut().process(*pos, *byte);
   })
 }

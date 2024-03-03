@@ -10,4 +10,4 @@ comment_width = 80
 fn_call_width = 80
 max_width = 80
 #indent_style = "Visual"
-
+control_brace_style = "ClosingNextLine"

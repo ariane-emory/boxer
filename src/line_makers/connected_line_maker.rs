@@ -10,6 +10,7 @@ pub struct ConnectedLineMaker {
   line_begin_type: ConnectionType,
   line_body_char: u8,
   wall_char: u8,
+  prev_pos: Point,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +22,7 @@ impl ConnectedLineMaker {
       line_begin_type: AnotherLine,
       line_body_char,
       wall_char,
+      prev_pos: Point::new(0, 0),
     }
   }
 
@@ -34,20 +36,21 @@ impl ConnectedLineMaker {
     self.line_begin_type = connection_type;
   }
 
-  fn complete_line(&mut self, end: Point, connectection_type: ConnectionType) {
-    let line = ConnectedLine::new(
-      self.line_begin.unwrap(),
-      end,
-      self.line_begin_type,
-      connectection_type,
-    )
-    .unwrap();
+  fn complete_line(
+    &mut self,
+    begin: Point,
+    end: Point,
+    connectection_type: ConnectionType,
+  ) {
+    let line =
+      ConnectedLine::new(begin, end, self.line_begin_type, connectection_type)
+        .unwrap();
     println!("         CREATE LINE: {:?}", line);
     self.lines.push(line);
     self.abort_line();
   }
 
-  pub fn process(&mut self, pos: &Point, byte: u8) {
+  pub fn process(&mut self, pos: Point, byte: u8) {
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art
     // lines like '+----+'.- When a '+' is observed and line_begin is None,
     // the current position is recorded. If line begin is set and the
@@ -59,29 +62,45 @@ impl ConnectedLineMaker {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
 
-    if pos.col == 0 {
-      println!("         new line!");
-      self.abort_line();
-    }
 
     if let Some(begin) = self.line_begin {
+      // Line has already started!
+      if pos.col == 0 {
+        println!("         new line!");
+        self.complete_line(begin, self.prev_pos, Nothing);
+      }
+
       // in order to ensure that the line is at least one character long, we
       // need to check the distance between the current position and the
       // line begin position:
       let distance_ok = pos.distance(&begin) > 1;
 
       if distance_ok && byte == b'+' {
-        self.complete_line(*pos, AnotherLine);
-      } else if distance_ok && byte == self.wall_char {
-        self.complete_line(*pos, Wall);
-      } else if byte != self.line_body_char {
+        self.complete_line(begin, pos, AnotherLine);
+      }
+      else if distance_ok && byte == self.wall_char {
+        self.complete_line(begin, pos, Wall);
+      }
+      else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
         self.abort_line();
       }
-    } else if byte == b'+' {
-      self.begin_line(*pos, AnotherLine);
-    } else if byte == self.wall_char {
-      self.begin_line(*pos, Wall);
     }
+    else {
+      // No line in progress...
+      if pos.col == 0 {
+        println!("         new line!");
+        self.abort_line();
+      }
+
+      if byte == b'+' {
+        self.begin_line(pos, AnotherLine);
+      }
+      else if byte == self.wall_char {
+        self.begin_line(pos, Wall);
+      }
+    }
+
+    self.prev_pos = pos;
   }
 }
