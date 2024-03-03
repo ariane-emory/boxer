@@ -26,7 +26,7 @@ impl fmt::Debug for ConnectedLine {
       format!("{:?}⇼{:?}", self.start_connects_to, self.end_connects_to);
     write!(
       f,
-      "{}{:?} {:14}{:?}",
+      "{}{:?} {:15}{:?}",
       rotation_str, self.start, connection_str, self.end
     )
   }
