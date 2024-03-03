@@ -1,5 +1,26 @@
 use crate::block::*;
 
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowCounterRefAndGetAtMax {
+  fn at_max(&self) -> SignalRef<bool>;
+
+  fn at_max_value(&self) -> bool {
+    self.at_max().read()
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowCounterRefAndGetAtMin {
+  fn at_min(&self) -> SignalRef<bool>;
+
+  fn at_min_value(&self) -> bool {
+    self.at_min().read()
+  }
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 pub struct UpCounter {
   output: SignalRef<usize>,
@@ -75,18 +96,8 @@ impl SteppableWithOutputSignal<usize> for UpCounter {
     &self.output
   }
 }
-
-
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowUpCounterRefAndGetAtMax {
-  fn at_max(&self) -> SignalRef<bool>;
-
-  fn at_max_value(&self) -> bool {
-    self.at_max().read()
-  }
-}
-////////////////////////////////////////////////////////////////////////////////
-impl BorrowUpCounterRefAndGetAtMax for RcRefCell<UpCounter> {
+impl BorrowCounterRefAndGetAtMax for RcRefCell<UpCounter> {
   fn at_max(&self) -> SignalRef<bool> {
     self.borrow().at_max().clone()
   }
@@ -163,18 +174,8 @@ impl SteppableWithOutputSignal<usize> for DownCounter {
     &self.output
   }
 }
-
-
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowDownCounterRefAndGetAtMin {
-  fn at_min(&self) -> SignalRef<bool>;
-
-  fn at_min_value(&self) -> bool {
-    self.at_min().read()
-  }
-}
-////////////////////////////////////////////////////////////////////////////////
-impl BorrowDownCounterRefAndGetAtMin for RcRefCell<DownCounter> {
+impl BorrowCounterRefAndGetAtMin for RcRefCell<DownCounter> {
   fn at_min(&self) -> SignalRef<bool> {
     self.borrow().at_min().clone()
   }
@@ -268,28 +269,14 @@ impl SteppableWithOutputSignal<usize> for UpDownCounter {
     &self.output
   }
 }
-
-
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowUpDownCounterRefAndGetAtMaxAndAtMin {
-  fn at_max(&self) -> SignalRef<bool>;
-
-  fn at_max_value(&self) -> bool {
-    self.at_max().read()
-  }
-
-  fn at_min(&self) -> SignalRef<bool>;
-
-  fn at_min_value(&self) -> bool {
-    self.at_min().read()
-  }
-}
-////////////////////////////////////////////////////////////////////////////////
-impl BorrowUpDownCounterRefAndGetAtMaxAndAtMin for RcRefCell<UpDownCounter> {
+impl BorrowCounterRefAndGetAtMax for RcRefCell<UpDownCounter> {
   fn at_max(&self) -> SignalRef<bool> {
     self.borrow().at_max().clone()
   }
-
+}
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowCounterRefAndGetAtMin for RcRefCell<UpDownCounter> {
   fn at_min(&self) -> SignalRef<bool> {
     self.borrow().at_min().clone()
   }
