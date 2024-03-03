@@ -9,7 +9,7 @@ use boxer::util::new_rcrc;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////
-const STEPS: usize = 1 << 9;
+const STEPS: usize = 1 << 8;
 const MAX: usize = 1 << 6;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,42 @@ fn render(
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   {
-    println!("\nSaw PWM:");
+    println!("\nSawtooth:");
+
+    let one = new_rcrc(Value::new(1));
+    let max = new_rcrc(Value::new(MAX));
+    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
+    let ctr_reset = new_rcrc(Feedback::new());
+    let ctr_max = new_rcrc(Value::new(64));
+    let ctr = new_rcrc(UpCounter::new(
+      clock.borrow_mut().output(),
+      ctr_reset.borrow_mut().output(),
+      ctr_max.borrow_mut().output(),
+    ));
+
+    ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
+
+    let mut blocks: Vec<RcRcSteppable> = Vec::new();
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
+    // push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
+    push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
+
+    for _ in 0..STEPS {
+      blocks.iter().for_each(|b| b.borrow_mut().step());
+      render(
+        b'x',
+        b'-',
+        ctr.borrow_mut().output_value(),
+        max.borrow_mut().output_value(),
+      );
+    }
+  }
+
+  {
+    println!("\nSawtooth PWM:");
 
     let one = new_rcrc(Value::new(1));
     let max = new_rcrc(Value::new(MAX));
