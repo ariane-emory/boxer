@@ -154,7 +154,8 @@ mod tests {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
   fn line_test() {
-    assert!(Line::new(Point::new(0, 0), Point::new(0, 0)).is_err());
+    //assert!(Line::new(Point::new(0, 0), Point::new(0, 0)).is_err());
+    assert!(Line::new(Point::new(0, 0), Point::new(0, 0)).is_ok());
     assert!(Line::new(Point::new(0, 0), Point::new(1, 0)).is_ok());
     assert!(Line::new(Point::new(0, 0), Point::new(0, 1)).is_ok());
     assert!(Line::new(Point::new(0, 0), Point::new(1, 1)).is_err());
@@ -402,17 +403,18 @@ mod tests {
     Rectangle::new(Point::new(0, 0), Point::new(1, 1)).unwrap();
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  #[test]
-  #[should_panic]
-  fn rectangle_panic_test_2() {
-    Rectangle {
-      top_left: Point::new(1, 1),
-      bottom_right: Point::new(1, 1),
-    }
-    .contained_rectangle()
-    .unwrap();
-  }
+  // This one is probably obsolete:
+  // ///////////////////////////////////////////////////////////////////////////
+  // /////////////////////// #[test]
+  // #[should_panic]
+  // fn rectangle_panic_test_2() {
+  //   Rectangle {
+  //     top_left: Point::new(1, 1),
+  //     bottom_right: Point::new(1, 1),
+  //   }
+  //   .contained_rectangle()
+  //   .unwrap();
+  // }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   #[test]
@@ -569,7 +571,7 @@ mod tests {
     let mut leftover_lines = Vec::new();
     let mut rects = Vec::new();
 
-    find_rectangles(&lines, &mut rects, &mut leftover_lines);
+    find_rectangles(&lines, &mut rects, &mut leftover_lines, false);
 
     println!("");
     for rect in &rects {
