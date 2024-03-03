@@ -2,6 +2,7 @@ use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Point;
+use crate::simple_geo::Word;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +26,7 @@ fn is_word_char(byte: u8) -> bool {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker {
   pub lines: Vec<ConnectedLine>,
-  pub words: Vec<String>,
+  pub words: Vec<Word>,
   line_begin: Option<Point>,
   line_begin_type: ConnectionType,
   line_body_char: u8,
@@ -64,7 +65,10 @@ impl ConnectedLineMaker {
     if self.collect_words && self.current_word.len() > 0 {
       println!("Pushing word: {}", self.current_word);
       self.current_word = String::new();
-      self.words.push(self.current_word.clone());
+      self.words.push(
+        Word::new(&self.current_word, Point::new(0, 0), Point::new(0, 0))
+          .unwrap(),
+      );
     }
     self.current_word = String::new();
   }
