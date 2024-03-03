@@ -74,15 +74,17 @@ impl ConnectedLineMaker {
       let distance_ok =
         pos.distance(&begin) > 1 && (pos.line == self.prev_pos.line);
 
-      if distance_ok && byte == b'+' {
-        self.complete_line(begin, pos, AnotherLine);
+      if byte == b'+' {
+        if distance_ok {
+          self.complete_line(begin, pos, AnotherLine);
+        }
+        else {
+          self.abort_line();
+          println!("Begin line at AnotherLine after line break!");
+          self.begin_line(pos, AnotherLine);
+        }
       }
-      else if byte == b'+' {
-        self.abort_line();
-        println!("Begin line at AnotherLine after line break!");
-        self.begin_line(pos, AnotherLine);
-      }
-      else if distance_ok && byte == self.wall_char {
+      else if byte == self.wall_char && distance_ok {
         self.complete_line(begin, pos, Wall);
       }
       else if byte != self.line_body_char {
