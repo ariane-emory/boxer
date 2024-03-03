@@ -89,10 +89,11 @@ impl ConnectedLineMaker {
     }
     else {
       // No line in progress...
-      if pos.col == 0 {
-        println!("         new line!");
-        self.abort_line();
-      }
+      // if pos.col == 0 {
+      //   println!("         new line!");
+      //   self.complete_line(begin, self.prev_pos, Nothing);
+      //   return;
+      // }
 
       if byte == b'+' {
         self.begin_line(pos, AnotherLine);
