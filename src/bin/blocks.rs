@@ -5,9 +5,7 @@
 //#![allow(dead_code)]
 
 use boxer::block::*;
-use std::cell::RefCell;
 use std::io::{self};
-use std::rc::Rc;
 
 
 ////////////////////////////////////////////////////////////////////////////////

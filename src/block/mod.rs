@@ -6,6 +6,7 @@ pub mod latch;
 pub mod logical;
 pub mod math;
 pub mod random;
+pub mod rcrc;
 pub mod sample_and_hold;
 pub mod select;
 pub mod signal;
@@ -23,28 +24,18 @@ pub use latch::*;
 pub use logical::*;
 pub use math::*;
 pub use random::*;
+pub use rcrc::*;
 pub use sample_and_hold::*;
 pub use select::*;
 pub use signal::*;
+pub use std::cell::RefCell;
+pub use std::rc::Rc;
 pub use steppable::*;
 pub use timer::*;
 pub use trigger::*;
 pub use unit_delay::*;
 pub use value::*;
 pub use waveform::*;
-
-use std::cell::RefCell;
-use std::rc::Rc;
-
-////////////////////////////////////////////////////////////////////////////////
-pub type RcRefCell<T> = Rc<RefCell<T>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub fn new_rcrc<T>(item: T) -> RcRefCell<T> {
-  Rc::new(RefCell::new(item))
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 pub trait HasSignal<T: Copy>: Steppable {
