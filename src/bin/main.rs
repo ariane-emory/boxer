@@ -7,6 +7,7 @@
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::line_methods::*;
+use boxer::simple_geo::Word::*;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
