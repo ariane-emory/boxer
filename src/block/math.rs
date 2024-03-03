@@ -437,3 +437,38 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Log<T: std::ops::Div<Output = T> + Copy + Default> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+  base: SignalRef<T>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Div<Output = T> + Copy + Default> Log<T> {
+  pub fn new(input: &SignalRef<T>, base: &SignalRef<T>) -> Self {
+    let mut r = Log {
+      output: new_signal_ref(Default::default()),
+      input: Rc::clone(input),
+      base: Rc::clone(base),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Log<T> {
+  fn step(&mut self) {
+    self.output.set(self.input.read() / self.base.read());
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Div<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
+  for Log<T>
+{
+  fn output(&self) -> &SignalRef<T> {
+    &self.output
+  }
+}
