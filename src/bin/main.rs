@@ -7,7 +7,7 @@
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::line_methods::*;
-use boxer::simple_geo::Word::*;
+//use boxer::simple_geo::Word;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +19,7 @@ fn main() -> io::Result<()> {
   let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
+  let mut words = Vec::new();
 
   // all_lines scope:
   {
@@ -65,6 +66,10 @@ fn main() -> io::Result<()> {
         println!("Vert line:  {:?}", line);
         all_lines.push(line);
       }
+
+      for word in horiz_linemaker.borrow().words.iter() {
+        words.push(word.clone());
+      }
     } // End of RefCell scope.
 
     find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
@@ -75,7 +80,11 @@ fn main() -> io::Result<()> {
   }
 
   for line in leftover_lines.iter() {
-    println!("Leftover line: {:?}", line);
+    println!("Leftover line:   {:?}", line);
+  }
+
+  for word in words.iter() {
+    println!("Found word:      {:?}", word);
   }
 
   Ok(())
