@@ -44,12 +44,12 @@ pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
 
 ///////////////////////////////////////////////////////////////////////////////
 pub trait BorrowAndStep {
-  fn step(&mut self);
+  fn step(&self);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 impl BorrowAndStep for RcRcSteppable {
-  fn step(&mut self) {
+  fn step(&self) {
     self.borrow_mut().step();
   }
 }

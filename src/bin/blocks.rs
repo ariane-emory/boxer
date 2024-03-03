@@ -25,7 +25,7 @@ fn perform_steps<T: Copy + std::fmt::Debug>(
 ) where
   T: TryInto<usize>, {
   for _ in 0..steps {
-    blocks.iter().for_each(|b| b.borrow_mut().step());
+    blocks.iter().for_each(|b| b.step());
 
     if let Ok(us) = ctr.output_value().try_into() {
       render(b'x', b'-', us, max.output_value());
