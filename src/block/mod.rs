@@ -80,6 +80,18 @@ impl<T: Copy> OutputSignal<T> {
 ////////////////////////////////////////////////////////////////////////////////
 pub type Signal<T> = Rc<RefCell<OutputSignal<T>>>;
 
+pub trait BorrowAndRead<T: Copy> {
+  fn read(&self) -> T;
+}
+
+impl<T> BorrowAndRead<T> for Signal<T>
+where
+  T: Copy,
+{
+  fn read(&self) -> T {
+    *self.borrow().read()
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
