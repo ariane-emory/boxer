@@ -11,7 +11,7 @@ pub struct ConnectedLineMaker {
   line_body_char: u8,
   wall_char: u8,
   _collect_alphanums: bool,
-  _alphanums: String,
+  alphanums: String,
   prev_pos: Point,
 }
 
@@ -29,7 +29,7 @@ impl ConnectedLineMaker {
       line_body_char,
       wall_char,
       _collect_alphanums: collect_alphanums,
-      _alphanums: String::new(),
+      alphanums: String::new(),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
@@ -39,9 +39,10 @@ impl ConnectedLineMaker {
     self.line_begin_type = connection_type;
   }
 
-  fn abort_line(&mut self) {
+  fn reset(&mut self) {
     self.line_begin = None;
     self.line_begin_type = Nothing;
+    self.alphanums = String::new();
   }
 
   fn complete_line(
@@ -56,7 +57,7 @@ impl ConnectedLineMaker {
         .unwrap();
     println!("         CREATED LINE: {:?}", line);
     self.lines.push(line);
-    self.abort_line();
+    self.reset();
 
     self.process(end, byte);
   }
@@ -75,7 +76,7 @@ impl ConnectedLineMaker {
 
     if pos.line != self.prev_pos.line {
       println!("         new line, abort!");
-      self.abort_line();
+      self.reset();
     }
 
     if let Some(begin) = self.line_begin {
@@ -89,7 +90,7 @@ impl ConnectedLineMaker {
           self.complete_line(byte, begin, pos, Corner);
         }
         else {
-          self.abort_line();
+          self.reset();
           println!("Begin line at Corner after line break!");
           self.begin_line(pos, Corner);
         }
@@ -99,7 +100,7 @@ impl ConnectedLineMaker {
       }
       else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
-        self.abort_line();
+        self.reset();
       }
     }
     else {
