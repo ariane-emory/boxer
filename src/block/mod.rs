@@ -58,10 +58,12 @@ impl<T: Copy> SignalOutput<T> {
 ////////////////////////////////////////////////////////////////////////////////
 pub type Signal<T> = Rc<RefCell<SignalOutput<T>>>;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 pub fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
   Rc::new(RefCell::new(item))
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
@@ -75,6 +77,12 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
 
   fn output_value(&self) -> T {
     *self.output().borrow().read()
+  }
+
+  fn as_rcrc(self) -> Rc<RefCell<Self>>
+  where
+    Self: Sized, {
+    new_rcrc(self)
   }
 }
 
