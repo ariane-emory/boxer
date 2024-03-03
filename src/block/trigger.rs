@@ -18,9 +18,9 @@ impl RisingTrigger {
 impl Steppable for RisingTrigger {
   fn step(&mut self) {
     if !self.input.read() && self.input.read() {
-      self.output.borrow_mut().set(true);
+      self.output.set(true);
     } else {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     }
   }
 }
@@ -50,9 +50,9 @@ impl FallingTrigger {
 impl Steppable for FallingTrigger {
   fn step(&mut self) {
     if !self.input.read() && self.input.read() {
-      self.output.borrow_mut().set(true);
+      self.output.set(true);
     } else {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     }
   }
 }
