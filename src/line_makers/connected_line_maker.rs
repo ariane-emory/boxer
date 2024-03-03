@@ -10,8 +10,8 @@ pub struct ConnectedLineMaker {
   line_begin_type: ConnectionType,
   line_body_char: u8,
   wall_char: u8,
-  _collect_alphanums: bool,
-  alphanums: String,
+  _collect_words: bool,
+  word: String,
   prev_pos: Point,
 }
 
@@ -20,7 +20,7 @@ impl ConnectedLineMaker {
   pub fn new(
     line_body_char: u8,
     wall_char: u8,
-    collect_alphanums: bool,
+    collect_words: bool,
   ) -> ConnectedLineMaker {
     ConnectedLineMaker {
       lines: Vec::new(),
@@ -28,8 +28,8 @@ impl ConnectedLineMaker {
       line_begin_type: Corner,
       line_body_char,
       wall_char,
-      _collect_alphanums: collect_alphanums,
-      alphanums: String::new(),
+      _collect_words: collect_words,
+      word: String::new(),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
@@ -42,7 +42,7 @@ impl ConnectedLineMaker {
   fn reset(&mut self) {
     self.line_begin = None;
     self.line_begin_type = Nothing;
-    self.alphanums = String::new();
+    self.word = String::new();
   }
 
   fn complete_line(
