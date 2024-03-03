@@ -57,7 +57,8 @@ impl ConnectedLineMaker {
       // line begin position:
       if byte == b'+' && pos.distance(&begin) > 1 {
         let line =
-          ConnectedLine::new(begin, *pos, AnotherLine, AnotherLine).unwrap();
+          ConnectedLine::new(begin, *pos, self.line_begin_type, AnotherLine)
+            .unwrap();
         println!("         CREATE LINE: {:?}", line);
         self.lines.push(line);
         self.abort_line();

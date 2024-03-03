@@ -2,15 +2,6 @@ use crate::simple_geo::*;
 use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
-pub enum ConnectionType {
-  Nothing,
-  AnotherLine,
-  Wall,
-  Variable,
-}
-
-////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ConnectedLine {
   pub start: Point,
@@ -20,16 +11,27 @@ pub struct ConnectedLine {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
+pub enum ConnectionType {
+  Nothing,
+  AnotherLine,
+  Wall,
+  Variable,
+}
+
+////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for ConnectedLine {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     let rotation_str = if self.is_vertical() { "V" } else { "H" };
+    let start_connects_to_str = format!("{:?}", self.start_connects_to);
+    let end_connects_to_str = format!("{:?}", self.end_connects_to);
     write!(
       f,
-      "{}{:?} {:11?}⇼{:11?} {:?}",
+      "{}{:?} {:11}⇼{:11} {:?}",
       rotation_str,
       self.start,
-      self.start_connects_to,
-      self.end_connects_to,
+      start_connects_to_str,
+      end_connects_to_str,
       self.end
     )
   }
