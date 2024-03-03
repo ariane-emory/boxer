@@ -5,12 +5,34 @@
 //#![allow(dead_code)]
 
 use boxer::block::*;
+use std::cell::RefCell;
 use std::io::{self};
+use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////
 const MAX: usize = 1 << 6;
 const STEPS: usize = MAX << 2;
 const LOOP: bool = false;
+
+
+////////////////////////////////////////////////////////////////////////////////
+fn perform_steps(
+  steps: usize,
+  blocks: &Vec<RcRcSteppable>,
+  ctr: &Rc<RefCell<impl HasOutputSignal<usize>>>,
+  max: &Rc<RefCell<impl HasOutputSignal<usize>>>,
+) {
+  for _ in 0..steps {
+    blocks.iter().for_each(|b| b.borrow_mut().step());
+    render(
+      b'x',
+      b'-',
+      ctr.borrow().output_value(),
+      max.borrow().output_value(),
+    );
+  }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
@@ -35,10 +57,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
 
-      for _ in 0..STEPS {
-        blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(b'x', b'-', ctr.output_value(), max.output_value());
-      }
+      perform_steps(MAX, &blocks, &ctr, &max);
     }
 
     {
@@ -72,10 +91,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
-      for _ in 0..STEPS {
-        blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(b'x', b'-', select.output_value(), max.output_value());
-      }
+      perform_steps(MAX, &blocks, &select, &max);
     }
 
     {
@@ -121,10 +137,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sub);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
-      for _ in 0..STEPS {
-        blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(b'x', b'-', select.output_value(), max.output_value());
-      }
+      perform_steps(MAX, &blocks, &select, &max);
     }
 
     {
@@ -159,11 +172,6 @@ fn main() -> io::Result<()> {
       held_value.borrow_mut().set_input(&sample_and_hold.output());
 
       let mut blocks: Vec<RcRcSteppable> = Vec::new();
-      // push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
-      // push_onto_vec_of_rcrc_steppable(&mut blocks, &imax);
-      // push_onto_vec_of_rcrc_steppable(&mut blocks, &one);
-      // push_onto_vec_of_rcrc_steppable(&mut blocks, &sixteen);
-      // push_onto_vec_of_rcrc_steppable(&mut blocks, &izero);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
@@ -172,6 +180,8 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &div_new_input_by_itwo);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &add);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sample_and_hold);
+
+      // perform_steps(MAX, &blocks, &select, &max);
 
       for _ in 0..STEPS {
         blocks.iter().for_each(|b| b.borrow_mut().step());
