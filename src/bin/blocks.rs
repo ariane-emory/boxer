@@ -16,23 +16,45 @@ const LOOP: bool = false;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-fn perform_steps(
+// fn perform_steps(
+//   steps: usize,
+//   blocks: &Vec<RcRcSteppable>,
+//   ctr: &Rc<RefCell<impl HasOutputSignal<usize>>>,
+//   max: &Rc<RefCell<impl HasOutputSignal<usize>>>,
+// ) {
+//   for _ in 0..steps {
+//     blocks.iter().for_each(|b| b.borrow_mut().step());
+//     render(
+//       b'x',
+//       b'-',
+//       ctr.borrow().output_value(),
+//       max.borrow().output_value(),
+//     );
+//   }
+// }
+
+fn perform_steps<T: Copy + std::fmt::Debug>(
   steps: usize,
   blocks: &Vec<RcRcSteppable>,
-  ctr: &Rc<RefCell<impl HasOutputSignal<usize>>>,
+  ctr: &Rc<RefCell<impl HasOutputSignal<T>>>,
   max: &Rc<RefCell<impl HasOutputSignal<usize>>>,
-) {
+) where
+  T: TryInto<usize>, // Use TryInto for safer, conditional conversion
+{
   for _ in 0..steps {
+    // Attempt conversion and handle potential failure
+    let us: usize = match ctr.borrow().output_value().try_into() {
+      Ok(value) => value,
+      Err(_) => {
+        eprintln!("Error converting output value to usize.");
+        continue; // Skip this iteration or handle as appropriate
+      }
+    };
+
     blocks.iter().for_each(|b| b.borrow_mut().step());
-    render(
-      b'x',
-      b'-',
-      ctr.borrow().output_value(),
-      max.borrow().output_value(),
-    );
+    render(b'x', b'-', us, max.borrow().output_value());
   }
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
@@ -57,7 +79,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
 
-      perform_steps(MAX, &blocks, &ctr, &max);
+      perform_steps(STEPS, &blocks, &ctr, &max);
     }
 
     {
@@ -91,7 +113,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
-      perform_steps(MAX, &blocks, &select, &max);
+      perform_steps(STEPS, &blocks, &select, &max);
     }
 
     {
@@ -137,7 +159,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sub);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
-      perform_steps(MAX, &blocks, &select, &max);
+      perform_steps(STEPS, &blocks, &select, &max);
     }
 
     {
@@ -181,7 +203,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &add);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sample_and_hold);
 
-      // perform_steps(MAX, &blocks, &select, &max);
+      // perform_steps(STEPS, &blocks, &select, &max);
 
       for _ in 0..STEPS {
         blocks.iter().for_each(|b| b.borrow_mut().step());
