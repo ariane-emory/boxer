@@ -9,6 +9,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
   lines: &Vec<T>,
   rects: &mut Vec<Rectangle>,
   leftover_lines: &mut Vec<T>,
+  allow_overlap: bool,
 ) {
   let mut sorted_lines: Vec<T> = lines.to_vec();
   sorted_lines.sort();
@@ -58,9 +59,11 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
             noisy_println!("\nNew Rectangle: {:?}", rect);
 
-            lines_to_remove.push(other_line.clone());
-            lines_to_remove.push(first_side.clone());
-            lines_to_remove.push(second_side.clone());
+            if !allow_overlap {
+              lines_to_remove.push(other_line.clone());
+              lines_to_remove.push(first_side.clone());
+              lines_to_remove.push(second_side.clone());
+            }
 
             found_a_rect = true;
 
@@ -75,7 +78,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
       noisy_println!("No coaligned lines found for {:?}", line);
       leftover_lines.push(line);
     }
-    else {
+    else if !allow_overlap {
       lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
   }

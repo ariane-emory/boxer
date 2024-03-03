@@ -73,7 +73,7 @@ fn main() -> io::Result<()> {
       }
     } // End of RefCell scope.
 
-    find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines);
+    find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines, true);
   } // End of all_lines scope.
 
   println!("");
