@@ -91,3 +91,91 @@ impl BorrowUpCounterRefAndGetAtMax for RcRefCell<UpCounter> {
     self.borrow().at_max().clone()
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct DownCounter {
+  output: SignalRef<usize>,
+  at_min: SignalRef<bool>,
+  input: SignalRef<bool>,
+  reset: SignalRef<bool>,
+  min: SignalRef<usize>,
+  last_input_state: bool,
+  last_reset_state: bool,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl DownCounter {
+  pub fn new(
+    input: &SignalRef<bool>,
+    reset: &SignalRef<bool>,
+    min: &SignalRef<usize>,
+  ) -> Self {
+    DownCounter {
+      output: new_signal_ref(0),
+      at_min: new_signal_ref(false),
+      input: Rc::clone(input),
+      reset: Rc::clone(reset),
+      min: Rc::clone(min),
+      last_input_state: false,
+      last_reset_state: false,
+    }
+  }
+
+  pub fn at_min(&self) -> &SignalRef<bool> {
+    &self.at_min
+  }
+
+  pub fn at_min_value(&self) -> bool {
+    self.at_min.read()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for DownCounter {
+  fn step(&mut self) {
+    let output_val = self.output.read();
+    let min_val = self.min.read();
+    let input_val = self.input.read();
+    let reset_val = self.reset.read();
+    let at_min = output_val == min_val;
+    let last_input_state_val = self.last_input_state;
+    let last_reset_state_val = self.last_reset_state;
+    let input_rose = input_val && !last_input_state_val;
+    let reset_rose = reset_val && !last_reset_state_val;
+
+    self.last_input_state = input_val;
+    self.last_reset_state = reset_val;
+
+    self.at_min.set(at_min);
+
+    if reset_rose {
+      self.output.set(min_val);
+      self.at_min.set(false);
+    } else if at_min {
+      return;
+    } else if input_rose {
+      self.output.set(output_val - 1);
+    }
+  }
+}
+///////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<usize> for DownCounter {
+  fn output(&self) -> &SignalRef<usize> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowDownCounterRefAndGetAtMin {
+  fn at_min(&self) -> SignalRef<bool>;
+
+  fn at_min_value(&self) -> bool {
+    self.at_min().read()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowDownCounterRefAndGetAtMin for RcRefCell<DownCounter> {
+  fn at_min(&self) -> SignalRef<bool> {
+    self.borrow().at_min().clone()
+  }
+}
