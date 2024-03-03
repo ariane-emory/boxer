@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 pub mod cmp;
+pub mod convert;
 pub mod counter;
 pub mod feedback;
 pub mod latch;
@@ -18,6 +19,7 @@ pub mod value;
 pub mod waveform;
 
 pub use cmp::*;
+pub use convert::*;
 pub use counter::*;
 pub use feedback::*;
 pub use latch::*;
