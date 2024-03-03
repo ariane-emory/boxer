@@ -33,6 +33,28 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 ////////////////////////////////////////////////////////////////////////////////
+pub trait Steppable {
+  fn step(&mut self);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
+  blocks: &mut Vec<RcRcSteppable>,
+  item: &Rc<RefCell<T>>,
+) {
+  let steppable_item: RcRcSteppable =
+    item.clone() as Rc<RefCell<dyn Steppable>>;
+
+  blocks.push(steppable_item);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 pub struct SignalOutput<T: Copy> {
   value: T,
 }
@@ -84,24 +106,4 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
     Self: Sized, {
     new_rcrc(self)
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait Steppable {
-  fn step(&mut self);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub type RcRcSteppable = Rc<RefCell<dyn Steppable>>;
-
-////////////////////////////////////////////////////////////////////////////////
-pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
-  blocks: &mut Vec<RcRcSteppable>,
-  item: &Rc<RefCell<T>>,
-) {
-  let steppable_item: RcRcSteppable =
-    item.clone() as Rc<RefCell<dyn Steppable>>;
-
-  blocks.push(steppable_item);
 }
