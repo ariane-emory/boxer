@@ -155,9 +155,9 @@ fn main() -> io::Result<()> {
           .as_rcrc();
       let held_value = Feedback::new().as_rcrc();
       let div_held_value_by_itwo =
-        Div::<isize>::new(&held_value.output(), &itwo.output()).as_rcrc();
+        Div::new(&held_value.output(), &itwo.output()).as_rcrc();
       let div_new_input_by_itwo =
-        Div::<isize>::new(&select.output(), &itwo.output()).as_rcrc();
+        Div::new(&select.output(), &itwo.output()).as_rcrc();
       let add = Add::new(
         &div_held_value_by_itwo.output(),
         &div_new_input_by_itwo.output(),
