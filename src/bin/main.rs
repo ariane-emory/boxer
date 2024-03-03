@@ -15,7 +15,7 @@ static LINE_OFFSET: isize = 1;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   //loop {
-  let filename = "./data/tangle.box";
+  let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
 
