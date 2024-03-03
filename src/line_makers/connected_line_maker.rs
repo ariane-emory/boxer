@@ -64,19 +64,18 @@ impl ConnectedLineMaker {
 
 
     if let Some(begin) = self.line_begin {
-      // Line has already started!
-      if pos.col == 0 {
-        println!("         new line!");
-        self.complete_line(begin, self.prev_pos, Nothing);
-        return;
-      }
-
       // in order to ensure that the line is at least one character long, we
       // need to check the distance between the current position and the
       // line begin position:
-      let distance_ok = pos.distance(&begin) > 1;
+      let distance_ok =
+        pos.distance(&begin) > 1 && pos.line == self.prev_pos.line;
 
-      if distance_ok && byte == b'+' {
+      // Line has already started!
+      if distance_ok && pos.col == 0 {
+        println!("         new line!");
+        self.complete_line(begin, self.prev_pos, Nothing);
+      }
+      else if distance_ok && byte == b'+' {
         self.complete_line(begin, pos, AnotherLine);
       }
       else if distance_ok && byte == self.wall_char {
