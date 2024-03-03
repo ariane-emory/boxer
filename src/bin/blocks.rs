@@ -43,7 +43,7 @@ fn main() -> io::Result<()> {
 
       let one = Value::new(1).as_rcrc();
       let max = Value::new(MAX).as_rcrc();
-      let clock = SquareWave::new(&one.output()).as_rcrc();
+      let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
       let ctr_max = Value::new(MAX).as_rcrc();
       let ctr =
@@ -66,7 +66,7 @@ fn main() -> io::Result<()> {
 
       let one = Value::new(1).as_rcrc();
       let max = Value::new(MAX).as_rcrc();
-      let clock = SquareWave::new(&one.output()).as_rcrc();
+      let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
       let ctr_max = Value::new(MAX).as_rcrc();
       let ctr =
@@ -75,7 +75,7 @@ fn main() -> io::Result<()> {
       let add = Add::new(&ctr.output(), &one.output()).as_rcrc();
       let two = Value::new(2).as_rcrc();
       let div = Div::new(&add.output(), &two.output()).as_rcrc();
-      let square = SquareWave::new(&div.output()).as_rcrc();
+      let square = Clock::new(&div.output()).as_rcrc();
       let zero = Value::new(0).as_rcrc();
       let select =
         Select::new(&square.output(), &zero.output(), &max.output()).as_rcrc();
@@ -100,7 +100,7 @@ fn main() -> io::Result<()> {
 
       let max = Value::new(MAX).as_rcrc();
       let one = Value::new(1).as_rcrc();
-      let clock = SquareWave::new(&one.output()).as_rcrc();
+      let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
       let ctr =
         UpCounter::new(&clock.output(), &ctr_reset.output(), &max.output())
@@ -143,9 +143,9 @@ fn main() -> io::Result<()> {
       let max = Value::new(MAX).as_rcrc();
       let imax = Value::<isize>::new(max.output_value() as isize).as_rcrc();
       let one = Value::new(1).as_rcrc();
-      let clock = SquareWave::new(&one.output()).as_rcrc();
+      let clock = Clock::new(&one.output()).as_rcrc();
       let sixteen = Value::new(16).as_rcrc();
-      let square = SquareWave::new(&sixteen.output()).as_rcrc();
+      let square = Clock::new(&sixteen.output()).as_rcrc();
       let izero = Value::new(0).as_rcrc();
       let select =
         Select::new(&square.output(), &izero.output(), &imax.output())

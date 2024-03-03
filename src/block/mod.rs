@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+pub mod clock;
 pub mod cmp;
 pub mod convert;
 pub mod counter;
@@ -16,8 +17,8 @@ pub mod timer;
 pub mod trigger;
 pub mod unit_delay;
 pub mod value;
-pub mod waveform;
 
+pub use clock::*;
 pub use cmp::*;
 pub use convert::*;
 pub use counter::*;
@@ -37,4 +38,3 @@ pub use timer::*;
 pub use trigger::*;
 pub use unit_delay::*;
 pub use value::*;
-pub use waveform::*;
