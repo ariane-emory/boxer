@@ -9,6 +9,10 @@ use boxer::util::new_rcrc;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////
+const STEPS: usize = 1 << 9;
+const MAX: usize = 1 << 6;
+
+////////////////////////////////////////////////////////////////////////////////
 fn render(
   char: u8,
   char2: u8,
@@ -44,8 +48,10 @@ fn render(
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
   {
+    println!("\nSaw PWM:");
+
     let one = new_rcrc(Value::new(1));
-    let max = new_rcrc(Value::new(128));
+    let max = new_rcrc(Value::new(MAX));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
     let ctr_reset = new_rcrc(Feedback::new());
     let ctr_max = new_rcrc(Value::new(64));
@@ -83,7 +89,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &square);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
-    for _ in 0..511 {
+    for _ in 0..STEPS {
       blocks.iter().for_each(|b| b.borrow_mut().step());
       render(
         b'x',
@@ -95,7 +101,9 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let max = new_rcrc(Value::new(128));
+    println!("\nTriangle:");
+
+    let max = new_rcrc(Value::new(MAX));
     let one = new_rcrc(Value::new(1));
     let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
     let ctr_reset = new_rcrc(Feedback::new());
@@ -149,7 +157,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sub);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &select);
 
-    for _ in 0..511 {
+    for _ in 0..STEPS {
       blocks.iter().for_each(|b| b.borrow_mut().step());
       render(
         b'x',
@@ -161,7 +169,9 @@ fn main() -> io::Result<()> {
   }
 
   {
-    let max = new_rcrc(Value::new(128));
+    println!("\nSharktooth:");
+
+    let max = new_rcrc(Value::new(MAX));
     let imax =
       new_rcrc(Value::<isize>::new(max.borrow_mut().output_value() as isize));
     let one = new_rcrc(Value::new(1));
@@ -214,7 +224,7 @@ fn main() -> io::Result<()> {
     push_onto_vec_of_rcrc_steppable(&mut blocks, &add);
     push_onto_vec_of_rcrc_steppable(&mut blocks, &sample_and_hold);
 
-    for _ in 0..511 {
+    for _ in 0..STEPS {
       blocks.iter().for_each(|b| b.borrow_mut().step());
       render(
         b'x',
