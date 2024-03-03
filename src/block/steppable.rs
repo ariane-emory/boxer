@@ -25,14 +25,14 @@ pub trait HasSignal<T: Copy>: Steppable {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowSignalRefAndGetOutput<U: Copy> {
+pub trait BorrowSteppableRefAndGetOutput<U: Copy> {
   fn output(&self) -> SignalRef<U>;
   fn output_value(&self) -> U {
     self.output().read()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T, U> BorrowSignalRefAndGetOutput<U> for RcRefCell<T>
+impl<T, U> BorrowSteppableRefAndGetOutput<U> for RcRefCell<T>
 where
   T: HasSignal<U>,
   U: Copy,
