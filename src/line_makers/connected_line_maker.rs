@@ -7,7 +7,6 @@ use crate::simple_geo::Point;
 pub struct ConnectedLineMaker {
   pub lines: Vec<ConnectedLine>,
   line_begin: Option<Point>,
-  _last_interrupt: Option<Point>,
   line_begin_type: ConnectionType,
   line_body_char: u8,
   wall_char: u8,
@@ -21,7 +20,6 @@ impl ConnectedLineMaker {
     ConnectedLineMaker {
       lines: Vec::new(),
       line_begin: None,
-      _last_interrupt: None,
       line_begin_type: Corner,
       line_body_char,
       wall_char,
