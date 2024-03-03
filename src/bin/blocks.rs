@@ -15,7 +15,7 @@ const LOOP: bool = false;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-fn perform_steps<T: Copy + std::fmt::Debug>(
+fn perform_steps<T: Copy>(
   steps: usize,
   blocks: &Vec<DynSteppableRef>,
   ctr: &RcRefCell<impl HasSignal<T>>,
