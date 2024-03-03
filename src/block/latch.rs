@@ -23,9 +23,9 @@ impl SRLatch {
 impl Steppable for SRLatch {
   fn step(&mut self) {
     if self.reset.read() {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     } else if self.set.read() {
-      self.output.borrow_mut().set(true);
+      self.output.set(true);
     }
   }
 }
@@ -60,9 +60,9 @@ impl RSLatch {
 impl Steppable for RSLatch {
   fn step(&mut self) {
     if self.reset.read() {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     } else if self.set.read() {
-      self.output.borrow_mut().set(true);
+      self.output.set(true);
     }
   }
 }
@@ -103,11 +103,11 @@ impl Steppable for JKFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !self.clock.read() {
       if self.j_input.read() && self.k_input.read() {
-        self.output.borrow_mut().set(!self.output.read());
+        self.output.set(!self.output.read());
       } else if self.j_input.read() {
-        self.output.borrow_mut().set(true);
+        self.output.set(true);
       } else if self.k_input.read() {
-        self.output.borrow_mut().set(false);
+        self.output.set(false);
       }
     }
     self.last_clock = self.clock.read();
@@ -146,7 +146,7 @@ impl DFlipFlop {
 impl Steppable for DFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !self.clock.read() {
-      self.output.borrow_mut().set(self.input.read());
+      self.output.set(self.input.read());
     }
     self.last_clock = self.clock.read();
   }
@@ -185,7 +185,7 @@ impl Steppable for TFlipFlop {
   fn step(&mut self) {
     if self.last_clock && !self.clock.read() {
       if self.input.read() {
-        self.output.borrow_mut().set(!self.output.read());
+        self.output.set(!self.output.read());
       }
     }
     self.last_clock = self.clock.read();

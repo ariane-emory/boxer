@@ -52,18 +52,18 @@ impl Steppable for UpCounter {
     self.last_input_state = input_val;
     self.last_reset_state = reset_val;
 
-    self.at_max.borrow_mut().set(at_max);
+    self.at_max.set(at_max);
 
     if reset_rose {
       // println!("Reset rose..");
-      self.output.borrow_mut().set(0);
-      self.at_max.borrow_mut().set(false);
+      self.output.set(0);
+      self.at_max.set(false);
     } else if at_max {
       // println!("At max!");
       return;
     } else if input_rose {
       // println!("  Input rose..");
-      self.output.borrow_mut().set(output_val + 1);
+      self.output.set(output_val + 1);
     } else {
       // println!("  Nothing interesting happened..");
     }
