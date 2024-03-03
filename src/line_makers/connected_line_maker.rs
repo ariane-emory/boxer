@@ -25,12 +25,13 @@ fn is_word_char(byte: u8) -> bool {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker {
   pub lines: Vec<ConnectedLine>,
+  pub words: Vec<String>,
   line_begin: Option<Point>,
   line_begin_type: ConnectionType,
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
-  word: String,
+  current_word: String,
   prev_pos: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,12 +43,13 @@ impl ConnectedLineMaker {
   ) -> ConnectedLineMaker {
     ConnectedLineMaker {
       lines: Vec::new(),
+      words: Vec::new(),
       line_begin: None,
       line_begin_type: Corner,
       line_body_char,
       wall_char,
       collect_words,
-      word: String::new(),
+      current_word: String::new(),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
@@ -57,10 +59,19 @@ impl ConnectedLineMaker {
     self.line_begin_type = connection_type;
   }
 
+  fn try_collect_word(&mut self) {
+    if self.collect_words && self.current_word.len() > 0 {
+      println!("         word: {}", self.current_word);
+      self.current_word = String::new();
+      self.words.push(self.current_word.clone());
+    }
+    self.current_word = String::new();
+  }
+
   fn reset(&mut self) {
+    self.try_collect_word();
     self.line_begin = None;
     self.line_begin_type = Nothing;
-    self.word = String::new();
   }
 
   fn complete_line(
@@ -93,14 +104,6 @@ impl ConnectedLineMaker {
     // line).
     if pos.line != self.prev_pos.line {
       println!("         new line, abort!");
-
-      if self.collect_words {
-        if self.word.len() > 0 {
-          println!("         word: {}", self.word);
-          self.word = String::new();
-        }
-      }
-
       self.reset();
     }
 
@@ -139,8 +142,11 @@ impl ConnectedLineMaker {
         self.begin_line(pos, Wall);
       }
       else if self.collect_words && is_word_char(byte) {
-        self.word.push(byte as char);
-        println!("Add char '{}', word = \"{}\".", byte as char, self.word);
+        self.current_word.push(byte as char);
+        println!(
+          "Add char '{}', word = \"{}\".",
+          byte as char, self.current_word
+        );
       }
     }
 
