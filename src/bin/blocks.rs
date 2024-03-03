@@ -46,9 +46,8 @@ fn main() -> io::Result<()> {
 
       let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
-      let ctr_max = Value::new(MAX).as_rcrc();
       let ctr =
-        UpCounter::new(&clock.output(), &ctr_reset.output(), &ctr_max.output())
+        UpCounter::new(&clock.output(), &ctr_reset.output(), &max.output())
           .as_rcrc();
 
       ctr_reset.set_input(&ctr.at_max());
@@ -56,7 +55,7 @@ fn main() -> io::Result<()> {
       let mut blocks: Vec<DynSteppableRef> = Vec::new();
       push_onto_vec_of_rcrc_steppable(&mut blocks, &clock);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_reset);
-      push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr_max);
+      push_onto_vec_of_rcrc_steppable(&mut blocks, &max);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &ctr);
 
       perform_steps(STEPS, &blocks, &ctr, &max);
