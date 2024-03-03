@@ -1,5 +1,16 @@
 use crate::block::*;
 
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowTimerRefAndGetCountOutput {
+  fn count_output(&self) -> SignalRef<usize>;
+
+  fn count_output_value(&self) -> usize {
+    self.count_output().read()
+  }
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number
 // of cycles.
@@ -11,10 +22,7 @@ pub struct TON {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TON {
-  pub fn new(
-    delay: &SignalRef<usize>,
-    reset: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(delay: &SignalRef<usize>, reset: &SignalRef<bool>) -> Self {
     TON {
       output: new_signal_ref(false),
       count_output: new_signal_ref(0),
@@ -55,6 +63,12 @@ impl SteppableWithOutputSignal<bool> for TON {
     &self.output
   }
 }
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowTimerRefAndGetCountOutput for TON {
+  fn count_output(&self) -> SignalRef<usize> {
+    Rc::clone(&self.count_output)
+  }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,10 +82,7 @@ pub struct TOF {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TOF {
-  pub fn new(
-    delay: &SignalRef<usize>,
-    reset: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(delay: &SignalRef<usize>, reset: &SignalRef<bool>) -> Self {
     TOF {
       output: new_signal_ref(false),
       count_output: new_signal_ref(0),
@@ -112,6 +123,12 @@ impl SteppableWithOutputSignal<bool> for TOF {
     &self.output
   }
 }
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowTimerRefAndGetCountOutput for TOF {
+  fn count_output(&self) -> SignalRef<usize> {
+    Rc::clone(&self.count_output)
+  }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -125,10 +142,7 @@ struct TP {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TP {
-  pub fn new(
-    input: &SignalRef<bool>,
-    count_from: &SignalRef<usize>,
-  ) -> Self {
+  pub fn new(input: &SignalRef<bool>, count_from: &SignalRef<usize>) -> Self {
     TP {
       output: new_signal_ref(false),
       count_output: new_signal_ref(0),
@@ -164,5 +178,11 @@ impl Steppable for TP {
 impl SteppableWithOutputSignal<bool> for TP {
   fn output(&self) -> &SignalRef<bool> {
     &self.output
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl BorrowTimerRefAndGetCountOutput for TP {
+  fn count_output(&self) -> SignalRef<usize> {
+    Rc::clone(&self.count_output)
   }
 }
