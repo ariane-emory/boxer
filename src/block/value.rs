@@ -8,7 +8,7 @@ pub struct Value<T: Copy> {
 impl<T: Copy> Value<T> {
   pub fn new(value: T) -> Self {
     Value {
-      output: Rc::new(RefCell::new(SignalOutput::new(value))),
+      output: Rc::new(RefCell::new(OutputSignal::new(value))),
     }
   }
 

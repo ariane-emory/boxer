@@ -55,13 +55,13 @@ pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub struct SignalOutput<T: Copy> {
+pub struct OutputSignal<T: Copy> {
   value: T,
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> SignalOutput<T> {
+impl<T: Copy> OutputSignal<T> {
   pub fn new(value: T) -> Self {
-    SignalOutput { value }
+    OutputSignal { value }
   }
 
   pub fn read(&self) -> &T {
@@ -78,7 +78,7 @@ impl<T: Copy> SignalOutput<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub type Signal<T> = Rc<RefCell<SignalOutput<T>>>;
+pub type Signal<T> = Rc<RefCell<OutputSignal<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ pub fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn new_signal<T: Copy>(value: T) -> Signal<T> {
-  new_rcrc(SignalOutput::new(value))
+  new_rcrc(OutputSignal::new(value))
 }
 
 
@@ -107,3 +107,17 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
     new_rcrc(self)
   }
 }
+
+
+// trait GetOutputSignal<T> {
+//   fn output(&self) -> Signal<T>;
+// }
+
+// impl<T, U> GetOutputSignal<U> for Rc<RefCell<T>>
+// where
+//   T: HasOutputSignal<U>,
+// {
+//   fn output(&self) -> Signal<U> {
+//     self.borrow().output().clone()
+//   }
+// }
