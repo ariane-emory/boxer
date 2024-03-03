@@ -39,12 +39,7 @@ fn main() -> io::Result<()> {
 
       for _ in 0..STEPS {
         blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(
-          b'x',
-          b'-',
-          ctr.borrow().output_value(),
-          max.borrow().output_value(),
-        );
+        render(b'x', b'-', ctr.output_value(), max.output_value());
       }
     }
 
@@ -85,12 +80,7 @@ fn main() -> io::Result<()> {
 
       for _ in 0..STEPS {
         blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(
-          b'x',
-          b'-',
-          select.borrow().output_value(),
-          max.borrow().output_value(),
-        );
+        render(b'x', b'-', select.output_value(), max.output_value());
       }
     }
 
@@ -142,12 +132,7 @@ fn main() -> io::Result<()> {
 
       for _ in 0..STEPS {
         blocks.iter().for_each(|b| b.borrow_mut().step());
-        render(
-          b'x',
-          b'-',
-          select.borrow().output_value(),
-          max.borrow().output_value(),
-        );
+        render(b'x', b'-', select.output_value(), max.output_value());
       }
     }
 
@@ -155,8 +140,7 @@ fn main() -> io::Result<()> {
       println!("\nSharktooth:");
 
       let max = Value::new(MAX).as_rcrc();
-      let imax =
-        Value::<isize>::new(max.borrow().output_value() as isize).as_rcrc();
+      let imax = Value::<isize>::new(max.output_value() as isize).as_rcrc();
       let one = Value::new(1).as_rcrc();
       let clock = SquareWave::new(&one.output()).as_rcrc();
       let sixteen = Value::new(16).as_rcrc();
@@ -203,8 +187,8 @@ fn main() -> io::Result<()> {
         render(
           b'x',
           b'-',
-          add.borrow().output_value() as usize,
-          imax.borrow().output_value() as usize,
+          add.output_value() as usize,
+          imax.output_value() as usize,
         );
       }
     }
