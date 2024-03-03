@@ -203,7 +203,7 @@ fn main() -> io::Result<()> {
       push_onto_vec_of_rcrc_steppable(&mut blocks, &add);
       push_onto_vec_of_rcrc_steppable(&mut blocks, &sample_and_hold);
 
-      // perform_steps(STEPS, &blocks, &select, &max);
+      perform_steps(STEPS, &blocks, &add, &max);
 
       for _ in 0..STEPS {
         blocks.iter().for_each(|b| b.borrow_mut().step());
