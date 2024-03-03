@@ -1,10 +1,6 @@
 use crate::simple_geo::*;
 use std::fmt;
 
-////////////////////////////////////////////////////////////////////////////////
-const WORD_CHARS: &str =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=*/%_";
-// Account for - being used as minus.
 
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd)]

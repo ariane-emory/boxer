@@ -3,6 +3,19 @@ use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Point;
 
+
+////////////////////////////////////////////////////////////////////////////////
+const WORD_CHARS: &str =
+  // Account for - being used as minus.
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=*/%_";
+
+
+////////////////////////////////////////////////////////////////////////////////
+fn is_word_char(byte: u8) -> bool {
+  WORD_CHARS.as_bytes().contains(&byte)
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker {
   pub lines: Vec<ConnectedLine>,
@@ -14,7 +27,6 @@ pub struct ConnectedLineMaker {
   word: String,
   prev_pos: Point,
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLineMaker {
   pub fn new(
