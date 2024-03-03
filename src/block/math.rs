@@ -2,15 +2,15 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Add<T: std::ops::Add<Output = T> + Copy + Default> {
-  output: OutputSignalRef<T>,
-  left: OutputSignalRef<T>,
-  right: OutputSignalRef<T>,
+  output: SignalRef<T>,
+  left: SignalRef<T>,
+  right: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
   pub fn new(
-    left: &OutputSignalRef<T>,
-    right: &OutputSignalRef<T>,
+    left: &SignalRef<T>,
+    right: &SignalRef<T>,
   ) -> Self {
     let mut r = Add {
       output: new_signal(Default::default()),
@@ -29,10 +29,10 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Steppable for Add<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> HasOutputSignal<T>
+impl<T: std::ops::Add<Output = T> + Copy + Default> HasSignal<T>
   for Add<T>
 {
-  fn output(&self) -> &OutputSignalRef<T> {
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
@@ -40,15 +40,15 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> HasOutputSignal<T>
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Sub<T: std::ops::Sub<Output = T> + Copy + Default> {
-  output: OutputSignalRef<T>,
-  left: OutputSignalRef<T>,
-  right: OutputSignalRef<T>,
+  output: SignalRef<T>,
+  left: SignalRef<T>,
+  right: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
   pub fn new(
-    left: &OutputSignalRef<T>,
-    right: &OutputSignalRef<T>,
+    left: &SignalRef<T>,
+    right: &SignalRef<T>,
   ) -> Self {
     let mut r = Sub {
       output: new_signal(Default::default()),
@@ -67,10 +67,10 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Steppable for Sub<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> HasOutputSignal<T>
+impl<T: std::ops::Sub<Output = T> + Copy + Default> HasSignal<T>
   for Sub<T>
 {
-  fn output(&self) -> &OutputSignalRef<T> {
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
@@ -78,15 +78,15 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> HasOutputSignal<T>
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Mul<T: std::ops::Mul<Output = T> + Copy + Default> {
-  output: OutputSignalRef<T>,
-  left: OutputSignalRef<T>,
-  right: OutputSignalRef<T>,
+  output: SignalRef<T>,
+  left: SignalRef<T>,
+  right: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
   pub fn new(
-    left: &OutputSignalRef<T>,
-    right: &OutputSignalRef<T>,
+    left: &SignalRef<T>,
+    right: &SignalRef<T>,
   ) -> Self {
     let mut r = Mul {
       output: new_signal(Default::default()),
@@ -105,10 +105,10 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Mul<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> HasOutputSignal<T>
+impl<T: std::ops::Mul<Output = T> + Copy + Default> HasSignal<T>
   for Mul<T>
 {
-  fn output(&self) -> &OutputSignalRef<T> {
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
@@ -116,15 +116,15 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> HasOutputSignal<T>
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Div<T: std::ops::Div<Output = T> + Copy + Default> {
-  output: OutputSignalRef<T>,
-  left: OutputSignalRef<T>,
-  right: OutputSignalRef<T>,
+  output: SignalRef<T>,
+  left: SignalRef<T>,
+  right: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
   pub fn new(
-    left: &OutputSignalRef<T>,
-    right: &OutputSignalRef<T>,
+    left: &SignalRef<T>,
+    right: &SignalRef<T>,
   ) -> Self {
     let mut r = Div {
       output: new_signal(Default::default()),
@@ -143,10 +143,10 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Div<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> HasOutputSignal<T>
+impl<T: std::ops::Div<Output = T> + Copy + Default> HasSignal<T>
   for Div<T>
 {
-  fn output(&self) -> &OutputSignalRef<T> {
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
@@ -154,15 +154,15 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> HasOutputSignal<T>
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Mod<T: std::ops::Rem<Output = T> + Copy + Default> {
-  output: OutputSignalRef<T>,
-  left: OutputSignalRef<T>,
-  right: OutputSignalRef<T>,
+  output: SignalRef<T>,
+  left: SignalRef<T>,
+  right: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
   pub fn new(
-    left: &OutputSignalRef<T>,
-    right: &OutputSignalRef<T>,
+    left: &SignalRef<T>,
+    right: &SignalRef<T>,
   ) -> Self {
     let mut r = Mod {
       output: new_signal(Default::default()),
@@ -181,10 +181,10 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Steppable for Mod<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> HasOutputSignal<T>
+impl<T: std::ops::Rem<Output = T> + Copy + Default> HasSignal<T>
   for Mod<T>
 {
-  fn output(&self) -> &OutputSignalRef<T> {
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
@@ -192,15 +192,15 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> HasOutputSignal<T>
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct LShift {
-  output: OutputSignalRef<usize>,
-  input_value: OutputSignalRef<usize>,
-  input_shift: OutputSignalRef<usize>,
+  output: SignalRef<usize>,
+  input_value: SignalRef<usize>,
+  input_shift: SignalRef<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl LShift {
   pub fn new(
-    input_value: &OutputSignalRef<usize>,
-    input_shift: &OutputSignalRef<usize>,
+    input_value: &SignalRef<usize>,
+    input_shift: &SignalRef<usize>,
   ) -> Self {
     let mut r = LShift {
       output: new_signal(0),
@@ -221,8 +221,8 @@ impl Steppable for LShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<usize> for LShift {
-  fn output(&self) -> &OutputSignalRef<usize> {
+impl HasSignal<usize> for LShift {
+  fn output(&self) -> &SignalRef<usize> {
     &self.output
   }
 }
@@ -230,15 +230,15 @@ impl HasOutputSignal<usize> for LShift {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct RShift {
-  output: OutputSignalRef<usize>,
-  input_value: OutputSignalRef<usize>,
-  input_shift: OutputSignalRef<usize>,
+  output: SignalRef<usize>,
+  input_value: SignalRef<usize>,
+  input_shift: SignalRef<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl RShift {
   pub fn new(
-    input_value: &OutputSignalRef<usize>,
-    input_shift: &OutputSignalRef<usize>,
+    input_value: &SignalRef<usize>,
+    input_shift: &SignalRef<usize>,
   ) -> Self {
     let mut r = RShift {
       output: new_signal(0),
@@ -259,8 +259,8 @@ impl Steppable for RShift {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<usize> for RShift {
-  fn output(&self) -> &OutputSignalRef<usize> {
+impl HasSignal<usize> for RShift {
+  fn output(&self) -> &SignalRef<usize> {
     &self.output
   }
 }
@@ -268,12 +268,12 @@ impl HasOutputSignal<usize> for RShift {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Abs {
-  output: OutputSignalRef<usize>,
-  input: OutputSignalRef<isize>,
+  output: SignalRef<usize>,
+  input: SignalRef<isize>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Abs {
-  pub fn new(input: &OutputSignalRef<isize>) -> Self {
+  pub fn new(input: &SignalRef<isize>) -> Self {
     let mut r = Abs {
       output: new_signal(0),
       input: Rc::clone(input),
@@ -290,8 +290,8 @@ impl Steppable for Abs {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<usize> for Abs {
-  fn output(&self) -> &OutputSignalRef<usize> {
+impl HasSignal<usize> for Abs {
+  fn output(&self) -> &SignalRef<usize> {
     &self.output
   }
 }

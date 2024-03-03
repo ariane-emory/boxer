@@ -2,15 +2,15 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Or {
-  output: OutputSignalRef<bool>,
-  left: OutputSignalRef<bool>,
-  right: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  left: SignalRef<bool>,
+  right: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Or {
   pub fn new(
-    left: &OutputSignalRef<bool>,
-    right: &OutputSignalRef<bool>,
+    left: &SignalRef<bool>,
+    right: &SignalRef<bool>,
   ) -> Self {
     let mut r = Or {
       output: new_signal(false),
@@ -29,8 +29,8 @@ impl Steppable for Or {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for Or {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for Or {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -38,15 +38,15 @@ impl HasOutputSignal<bool> for Or {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct And {
-  output: OutputSignalRef<bool>,
-  left: OutputSignalRef<bool>,
-  right: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  left: SignalRef<bool>,
+  right: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl And {
   pub fn new(
-    left: &OutputSignalRef<bool>,
-    right: &OutputSignalRef<bool>,
+    left: &SignalRef<bool>,
+    right: &SignalRef<bool>,
   ) -> Self {
     let mut r = And {
       output: new_signal(false),
@@ -65,8 +65,8 @@ impl Steppable for And {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for And {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for And {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -74,15 +74,15 @@ impl HasOutputSignal<bool> for And {
 
 ////////////////////////////////////////////////////////////////////////////////
 struct Xor {
-  output: OutputSignalRef<bool>,
-  left: OutputSignalRef<bool>,
-  right: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  left: SignalRef<bool>,
+  right: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Xor {
   pub fn new(
-    left: &OutputSignalRef<bool>,
-    right: &OutputSignalRef<bool>,
+    left: &SignalRef<bool>,
+    right: &SignalRef<bool>,
   ) -> Self {
     let mut r = Xor {
       output: new_signal(false),
@@ -101,8 +101,8 @@ impl Steppable for Xor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for Xor {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for Xor {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -110,15 +110,15 @@ impl HasOutputSignal<bool> for Xor {
 
 ////////////////////////////////////////////////////////////////////////////////
 struct Nor {
-  output: OutputSignalRef<bool>,
-  left: OutputSignalRef<bool>,
-  right: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  left: SignalRef<bool>,
+  right: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Nor {
   pub fn new(
-    left: &OutputSignalRef<bool>,
-    right: &OutputSignalRef<bool>,
+    left: &SignalRef<bool>,
+    right: &SignalRef<bool>,
   ) -> Self {
     let mut r = Nor {
       output: new_signal(false),
@@ -137,8 +137,8 @@ impl Steppable for Nor {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for Nor {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for Nor {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -146,12 +146,12 @@ impl HasOutputSignal<bool> for Nor {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Not {
-  output: OutputSignalRef<bool>,
-  input: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  input: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Not {
-  pub fn new(input: &OutputSignalRef<bool>) -> Self {
+  pub fn new(input: &SignalRef<bool>) -> Self {
     let mut r = Not {
       output: new_signal(false),
       input: Rc::clone(input),
@@ -168,8 +168,8 @@ impl Steppable for Not {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for Not {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for Not {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }

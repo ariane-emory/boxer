@@ -2,20 +2,20 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct UpCounter {
-  output: OutputSignalRef<usize>,
-  at_max: OutputSignalRef<bool>,
-  input: OutputSignalRef<bool>,
-  reset: OutputSignalRef<bool>,
-  max: OutputSignalRef<usize>,
+  output: SignalRef<usize>,
+  at_max: SignalRef<bool>,
+  input: SignalRef<bool>,
+  reset: SignalRef<bool>,
+  max: SignalRef<usize>,
   last_input_state: bool,
   last_reset_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl UpCounter {
   pub fn new(
-    input: &OutputSignalRef<bool>,
-    reset: &OutputSignalRef<bool>,
-    max: &OutputSignalRef<usize>,
+    input: &SignalRef<bool>,
+    reset: &SignalRef<bool>,
+    max: &SignalRef<usize>,
   ) -> Self {
     UpCounter {
       output: new_signal(0),
@@ -28,7 +28,7 @@ impl UpCounter {
     }
   }
 
-  pub fn at_max(&self) -> &OutputSignalRef<bool> {
+  pub fn at_max(&self) -> &SignalRef<bool> {
     &self.at_max
   }
 
@@ -70,8 +70,8 @@ impl Steppable for UpCounter {
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<usize> for UpCounter {
-  fn output(&self) -> &OutputSignalRef<usize> {
+impl HasSignal<usize> for UpCounter {
+  fn output(&self) -> &SignalRef<usize> {
     &self.output
   }
 }

@@ -2,15 +2,15 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct SRLatch {
-  output: OutputSignalRef<bool>,
-  set: OutputSignalRef<bool>,
-  reset: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  set: SignalRef<bool>,
+  reset: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl SRLatch {
   pub fn new(
-    set: &OutputSignalRef<bool>,
-    reset: &OutputSignalRef<bool>,
+    set: &SignalRef<bool>,
+    reset: &SignalRef<bool>,
   ) -> Self {
     SRLatch {
       output: new_signal(false),
@@ -30,8 +30,8 @@ impl Steppable for SRLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for SRLatch {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for SRLatch {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -39,15 +39,15 @@ impl HasOutputSignal<bool> for SRLatch {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct RSLatch {
-  output: OutputSignalRef<bool>,
-  set: OutputSignalRef<bool>,
-  reset: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  set: SignalRef<bool>,
+  reset: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl RSLatch {
   pub fn new(
-    set: &OutputSignalRef<bool>,
-    reset: &OutputSignalRef<bool>,
+    set: &SignalRef<bool>,
+    reset: &SignalRef<bool>,
   ) -> Self {
     RSLatch {
       output: new_signal(false),
@@ -67,8 +67,8 @@ impl Steppable for RSLatch {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for RSLatch {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for RSLatch {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -76,18 +76,18 @@ impl HasOutputSignal<bool> for RSLatch {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct JKFlipFlop {
-  output: OutputSignalRef<bool>,
-  j_input: OutputSignalRef<bool>,
-  k_input: OutputSignalRef<bool>,
-  clock: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  j_input: SignalRef<bool>,
+  k_input: SignalRef<bool>,
+  clock: SignalRef<bool>,
   last_clock: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl JKFlipFlop {
   pub fn new(
-    j_input: &OutputSignalRef<bool>,
-    k_input: &OutputSignalRef<bool>,
-    clock: &OutputSignalRef<bool>,
+    j_input: &SignalRef<bool>,
+    k_input: &SignalRef<bool>,
+    clock: &SignalRef<bool>,
   ) -> Self {
     JKFlipFlop {
       output: new_signal(false),
@@ -114,8 +114,8 @@ impl Steppable for JKFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for JKFlipFlop {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for JKFlipFlop {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -123,16 +123,16 @@ impl HasOutputSignal<bool> for JKFlipFlop {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct DFlipFlop {
-  output: OutputSignalRef<bool>,
-  input: OutputSignalRef<bool>,
-  clock: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  input: SignalRef<bool>,
+  clock: SignalRef<bool>,
   last_clock: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl DFlipFlop {
   pub fn new(
-    input: &OutputSignalRef<bool>,
-    clock: &OutputSignalRef<bool>,
+    input: &SignalRef<bool>,
+    clock: &SignalRef<bool>,
   ) -> Self {
     DFlipFlop {
       output: new_signal(false),
@@ -152,8 +152,8 @@ impl Steppable for DFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for DFlipFlop {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for DFlipFlop {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -161,16 +161,16 @@ impl HasOutputSignal<bool> for DFlipFlop {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct TFlipFlop {
-  output: OutputSignalRef<bool>,
-  input: OutputSignalRef<bool>,
-  clock: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  input: SignalRef<bool>,
+  clock: SignalRef<bool>,
   last_clock: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TFlipFlop {
   pub fn new(
-    input: &OutputSignalRef<bool>,
-    clock: &OutputSignalRef<bool>,
+    input: &SignalRef<bool>,
+    clock: &SignalRef<bool>,
   ) -> Self {
     TFlipFlop {
       output: new_signal(false),
@@ -192,8 +192,8 @@ impl Steppable for TFlipFlop {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for TFlipFlop {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for TFlipFlop {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }

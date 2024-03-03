@@ -68,13 +68,13 @@ pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub struct OutputSignal<T: Copy> {
+pub struct Signal<T: Copy> {
   value: T,
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> OutputSignal<T> {
+impl<T: Copy> Signal<T> {
   pub fn new(value: T) -> Self {
-    OutputSignal { value }
+    Signal { value }
   }
 
   pub fn read(&self) -> T {
@@ -88,7 +88,7 @@ impl<T: Copy> OutputSignal<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub type OutputSignalRef<T> = Rc<RefCell<OutputSignal<T>>>;
+pub type SignalRef<T> = Rc<RefCell<Signal<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ pub trait BorrowAndReadOrSet<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BorrowAndReadOrSet<T> for OutputSignalRef<T> {
+impl<T: Copy> BorrowAndReadOrSet<T> for SignalRef<T> {
   fn read(&self) -> T {
     self.borrow().read()
   }
@@ -117,13 +117,13 @@ pub fn new_rcrc<T>(item: T) -> Rc<RefCell<T>> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn new_signal<T: Copy>(value: T) -> OutputSignalRef<T> {
-  new_rcrc(OutputSignal::new(value))
+pub fn new_signal<T: Copy>(value: T) -> SignalRef<T> {
+  new_rcrc(Signal::new(value))
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait HasOutputSignal<T: Copy>: Steppable {
-  fn output(&self) -> &OutputSignalRef<T>;
+pub trait HasSignal<T: Copy>: Steppable {
+  fn output(&self) -> &SignalRef<T>;
 
   fn output_value(&self) -> T {
     self.output().borrow().read()
@@ -139,17 +139,17 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowOutputSignalRef<U: Copy> {
-  fn output(&self) -> OutputSignalRef<U>;
+pub trait BorrowSignalRef<U: Copy> {
+  fn output(&self) -> SignalRef<U>;
   fn output_value(&self) -> U;
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T, U> BorrowOutputSignalRef<U> for Rc<RefCell<T>>
+impl<T, U> BorrowSignalRef<U> for Rc<RefCell<T>>
 where
-  T: HasOutputSignal<U> + ?Sized,
+  T: HasSignal<U> + ?Sized,
   U: Copy, // Ensure U satisfies Copy
 {
-  fn output(&self) -> OutputSignalRef<U> {
+  fn output(&self) -> SignalRef<U> {
     self.borrow().output().clone()
   }
 

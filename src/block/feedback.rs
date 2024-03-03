@@ -2,8 +2,8 @@ use crate::block::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct Feedback<T: Copy + Default> {
-  output: OutputSignalRef<T>,
-  input: Option<OutputSignalRef<T>>,
+  output: SignalRef<T>,
+  input: Option<SignalRef<T>>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + Default> Feedback<T> {
@@ -17,7 +17,7 @@ impl<T: Copy + Default> Feedback<T> {
 
   pub fn set_input(
     &mut self,
-    input: &OutputSignalRef<T>,
+    input: &SignalRef<T>,
   ) {
     self.input = Some(input.clone());
     self.step();
@@ -32,8 +32,8 @@ impl<T: Copy + Default> Steppable for Feedback<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> HasOutputSignal<T> for Feedback<T> {
-  fn output(&self) -> &OutputSignalRef<T> {
+impl<T: Copy + Default> HasSignal<T> for Feedback<T> {
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }

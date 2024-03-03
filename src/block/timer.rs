@@ -4,16 +4,16 @@ use crate::block::*;
 // Basically an IEC 61131-> 'TON' block, which delays a rise by a fixed number
 // of cycles.
 pub struct TON {
-  output: OutputSignalRef<bool>,
-  count_output: OutputSignalRef<usize>,
-  delay: OutputSignalRef<usize>,
-  reset: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  count_output: SignalRef<usize>,
+  delay: SignalRef<usize>,
+  reset: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TON {
   pub fn new(
-    delay: &OutputSignalRef<usize>,
-    reset: &OutputSignalRef<bool>,
+    delay: &SignalRef<usize>,
+    reset: &SignalRef<bool>,
   ) -> Self {
     TON {
       output: new_signal(false),
@@ -23,7 +23,7 @@ impl TON {
     }
   }
 
-  pub fn count_output(&self) -> &OutputSignalRef<usize> {
+  pub fn count_output(&self) -> &SignalRef<usize> {
     &self.count_output
   }
 
@@ -50,8 +50,8 @@ impl Steppable for TON {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for TON {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for TON {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -61,16 +61,16 @@ impl HasOutputSignal<bool> for TON {
 // Basically an IEC 61131-> 'TOF' block, which delays a fall by a fixed number
 // of cycles.
 pub struct TOF {
-  output: OutputSignalRef<bool>,
-  count_output: OutputSignalRef<usize>,
-  delay: OutputSignalRef<usize>,
-  reset: OutputSignalRef<bool>,
+  output: SignalRef<bool>,
+  count_output: SignalRef<usize>,
+  delay: SignalRef<usize>,
+  reset: SignalRef<bool>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TOF {
   pub fn new(
-    delay: &OutputSignalRef<usize>,
-    reset: &OutputSignalRef<bool>,
+    delay: &SignalRef<usize>,
+    reset: &SignalRef<bool>,
   ) -> Self {
     TOF {
       output: new_signal(false),
@@ -80,7 +80,7 @@ impl TOF {
     }
   }
 
-  pub fn count_output(&self) -> &OutputSignalRef<usize> {
+  pub fn count_output(&self) -> &SignalRef<usize> {
     &self.count_output
   }
 
@@ -107,8 +107,8 @@ impl Steppable for TOF {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for TOF {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for TOF {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
@@ -118,16 +118,16 @@ impl HasOutputSignal<bool> for TOF {
 // Basically an IEC 61131-3 'TP' block, which holds it's input for a set number
 // of steps after it rises.
 struct TP {
-  output: OutputSignalRef<bool>,
-  count_output: OutputSignalRef<usize>,
-  input: OutputSignalRef<bool>,
-  count_from: OutputSignalRef<usize>,
+  output: SignalRef<bool>,
+  count_output: SignalRef<usize>,
+  input: SignalRef<bool>,
+  count_from: SignalRef<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TP {
   pub fn new(
-    input: &OutputSignalRef<bool>,
-    count_from: &OutputSignalRef<usize>,
+    input: &SignalRef<bool>,
+    count_from: &SignalRef<usize>,
   ) -> Self {
     TP {
       output: new_signal(false),
@@ -137,7 +137,7 @@ impl TP {
     }
   }
 
-  pub fn count_output(&self) -> &OutputSignalRef<usize> {
+  pub fn count_output(&self) -> &SignalRef<usize> {
     &self.count_output
   }
 
@@ -161,8 +161,8 @@ impl Steppable for TP {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl HasOutputSignal<bool> for TP {
-  fn output(&self) -> &OutputSignalRef<bool> {
+impl HasSignal<bool> for TP {
+  fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
 }
