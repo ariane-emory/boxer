@@ -64,8 +64,8 @@ impl<T: Copy> OutputSignal<T> {
     OutputSignal { value }
   }
 
-  pub fn read(&self) -> &T {
-    &self.value
+  pub fn read(&self) -> T {
+    self.value
   }
 
   pub fn set(
@@ -89,7 +89,7 @@ where
   T: Copy,
 {
   fn read(&self) -> T {
-    *self.borrow().read()
+    self.borrow().read()
   }
 }
 
