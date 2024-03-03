@@ -109,15 +109,16 @@ pub trait HasOutputSignal<T: Copy>: Steppable {
 }
 
 
-// trait GetOutputSignal<T> {
-//   fn output(&self) -> Signal<T>;
-// }
+trait BorrowOutputSignal<U: Copy> {
+  fn output(&self) -> Signal<U>;
+}
 
-// impl<T, U> GetOutputSignal<U> for Rc<RefCell<T>>
-// where
-//   T: HasOutputSignal<U>,
-// {
-//   fn output(&self) -> Signal<U> {
-//     self.borrow().output().clone()
-//   }
-// }
+impl<T, U> BorrowOutputSignal<U> for Rc<RefCell<T>>
+where
+  T: HasOutputSignal<U> + ?Sized,
+  U: Copy, // Ensure U satisfies Copy
+{
+  fn output(&self) -> Signal<U> {
+    self.borrow().output().clone()
+  }
+}
