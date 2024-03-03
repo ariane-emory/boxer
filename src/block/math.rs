@@ -302,7 +302,14 @@ impl IsizeToUsize {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for IsizeToUsize {
   fn step(&mut self) {
-    self.output.set(self.input.read() as usize);
+    let input = self.input.read();
+
+    // this should panic if the number is negative:
+    if input < 0 {
+      panic!("IsizeToUsize: input is negative");
+    }
+
+    self.output.set(input as usize);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
