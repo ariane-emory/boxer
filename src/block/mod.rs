@@ -43,12 +43,12 @@ pub type DynSteppableRef = Rc<RefCell<dyn Steppable>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndStep {
+pub trait BorrowAndStepSteppable {
   fn step(&self);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-impl BorrowAndStep for DynSteppableRef {
+impl BorrowAndStepSteppable for DynSteppableRef {
   fn step(&self) {
     self.borrow_mut().step();
   }
@@ -92,14 +92,14 @@ pub type SignalRef<T> = Rc<RefCell<Signal<T>>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndReadOrSet<T> {
+pub trait BorrowAndReadOrSetSignal<T> {
   fn read(&self) -> T;
   fn set(&self, value: T);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BorrowAndReadOrSet<T> for SignalRef<T> {
+impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
   fn read(&self) -> T {
     self.borrow().read()
   }
