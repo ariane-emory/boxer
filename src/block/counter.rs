@@ -4,26 +4,26 @@ use crate::block::*;
 pub struct UpCounter {
   output: SignalRef<usize>,
   at_max: SignalRef<bool>,
-  input: SignalRef<bool>,
+  clock: SignalRef<bool>,
   reset: SignalRef<bool>,
   max: SignalRef<usize>,
-  last_input_state: bool,
+  last_clock_state: bool,
   last_reset_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl UpCounter {
   pub fn new(
-    input: &SignalRef<bool>,
+    clock: &SignalRef<bool>,
     reset: &SignalRef<bool>,
     max: &SignalRef<usize>,
   ) -> Self {
     UpCounter {
       output: new_signal_ref(0),
       at_max: new_signal_ref(false),
-      input: Rc::clone(input),
+      clock: Rc::clone(clock),
       reset: Rc::clone(reset),
       max: Rc::clone(max),
-      last_input_state: false,
+      last_clock_state: false,
       last_reset_state: false,
     }
   }
@@ -41,15 +41,15 @@ impl Steppable for UpCounter {
   fn step(&mut self) {
     let output_val = self.output.read();
     let max_val = self.max.read();
-    let input_val = self.input.read();
+    let clock_val = self.clock.read();
     let reset_val = self.reset.read();
     let at_max = max_val == output_val;
-    let last_input_state_val = self.last_input_state;
+    let last_clock_state_val = self.last_clock_state;
     let last_reset_state_val = self.last_reset_state;
-    let input_rose = input_val && !last_input_state_val;
+    let clock_rose = clock_val && !last_clock_state_val;
     let reset_rose = reset_val && !last_reset_state_val;
 
-    self.last_input_state = input_val;
+    self.last_clock_state = clock_val;
     self.last_reset_state = reset_val;
 
     self.at_max.set(at_max);
@@ -61,8 +61,8 @@ impl Steppable for UpCounter {
     } else if at_max {
       // println!("At max!");
       return;
-    } else if input_rose {
-      // println!("  Input rose..");
+    } else if clock_rose {
+      // println!("  Clock rose..");
       self.output.set(output_val + 1);
     } else {
       // println!("  Nothing interesting happened..");
@@ -97,26 +97,26 @@ impl BorrowUpCounterRefAndGetAtMax for RcRefCell<UpCounter> {
 pub struct DownCounter {
   output: SignalRef<usize>,
   at_min: SignalRef<bool>,
-  input: SignalRef<bool>,
+  clock: SignalRef<bool>,
   reset: SignalRef<bool>,
   min: SignalRef<usize>,
-  last_input_state: bool,
+  last_clock_state: bool,
   last_reset_state: bool,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl DownCounter {
   pub fn new(
-    input: &SignalRef<bool>,
+    clock: &SignalRef<bool>,
     reset: &SignalRef<bool>,
     min: &SignalRef<usize>,
   ) -> Self {
     DownCounter {
       output: new_signal_ref(0),
       at_min: new_signal_ref(false),
-      input: Rc::clone(input),
+      clock: Rc::clone(clock),
       reset: Rc::clone(reset),
       min: Rc::clone(min),
-      last_input_state: false,
+      last_clock_state: false,
       last_reset_state: false,
     }
   }
@@ -134,15 +134,15 @@ impl Steppable for DownCounter {
   fn step(&mut self) {
     let output_val = self.output.read();
     let min_val = self.min.read();
-    let input_val = self.input.read();
+    let clock_val = self.clock.read();
     let reset_val = self.reset.read();
     let at_min = output_val == min_val;
-    let last_input_state_val = self.last_input_state;
+    let last_clock_state_val = self.last_clock_state;
     let last_reset_state_val = self.last_reset_state;
-    let input_rose = input_val && !last_input_state_val;
+    let clock_rose = clock_val && !last_clock_state_val;
     let reset_rose = reset_val && !last_reset_state_val;
 
-    self.last_input_state = input_val;
+    self.last_clock_state = clock_val;
     self.last_reset_state = reset_val;
 
     self.at_min.set(at_min);
@@ -152,7 +152,7 @@ impl Steppable for DownCounter {
       self.at_min.set(false);
     } else if at_min {
       return;
-    } else if input_rose {
+    } else if clock_rose {
       self.output.set(output_val - 1);
     }
   }
