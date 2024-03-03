@@ -46,24 +46,3 @@ impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
     self.borrow_mut().set(value);
   }
 }
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowSignalRef<U: Copy> {
-  fn output(&self) -> SignalRef<U>;
-  fn output_value(&self) -> U;
-}
-////////////////////////////////////////////////////////////////////////////////
-impl<T, U> BorrowSignalRef<U> for RcRefCell<T>
-where
-  T: HasSignal<U> + ?Sized,
-  U: Copy,
-{
-  fn output(&self) -> SignalRef<U> {
-    self.borrow().output().clone()
-  }
-
-  fn output_value(&self) -> U {
-    self.output().read()
-  }
-}
