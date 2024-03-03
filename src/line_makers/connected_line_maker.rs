@@ -38,6 +38,7 @@ impl ConnectedLineMaker {
 
   fn complete_line(
     &mut self,
+    byte: u8,
     begin: Point,
     end: Point,
     connectection_type: ConnectionType,
@@ -48,6 +49,8 @@ impl ConnectedLineMaker {
     println!("         CREATED LINE: {:?}", line);
     self.lines.push(line);
     self.abort_line();
+
+    self.process(end, byte);
   }
 
   pub fn process(&mut self, pos: Point, byte: u8) {
@@ -75,7 +78,7 @@ impl ConnectedLineMaker {
 
       if byte == b'+' {
         if distance_ok {
-          self.complete_line(begin, pos, Corner);
+          self.complete_line(byte, begin, pos, Corner);
         }
         else {
           self.abort_line();
@@ -84,7 +87,7 @@ impl ConnectedLineMaker {
         }
       }
       else if byte == self.wall_char && distance_ok {
-        self.complete_line(begin, pos, Wall);
+        self.complete_line(byte, begin, pos, Wall);
       }
       else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
