@@ -55,14 +55,16 @@ impl ConnectedLineMaker {
       // in order to ensure that the line is at least one character long, we
       // need to check the distance between the current position and the
       // line begin position:
-      if byte == b'+' && pos.distance(&begin) > 1 {
+      let distance_ok = pos.distance(&begin) > 1;
+
+      if byte == b'+' && distance_ok {
         let line =
           ConnectedLine::new(begin, *pos, self.line_begin_type, AnotherLine)
             .unwrap();
         println!("         CREATE LINE: {:?}", line);
         self.lines.push(line);
         self.abort_line();
-      } else if byte == self.wall_char && pos.distance(&begin) > 1 {
+      } else if byte == self.wall_char && distance_ok {
         let line =
           ConnectedLine::new(begin, *pos, self.line_begin_type, Wall).unwrap();
         println!("         CREATE LINE: {:?}", line);
