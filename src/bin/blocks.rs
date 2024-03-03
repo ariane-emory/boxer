@@ -24,12 +24,6 @@ fn perform_steps<T: Copy + std::fmt::Debug>(
 ) where
   T: TryInto<usize>, {
   for _ in 0..steps {
-    // Convert this to an if let!
-    // let us: usize = match ctr.borrow().output_value().try_into() {
-    //   Ok(value) => value,
-    //   Err(_) => panic!("Error converting output value to usize."),
-    // };
-
     blocks.iter().for_each(|b| b.borrow_mut().step());
 
     if let Ok(us) = ctr.borrow().output_value().try_into() {
