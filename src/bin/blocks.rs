@@ -189,7 +189,7 @@ fn main() -> io::Result<()> {
           b'x',
           b'-',
           add.output_value() as usize,
-          imax.output_value() as usize,
+          max.output_value() as usize,
         );
       }
     }
