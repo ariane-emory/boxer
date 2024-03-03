@@ -28,7 +28,7 @@ fn main() -> io::Result<()> {
     // RefCell scope:
     {
       let (vert_linemaker, process_vert) =
-        make_process_file_fun(b'|', b'-', false, |pos, byte| {
+        make_process_file_fun(b'|', b'-', false, false, |pos, byte| {
           println!(
             "Vert:    {:?}: '{}'",
             pos.flip().offset_by(LINE_OFFSET, 0),
@@ -37,7 +37,7 @@ fn main() -> io::Result<()> {
         });
 
       let (horiz_linemaker, process_horiz) =
-        make_process_file_fun(b'-', b'|', true, |pos, byte| {
+        make_process_file_fun(b'-', b'|', true, true, |pos, byte| {
           println!(
             "Horiz:   {:?}: '{}'",
             pos.offset_by(LINE_OFFSET, 0),

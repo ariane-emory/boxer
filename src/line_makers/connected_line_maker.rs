@@ -18,6 +18,7 @@ pub struct ConnectedLineMaker {
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
+  allow_length_one: bool,
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
   line_begin: Option<Point>,
@@ -32,11 +33,13 @@ impl ConnectedLineMaker {
     line_body_char: u8,
     wall_char: u8,
     collect_words: bool,
+    allow_length_one: bool,
   ) -> ConnectedLineMaker {
     ConnectedLineMaker {
       line_body_char,
       wall_char,
       collect_words,
+      allow_length_one,
       lines: Vec::new(),
       words: Vec::new(),
       line_begin: None,
