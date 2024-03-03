@@ -96,11 +96,10 @@ pub trait BorrowAndReadOrSet<T> {
   fn read(&self) -> T;
   fn set(&self, value: T);
 }
+
+
 ////////////////////////////////////////////////////////////////////////////////
-impl<T> BorrowAndReadOrSet<T> for Signal<T>
-where
-  T: Copy,
-{
+impl<T: Copy> BorrowAndReadOrSet<T> for Signal<T> {
   fn read(&self) -> T {
     self.borrow().read()
   }
