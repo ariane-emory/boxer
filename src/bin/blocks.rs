@@ -52,28 +52,30 @@ fn main() -> io::Result<()> {
   {
     println!("\nSawtooth PWM:");
 
-    let one = new_rcrc(Value::new(1));
-    let max = new_rcrc(Value::new(MAX));
-    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
-    let ctr_reset = new_rcrc(Feedback::new());
-    let ctr_max = new_rcrc(Value::new(MAX));
-    let ctr = new_rcrc(UpCounter::new(
+    let one = Value::new(1).as_rcrc();
+    let max = Value::new(MAX).as_rcrc();
+    let clock = SquareWave::new(one.borrow_mut().output()).as_rcrc();
+    let ctr_reset = Feedback::new().as_rcrc();
+    let ctr_max = Value::new(MAX).as_rcrc();
+    let ctr = UpCounter::new(
       clock.borrow_mut().output(),
       ctr_reset.borrow_mut().output(),
       ctr_max.borrow_mut().output(),
-    ));
+    )
+    .as_rcrc();
     let add =
-      new_rcrc(Add::new(ctr.borrow_mut().output(), one.borrow_mut().output()));
-    let two = new_rcrc(Value::new(2));
+      Add::new(ctr.borrow_mut().output(), one.borrow_mut().output()).as_rcrc();
+    let two = Value::new(2).as_rcrc();
     let div =
-      new_rcrc(Div::new(add.borrow_mut().output(), two.borrow_mut().output()));
-    let square = new_rcrc(SquareWave::new(div.borrow_mut().output()));
-    let zero = new_rcrc(Value::new(0));
-    let select = new_rcrc(Select::new(
+      Div::new(add.borrow_mut().output(), two.borrow_mut().output()).as_rcrc();
+    let square = SquareWave::new(div.borrow_mut().output()).as_rcrc();
+    let zero = Value::new(0).as_rcrc();
+    let select = Select::new(
       square.borrow_mut().output(),
       zero.borrow_mut().output(),
       max.borrow_mut().output(),
-    ));
+    )
+    .as_rcrc();
 
     ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
 
@@ -105,35 +107,37 @@ fn main() -> io::Result<()> {
   {
     println!("\nTriangle:");
 
-    let max = new_rcrc(Value::new(MAX));
-    let one = new_rcrc(Value::new(1));
-    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
-    let ctr_reset = new_rcrc(Feedback::new());
-    let ctr = new_rcrc(UpCounter::new(
+    let max = Value::new(MAX).as_rcrc();
+    let one = Value::new(1).as_rcrc();
+    let clock = SquareWave::new(one.borrow_mut().output()).as_rcrc();
+    let ctr_reset = Feedback::new().as_rcrc();
+    let ctr = UpCounter::new(
       clock.borrow_mut().output(),
       &ctr_reset.borrow_mut().output(),
       max.borrow_mut().output(),
-    ));
-    let sr_set = new_rcrc(Feedback::new());
-    let sr_reset = new_rcrc(Feedback::new());
-    let sr = new_rcrc(SRLatch::new(
+    )
+    .as_rcrc();
+    let sr_set = Feedback::new().as_rcrc();
+    let sr_reset = Feedback::new().as_rcrc();
+    let sr = SRLatch::new(
       sr_set.borrow_mut().output(),
       sr_reset.borrow_mut().output(),
-    ));
-    let not_latched = new_rcrc(Not::new(sr.borrow_mut().output()));
+    )
+    .as_rcrc();
+    let not_latched = Not::new(sr.borrow_mut().output()).as_rcrc();
     let ctr_at_max_and_latched =
-      new_rcrc(And::new(ctr.borrow_mut().at_max(), sr.borrow_mut().output()));
-    let ctr_at_max_and_not_latched = new_rcrc(And::new(
-      ctr.borrow_mut().at_max(),
-      not_latched.borrow_mut().output(),
-    ));
+      And::new(ctr.borrow_mut().at_max(), sr.borrow_mut().output()).as_rcrc();
+    let ctr_at_max_and_not_latched =
+      And::new(ctr.borrow_mut().at_max(), not_latched.borrow_mut().output())
+        .as_rcrc();
     let sub =
-      new_rcrc(Sub::new(max.borrow_mut().output(), ctr.borrow_mut().output()));
-    let select = new_rcrc(Select::new(
+      Sub::new(max.borrow_mut().output(), ctr.borrow_mut().output()).as_rcrc();
+    let select = Select::new(
       sr.borrow_mut().output(),
       ctr.borrow_mut().output(),
       sub.borrow_mut().output(),
-    ));
+    )
+    .as_rcrc();
 
     ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
     sr_set
@@ -173,39 +177,44 @@ fn main() -> io::Result<()> {
   {
     println!("\nSharktooth:");
 
-    let max = new_rcrc(Value::new(MAX));
+    let max = Value::new(MAX).as_rcrc();
     let imax =
-      new_rcrc(Value::<isize>::new(max.borrow_mut().output_value() as isize));
-    let one = new_rcrc(Value::new(1));
-    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
-    let sixteen = new_rcrc(Value::new(16));
-    let square = new_rcrc(SquareWave::new(sixteen.borrow_mut().output()));
-    let izero = new_rcrc(Value::new(0));
-    let select = new_rcrc(Select::new(
+      Value::<isize>::new(max.borrow_mut().output_value() as isize).as_rcrc();
+    let one = Value::new(1).as_rcrc();
+    let clock = SquareWave::new(one.borrow_mut().output()).as_rcrc();
+    let sixteen = Value::new(16).as_rcrc();
+    let square = SquareWave::new(sixteen.borrow_mut().output()).as_rcrc();
+    let izero = Value::new(0).as_rcrc();
+    let select = Select::new(
       square.borrow_mut().output(),
       izero.borrow_mut().output(),
       imax.borrow_mut().output(),
-    ));
-    let held_value = new_rcrc(Feedback::<isize>::new());
-    let never = new_rcrc(Value::new(false));
-    let itwo = new_rcrc(Value::<isize>::new(2));
-    let div_held_value_by_itwo = new_rcrc(Div::<isize>::new(
+    )
+    .as_rcrc();
+    let held_value = Feedback::<isize>::new().as_rcrc();
+    let never = Value::new(false).as_rcrc();
+    let itwo = Value::<isize>::new(2).as_rcrc();
+    let div_held_value_by_itwo = Div::<isize>::new(
       held_value.borrow_mut().output(),
       itwo.borrow_mut().output(),
-    ));
-    let div_new_input_by_itwo = new_rcrc(Div::<isize>::new(
+    )
+    .as_rcrc();
+    let div_new_input_by_itwo = Div::<isize>::new(
       select.borrow_mut().output(),
       itwo.borrow_mut().output(),
-    ));
-    let add = new_rcrc(Add::new(
+    )
+    .as_rcrc();
+    let add = Add::new(
       div_held_value_by_itwo.borrow_mut().output(),
       div_new_input_by_itwo.borrow_mut().output(),
-    ));
-    let sample_and_hold = new_rcrc(SampleAndHold::new(
+    )
+    .as_rcrc();
+    let sample_and_hold = SampleAndHold::new(
       add.borrow_mut().output(),
       clock.borrow_mut().output(),
       never.borrow_mut().output(),
-    ));
+    )
+    .as_rcrc();
 
     held_value
       .borrow_mut()
