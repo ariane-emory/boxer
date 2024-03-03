@@ -74,3 +74,34 @@ impl SteppableWithOutputSignal<isize> for UsizeToIsize {
     &self.output
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct UsizeToF64 {
+  output: SignalRef<f64>,
+  input: SignalRef<usize>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl UsizeToF64 {
+  pub fn new(input: &SignalRef<usize>) -> Self {
+    let mut r = UsizeToF64 {
+      output: new_signal_ref(0.0),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Steppable for UsizeToF64 {
+  fn step(&mut self) {
+    self.output.set(self.input.read() as f64);
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl SteppableWithOutputSignal<f64> for UsizeToF64 {
+  fn output(&self) -> &SignalRef<f64> {
+    &self.output
+  }
+}
