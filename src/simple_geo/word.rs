@@ -2,6 +2,10 @@ use crate::simple_geo::*;
 use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////
+const WORD_CHARS: &str =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!=+-*/%";
+
+////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Word {
   pub start: Point,
