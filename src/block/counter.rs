@@ -80,15 +80,13 @@ impl HasSignal<usize> for UpCounter {
 ////////////////////////////////////////////////////////////////////////////////
 pub trait BorrowUpCounterRefAndGetAtMax {
   fn at_max(&self) -> SignalRef<bool>;
-  fn at_max_value(&self) -> bool;
+  fn at_max_value(&self) -> bool {
+    self.at_max().read()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl BorrowUpCounterRefAndGetAtMax for RcRefCell<UpCounter> {
   fn at_max(&self) -> SignalRef<bool> {
     self.borrow().at_max().clone()
-  }
-
-  fn at_max_value(&self) -> bool {
-    self.at_max().read()
   }
 }

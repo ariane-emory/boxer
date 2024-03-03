@@ -27,7 +27,9 @@ pub trait HasSignal<T: Copy>: Steppable {
 ////////////////////////////////////////////////////////////////////////////////
 pub trait BorrowSignalRef<U: Copy> {
   fn output(&self) -> SignalRef<U>;
-  fn output_value(&self) -> U;
+  fn output_value(&self) -> U {
+    self.output().read()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T, U> BorrowSignalRef<U> for RcRefCell<T>
@@ -37,10 +39,6 @@ where
 {
   fn output(&self) -> SignalRef<U> {
     self.borrow().output().clone()
-  }
-
-  fn output_value(&self) -> U {
-    self.output().read()
   }
 }
 
