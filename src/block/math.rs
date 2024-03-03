@@ -252,15 +252,15 @@ impl SteppableWithOutputSignal<usize> for RShift {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub struct Abs {
-  output: SignalRef<usize>,
-  input: SignalRef<isize>,
+pub struct Neg<T: std::ops::Neg<Output = T> + Copy + Default> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl Abs {
-  pub fn new(input: &SignalRef<isize>) -> Self {
-    let mut r = Abs {
-      output: new_signal_ref(0),
+impl<T: std::ops::Neg<Output = T> + Copy + Default> Neg<T> {
+  pub fn new(input: &SignalRef<T>) -> Self {
+    let mut r = Neg {
+      output: new_signal_ref(Default::default()),
       input: Rc::clone(input),
     };
 
@@ -269,14 +269,59 @@ impl Abs {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl Steppable for Abs {
+impl<T: std::ops::Neg<Output = T> + Copy + Default> Steppable for Neg<T> {
   fn step(&mut self) {
-    self.output.set((self.input.read()).abs() as usize);
+    self.output.set(-self.input.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl SteppableWithOutputSignal<usize> for Abs {
-  fn output(&self) -> &SignalRef<usize> {
+impl<T: std::ops::Neg<Output = T> + Copy + Default> SteppableWithOutputSignal<T>
+  for Neg<T>
+{
+  fn output(&self) -> &SignalRef<T> {
+    &self.output
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub struct Abs<
+  T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default,
+> {
+  output: SignalRef<T>,
+  input: SignalRef<T>,
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
+  Abs<T>
+{
+  pub fn new(input: &SignalRef<T>) -> Self {
+    let mut r = Abs {
+      output: new_signal_ref(Default::default()),
+      input: Rc::clone(input),
+    };
+
+    r.step();
+    r
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
+  Steppable for Abs<T>
+{
+  fn step(&mut self) {
+    if self.input.read() < Default::default() {
+      self.output.set(-self.input.read());
+    } else {
+      self.output.set(self.input.read());
+    }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
+  SteppableWithOutputSignal<T> for Abs<T>
+{
+  fn output(&self) -> &SignalRef<T> {
     &self.output
   }
 }
