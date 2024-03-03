@@ -8,6 +8,7 @@ pub mod math;
 pub mod random;
 pub mod sample_and_hold;
 pub mod select;
+pub mod signal;
 pub mod timer;
 pub mod trigger;
 pub mod unit_delay;
@@ -23,6 +24,7 @@ pub use math::*;
 pub use random::*;
 pub use sample_and_hold::*;
 pub use select::*;
+pub use signal::*;
 pub use timer::*;
 pub use trigger::*;
 pub use unit_delay::*;
@@ -76,11 +78,6 @@ pub fn new_rcrc<T>(item: T) -> RcRefCell<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn new_signal<T: Copy>(value: T) -> SignalRef<T> {
-  new_rcrc(Signal::new(value))
-}
-
-////////////////////////////////////////////////////////////////////////////////
 pub trait HasSignal<T: Copy>: Steppable {
   fn output(&self) -> &SignalRef<T>;
 
@@ -93,67 +90,5 @@ pub trait HasSignal<T: Copy>: Steppable {
     Self: Sized,
   {
     new_rcrc(self)
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub struct Signal<T: Copy> {
-  value: T,
-}
-////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> Signal<T> {
-  pub fn new(value: T) -> Self {
-    Signal { value }
-  }
-
-  pub fn read(&self) -> T {
-    self.value
-  }
-
-  pub fn set(&mut self, value: T) {
-    self.value = value;
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub type SignalRef<T> = RcRefCell<Signal<T>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndReadOrSetSignal<T> {
-  fn read(&self) -> T;
-  fn set(&self, value: T);
-}
-////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
-  fn read(&self) -> T {
-    self.borrow().read()
-  }
-
-  fn set(&self, value: T) {
-    self.borrow_mut().set(value);
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowSignalRef<U: Copy> {
-  fn output(&self) -> SignalRef<U>;
-  fn output_value(&self) -> U;
-}
-////////////////////////////////////////////////////////////////////////////////
-impl<T, U> BorrowSignalRef<U> for RcRefCell<T>
-where
-  T: HasSignal<U> + ?Sized,
-  U: Copy,
-{
-  fn output(&self) -> SignalRef<U> {
-    self.borrow().output().clone()
-  }
-
-  fn output_value(&self) -> U {
-    self.output().read()
   }
 }
