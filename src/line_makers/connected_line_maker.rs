@@ -1,13 +1,15 @@
 use crate::simple_geo::ConnectedLine;
-use crate::simple_geo::ConnectionType::{AnotherLine, Wall};
+use crate::simple_geo::ConnectionType;
+use crate::simple_geo::ConnectionType::{AnotherLine, Nothing, Wall};
 use crate::simple_geo::Point;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker {
   pub lines: Vec<ConnectedLine>,
   line_begin: Option<Point>,
+  line_begin_type: ConnectionType,
   line_body_char: u8,
-  _wall_char: u8,
+  wall_char: u8,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,9 +18,20 @@ impl ConnectedLineMaker {
     ConnectedLineMaker {
       lines: Vec::new(),
       line_begin: None,
+      line_begin_type: AnotherLine,
       line_body_char,
-      _wall_char: wall_char,
+      wall_char,
     }
+  }
+
+  fn abort_line(&mut self) {
+    self.line_begin = None;
+    self.line_begin_type = Nothing;
+  }
+
+  fn begin_line(&mut self, point: Point, connection_type: ConnectionType) {
+    self.line_begin = Some(point);
+    self.line_begin_type = connection_type;
   }
 
   pub fn process(&mut self, pos: &Point, byte: u8) {
@@ -35,7 +48,7 @@ impl ConnectedLineMaker {
 
     if pos.col == 0 {
       println!("         new line!");
-      self.line_begin = None;
+      self.abort_line();
     }
 
     if let Some(begin) = self.line_begin {
@@ -47,13 +60,15 @@ impl ConnectedLineMaker {
           ConnectedLine::new(begin, *pos, AnotherLine, AnotherLine).unwrap();
         println!("         CREATE LINE: {:?}", line);
         self.lines.push(line);
-        self.line_begin = None;
+        self.abort_line();
       } else if byte != self.line_body_char {
         println!("         broke line, distance = {}!", pos.distance(&begin));
-        self.line_begin = None; // HERE?
+        self.abort_line();
       }
     } else if byte == b'+' {
-      self.line_begin = Some(*pos);
+      self.begin_line(*pos, AnotherLine);
+    } else if byte == self.wall_char {
+      self.begin_line(*pos, Wall);
     }
   }
 }
