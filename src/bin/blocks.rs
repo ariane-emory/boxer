@@ -16,16 +16,17 @@ fn main() -> io::Result<()> {
   {
     println!("\nSawtooth:");
 
-    let one = new_rcrc(Value::new(1));
-    let max = new_rcrc(Value::new(MAX));
-    let clock = new_rcrc(SquareWave::new(one.borrow_mut().output()));
-    let ctr_reset = new_rcrc(Feedback::new());
-    let ctr_max = new_rcrc(Value::new(MAX));
-    let ctr = new_rcrc(UpCounter::new(
+    let one = Value::new(1).as_rcrc();
+    let max = Value::new(MAX).as_rcrc();
+    let clock = SquareWave::new(one.borrow_mut().output()).as_rcrc();
+    let ctr_reset = Feedback::new().as_rcrc();
+    let ctr_max = Value::new(MAX).as_rcrc();
+    let ctr = UpCounter::new(
       clock.borrow_mut().output(),
       ctr_reset.borrow_mut().output(),
       ctr_max.borrow_mut().output(),
-    ));
+    )
+    .as_rcrc();
 
     ctr_reset.borrow_mut().set_input(&ctr.borrow_mut().at_max());
 
