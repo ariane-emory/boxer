@@ -65,7 +65,6 @@ pub fn push_onto_vec_of_rcrc_steppable<T: 'static + Steppable>(
   item: &RcRefCell<T>,
 ) {
   let steppable_item = item.clone() as DynSteppableRef;
-
   blocks.push(steppable_item);
 }
 
