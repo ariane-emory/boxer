@@ -160,3 +160,17 @@ impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
     self.borrow_mut().set(value);
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowAndSetInputSignal<U: Copy> {
+  fn set(&self, input: &SignalRef<U>);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+impl<U: Copy + Default> BorrowAndSetInputSignal<U> for RcRefCell<Feedback<U>> {
+  fn set(&self, input: &SignalRef<U>) {
+    self.borrow_mut().set_input(input);
+  }
+}
