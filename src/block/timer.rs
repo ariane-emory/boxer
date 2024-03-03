@@ -35,20 +35,17 @@ impl TON {
 impl Steppable for TON {
   fn step(&mut self) {
     if self.reset.read() {
-      self.count_output.borrow_mut().set(0);
+      self.count_output.set(0);
     } else if self.output.read() {
-      self
-        .count_output
-        .borrow_mut()
-        .set(self.count_output.read() + 1);
+      self.count_output.set(self.count_output.read() + 1);
     } else {
-      self.count_output.borrow_mut().set(0);
+      self.count_output.set(0);
     }
 
     if self.count_output.read() >= self.delay.read() {
-      self.output.borrow_mut().set(true);
+      self.output.set(true);
     } else {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     }
   }
 }
@@ -95,20 +92,17 @@ impl TOF {
 impl Steppable for TOF {
   fn step(&mut self) {
     if self.reset.read() {
-      self.count_output.borrow_mut().set(0);
+      self.count_output.set(0);
     } else if !self.output.read() {
-      self
-        .count_output
-        .borrow_mut()
-        .set(self.count_output.read() + 1);
+      self.count_output.set(self.count_output.read() + 1);
     } else {
-      self.count_output.borrow_mut().set(0);
+      self.count_output.set(0);
     }
 
     if self.count_output.read() >= self.delay.read() {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     } else {
-      self.output.borrow_mut().set(true);
+      self.output.set(true);
     }
   }
 }
@@ -155,17 +149,14 @@ impl TP {
 impl Steppable for TP {
   fn step(&mut self) {
     if self.input.read() {
-      self.count_output.borrow_mut().set(self.count_from.read());
+      self.count_output.set(self.count_from.read());
     }
 
     if self.count_output.read() > 0usize {
-      self.output.borrow_mut().set(true);
-      self
-        .count_output
-        .borrow_mut()
-        .set(self.count_output.read() - 1);
+      self.output.set(true);
+      self.count_output.set(self.count_output.read() - 1);
     } else {
-      self.output.borrow_mut().set(false);
+      self.output.set(false);
     }
   }
 }
