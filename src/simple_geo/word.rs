@@ -10,11 +10,16 @@ pub struct Word {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Word {
-  pub fn new(string: &str, start: Point, end: Point) -> Self {
-    Self {
-      start,
-      end,
-      string: string.to_string(),
+  pub fn new(string: &str, start: Point, end: Point) -> GeoResult<Self> {
+    if start.col > end.col {
+      Err(ErrString::new("start.col > end.col!"))
+    }
+    else {
+      Ok(Self {
+        start,
+        end,
+        string: string.to_string(),
+      })
     }
   }
 }
