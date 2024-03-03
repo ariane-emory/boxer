@@ -2,6 +2,7 @@ use crate::line_makers::ConnectedLineMaker;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::Orientation;
 use crate::simple_geo::Point;
+use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 use crate::util::max_line_len;
 use std::cell::RefCell;
@@ -35,7 +36,8 @@ pub fn make_process_file_fun<'a>(
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
-  postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
+  line_postprocessor: Box<dyn Fn(ConnectedLine) -> ConnectedLine + 'a>,
+  word_postprocessor: Box<dyn Fn(Word) -> Word + 'a>,
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(
@@ -44,7 +46,8 @@ pub fn make_process_file_fun<'a>(
     wall_char,
     collect_words,
     allow_length_one,
-    postprocessor,
+    line_postprocessor,
+    word_postprocessor,
   );
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
