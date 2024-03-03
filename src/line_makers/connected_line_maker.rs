@@ -55,13 +55,14 @@ impl ConnectedLineMaker {
   }
 
   fn begin_line(&mut self, point: Point, connection_type: ConnectionType) {
+    self.try_collect_word();
     self.line_begin = Some(point);
     self.line_begin_type = connection_type;
   }
 
   fn try_collect_word(&mut self) {
     if self.collect_words && self.current_word.len() > 0 {
-      println!("         word: {}", self.current_word);
+      println!("Pushing word: {}", self.current_word);
       self.current_word = String::new();
       self.words.push(self.current_word.clone());
     }
