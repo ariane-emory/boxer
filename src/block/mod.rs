@@ -133,7 +133,7 @@ pub trait HasSignal<T: Copy>: Steppable {
     self.output().borrow().read()
   }
 
-  fn as_rcrc(self) -> Rc<RefCell<Self>>
+  fn as_rcrc(self) -> RcRefCell<Self>
   where
     Self: Sized,
   {
@@ -148,7 +148,7 @@ pub trait BorrowSignalRef<U: Copy> {
   fn output_value(&self) -> U;
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T, U> BorrowSignalRef<U> for Rc<RefCell<T>>
+impl<T, U> BorrowSignalRef<U> for RcRefCell<T>
 where
   T: HasSignal<U> + ?Sized,
   U: Copy, // Ensure U satisfies Copy
