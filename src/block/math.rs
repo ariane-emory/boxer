@@ -13,7 +13,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
     right: &Signal<T>,
   ) -> Self {
     let mut r = Add {
-      output: Rc::new(RefCell::new(OutputSignal::new(Default::default()))),
+      output: new_signal(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -32,7 +32,9 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Steppable for Add<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Add<Output = T> + Copy + Default> HasOutputSignal<T> for Add<T> {
+impl<T: std::ops::Add<Output = T> + Copy + Default> HasOutputSignal<T>
+  for Add<T>
+{
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -52,7 +54,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
     right: &Signal<T>,
   ) -> Self {
     let mut r = Sub {
-      output: Rc::new(RefCell::new(OutputSignal::new(Default::default()))),
+      output: new_signal(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -71,7 +73,9 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Steppable for Sub<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Sub<Output = T> + Copy + Default> HasOutputSignal<T> for Sub<T> {
+impl<T: std::ops::Sub<Output = T> + Copy + Default> HasOutputSignal<T>
+  for Sub<T>
+{
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -91,7 +95,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
     right: &Signal<T>,
   ) -> Self {
     let mut r = Mul {
-      output: Rc::new(RefCell::new(OutputSignal::new(Default::default()))),
+      output: new_signal(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -110,7 +114,9 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Mul<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Mul<Output = T> + Copy + Default> HasOutputSignal<T> for Mul<T> {
+impl<T: std::ops::Mul<Output = T> + Copy + Default> HasOutputSignal<T>
+  for Mul<T>
+{
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -130,7 +136,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
     right: &Signal<T>,
   ) -> Self {
     let mut r = Div {
-      output: Rc::new(RefCell::new(OutputSignal::new(Default::default()))),
+      output: new_signal(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -149,7 +155,9 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Div<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Div<Output = T> + Copy + Default> HasOutputSignal<T> for Div<T> {
+impl<T: std::ops::Div<Output = T> + Copy + Default> HasOutputSignal<T>
+  for Div<T>
+{
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -169,7 +177,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
     right: &Signal<T>,
   ) -> Self {
     let mut r = Mod {
-      output: Rc::new(RefCell::new(OutputSignal::new(Default::default()))),
+      output: new_signal(Default::default()),
       left: Rc::clone(left),
       right: Rc::clone(right),
     };
@@ -188,7 +196,9 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Steppable for Mod<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::ops::Rem<Output = T> + Copy + Default> HasOutputSignal<T> for Mod<T> {
+impl<T: std::ops::Rem<Output = T> + Copy + Default> HasOutputSignal<T>
+  for Mod<T>
+{
   fn output(&self) -> &Signal<T> {
     &self.output
   }
@@ -208,7 +218,7 @@ impl LShift {
     input_shift: &Signal<usize>,
   ) -> Self {
     let mut r = LShift {
-      output: Rc::new(RefCell::new(OutputSignal::new(0))),
+      output: new_signal(0),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
     };
@@ -246,7 +256,7 @@ impl RShift {
     input_shift: &Signal<usize>,
   ) -> Self {
     let mut r = RShift {
-      output: Rc::new(RefCell::new(OutputSignal::new(0))),
+      output: new_signal(0),
       input_value: Rc::clone(input_value),
       input_shift: Rc::clone(input_shift),
     };
