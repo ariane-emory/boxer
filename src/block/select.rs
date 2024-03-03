@@ -29,9 +29,9 @@ impl<T: Copy> Select<T> {
 impl<T: Copy> Steppable for Select<T> {
   fn step(&mut self) {
     if self.which.read() {
-      self.output.borrow_mut().set(self.right.read());
+      self.output.set(self.right.read());
     } else {
-      self.output.borrow_mut().set(self.left.read());
+      self.output.set(self.left.read());
     }
   }
 }
@@ -66,9 +66,9 @@ impl<T: Copy + PartialOrd> Max<T> {
 impl<T: Copy + PartialOrd> Steppable for Max<T> {
   fn step(&mut self) {
     if self.right.read() > self.left.read() {
-      self.output.borrow_mut().set(self.right.read());
+      self.output.set(self.right.read());
     } else {
-      self.output.borrow_mut().set(self.left.read());
+      self.output.set(self.left.read());
     }
   }
 }
@@ -102,9 +102,9 @@ impl<T: Copy + PartialOrd> Min<T> {
 impl<T: Copy + PartialOrd> Steppable for Min<T> {
   fn step(&mut self) {
     if self.right.read() < self.left.read() {
-      self.output.borrow_mut().set(self.right.read());
+      self.output.set(self.right.read());
     } else {
-      self.output.borrow_mut().set(self.left.read());
+      self.output.set(self.left.read());
     }
   }
 }
@@ -141,11 +141,11 @@ impl<T: Copy + PartialOrd> Limit<T> {
 impl<T: Copy + PartialOrd> Steppable for Limit<T> {
   fn step(&mut self) {
     if self.input.read() < self.min.read() {
-      self.output.borrow_mut().set(self.min.read());
+      self.output.set(self.min.read());
     } else if self.input.read() > self.max.read() {
-      self.output.borrow_mut().set(self.max.read());
+      self.output.set(self.max.read());
     } else {
-      self.output.borrow_mut().set(self.input.read());
+      self.output.set(self.input.read());
     }
   }
 }

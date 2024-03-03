@@ -25,10 +25,7 @@ impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> Steppable for GreaterThan<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() > self.right.read());
+    self.output.set(self.left.read() > self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,10 +61,7 @@ impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> Steppable for LessThan<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() < self.right.read());
+    self.output.set(self.left.read() < self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,10 +97,7 @@ impl<T: std::cmp::PartialEq + Copy> Equal<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> Steppable for Equal<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() == self.right.read());
+    self.output.set(self.left.read() == self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -142,10 +133,7 @@ impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> Steppable for NotEqual<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() != self.right.read());
+    self.output.set(self.left.read() != self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

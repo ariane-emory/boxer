@@ -29,7 +29,7 @@ impl Steppable for SquareWave {
     self.count = self.count + 1;
 
     if self.count >= period {
-      self.output.borrow_mut().set(!last_output);
+      self.output.set(!last_output);
       self.count = 0;
     }
   }

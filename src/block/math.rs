@@ -25,10 +25,7 @@ impl<T: std::ops::Add<Output = T> + Copy + Default> Add<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Add<Output = T> + Copy + Default> Steppable for Add<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() + self.right.read());
+    self.output.set(self.left.read() + self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,10 +63,7 @@ impl<T: std::ops::Sub<Output = T> + Copy + Default> Sub<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Sub<Output = T> + Copy + Default> Steppable for Sub<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() - self.right.read());
+    self.output.set(self.left.read() - self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,10 +101,7 @@ impl<T: std::ops::Mul<Output = T> + Copy + Default> Mul<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Mul<Output = T> + Copy + Default> Steppable for Mul<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() * self.right.read());
+    self.output.set(self.left.read() * self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -148,10 +139,7 @@ impl<T: std::ops::Div<Output = T> + Copy + Default> Div<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Div<Output = T> + Copy + Default> Steppable for Div<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() / self.right.read());
+    self.output.set(self.left.read() / self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -189,10 +177,7 @@ impl<T: std::ops::Rem<Output = T> + Copy + Default> Mod<T> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::ops::Rem<Output = T> + Copy + Default> Steppable for Mod<T> {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set(self.left.read() % self.right.read());
+    self.output.set(self.left.read() % self.right.read());
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -232,7 +217,6 @@ impl Steppable for LShift {
   fn step(&mut self) {
     self
       .output
-      .borrow_mut()
       .set(self.input_value.read() << self.input_shift.read());
   }
 }
@@ -271,7 +255,6 @@ impl Steppable for RShift {
   fn step(&mut self) {
     self
       .output
-      .borrow_mut()
       .set(self.input_value.read() >> self.input_shift.read());
   }
 }
@@ -303,10 +286,7 @@ impl Abs {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for Abs {
   fn step(&mut self) {
-    self
-      .output
-      .borrow_mut()
-      .set((self.input.read()).abs() as usize);
+    self.output.set((self.input.read()).abs() as usize);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
