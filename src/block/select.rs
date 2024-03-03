@@ -36,7 +36,7 @@ impl<T: Copy> Steppable for Select<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> SteppableOutputSignal<T> for Select<T> {
+impl<T: Copy> SteppableWithOutputSignal<T> for Select<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }
@@ -73,7 +73,7 @@ impl<T: Copy + PartialOrd> Steppable for Max<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + PartialOrd> SteppableOutputSignal<T> for Max<T> {
+impl<T: Copy + PartialOrd> SteppableWithOutputSignal<T> for Max<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }
@@ -109,7 +109,7 @@ impl<T: Copy + PartialOrd> Steppable for Min<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + PartialOrd> SteppableOutputSignal<T> for Min<T> {
+impl<T: Copy + PartialOrd> SteppableWithOutputSignal<T> for Min<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }
@@ -150,7 +150,7 @@ impl<T: Copy + PartialOrd> Steppable for Limit<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + PartialOrd> SteppableOutputSignal<T> for Limit<T> {
+impl<T: Copy + PartialOrd> SteppableWithOutputSignal<T> for Limit<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }

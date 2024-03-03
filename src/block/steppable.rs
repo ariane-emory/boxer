@@ -15,7 +15,7 @@ pub trait Steppable {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait SteppableOutputSignal<T: Copy>: Steppable {
+pub trait SteppableWithOutputSignal<T: Copy>: Steppable {
   fn output(&self) -> &SignalRef<T>;
 
   fn output_value(&self) -> T {
@@ -25,7 +25,7 @@ pub trait SteppableOutputSignal<T: Copy>: Steppable {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowSteppableRefAndGetOutput<U: Copy> {
+pub trait BorrowSteppableWithOutputSignalRefAndGetOutput<U: Copy> {
   fn output(&self) -> SignalRef<U>;
 
   fn output_value(&self) -> U {
@@ -33,9 +33,9 @@ pub trait BorrowSteppableRefAndGetOutput<U: Copy> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T, U> BorrowSteppableRefAndGetOutput<U> for RcRefCell<T>
+impl<T, U> BorrowSteppableWithOutputSignalRefAndGetOutput<U> for RcRefCell<T>
 where
-  T: SteppableOutputSignal<U>,
+  T: SteppableWithOutputSignal<U>,
   U: Copy,
 {
   fn output(&self) -> SignalRef<U> {

@@ -33,7 +33,7 @@ impl<T: Copy + Default> Steppable for SampleAndHold<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy + Default> SteppableOutputSignal<T> for SampleAndHold<T> {
+impl<T: Copy + Default> SteppableWithOutputSignal<T> for SampleAndHold<T> {
   fn output(&self) -> &SignalRef<T> {
     &self.output
   }

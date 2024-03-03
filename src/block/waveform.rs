@@ -35,7 +35,7 @@ impl Steppable for SquareWave {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl SteppableOutputSignal<bool> for SquareWave {
+impl SteppableWithOutputSignal<bool> for SquareWave {
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
