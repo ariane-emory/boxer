@@ -45,7 +45,7 @@ impl ConnectedLineMaker {
     let line =
       ConnectedLine::new(begin, end, self.line_begin_type, connectection_type)
         .unwrap();
-    println!("         CREATE LINE: {:?}", line);
+    println!("         CREATED LINE: {:?}", line);
     self.lines.push(line);
     self.abort_line();
   }
