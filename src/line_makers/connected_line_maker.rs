@@ -160,7 +160,8 @@ impl ConnectedLineMaker {
         );
       }
       else {
-        println!("Do nothing for '{}'.", byte as char);
+        println!("Reset for '{}'.", byte as char);
+        self.reset();
       }
     }
 
