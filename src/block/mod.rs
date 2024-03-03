@@ -91,29 +91,6 @@ impl<T: Copy> Signal<T> {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-pub type SignalRef<T> = RcRefCell<Signal<T>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-pub trait BorrowAndReadOrSetSignal<T> {
-  fn read(&self) -> T;
-  fn set(&self, value: T);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
-  fn read(&self) -> T {
-    self.borrow().read()
-  }
-
-  fn set(&self, value: T) {
-    self.borrow_mut().set(value);
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 pub fn new_rcrc<T>(item: T) -> RcRefCell<T> {
   Rc::new(RefCell::new(item))
 }
@@ -158,5 +135,28 @@ where
 
   fn output_value(&self) -> U {
     self.output().read()
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub type SignalRef<T> = RcRefCell<Signal<T>>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait BorrowAndReadOrSetSignal<T> {
+  fn read(&self) -> T;
+  fn set(&self, value: T);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy> BorrowAndReadOrSetSignal<T> for SignalRef<T> {
+  fn read(&self) -> T {
+    self.borrow().read()
+  }
+
+  fn set(&self, value: T) {
+    self.borrow_mut().set(value);
   }
 }
