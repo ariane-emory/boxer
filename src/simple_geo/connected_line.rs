@@ -40,13 +40,16 @@ impl ConnectedLine {
 ////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for ConnectedLine {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    let rotation_str = if self.is_vertical() { "V" } else { "H" };
+    let orientation_str = match self.orientation {
+      Orientation::Horizontal => "H",
+      Orientation::Vertical => "V",
+    };
     let connection_str =
       format!("{:?}⇼{:?}", self.start_connects_to, self.end_connects_to);
     write!(
       f,
       "{}{:?} {:15}{:?}",
-      rotation_str, self.start, connection_str, self.end
+      orientation_str, self.start, connection_str, self.end
     )
   }
 }
