@@ -10,19 +10,26 @@ pub struct ConnectedLineMaker {
   line_begin_type: ConnectionType,
   line_body_char: u8,
   wall_char: u8,
-  //  interrupt_char
+  _collect_alphanums: bool,
+  _alphanums: String,
   prev_pos: Point,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl ConnectedLineMaker {
-  pub fn new(line_body_char: u8, wall_char: u8) -> ConnectedLineMaker {
+  pub fn new(
+    line_body_char: u8,
+    wall_char: u8,
+    collect_alphanums: bool,
+  ) -> ConnectedLineMaker {
     ConnectedLineMaker {
       lines: Vec::new(),
       line_begin: None,
       line_begin_type: Corner,
       line_body_char,
       wall_char,
+      _collect_alphanums: collect_alphanums,
+      _alphanums: String::new(),
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
