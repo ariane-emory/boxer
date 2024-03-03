@@ -22,7 +22,7 @@ impl ConnectedLineMaker {
       line_begin_type: AnotherLine,
       line_body_char,
       wall_char,
-      prev_pos: Point::new(0, 0),
+      prev_pos: Point::new(1000, 1000),
     }
   }
 
@@ -62,20 +62,19 @@ impl ConnectedLineMaker {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
 
+    if pos.line != self.prev_pos.line {
+      println!("         new line, abor!");
+      self.abort_line();
+    }
 
     if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least one character long, we
       // need to check the distance between the current position and the
       // line begin position:
       let distance_ok =
-        pos.distance(&begin) > 1 && pos.line == self.prev_pos.line;
+        pos.distance(&begin) > 1 && (pos.line == self.prev_pos.line);
 
-      // Line has already started!
-      if distance_ok && pos.col == 0 {
-        println!("         new line!");
-        self.complete_line(begin, self.prev_pos, Nothing);
-      }
-      else if distance_ok && byte == b'+' {
+      if distance_ok && byte == b'+' {
         self.complete_line(begin, pos, AnotherLine);
       }
       else if distance_ok && byte == self.wall_char {
