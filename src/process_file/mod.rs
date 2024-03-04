@@ -147,16 +147,17 @@ pub fn process_file(
   let mut normalized_matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
   let normalize_matrix_width = normalized_matrix[0].len();
+  let terminator = b'\0';
 
   for row in normalized_matrix.iter_mut() {
-    row.push(b'\0');
+    row.push(terminator);
   }
 
-  normalized_matrix.push(vec![b'\0'; normalize_matrix_width + 1]);
+  normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
 
-  for row in &normalized_matrix {
-    println!("{:?}", std::str::from_utf8(&row).unwrap());
-  }
+  // for row in &normalized_matrix {
+  //   println!("{:?}", std::str::from_utf8(&row).unwrap());
+  // }
 
   println!("");
 
