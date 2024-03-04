@@ -334,9 +334,7 @@ fn analyze_chain(
     .map(|(point, _)| point)
     .collect::<Vec<_>>();
 
-  // Sort unique points to maintain top-left to bottom-right convention
-  //unique_points.sort_by(|a, b| a.line.cmp(&b.line).then(a.col.cmp(&b.col)));
-  unique_points.sort_by(|a, b| a.cmp(&b));
+  unique_points.sort();
 
 
   let start = unique_points.first().cloned();
