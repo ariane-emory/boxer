@@ -296,7 +296,6 @@ fn extract_lines_and_words(
 ) -> (Vec<ConnectedLine>, Vec<Word>) {
   let mut lines = Vec::new();
   let mut words = Vec::new();
-
   let flip_pos = |pos: Point| pos.flip();
   let flip_line = |cl: ConnectedLine| cl.flip();
   let flip_word = |wrd: Word| wrd.flip();
@@ -308,44 +307,39 @@ fn extract_lines_and_words(
   let log_byte_with_orientation_and_flipped_pos =
     |ori, pos, byte| log_labeled_byte(ori, flip_pos(pos), byte);
 
-  // RefCell scope:
-  {
-    let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
-      Vertical,
-      b'|',
-      b'-',
-      false,
-      false,
-      |pos| pos.offset_by(0, LINE_OFFSET),
-      flip_line,
-      flip_word,
-      log_byte_with_orientation_and_flipped_pos,
-    );
+  let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
+    Vertical,
+    b'|',
+    b'-',
+    false,
+    false,
+    |pos| pos.offset_by(0, LINE_OFFSET),
+    flip_line,
+    flip_word,
+    log_byte_with_orientation_and_flipped_pos,
+  );
 
-    let (horiz_linemaker, process_horiz_fun) = make_process_bidirectionally_fun(
-      Horizontal,
-      b'-',
-      b'|',
-      true,
-      true,
-      |pos| pos.offset_by(LINE_OFFSET, 0),
-      |line| line,
-      |word| word,
-      log_byte_with_orientation,
-    );
+  let (horiz_linemaker, process_horiz_fun) = make_process_bidirectionally_fun(
+    Horizontal,
+    b'-',
+    b'|',
+    true,
+    true,
+    |pos| pos.offset_by(LINE_OFFSET, 0),
+    |line| line,
+    |word| word,
+    log_byte_with_orientation,
+  );
 
-    process_matrix_bidirectionally(
-      &normalized_matrix,
-      process_horiz_fun,
-      process_vert_fun,
-    );
+  process_matrix_bidirectionally(
+    &normalized_matrix,
+    process_horiz_fun,
+    process_vert_fun,
+  );
 
-    //println!("");
-
-    words.extend(horiz_linemaker.borrow().words.iter().cloned());
-    lines.extend(horiz_linemaker.borrow().lines.iter());
-    lines.extend(vert_linemaker.borrow().lines.iter());
-  } // End of RefCell scope.
+  words.extend(horiz_linemaker.borrow().words.iter().cloned());
+  lines.extend(horiz_linemaker.borrow().lines.iter());
+  lines.extend(vert_linemaker.borrow().lines.iter());
 
   lines
     .iter()
@@ -354,10 +348,6 @@ fn extract_lines_and_words(
   words
     .iter()
     .for_each(|word| println!("Found word:      {:?}", word));
-
-  // rectangles
-  //   .iter()
-  //   .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
   (lines, words)
 }
