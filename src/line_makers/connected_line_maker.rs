@@ -69,7 +69,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.current_word_begin,
           self
             .current_word_begin
-            .offset_by(0, (self.current_word.len() - 1) as isize),
+            .offset_by(0, (self.current_word.len()) as isize),
         )
         .unwrap(),
       ))

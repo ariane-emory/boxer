@@ -41,7 +41,7 @@ fn main() -> io::Result<()> {
           println!("Changed {:?} into {:?}!", line, l);
           l
         },
-        |word| word.offset_by(LINE_OFFSET, 0),
+        |word| word,
         |pos, byte| {
           println!(
             "Vert:    {:?}: '{}'",

@@ -36,6 +36,10 @@ impl Word {
     )
     .unwrap()
   }
+
+  pub fn flip(&self) -> Self {
+    Self::new(&self.string, self.start.flip(), self.end.flip()).unwrap()
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Word {
