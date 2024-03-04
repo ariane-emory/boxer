@@ -2,7 +2,7 @@ use crate::simple_geo::*;
 use std::fmt;
 
 ////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Point {
   pub line: usize,
   pub col: usize,

@@ -56,6 +56,8 @@ pub fn process_file(
 
   merge_length_1_lines(&mut lines, &mut words);
 
+  let chains = find_chains(&lines);
+
   Ok((normalized_matrix, rectangles, lines, words))
 }
 
@@ -228,4 +230,61 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
     .for_each(|line| println!("Other line:      {:?}", line));
 
   words.iter().for_each(|word| println!("{:?}", word));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
+  use std::collections::{HashMap, HashSet};
+
+  // Graph construction: Map points to lines
+  let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
+  for line in lines {
+    graph
+      .entry(line.start.clone())
+      .or_default()
+      .push(line.clone());
+    graph
+      .entry(line.end.clone())
+      .or_default()
+      .push(line.clone());
+  }
+
+  let mut visited: HashSet<Point> = HashSet::new();
+  let mut chains: Vec<Vec<ConnectedLine>> = Vec::new();
+
+  // DFS function to explore chains
+  fn dfs(
+    point: &Point,
+    graph: &HashMap<Point, Vec<ConnectedLine>>,
+    visited: &mut HashSet<Point>,
+    chain: &mut Vec<ConnectedLine>,
+  ) {
+    if visited.insert(point.clone()) {
+      if let Some(neighbors) = graph.get(point) {
+        for line in neighbors {
+          chain.push(line.clone());
+          let next_point = if &line.start == point {
+            &line.end
+          }
+          else {
+            &line.start
+          };
+          dfs(next_point, graph, visited, chain);
+        }
+      }
+    }
+  }
+
+  // Find and group chains
+  for point in graph.keys() {
+    if !visited.contains(point) {
+      let mut chain = Vec::new();
+      dfs(point, &graph, &mut visited, &mut chain);
+      if !chain.is_empty() {
+        chains.push(chain);
+      }
+    }
+  }
+
+  chains
 }
