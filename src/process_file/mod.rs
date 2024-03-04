@@ -263,17 +263,13 @@ fn extract_basic_geometry(
   normalized_matrix: &Vec<Vec<u8>>,
 ) -> (Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>) {
   let mut rectangles = Vec::new();
-
-  let (mut lines, words) = extract_lines_and_words(normalized_matrix);
-
   let mut free_lines = Vec::new();
+  let (mut lines, words) = extract_lines_and_words(normalized_matrix);
 
   free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
   lines.retain(ConnectedLine::corner_connected);
 
   find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
-
-  //println!("");
 
   lines
     .iter()
