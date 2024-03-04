@@ -64,7 +64,9 @@ impl Positional for ConnectedLine {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl LineMethods for ConnectedLine {
+impl LineMethods for ConnectedLine {}
+////////////////////////////////////////////////////////////////////////////////
+impl Offsetable for ConnectedLine {
   fn flip(&self) -> Self {
     Self::new(
       self.orientation,
