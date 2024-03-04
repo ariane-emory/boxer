@@ -17,65 +17,12 @@ use crate::simple_matrix::*;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
 use std::cell::RefCell;
+use std::collections::{HashMap, HashSet};
 use std::io::Result as IoResult;
 use std::rc::Rc;
 
 /////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
-
-/////////////////////////////////////////////////////////////////////////////////
-pub fn process_file(
-  path: &str,
-) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
-  let mut normalized_matrix =
-    normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
-  let normalize_matrix_width = normalized_matrix[0].len();
-  let terminator = b'\0';
-
-  for row in normalized_matrix.iter_mut() {
-    row.push(terminator);
-  }
-
-  normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
-
-  println!("w");
-  println!("================================================================================");
-  println!("Extracting basic geometry...");
-  println!("================================================================================");
-
-  let (rectangles, mut lines, mut words) =
-    extract_basic_geometry(&normalized_matrix);
-
-  println!("x");
-  println!("================================================================================");
-  println!("Try to merge length-1 lines...");
-  println!("================================================================================");
-  println!("y");
-
-  merge_length_1_lines(&mut lines, &mut words);
-
-  println!("================================================================================");
-  println!("Looking for chains...");
-  println!("================================================================================");
-  println!("z");
-
-  let chains = find_chains(&lines);
-
-  // for (i, &mut ref mut chain) in chains.iter_mut().enumerate() {
-  //   chain.sort();
-  //   println!("Chain {}: length {} ", i, chain.len());
-  //   chain.iter().for_each(|line| println!("  {:?}", line));
-  // }
-
-  for (i, chain) in chains.iter().enumerate() {
-    //chain.sort();
-    println!("Chain {}: length {} ", i, chain.len());
-    chain.iter().for_each(|line| println!("  {:?}", line));
-  }
-
-  Ok((normalized_matrix, rectangles, lines, words))
-}
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_bidirectionally_fun<'a>(
@@ -111,6 +58,68 @@ pub fn make_process_bidirectionally_fun<'a>(
     custom_printer(orientation, pos, *byte);
     rc_linemaker_twin.borrow_mut().process(pos, *byte);
   })
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+pub fn process_file(
+  path: &str,
+) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+  let mut normalized_matrix =
+    normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
+  let normalize_matrix_width = normalized_matrix[0].len();
+  let terminator = b'\0';
+
+  for row in normalized_matrix.iter_mut() {
+    row.push(terminator);
+  }
+
+  normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
+
+  println!("");
+  println!("================================================================================");
+  println!("Extracting basic geometry...");
+  println!("================================================================================");
+
+  let (rectangles, mut lines, mut words) =
+    extract_basic_geometry(&normalized_matrix);
+
+  println!("");
+  println!("================================================================================");
+  println!("Try to merge length-1 lines...");
+  println!("================================================================================");
+  println!("");
+
+  merge_length_1_lines(&mut lines, &mut words);
+
+  println!("");
+  println!("================================================================================");
+  println!("Looking for chains...");
+  println!("================================================================================");
+  println!("");
+
+  let chains = find_chains(&lines);
+
+  // for (i, &mut ref mut chain) in chains.iter_mut().enumerate() {
+  //   chain.sort();
+  //   println!("Chain {}: length {} ", i, chain.len());
+  //   chain.iter().for_each(|line| println!("  {:?}", line));
+  // }
+
+  for (i, chain) in chains.iter().enumerate() {
+    //chain.sort();
+    println!("Chain {}: length {} ", i, chain.len());
+    chain.iter().for_each(|line| println!("  {:?}", line));
+
+    if let Some((start, end)) = find_chain_ends(&chain) {
+      println!("  Start: {:?}, End: {:?}", start, end);
+    }
+    else {
+      println!("  Chain ends not found.");
+    }
+  }
+
+  Ok((normalized_matrix, rectangles, lines, words))
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +248,7 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
     }
   }
 
-  println!("");
+  // println!("");
 
   lines
     .iter()
@@ -250,8 +259,6 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
 
 ////////////////////////////////////////////////////////////////////////////////
 fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
-  use std::collections::{HashMap, HashSet};
-
   // Graph construction: Map points to lines
   let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
   for line in lines {
@@ -307,4 +314,36 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
   }
 
   chains
+}
+
+////////////////////////////////////////////////////////////////////////////////
+fn find_chain_ends(lines: &Vec<ConnectedLine>) -> Option<(Point, Point)> {
+  let mut point_counts = HashMap::new();
+
+  // Count occurrences of each point
+  for line in lines {
+    *point_counts.entry(line.start.clone()).or_insert(0) += 1;
+    *point_counts.entry(line.end.clone()).or_insert(0) += 1;
+  }
+
+  // Identify start and end points (exactly one occurrence)
+  let (mut starts, mut ends) = (vec![], vec![]);
+  for (point, &count) in &point_counts {
+    if count == 1 {
+      // Heuristic based on lines always starting at their topmost/leftmost
+      // Point
+      if lines.iter().any(|l| &l.start == point) {
+        starts.push(point.clone());
+      }
+      else {
+        ends.push(point.clone());
+      }
+    }
+  }
+
+  // Chain characteristics
+  match (starts.len(), ends.len()) {
+    (1, 1) => Some((starts[0].clone(), ends[0].clone())),
+    _ => None, // Either loop (0,0) or malformed chain
+  }
 }
