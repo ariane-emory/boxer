@@ -49,8 +49,12 @@ impl fmt::Debug for ConnectedLine {
       Orientation::Horizontal => "H",
       Orientation::Vertical => "V",
     };
-    let connection_str =
-      format!("{:?}⇼{:?}", self.start_connects_to, self.end_connects_to);
+    let connection_str = format!(
+      "{:?}←{}→{:?}",
+      self.start_connects_to,
+      self.len(),
+      self.end_connects_to
+    );
     write!(
       f,
       "{}{:?} {:15}{:?}",
