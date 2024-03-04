@@ -33,7 +33,7 @@ pub fn make_process_matrix_bidirectionally_fun<'a>(
   word_postprocessor: impl Fn(Word) -> Word + 'a,
   custom_printer: impl Fn(Orientation, Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
-  let lm = ConnectedLineMaker::new(
+  let linemaker = ConnectedLineMaker::new(
     orientation,
     line_body_char,
     wall_char,
@@ -42,10 +42,10 @@ pub fn make_process_matrix_bidirectionally_fun<'a>(
     line_postprocessor,
     word_postprocessor,
   );
-  let rc_lm = Rc::new(RefCell::new(lm));
-  let rc_lm_twin = Rc::clone(&rc_lm);
+  let rc_linemaker = Rc::new(RefCell::new(linemaker));
+  let rc_linemaker_twin = Rc::clone(&rc_linemaker);
 
-  (rc_lm, move |pos: &Point, byte: &u8| {
+  (rc_linemaker, move |pos: &Point, byte: &u8| {
     if pos.col == 0 {
       println!("");
     }
@@ -55,6 +55,6 @@ pub fn make_process_matrix_bidirectionally_fun<'a>(
     }
 
     custom_printer(orientation, *pos, *byte);
-    rc_lm_twin.borrow_mut().process(*pos, *byte);
+    rc_linemaker_twin.borrow_mut().process(*pos, *byte);
   })
 }

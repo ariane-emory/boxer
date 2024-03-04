@@ -45,7 +45,7 @@ fn main() -> io::Result<()> {
 
     // RefCell scope:
     {
-      let (vert_linemaker, process_vert) =
+      let (vert_linemaker, process_vert_fun) =
         make_process_matrix_bidirectionally_fun(
           Vertical,
           b'|',
@@ -57,7 +57,7 @@ fn main() -> io::Result<()> {
           log_byte_with_orientation_and_flipped_and_offset_pos,
         );
 
-      let (horiz_linemaker, process_horiz) =
+      let (horiz_linemaker, process_horiz_fun) =
         make_process_matrix_bidirectionally_fun(
           Horizontal,
           b'-',
@@ -69,7 +69,7 @@ fn main() -> io::Result<()> {
           log_byte_with_orientation_and_offset_pos,
         );
 
-      _matrix = process_file(filename, process_horiz, process_vert)?;
+      _matrix = process_file(filename, process_horiz_fun, process_vert_fun)?;
 
       println!("");
 
