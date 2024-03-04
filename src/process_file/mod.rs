@@ -125,16 +125,16 @@ fn extract_basic_geometry(
     find_rectangles(&all_lines, &mut rectangles, &mut other_lines, false);
   } // End of all_lines scope.
 
-  if false {
-    println!("");
+  //  if false {
+  println!("");
 
-    other_lines
-      .iter()
-      .for_each(|line| println!("Other line:      {:?}", line));
-    words
-      .iter()
-      .for_each(|word| println!("Found word:      {:?}", word));
-  }
+  other_lines
+    .iter()
+    .for_each(|line| println!("Other line:      {:?}", line));
+  words
+    .iter()
+    .for_each(|word| println!("Found word:      {:?}", word));
+  //  }
 
   rectangles
     .iter()
