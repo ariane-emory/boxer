@@ -162,10 +162,7 @@ pub fn process_file(
 
     let candidate_words = words
       .iter()
-      .filter(|word| {
-        word.start.line == line.start.line
-          && (word.start.col == (line.start.col + 1))
-      })
+      .filter(|word| word.start == line.start.offset_by(0, 1))
       .cloned()
       .collect::<Vec<Word>>();
 
