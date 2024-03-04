@@ -45,29 +45,31 @@ fn main() -> io::Result<()> {
 
     // RefCell scope:
     {
-      let (vert_linemaker, process_vert) = make_process_matrix_bidirectionally_fun(
-        Vertical,
-        b'|',
-        b'-',
-        false,
-        false,
-        flip_and_offset_line,
-        flip_and_offset_word,
-        log_byte_with_orientation_and_flipped_and_offset_pos,
-      );
+      let (vert_linemaker, process_vert) =
+        make_process_matrix_bidirectionally_fun(
+          Vertical,
+          b'|',
+          b'-',
+          false,
+          false,
+          flip_and_offset_line,
+          flip_and_offset_word,
+          log_byte_with_orientation_and_flipped_and_offset_pos,
+        );
 
-      let (horiz_linemaker, process_horiz) = make_process_matrix_bidirectionally_fun(
-        Horizontal,
-        b'-',
-        b'|',
-        true,
-        true,
-        offset_line,
-        offset_word,
-        log_byte_with_orientation_and_offset_pos,
-      );
+      let (horiz_linemaker, process_horiz) =
+        make_process_matrix_bidirectionally_fun(
+          Horizontal,
+          b'-',
+          b'|',
+          true,
+          true,
+          offset_line,
+          offset_word,
+          log_byte_with_orientation_and_offset_pos,
+        );
 
-      _matrix = process_file(filename, process_horiz, process_vert);
+      _matrix = process_file(filename, process_horiz, process_vert)?;
 
       println!("");
 

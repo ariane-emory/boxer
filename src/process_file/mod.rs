@@ -6,6 +6,7 @@ use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 
 use std::cell::RefCell;
+use std::io;
 use std::rc::Rc;
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -13,12 +14,12 @@ pub fn process_file(
   path: &str,
   process_horiz: impl Fn(&Point, &u8),
   process_vert: impl Fn(&Point, &u8),
-) -> Vec<Vec<u8>> {
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path).unwrap();
+) -> io::Result<Vec<Vec<u8>>> {
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
   let max_len = matrix_max_row_len(&matrix);
   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
   process_matrix_bidirectionally(&uniform_matrix, process_horiz, process_vert);
-  uniform_matrix
+  Ok(uniform_matrix)
 }
 
 /////////////////////////////////////////////////////////////////////////////////

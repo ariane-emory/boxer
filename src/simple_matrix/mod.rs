@@ -100,12 +100,10 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
   let file = File::open(path)?;
   let buf_reader = BufReader::new(file);
   let mut matrix = Vec::new();
-
   for line in buf_reader.lines() {
     let line = line?;
     matrix.push(line.into_bytes());
   }
-
   Ok(matrix)
 }
 
