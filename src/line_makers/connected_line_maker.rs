@@ -124,7 +124,7 @@ impl<'a> ConnectedLineMaker<'a> {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
     if pos.line != self.prev_pos.line {
-      println!("         new line, reset!");
+      println!("         new row, reset!");
       self.reset();
     }
 
