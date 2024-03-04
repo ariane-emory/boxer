@@ -7,6 +7,7 @@
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::ConnectedLine;
+use boxer::simple_geo::ConnectionType::*;
 use boxer::simple_geo::Offsetable;
 use boxer::simple_geo::Orientation;
 use boxer::simple_geo::Orientation::*;
@@ -53,7 +54,6 @@ fn main() -> io::Result<()> {
         b'-',
         false,
         false,
-        // Offset the line nunbers to match emacs' numbering:
         flip_and_offset_line,
         flip_and_offset_word,
         log_byte_with_orientation_and_flipped_and_offset_pos,
@@ -65,7 +65,6 @@ fn main() -> io::Result<()> {
         b'|',
         true,
         true,
-        // Offset the line nunbers to match emacs' numbering:
         offset_line,
         offset_word,
         log_byte_with_orientation_and_offset_pos,
@@ -89,6 +88,14 @@ fn main() -> io::Result<()> {
         words.push(word.clone());
       }
     } // End of RefCell scope.
+
+    let corner_connected = |cl: &ConnectedLine| {
+      cl.start_connects_to == Corner && cl.end_connects_to == Corner
+    };
+
+    leftover_lines
+      .extend(all_lines.iter().filter(|line| !corner_connected(line)));
+    all_lines.retain(corner_connected);
 
     find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines, false);
   } // End of all_lines scope.
