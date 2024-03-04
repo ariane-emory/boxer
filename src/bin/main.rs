@@ -60,7 +60,7 @@ fn main() -> io::Result<()> {
           println!("Changed {:?} into {:?}!", line, l);
           l
         },
-        |word| word,
+        flip_and_offset_word,
         log_byte_with_orientation_and_flipped_and_offset_pos,
       );
 
@@ -76,7 +76,7 @@ fn main() -> io::Result<()> {
           println!("Changed {:?} into {:?}", line, l);
           l
         },
-        |word| word.offset_by(LINE_OFFSET, 0),
+        offset_word,
         log_byte_with_orientation_and_offset_pos,
       );
 
