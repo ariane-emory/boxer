@@ -257,12 +257,12 @@ mod tests {
     assert_eq!(right_vertical.width(), 1);
     assert_eq!(offset_vertical.width(), 1);
 
-    assert_eq!(upper_horizontal.length(), 5);
-    assert_eq!(lower_horizontal.length(), 5);
-    assert_eq!(offset_horizontal.length(), 5);
-    assert_eq!(left_vertical.length(), 5);
-    assert_eq!(right_vertical.length(), 5);
-    assert_eq!(offset_vertical.length(), 5);
+    assert_eq!(upper_horizontal.len(), 5);
+    assert_eq!(lower_horizontal.len(), 5);
+    assert_eq!(offset_horizontal.len(), 5);
+    assert_eq!(left_vertical.len(), 5);
+    assert_eq!(right_vertical.len(), 5);
+    assert_eq!(offset_vertical.len(), 5);
 
     assert!(!left_vertical.is_horizontal());
     assert!(!offset_vertical.is_horizontal());

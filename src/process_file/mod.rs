@@ -155,8 +155,23 @@ pub fn process_file(
     .cloned()
     .collect::<Vec<ConnectedLine>>();
 
+  //let combined_words = Vec::new();
+
   for line in single_length_lines {
     println!("Single length line: {:?}", line);
+
+    let candidate_words = words
+      .iter()
+      .filter(|word| {
+        word.start.line == line.start.line
+          && (word.start.col == (line.start.col + 1))
+      })
+      .cloned()
+      .collect::<Vec<Word>>();
+
+    for word in candidate_words {
+      println!("  Candidate word: {:?}", word);
+    }
   }
 
   Ok((uniform_matrix, rectangles, other_lines, words))
