@@ -55,9 +55,10 @@ pub fn process_file(
 
   merge_length_1_lines(&mut lines, &mut words);
 
-  let chains = find_chains(&lines);
+  let mut chains = find_chains(&lines);
 
-  for (i, chain) in chains.iter().enumerate() {
+  for (i, &mut ref mut chain) in chains.iter_mut().enumerate() {
+    chain.sort();
     println!("Chain {}: length {} ", i, chain.len());
     chain.iter().for_each(|line| println!("  {:?}", line));
   }
