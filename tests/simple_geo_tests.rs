@@ -21,8 +21,8 @@ mod tests {
 
     assert_eq!(center.size(), Size::new(1, 1));
     assert_eq!(center.size().area(), 1);
-    assert_eq!(center.size().height, 1);
-    assert_eq!(center.size().width, 1);
+    assert_eq!(center.size().height(), 1);
+    assert_eq!(center.size().width(), 1);
     assert_eq!(center.left_bound(), 4);
     assert_eq!(center.right_bound(), 4);
     assert_eq!(center.upper_bound(), 4);
