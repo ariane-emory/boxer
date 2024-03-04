@@ -197,7 +197,7 @@ pub fn process_file(
 
       lines.removeq(&line);
       words.removeq(&candidate_words[0]);
-      vec_sorted_insert(&mut words, new_word);
+      words.sorted_insert(new_word);
     }
   }
 
