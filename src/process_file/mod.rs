@@ -5,8 +5,8 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 use crate::util::max_line_len;
+
 use std::cell::RefCell;
-use std::io::{self};
 use std::rc::Rc;
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -14,9 +14,9 @@ pub fn process_file(
   path: &str,
   process_horiz: impl Fn(&Point, &u8),
   process_vert: impl Fn(&Point, &u8),
-) -> io::Result<()> {
-  let max_len = max_line_len(path)?;
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+) -> Vec<Vec<u8>> {
+  let max_len = max_line_len(path).unwrap();
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path).unwrap();
   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
   let mut rotated_matrix =
     rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
@@ -26,7 +26,7 @@ pub fn process_file(
   println!("\n================================================================================");
   uniform_matrix.each(process_horiz);
 
-  Ok(())
+  uniform_matrix
 }
 
 /////////////////////////////////////////////////////////////////////////////////
