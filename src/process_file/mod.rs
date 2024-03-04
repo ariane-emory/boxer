@@ -81,7 +81,7 @@ pub fn process_file(
   println!("Extracting basic geometry...");
   println!("================================================================================");
 
-  let (mut lines, mut words) = extract_basic_geometry(&normalized_matrix);
+  let (mut all_lines, mut words) = extract_lines_and_words(&normalized_matrix);
 
   println!("");
   println!("================================================================================");
@@ -91,17 +91,26 @@ pub fn process_file(
   let mut rectangles: Vec<Rectangle> = Vec::new();
   let mut free_lines: Vec<ConnectedLine> = Vec::new();
 
-  free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
-  lines.retain(ConnectedLine::corner_connected);
-
-  find_rectangles(&mut lines, &mut rectangles, &mut free_lines, false);
+  free_lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
+  all_lines.retain(ConnectedLine::corner_connected);
 
   free_lines
     .iter()
     .for_each(|line| println!("Free Line: {:?}", line));
-  lines
+  all_lines
     .iter()
     .for_each(|line| println!("Candidate Line: {:?}", line));
+
+  println!("================================================================================");
+
+  find_rectangles(&all_lines, &mut rectangles, &mut free_lines, false);
+
+  free_lines
+    .iter()
+    .for_each(|line| println!("Free Line: {:?}", line));
+  // all_lines
+  //   .iter()
+  //   .for_each(|line| println!("Candidate Line: {:?}", line));
   rectangles
     .iter()
     .for_each(|rect| println!("Found rectangle: {:?}", rect));
@@ -112,7 +121,7 @@ pub fn process_file(
   println!("================================================================================");
   println!("");
 
-  merge_length_1_lines(&mut lines, &mut words);
+  merge_length_1_lines(&mut free_lines, &mut words);
 
   println!("");
   println!("================================================================================");
@@ -120,13 +129,7 @@ pub fn process_file(
   println!("================================================================================");
   println!("");
 
-  let chains = find_chains(&lines);
-
-  // for (i, &mut ref mut chain) in chains.iter_mut().enumerate() {
-  //   chain.sort();
-  //   println!("Chain {}: length {} ", i, chain.len());
-  //   chain.iter().for_each(|line| println!("  {:?}", line));
-  // }
+  let chains = find_chains(&free_lines);
 
   for (i, chain) in chains.iter().enumerate() {
     //chain.sort();
@@ -141,7 +144,7 @@ pub fn process_file(
     }
   }
 
-  Ok((normalized_matrix, rectangles, lines, words))
+  Ok((normalized_matrix, rectangles, free_lines, words))
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -280,28 +283,28 @@ fn analyze_chain(
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
-fn extract_basic_geometry(
-  normalized_matrix: &Vec<Vec<u8>>,
-) -> (/* Vec<Rectangle>, */ Vec<ConnectedLine>, Vec<Word>) {
-  //let mut free_lines: Vec<ConnectedLine> = Vec::new();
-  let (lines, words) = extract_lines_and_words(normalized_matrix);
+// /////////////////////////////////////////////////////////////////////////////
+// //// fn extract_basic_geometry(
+//   normalized_matrix: &Vec<Vec<u8>>,
+// ) -> (/* Vec<Rectangle>, */ Vec<ConnectedLine>, Vec<Word>) {
+//   //let mut free_lines: Vec<ConnectedLine> = Vec::new();
+//   let (lines, words) = extract_lines_and_words(normalized_matrix);
 
-  // free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
-  // lines.retain(ConnectedLine::corner_connected);
+//   // free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
+//   // lines.retain(ConnectedLine::corner_connected);
 
-  // find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
+//   // find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
 
-  // words
-  //   .iter()
-  //   .for_each(|word| println!("Word:            {:?}", word));
+//   // words
+//   //   .iter()
+//   //   .for_each(|word| println!("Word:            {:?}", word));
 
-  // rectangles
-  //   .iter()
-  //   .for_each(|rect| println!("Found rectangle: {:?}", rect));
+//   // rectangles
+//   //   .iter()
+//   //   .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
-  (/* rectangles, */ lines, words)
-}
+//   (/* rectangles, */ lines, words)
+// }
 
 /////////////////////////////////////////////////////////////////////////////////
 fn extract_lines_and_words(

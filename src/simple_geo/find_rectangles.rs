@@ -72,6 +72,9 @@ pub fn find_rectangles<T: LineMethods + Debug>(
       free_lines.push(line);
     }
     else if !allow_overlap {
+      for line in lines_to_remove.iter() {
+        println!("Removing line {:?}", line);
+      }
       lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
   }
