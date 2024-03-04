@@ -85,6 +85,20 @@ pub fn max_row_len<T>(byte_matrix: &Vec<Vec<T>>) -> usize {
 }
 
 /////////////////////////////////////////////////////////////////////////////////
+// This fn assumes matrix is already uniform:
+pub fn process_matrix_bidirectionally(
+  matrix: &Vec<Vec<u8>>,
+  process_horiz: impl Fn(&Point, &u8),
+  process_vert: impl Fn(&Point, &u8),
+) {
+  let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
+  rotated_matrix.reverse();
+  rotated_matrix.each(process_vert);
+  println!("\n================================================================================");
+  matrix.each(process_horiz);
+}
+
+/////////////////////////////////////////////////////////////////////////////////
 pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
   let file = File::open(path)?;
   let buf_reader = BufReader::new(file);
@@ -97,55 +111,6 @@ pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
 
   Ok(matrix)
 }
-
-// pub fn read_file_to_byte_matrix(path: &str) -> io::Result<Vec<Vec<u8>>> {
-//   let file = File::open(path)?;
-//   let mut buf_reader = BufReader::new(file);
-//   let mut pos = Point::new(0, 0);
-//   let mut matrix: Vec<Vec<u8>> = Vec::new();
-
-//   // loop through the file and build the byte matrix:
-//   loop {
-//     let buffer: &[u8] = buf_reader.fill_buf()?;
-
-//     if buffer.is_empty() {
-//       break;
-//     }
-
-//     noisy_println!("-- ls:      {}", matrix.format_rows());
-//     noisy_println!("");
-
-//     let mut row: Vec<u8> = Vec::new();
-
-//     for &byte in buffer {
-//       if byte == b'\n' {
-//         noisy_println!("-- ls:      {}", matrix.format_rows());
-//         noisy_println!("-- c:       {:?}", pos.col);
-//         noisy_println!("-- l:       {:?}", pos.line);
-//         noisy_println!("");
-
-//         pos.col = 0;
-//         pos.line += 1;
-//         matrix.push(row);
-//         row = Vec::new();
-//       } else {
-//         row.push(byte);
-//         pos.col += 1;
-//       }
-//     }
-
-//     let len = buffer.len();
-//     buf_reader.consume(len);
-//   }
-
-//   pos.col = 0;
-//   pos.line = 0;
-
-//   noisy_println!("-- ls:  {}", matrix.format_rows());
-//   noisy_println!("");
-
-//   Ok(matrix)
-// }
 
 ////////////////////////////////////////////////////////////////////////////////
 pub trait FormatRows<T> {

@@ -22,20 +22,6 @@ pub fn process_file(
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-// This fn assumes matrix is already uniform:
-pub fn process_matrix_bidirectionally(
-  matrix: &Vec<Vec<u8>>,
-  process_horiz: impl Fn(&Point, &u8),
-  process_vert: impl Fn(&Point, &u8),
-) {
-  let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
-  rotated_matrix.reverse();
-  rotated_matrix.each(process_vert);
-  println!("\n================================================================================");
-  matrix.each(process_horiz);
-}
-
-/////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_matrix_bidirectionally_fun<'a>(
   orientation: Orientation,
   line_body_char: u8,
