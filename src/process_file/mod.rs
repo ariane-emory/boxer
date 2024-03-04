@@ -317,8 +317,8 @@ fn analyze_chain(
 
   // Count occurrences of each point
   for line in lines {
-    *point_occurrences.entry(line.start.clone()).or_insert(0) += 1;
-    *point_occurrences.entry(line.end.clone()).or_insert(0) += 1;
+    *point_occurrences.entry(line.start).or_insert(0) += 1;
+    *point_occurrences.entry(line.end).or_insert(0) += 1;
   }
 
   let mut unique_points = point_occurrences
