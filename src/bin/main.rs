@@ -32,7 +32,7 @@ fn main() -> io::Result<()> {
   {
     let flip_and_offset_line =
       |cl: ConnectedLine| cl.flip().offset_by(LINE_OFFSET, 0);
-    let offset_line = |cl: ConnectedLine| cl.flip().offset_by(LINE_OFFSET, 0);
+    let offset_line = |cl: ConnectedLine| cl.offset_by(LINE_OFFSET, 0);
     let flip_and_offset_word = |wrd: Word| wrd.flip().offset_by(LINE_OFFSET, 0);
     let offset_word = |wrd: Word| wrd.offset_by(LINE_OFFSET, 0);
     let flip_and_offset_pos = |pos: Point| pos.flip().offset_by(LINE_OFFSET, 0);
@@ -55,11 +55,7 @@ fn main() -> io::Result<()> {
         false,
         false,
         // Offset the line nunbers to match emacs' numbering:
-        |line| {
-          let l = line.flip().offset_by(LINE_OFFSET, 0);
-          println!("Changed {:?} into {:?}!", line, l);
-          l
-        },
+        flip_and_offset_line,
         flip_and_offset_word,
         log_byte_with_orientation_and_flipped_and_offset_pos,
       );
@@ -71,11 +67,7 @@ fn main() -> io::Result<()> {
         true,
         true,
         // Offset the line nunbers to match emacs' numbering:
-        |line| {
-          let l = line.offset_by(LINE_OFFSET, 0);
-          println!("Changed {:?} into {:?}", line, l);
-          l
-        },
+        offset_line,
         offset_word,
         log_byte_with_orientation_and_offset_pos,
       );
