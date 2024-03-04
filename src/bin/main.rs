@@ -104,16 +104,16 @@ fn main() -> io::Result<()> {
 
   println!("");
 
-  for rect in rectangles.iter() {
-    println!("Found rectangle: {:?}", rect);
-  }
-
   for line in leftover_lines.iter() {
     println!("Leftover line:   {:?}", line);
   }
 
   for word in words.iter() {
     println!("Found word:      {:?}", word);
+  }
+
+  for rect in rectangles.iter() {
+    println!("Found rectangle: {:?}", rect);
   }
 
   Ok(())
