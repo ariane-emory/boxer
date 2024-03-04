@@ -61,13 +61,7 @@ fn main() -> io::Result<()> {
           l
         },
         |word| word,
-        |pos, byte| {
-          println!(
-            "Vert:    {:?}: '{}'",
-            pos.flip().offset_by(LINE_OFFSET, 0),
-            byte as char
-          );
-        },
+        log_byte_with_orientation_and_flipped_and_offset_pos,
       );
 
       let (horiz_linemaker, process_horiz) = make_process_file_fun(
@@ -83,13 +77,7 @@ fn main() -> io::Result<()> {
           l
         },
         |word| word.offset_by(LINE_OFFSET, 0),
-        |pos, byte| {
-          println!(
-            "Horiz:   {:?}: '{}'",
-            pos.offset_by(LINE_OFFSET, 0),
-            byte as char
-          );
-        },
+        log_byte_with_orientation_and_offset_pos,
       );
 
       _matrix = process_file(filename, process_horiz, process_vert);

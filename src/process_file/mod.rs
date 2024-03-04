@@ -38,7 +38,7 @@ pub fn make_process_file_fun<'a>(
   allow_length_one: bool,
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   word_postprocessor: impl Fn(Word) -> Word + 'a,
-  custom_printer: impl Fn(Point, u8) + 'a,
+  custom_printer: impl Fn(Orientation, Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(
     orientation,
@@ -61,7 +61,7 @@ pub fn make_process_file_fun<'a>(
       panic!("Found non-ASCII byte {} at {:?}", byte, pos);
     }
 
-    custom_printer(*pos, *byte);
+    custom_printer(orientation, *pos, *byte);
     rc_lm_twin.borrow_mut().process(*pos, *byte);
   })
 }
