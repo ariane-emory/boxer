@@ -172,6 +172,7 @@ pub fn process_file(
   println!("================================================================================");
   println!("Try to merge length-1 lines...");
   println!("================================================================================");
+  println!("");
 
   let single_length_lines = lines
     .iter()
@@ -180,7 +181,7 @@ pub fn process_file(
     .collect::<Vec<ConnectedLine>>();
 
   for line in single_length_lines {
-    println!("Single length line: {:?}", line);
+    println!("Length 1 line: {:?}", line);
 
     let candidate_words = words
       .iter()
