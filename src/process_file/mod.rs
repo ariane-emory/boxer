@@ -1,6 +1,9 @@
-use crate::line_makers::ConnectedLineMaker;
 use crate::noisy_print;
+use crate::util::noisy_print;
 //use crate::noisy_println;
+//use crate::util::noisy_println;
+
+use crate::line_makers::ConnectedLineMaker;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::LineMethods;
@@ -11,8 +14,6 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Rectangle;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
-use crate::util::noisy_print;
-//use crate::util::noisy_println;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
 
@@ -22,6 +23,41 @@ use std::rc::Rc;
 
 /////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
+
+/////////////////////////////////////////////////////////////////////////////////
+pub fn process_file(
+  path: &str,
+) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+  let mut normalized_matrix =
+    normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
+  let normalize_matrix_width = normalized_matrix[0].len();
+  let terminator = b'\0';
+
+  for row in normalized_matrix.iter_mut() {
+    row.push(terminator);
+  }
+
+  normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
+
+  println!("");
+  println!("================================================================================");
+  println!("Extracting basic geometry...");
+  println!("================================================================================");
+
+  let (rectangles, mut lines, mut words) =
+    extract_basic_geometry(&normalized_matrix);
+
+  println!("");
+  println!("================================================================================");
+  println!("Try to merge length-1 lines...");
+  println!("================================================================================");
+  println!("");
+
+  merge_length_1_lines(&mut lines, &mut words);
+
+  Ok((normalized_matrix, rectangles, lines, words))
+}
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_bidirectionally_fun<'a>(
@@ -142,41 +178,6 @@ fn extract_basic_geometry(
     .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
   (rectangles, lines, words)
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-pub fn process_file(
-  path: &str,
-) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
-  let mut normalized_matrix =
-    normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
-  let normalize_matrix_width = normalized_matrix[0].len();
-  let terminator = b'\0';
-
-  for row in normalized_matrix.iter_mut() {
-    row.push(terminator);
-  }
-
-  normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
-
-  println!("");
-  println!("================================================================================");
-  println!("Extracting basic geometry...");
-  println!("================================================================================");
-
-  let (rectangles, mut lines, mut words) =
-    extract_basic_geometry(&normalized_matrix);
-
-  println!("");
-  println!("================================================================================");
-  println!("Try to merge length-1 lines...");
-  println!("================================================================================");
-  println!("");
-
-  merge_length_1_lines(&mut lines, &mut words);
-
-  Ok((normalized_matrix, rectangles, lines, words))
 }
 
 ////////////////////////////////////////////////////////////////////////////////
