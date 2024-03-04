@@ -81,8 +81,7 @@ pub fn process_file(
   println!("Extracting basic geometry...");
   println!("================================================================================");
 
-  let (rectangles, mut lines, mut words) =
-    extract_basic_geometry(&normalized_matrix);
+  let (mut lines, mut words) = extract_basic_geometry(&normalized_matrix);
 
   println!("");
   println!("================================================================================");
@@ -119,6 +118,7 @@ pub fn process_file(
     }
   }
 
+  let rectangles: Vec<Rectangle> = Vec::new();
   Ok((normalized_matrix, rectangles, lines, words))
 }
 
@@ -261,29 +261,28 @@ fn analyze_chain(
 /////////////////////////////////////////////////////////////////////////////////
 fn extract_basic_geometry(
   normalized_matrix: &Vec<Vec<u8>>,
-) -> (Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>) {
-  let mut rectangles = Vec::new();
-  let mut free_lines = Vec::new();
-  let (mut lines, words) = extract_lines_and_words(normalized_matrix);
+) -> (/* Vec<Rectangle>, */ Vec<ConnectedLine>, Vec<Word>) {
+  //let mut free_lines: Vec<ConnectedLine> = Vec::new();
+  let (lines, words) = extract_lines_and_words(normalized_matrix);
 
-  free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
-  lines.retain(ConnectedLine::corner_connected);
+  // free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
+  // lines.retain(ConnectedLine::corner_connected);
 
-  find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
+  // find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
 
   lines
     .iter()
-    .for_each(|line| println!("Line:            {:?}", line));
+    .for_each(|line| println!("Line:      {:?}", line));
 
   words
     .iter()
-    .for_each(|word| println!("Found word:      {:?}", word));
+    .for_each(|word| println!("Word:      {:?}", word));
 
-  rectangles
-    .iter()
-    .for_each(|rect| println!("Found rectangle: {:?}", rect));
+  // rectangles
+  //   .iter()
+  //   .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
-  (rectangles, lines, words)
+  (/* rectangles, */ lines, words)
 }
 
 /////////////////////////////////////////////////////////////////////////////////
