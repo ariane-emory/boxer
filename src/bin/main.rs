@@ -30,13 +30,12 @@ fn main() -> io::Result<()> {
 
   // all_lines scope:
   {
-    let flip_and_offset_line =
-      |cl: ConnectedLine| cl.flip().offset_by(LINE_OFFSET, 0);
     let offset_line = |cl: ConnectedLine| cl.offset_by(LINE_OFFSET, 0);
-    let flip_and_offset_word = |wrd: Word| wrd.flip().offset_by(LINE_OFFSET, 0);
+    let flip_and_offset_line = |cl: ConnectedLine| offset_line(cl.flip());
     let offset_word = |wrd: Word| wrd.offset_by(LINE_OFFSET, 0);
-    let flip_and_offset_pos = |pos: Point| pos.flip().offset_by(LINE_OFFSET, 0);
+    let flip_and_offset_word = |wrd: Word| offset_word(wrd.flip());
     let offset_pos = |pos: Point| pos.flip().offset_by(LINE_OFFSET, 0);
+    let flip_and_offset_pos = |pos: Point| offset_pos(pos).flip();
     let log_labeled_byte = |ori: Orientation, pos: Point, byte: u8| {
       println!("{:12} {:?}: '{}'", format!("{:?}:", ori), pos, byte as char)
     };
