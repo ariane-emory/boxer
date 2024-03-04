@@ -74,19 +74,9 @@ fn main() -> io::Result<()> {
 
       println!("");
 
-      for line in horiz_linemaker.borrow().lines.iter() {
-        println!("Horiz line: {:?}", line);
-        all_lines.push(*line);
-      }
-
-      for line in vert_linemaker.borrow().lines.iter() {
-        println!("Vert line:  {:?}", line);
-        all_lines.push(*line);
-      }
-
-      for word in horiz_linemaker.borrow().words.iter() {
-        words.push(word.clone());
-      }
+      all_lines.extend(horiz_linemaker.borrow().lines.iter());
+      all_lines.extend(vert_linemaker.borrow().lines.iter());
+      words.extend(horiz_linemaker.borrow().words.iter().cloned());
     } // End of RefCell scope.
 
     let corner_connected = |cl: &ConnectedLine| {
