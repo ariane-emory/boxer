@@ -91,7 +91,20 @@ pub fn process_file(
   let mut rectangles: Vec<Rectangle> = Vec::new();
   let mut free_lines: Vec<ConnectedLine> = Vec::new();
 
+  free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
+  lines.retain(ConnectedLine::corner_connected);
+
   find_rectangles(&mut lines, &mut rectangles, &mut free_lines, false);
+
+  free_lines
+    .iter()
+    .for_each(|line| println!("Free Line: {:?}", line));
+  lines
+    .iter()
+    .for_each(|line| println!("Candidate Line: {:?}", line));
+  rectangles
+    .iter()
+    .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
   println!("");
   println!("================================================================================");
@@ -279,13 +292,9 @@ fn extract_basic_geometry(
 
   // find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
 
-  lines
-    .iter()
-    .for_each(|line| println!("Line:      {:?}", line));
-
-  words
-    .iter()
-    .for_each(|word| println!("Word:      {:?}", word));
+  // words
+  //   .iter()
+  //   .for_each(|word| println!("Word:            {:?}", word));
 
   // rectangles
   //   .iter()
