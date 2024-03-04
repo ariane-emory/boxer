@@ -86,7 +86,7 @@ impl<'a> ConnectedLineMaker<'a> {
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    print!("Begin line at {:?}.", connection_type);
+    print!("Begin line at {:?}. ", connection_type);
     self.try_collect_word();
     self.line_begin = Some(pos);
     self.line_begin_type = connection_type;
@@ -157,7 +157,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.complete_line(byte, begin, pos, Corner, true);
         }
         else {
-          print!("Begin line at Corner after line break!");
+          print!("Begin line at Corner after line break! ");
           self.begin_line(pos, Corner);
         }
       }
