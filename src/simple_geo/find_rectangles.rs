@@ -2,7 +2,6 @@ use crate::simple_geo::*;
 use std::collections::VecDeque;
 use std::fmt::Debug;
 
-
 ////////////////////////////////////////////////////////////////////////////////
 pub fn find_rectangles<T: LineMethods + Debug>(
   lines: &Vec<T>,
