@@ -82,5 +82,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
       lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
   }
+
+  leftover_lines.sort();
 }
 ////////////////////////////////////////////////////////////////////////////////
