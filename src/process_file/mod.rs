@@ -16,7 +16,6 @@ use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
-
 use std::cell::RefCell;
 use std::io::Result as IoResult;
 use std::rc::Rc;
@@ -254,27 +253,31 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
       .push(line.clone());
   }
 
-  let mut visited: HashSet<Point> = HashSet::new();
+  let mut visited_points: HashSet<Point> = HashSet::new();
+  let mut visited_lines: HashSet<ConnectedLine> = HashSet::new();
   let mut chains: Vec<Vec<ConnectedLine>> = Vec::new();
 
   // DFS function to explore chains
   fn dfs(
     point: &Point,
     graph: &HashMap<Point, Vec<ConnectedLine>>,
-    visited: &mut HashSet<Point>,
+    visited_points: &mut HashSet<Point>,
+    visited_lines: &mut HashSet<ConnectedLine>,
     chain: &mut Vec<ConnectedLine>,
   ) {
-    if visited.insert(point.clone()) {
-      if let Some(neighbors) = graph.get(point) {
-        for line in neighbors {
-          chain.push(line.clone());
-          let next_point = if &line.start == point {
-            &line.end
+    if visited_points.insert(point.clone()) {
+      if let Some(lines) = graph.get(point) {
+        for line in lines {
+          if visited_lines.insert(line.clone()) {
+            chain.push(line.clone());
+            let next_point = if &line.start == point {
+              &line.end
+            }
+            else {
+              &line.start
+            };
+            dfs(next_point, graph, visited_points, visited_lines, chain);
           }
-          else {
-            &line.start
-          };
-          dfs(next_point, graph, visited, chain);
         }
       }
     }
@@ -282,9 +285,9 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 
   // Find and group chains
   for point in graph.keys() {
-    if !visited.contains(point) {
+    if !visited_points.contains(point) {
       let mut chain = Vec::new();
-      dfs(point, &graph, &mut visited, &mut chain);
+      dfs(point, &graph, &mut visited_points, &mut visited_lines, &mut chain);
       if !chain.is_empty() {
         chains.push(chain);
       }

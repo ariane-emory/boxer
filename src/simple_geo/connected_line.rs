@@ -3,14 +3,14 @@ use std::fmt;
 use ConnectionType::*;
 
 ////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub enum ConnectionType {
   Nothing,
   Corner,
   Wall,
 }
 ////////////////////////////////////////////////////////////////////////////////
-#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub struct ConnectedLine {
   pub orientation: Orientation,
   pub start: Point,

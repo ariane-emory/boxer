@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Orientation {
   Horizontal,
   Vertical,
