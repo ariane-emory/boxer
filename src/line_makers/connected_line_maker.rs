@@ -204,7 +204,7 @@ impl<'a> ConnectedLineMaker<'a> {
         else {
           print!(". ");
         }
-        self.reset();
+        //self.reset();
       }
       else {
         print!("Ignore '{}'", byte as char);
