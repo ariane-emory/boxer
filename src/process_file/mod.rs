@@ -47,6 +47,8 @@ pub fn make_process_bidirectionally_fun<'a>(
       println!("");
     }
 
+    let pos = pos_preprocessor(*pos);
+
     if 0 != (*byte & 128) {
       panic!("Found non-ASCII byte {} at {:?}", byte, pos);
     }
