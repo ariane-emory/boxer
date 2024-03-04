@@ -1,4 +1,3 @@
-use crate::noisy_println;
 use crate::simple_geo::*;
 use std::collections::VecDeque;
 use std::fmt::Debug;
@@ -16,18 +15,14 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
   let mut lines_deque: VecDeque<T> = VecDeque::from(sorted_lines);
   while let Some(line) = lines_deque.pop_front() {
-    noisy_println!("\nFind coaligned lines with    {:?}...", line);
+    println!("\nFind coaligned lines with    {:?}...", line);
 
     let mut found_a_rect = false;
     let mut lines_to_remove: Vec<T> = Vec::new();
 
     for other_line in &lines_deque {
       if let Some(_) = line.is_coaligned_with(other_line) {
-        noisy_println!(
-          "Found coaligned lines: \n   {:?}\n   {:?}",
-          line,
-          other_line
-        );
+        println!("Found coaligned lines: \n   {:?}\n   {:?}", line, other_line);
 
         let connected_lines: Vec<&T> = lines_deque
           .iter()
@@ -39,10 +34,9 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
         match connected_lines[..] {
           [first_side, second_side] => {
-            noisy_println!(
+            println!(
               "\nWith sides:\n   {:?}\n   {:?}",
-              first_side,
-              second_side
+              first_side, second_side
             );
 
             // Put the component lines in a vec and sort them so we can find
@@ -57,7 +51,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
             rects.push(rect);
 
-            noisy_println!("\nNew Rectangle: {:?}", rect);
+            println!("\nNew Rectangle: {:?}", rect);
 
             if !allow_overlap {
               lines_to_remove.push(other_line.clone());
@@ -69,13 +63,13 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
             break;
           }
-          _ => noisy_println!("Did not find exactly two connecting lines."),
+          _ => println!("Did not find exactly two connecting lines."),
         }
       }
     }
 
     if !found_a_rect {
-      noisy_println!("No coaligned lines found for {:?}", line);
+      println!("No coaligned lines found for {:?}", line);
       leftover_lines.push(line);
     }
     else if !allow_overlap {

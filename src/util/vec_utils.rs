@@ -16,14 +16,14 @@ impl<T: Ord> SortedInsert<T> for Vec<T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait Removeq<T>
+pub trait Removeql<T>
 where
   T: PartialEq,
 {
   fn removeql(&mut self, value: &T);
 }
 
-impl<T: PartialEq> Removeq<T> for Vec<T> {
+impl<T: PartialEq> Removeql<T> for Vec<T> {
   fn removeql(&mut self, value: &T) {
     if let Some(pos) = self.iter().position(|x| x == value) {
       self.remove(pos);
