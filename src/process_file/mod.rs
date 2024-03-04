@@ -148,8 +148,14 @@ pub fn process_file(
   path: &str,
 ) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
-  let normalized_matrix =
+  let mut normalized_matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
+  let normalize_matrix_width = normalized_matrix[0].len();
+
+  for row in normalized_matrix.iter_mut() {
+    row.push(b'\n');
+  }
+  normalized_matrix.push(vec![b'\n'; normalize_matrix_width + 1]);
 
   for row in &normalized_matrix {
     println!("{:?}", std::str::from_utf8(&row).unwrap());
