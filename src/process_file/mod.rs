@@ -1,6 +1,6 @@
 use crate::line_makers::ConnectedLineMaker;
 use crate::noisy_print;
-//use crate::noisy_println;
+use crate::noisy_println;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::LineMethods;
@@ -12,7 +12,7 @@ use crate::simple_geo::Rectangle;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 use crate::util::noisy_print;
-//use crate::util::noisy_println;
+use crate::util::noisy_println;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
 
@@ -162,6 +162,10 @@ pub fn process_file(
 
   println!("");
 
+  noisy_println!("================================================================================");
+  noisy_println!("Extracting basic geometry...");
+  noisy_println!("================================================================================");
+
   let (rectangles, mut lines, mut words) =
     extract_basic_geometry(&normalized_matrix);
 
@@ -170,8 +174,6 @@ pub fn process_file(
     .filter(|cl| cl.len() == 1)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-
-  //let combined_words = Vec::new();
 
   for line in single_length_lines {
     println!("Single length line: {:?}", line);
