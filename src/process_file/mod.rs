@@ -195,8 +195,8 @@ pub fn process_file(
 
       println!("New word: {:?}", new_word);
 
-      vec_remove(&mut lines, &line);
-      vec_remove(&mut words, &candidate_words[0]);
+      lines.removeq(&line);
+      words.removeq(&candidate_words[0]);
       vec_sorted_insert(&mut words, new_word);
     }
   }
