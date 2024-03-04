@@ -259,7 +259,6 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
 
 ////////////////////////////////////////////////////////////////////////////////
 fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
-  // Graph construction: Map points to lines
   let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
   for line in lines {
     graph
@@ -276,7 +275,6 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
   let mut visited_lines: HashSet<ConnectedLine> = HashSet::new();
   let mut chains: Vec<Vec<ConnectedLine>> = Vec::new();
 
-  // DFS function to explore chains
   fn dfs(
     point: &Point,
     graph: &HashMap<Point, Vec<ConnectedLine>>,
@@ -284,11 +282,11 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
     visited_lines: &mut HashSet<ConnectedLine>,
     chain: &mut Vec<ConnectedLine>,
   ) {
-    if visited_points.insert(point.clone()) {
+    if visited_points.insert(*point) {
       if let Some(lines) = graph.get(point) {
         for line in lines {
-          if visited_lines.insert(line.clone()) {
-            chain.push(line.clone());
+          if visited_lines.insert(*line) {
+            chain.push(*line);
             let next_point = if &line.start == point {
               &line.end
             }
@@ -335,7 +333,6 @@ fn analyze_chain(
     .collect::<Vec<_>>();
 
   unique_points.sort();
-
 
   let start = unique_points.first().cloned();
   let end = unique_points.last().cloned();
