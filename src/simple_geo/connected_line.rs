@@ -1,5 +1,6 @@
 use crate::simple_geo::*;
 use std::fmt;
+use ConnectionType::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
@@ -35,6 +36,10 @@ impl ConnectedLine {
       start_connects_to,
       end_connects_to,
     })
+  }
+
+  pub fn corner_connected(&self) -> bool {
+    self.start_connects_to == Corner && self.end_connects_to == Corner
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

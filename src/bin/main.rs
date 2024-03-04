@@ -7,7 +7,7 @@
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::ConnectedLine;
-use boxer::simple_geo::ConnectionType::*;
+//use boxer::simple_geo::ConnectionType::*;
 use boxer::simple_geo::Offsetable;
 use boxer::simple_geo::Orientation;
 use boxer::simple_geo::Orientation::*;
@@ -44,7 +44,7 @@ fn main() -> io::Result<()> {
       |ori, pos, byte| log_labeled_byte(ori, flip_and_offset_pos(pos), byte);
     let log_byte_with_orientation_and_offset_pos =
       |ori, pos, byte| log_labeled_byte(ori, offset_pos(pos), byte);
-    let mut all_lines = Vec::new();
+    let mut all_lines: Vec<ConnectedLine> = Vec::new();
 
     // RefCell scope:
     {
@@ -79,12 +79,8 @@ fn main() -> io::Result<()> {
       all_lines.extend(vert_linemaker.borrow().lines.iter());
     } // End of RefCell scope.
 
-    let corner_connected = |cl: &ConnectedLine| {
-      cl.start_connects_to == Corner && cl.end_connects_to == Corner
-    };
-
-    other_lines.extend(all_lines.iter().filter(|line| !corner_connected(line)));
-    all_lines.retain(corner_connected);
+    other_lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
+    all_lines.retain(ConnectedLine::corner_connected);
 
     find_rectangles(&all_lines, &mut rectangles, &mut other_lines, false);
   } // End of all_lines scope.
