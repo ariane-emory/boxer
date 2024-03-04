@@ -6,14 +6,12 @@ use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 
-
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
   const WORD_CHARS: &str =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:";
   WORD_CHARS.as_bytes().contains(&byte)
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker<'a> {
