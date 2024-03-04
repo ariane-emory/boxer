@@ -7,14 +7,11 @@
 use boxer::process_file::*;
 use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::ConnectedLine;
-//use boxer::simple_geo::ConnectionType::*;
 use boxer::simple_geo::Offsetable;
 use boxer::simple_geo::Orientation;
 use boxer::simple_geo::Orientation::*;
 use boxer::simple_geo::Point;
 use boxer::simple_geo::Word;
-//use boxer::simple_geo::Word;
-//use boxer::simple_geo::LineMethods;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,10 +37,10 @@ fn main() -> io::Result<()> {
     let log_labeled_byte = |ori: Orientation, pos: Point, byte: u8| {
       println!("{:12} {:?}: '{}'", format!("{:?}:", ori), pos, byte as char)
     };
-    let log_byte_with_orientation_and_flipped_and_offset_pos =
-      |ori, pos, byte| log_labeled_byte(ori, flip_and_offset_pos(pos), byte);
     let log_byte_with_orientation_and_offset_pos =
       |ori, pos, byte| log_labeled_byte(ori, offset_pos(pos), byte);
+    let log_byte_with_orientation_and_flipped_and_offset_pos =
+      |ori, pos, byte| log_labeled_byte(ori, flip_and_offset_pos(pos), byte);
     let mut all_lines: Vec<ConnectedLine> = Vec::new();
 
     // RefCell scope:
