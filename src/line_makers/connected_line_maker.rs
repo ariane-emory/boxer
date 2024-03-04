@@ -141,8 +141,9 @@ impl<'a> ConnectedLineMaker<'a> {
     //   self.reset();
     // }
     if byte == b'\0' {
+      print!("End of row! ");
       self.reset();
-      print!("End of row!\n");
+      println!("");
     }
     else if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least two characters long, we
