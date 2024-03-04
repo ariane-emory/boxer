@@ -29,6 +29,25 @@ pub fn process_file(
 }
 
 /////////////////////////////////////////////////////////////////////////////////
+pub fn process_bidirectionally(
+  matrix: &Vec<Vec<u8>>,
+  process_horiz: impl Fn(&Point, &u8),
+  process_vert: impl Fn(&Point, &u8),
+) -> Vec<Vec<u8>> {
+  let max_len = max_row_len(&matrix);
+  let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
+  let mut rotated_matrix =
+    rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
+  rotated_matrix.reverse();
+
+  rotated_matrix.each(process_vert);
+  println!("\n================================================================================");
+  uniform_matrix.each(process_horiz);
+
+  uniform_matrix
+}
+
+/////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_file_fun<'a>(
   orientation: Orientation,
   line_body_char: u8,
