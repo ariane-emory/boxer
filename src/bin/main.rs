@@ -87,17 +87,15 @@ fn main() -> io::Result<()> {
 
   println!("");
 
-  for line in other_lines.iter() {
-    println!("Other line:      {:?}", line);
-  }
-
-  for word in words.iter() {
-    println!("Found word:      {:?}", word);
-  }
-
-  for rect in rectangles.iter() {
-    println!("Found rectangle: {:?}", rect);
-  }
+  other_lines
+    .iter()
+    .for_each(|line| println!("Other line:      {:?}", line));
+  words
+    .iter()
+    .for_each(|word| println!("Found word:      {:?}", word));
+  rectangles
+    .iter()
+    .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
   Ok(())
 }
