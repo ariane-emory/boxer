@@ -59,7 +59,7 @@ pub fn make_process_bidirectionally_fun<'a>(
 
 /////////////////////////////////////////////////////////////////////////////////
 fn extract_basic_geometry(
-  uniform_matrix: &Vec<Vec<u8>>,
+  normalized_matrix: &Vec<Vec<u8>>,
 ) -> (Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>) {
   let mut rectangles = Vec::new();
   let mut other_lines = Vec::new();
@@ -107,7 +107,7 @@ fn extract_basic_geometry(
         );
 
       process_matrix_bidirectionally(
-        &uniform_matrix,
+        &normalized_matrix,
         process_horiz_fun,
         process_vert_fun,
       );
@@ -148,15 +148,15 @@ pub fn process_file(
   path: &str,
 ) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
-  let uniform_matrix =
+  let normalized_matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
 
-  for row in &uniform_matrix {
+  for row in &normalized_matrix {
     println!("{:?}", std::str::from_utf8(&row).unwrap());
   }
 
   let (rectangles, other_lines, words) =
-    extract_basic_geometry(&uniform_matrix);
+    extract_basic_geometry(&normalized_matrix);
 
   let single_length_lines = other_lines
     .iter()
@@ -180,5 +180,5 @@ pub fn process_file(
     }
   }
 
-  Ok((uniform_matrix, rectangles, other_lines, words))
+  Ok((normalized_matrix, rectangles, other_lines, words))
 }
