@@ -14,7 +14,7 @@ use std::cell::RefCell;
 use std::io::Result as IoResult;
 use std::rc::Rc;
 
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ fn extract_basic_geometry(
   normalized_matrix: &Vec<Vec<u8>>,
 ) -> (Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>) {
   let mut rectangles = Vec::new();
-  let mut other_lines = Vec::new();
+  let mut lines = Vec::new();
   let mut words = Vec::new();
 
   // all_lines scope:
@@ -115,29 +115,27 @@ fn extract_basic_geometry(
       all_lines.extend(vert_linemaker.borrow().lines.iter());
     } // End of RefCell scope.
 
-    other_lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
+    lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
     all_lines.retain(ConnectedLine::corner_connected);
 
-    find_rectangles(&all_lines, &mut rectangles, &mut other_lines, false);
+    find_rectangles(&all_lines, &mut rectangles, &mut lines, false);
   } // End of all_lines scope.
 
-  //  if false {
   println!("");
 
-  other_lines
+  lines
     .iter()
     .for_each(|line| println!("Other line:      {:?}", line));
 
   words
     .iter()
     .for_each(|word| println!("Found word:      {:?}", word));
-  //  }
 
   rectangles
     .iter()
     .for_each(|rect| println!("Found rectangle: {:?}", rect));
 
-  (rectangles, other_lines, words)
+  (rectangles, lines, words)
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -158,10 +156,10 @@ pub fn process_file(
 
   println!("");
 
-  let (rectangles, other_lines, words) =
+  let (rectangles, mut lines, mut words) =
     extract_basic_geometry(&normalized_matrix);
 
-  let single_length_lines = other_lines
+  let single_length_lines = lines
     .iter()
     .filter(|cl| cl.len() == 1)
     .cloned()
@@ -178,10 +176,13 @@ pub fn process_file(
       .cloned()
       .collect::<Vec<Word>>();
 
-    if candidate_words.len() > 1 {
+    if candidate_words.len() == 0 {
+      panic!("No match for {:?} found.", line);
+    }
+    else if candidate_words.len() > 1 {
       panic!("Bad data, found more than one candidate word for {:?}", line);
     }
-    else if candidate_words.len() == 1 {
+    else {
       println!("  Candidate word: {:?}", candidate_words[0]);
 
       let new_word = Word::new(
@@ -192,8 +193,29 @@ pub fn process_file(
       .unwrap();
 
       println!("New word: {:?}", new_word);
+
+      lines.retain(|cl| cl != &line);
+      words.retain(|word| word != &candidate_words[0]);
+      sorted_insert(&mut words, new_word);
     }
   }
 
-  Ok((normalized_matrix, rectangles, other_lines, words))
+  println!("");
+
+  lines
+    .iter()
+    .for_each(|line| println!("Other line:      {:?}", line));
+
+  words.iter().for_each(|word| println!("{:?}", word));
+
+  Ok((normalized_matrix, rectangles, lines, words))
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////
+fn sorted_insert<T: Ord>(vec: &mut Vec<T>, value: T) {
+  match vec.binary_search(&value) {
+    Ok(pos) => vec.insert(pos, value),
+    Err(pos) => vec.insert(pos, value),
+  }
 }
