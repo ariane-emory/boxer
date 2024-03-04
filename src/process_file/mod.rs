@@ -17,13 +17,13 @@ pub fn process_file(
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path).unwrap();
   let max_len = max_row_len(&matrix);
   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
-  process_bidirectionally(&uniform_matrix, process_horiz, process_vert);
+  process_matrix_bidirectionally(&uniform_matrix, process_horiz, process_vert);
   uniform_matrix
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 // This fn assumes matrix is already uniform:
-pub fn process_bidirectionally(
+pub fn process_matrix_bidirectionally(
   matrix: &Vec<Vec<u8>>,
   process_horiz: impl Fn(&Point, &u8),
   process_vert: impl Fn(&Point, &u8),
@@ -36,7 +36,7 @@ pub fn process_bidirectionally(
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-pub fn make_process_bidirectionally_fun<'a>(
+pub fn make_process_matrix_bidirectionally_fun<'a>(
   orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
