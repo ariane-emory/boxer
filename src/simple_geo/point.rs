@@ -45,12 +45,13 @@ impl Point {
     (self.col as isize - other.col as isize).abs() as usize
       + (self.line as isize - other.line as isize).abs() as usize
   }
-
-  pub fn flip(&self) -> Self {
+}
+impl Offsetable for Point {
+  fn flip(&self) -> Self {
     Self::new(self.col, self.line)
   }
 
-  pub fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
     let new_line = if line_offset < 0 {
       self.line.checked_sub((-line_offset) as usize)
     }
