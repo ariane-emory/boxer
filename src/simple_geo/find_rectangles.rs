@@ -1,5 +1,4 @@
 use crate::simple_geo::*;
-use std::collections::VecDeque;
 use std::fmt::Debug;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,21 +8,19 @@ pub fn find_rectangles<T: LineMethods + Debug>(
   free_lines: &mut Vec<T>,
   allow_overlap: bool,
 ) {
-  let mut sorted_lines: Vec<T> = lines.to_vec();
-  sorted_lines.sort();
+  let mut copied_lines: Vec<T> = lines.to_vec();
 
-  let mut lines_deque: VecDeque<T> = VecDeque::from(sorted_lines);
-  while let Some(line) = lines_deque.pop_front() {
+  while let Some(line) = copied_lines.pop() {
     println!("\nFind coaligned lines with    {:?}...", line);
 
     let mut found_a_rect = false;
     let mut lines_to_remove: Vec<T> = Vec::new();
 
-    for other_line in &lines_deque {
+    for other_line in &copied_lines {
       if let Some(_) = line.is_coaligned_with(other_line) {
         println!("Found coaligned lines: \n   {:?}\n   {:?}", line, other_line);
 
-        let connected_lines: Vec<&T> = lines_deque
+        let connected_lines: Vec<&T> = copied_lines
           .iter()
           .filter(|&tested_line| {
             line.is_connected_to(tested_line)
@@ -75,7 +72,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
       for line in lines_to_remove.iter() {
         println!("Removing line {:?}", line);
       }
-      lines_deque.retain(|l| !lines_to_remove.contains(&l));
+      copied_lines.retain(|l| !lines_to_remove.contains(&l));
     }
   }
 

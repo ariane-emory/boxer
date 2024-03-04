@@ -85,7 +85,7 @@ pub fn process_file(
 
   println!("");
   println!("================================================================================");
-  println!("Finding rectangles...");
+  println!("Finding rectangles in:");
   println!("================================================================================");
 
   let mut rectangles: Vec<Rectangle> = Vec::new();
@@ -101,9 +101,12 @@ pub fn process_file(
     .iter()
     .for_each(|line| println!("Candidate Line: {:?}", line));
 
+  println!("");
+  println!("================================================================================");
+  println!("Found:");
   println!("================================================================================");
 
-  find_rectangles(&all_lines, &mut rectangles, &mut free_lines, false);
+  find_rectangles(&mut all_lines, &mut rectangles, &mut free_lines, false);
 
   free_lines
     .iter()
