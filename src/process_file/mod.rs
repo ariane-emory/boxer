@@ -114,7 +114,7 @@ fn extract_basic_geometry(
         process_vert_fun,
       );
 
-      println!("");
+      //println!("");
 
       words.extend(horiz_linemaker.borrow().words.iter().cloned());
       all_lines.extend(horiz_linemaker.borrow().lines.iter());
@@ -127,7 +127,7 @@ fn extract_basic_geometry(
     find_rectangles(&all_lines, &mut rectangles, &mut lines, false);
   } // End of all_lines scope.
 
-  println!("");
+  //println!("");
 
   lines
     .iter()
