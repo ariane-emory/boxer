@@ -157,7 +157,7 @@ impl<'a> ConnectedLineMaker<'a> {
       else if byte != self.line_body_char {
         print!("Broke line, distance = {}. ", pos.distance(&begin));
         if distance_ok {
-          self.complete_line(byte, begin, pos.offset_by(0, 0), Nothing);
+          self.complete_line(byte, begin, pos.offset_by(0, -1), Nothing);
         }
         else {
           self.reset();
