@@ -53,8 +53,8 @@ pub fn make_process_bidirectionally_fun<'a>(
       panic!("Found non-ASCII byte {} at {:?}", byte, pos);
     }
 
-    custom_printer(orientation, *pos, *byte);
-    rc_linemaker_twin.borrow_mut().process(*pos, *byte);
+    custom_printer(orientation, pos, *byte);
+    rc_linemaker_twin.borrow_mut().process(pos, *byte);
   })
 }
 
