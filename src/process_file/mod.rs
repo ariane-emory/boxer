@@ -39,7 +39,7 @@ pub fn process_file(
 
   normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
 
-  println!("");
+  println!("w");
   println!("================================================================================");
   println!("Extracting basic geometry...");
   println!("================================================================================");
@@ -47,13 +47,18 @@ pub fn process_file(
   let (rectangles, mut lines, mut words) =
     extract_basic_geometry(&normalized_matrix);
 
-  println!("");
+  println!("x");
   println!("================================================================================");
   println!("Try to merge length-1 lines...");
   println!("================================================================================");
-  println!("");
+  println!("y");
 
   merge_length_1_lines(&mut lines, &mut words);
+
+  println!("================================================================================");
+  println!("Looking for chains...");
+  println!("================================================================================");
+  println!("z");
 
   let chains = find_chains(&lines);
 
