@@ -98,7 +98,15 @@ impl<'a> ConnectedLineMaker<'a> {
     begin: Point,
     end: Point,
     connectection_type: ConnectionType,
+    include_current: bool,
   ) {
+    let end = if include_current {
+      end
+    }
+    else {
+      end.offset_by(0, -1)
+    };
+
     let line = ConnectedLine::new(
       self.orientation,
       begin,
@@ -107,6 +115,7 @@ impl<'a> ConnectedLineMaker<'a> {
       connectection_type,
     )
     .unwrap();
+
     print!("Created line {:?}. ", line);
     self.lines.push((self.line_postprocessor)(line));
     self.reset();
@@ -144,7 +153,7 @@ impl<'a> ConnectedLineMaker<'a> {
 
       if byte == b'+' {
         if distance_ok {
-          self.complete_line(byte, begin, pos, Corner);
+          self.complete_line(byte, begin, pos, Corner, true);
         }
         else {
           print!("Begin line at Corner after line break!");
@@ -152,12 +161,12 @@ impl<'a> ConnectedLineMaker<'a> {
         }
       }
       else if byte == self.wall_char && distance_ok {
-        self.complete_line(byte, begin, pos, Wall);
+        self.complete_line(byte, begin, pos, Wall, true);
       }
       else if byte != self.line_body_char {
         print!("Broke line, distance = {}. ", pos.distance(&begin));
         if distance_ok {
-          self.complete_line(byte, begin, pos.offset_by(0, -1), Nothing);
+          self.complete_line(byte, begin, pos, Nothing, false);
         }
         else {
           self.reset();
