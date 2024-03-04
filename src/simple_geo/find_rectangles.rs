@@ -6,8 +6,8 @@ use std::fmt::Debug;
 ////////////////////////////////////////////////////////////////////////////////
 pub fn find_rectangles<T: LineMethods + Debug>(
   lines: &Vec<T>,
-  rects: &mut Vec<Rectangle>,
-  leftover_lines: &mut Vec<T>,
+  rectangles: &mut Vec<Rectangle>,
+  free_lines: &mut Vec<T>,
   allow_overlap: bool,
 ) {
   let mut sorted_lines: Vec<T> = lines.to_vec();
@@ -49,7 +49,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
             let rect =
               Rectangle::new(tmp_vec[0].start(), tmp_vec[3].end()).unwrap();
 
-            rects.push(rect);
+            rectangles.push(rect);
 
             println!("\nNew Rectangle: {:?}", rect);
 
@@ -70,13 +70,13 @@ pub fn find_rectangles<T: LineMethods + Debug>(
 
     if !found_a_rect {
       println!("No coaligned lines found for {:?}", line);
-      leftover_lines.push(line);
+      free_lines.push(line);
     }
     else if !allow_overlap {
       lines_deque.retain(|l| !lines_to_remove.contains(&l));
     }
   }
 
-  leftover_lines.sort();
+  free_lines.sort();
 }
 ////////////////////////////////////////////////////////////////////////////////

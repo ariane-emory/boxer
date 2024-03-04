@@ -85,6 +85,16 @@ pub fn process_file(
 
   println!("");
   println!("================================================================================");
+  println!("Finding rectangles...");
+  println!("================================================================================");
+
+  let mut rectangles: Vec<Rectangle> = Vec::new();
+  let mut free_lines: Vec<ConnectedLine> = Vec::new();
+
+  find_rectangles(&mut lines, &mut rectangles, &mut free_lines, false);
+
+  println!("");
+  println!("================================================================================");
   println!("Try to merge length-1 lines...");
   println!("================================================================================");
   println!("");
@@ -118,7 +128,6 @@ pub fn process_file(
     }
   }
 
-  let rectangles: Vec<Rectangle> = Vec::new();
   Ok((normalized_matrix, rectangles, lines, words))
 }
 
