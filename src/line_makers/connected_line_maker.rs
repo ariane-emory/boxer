@@ -62,16 +62,18 @@ impl<'a> ConnectedLineMaker<'a> {
 
   fn try_collect_word(&mut self) {
     if self.collect_words && self.current_word.len() > 0 {
-      self.words.push((self.word_postprocessor)(
+      let word = (self.word_postprocessor)(
         Word::new(
           &self.current_word,
           self.current_word_begin,
           self
             .current_word_begin
-            .offset_by(0, (self.current_word.len()) as isize),
+            .offset_by(0, (self.current_word.len() - 1) as isize),
         )
         .unwrap(),
-      ))
+      );
+      println!("PUSHING WORD: {:?}", word);
+      self.words.push(word)
     }
     self.current_word = String::new();
   }
@@ -168,6 +170,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       else if self.collect_words && is_word_char(byte) {
         if self.current_word.len() == 0 {
+          println!("BEGIN WORD AT {:?} WITH '{}'.", pos, byte as char);
           self.current_word_begin = pos;
         }
         self.current_word.push(byte as char);
