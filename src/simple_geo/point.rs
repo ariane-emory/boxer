@@ -11,7 +11,7 @@ pub struct Point {
 ////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Point {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "({:2}:{:2})", self.line, self.col)
+    write!(f, "(L{:2}:C{:2})", self.line, self.col)
   }
 }
 
