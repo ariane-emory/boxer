@@ -58,6 +58,11 @@ pub fn process_file(
 
   let chains = find_chains(&lines);
 
+  for (i, chain) in chains.iter().enumerate() {
+    println!("Chain {}: length {} ", i, chain.len());
+    chain.iter().for_each(|line| println!("  {:?}", line));
+  }
+
   Ok((normalized_matrix, rectangles, lines, words))
 }
 
@@ -169,7 +174,7 @@ fn extract_basic_geometry(
 
   lines
     .iter()
-    .for_each(|line| println!("Other line:      {:?}", line));
+    .for_each(|line| println!("Line:            {:?}", line));
 
   words
     .iter()
@@ -227,7 +232,7 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
 
   lines
     .iter()
-    .for_each(|line| println!("Other line:      {:?}", line));
+    .for_each(|line| println!("Line:      {:?}", line));
 
   words.iter().for_each(|word| println!("{:?}", word));
 }
