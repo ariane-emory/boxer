@@ -137,7 +137,6 @@ impl<'a> ConnectedLineMaker<'a> {
           self.complete_line(byte, begin, pos, Corner);
         }
         else {
-          self.reset();
           println!("Begin line at Corner after line break!");
           self.begin_line(pos, Corner);
         }
