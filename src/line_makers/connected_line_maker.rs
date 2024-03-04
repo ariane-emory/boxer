@@ -100,7 +100,7 @@ impl<'a> ConnectedLineMaker<'a> {
     connectection_type: ConnectionType,
     include_current: bool,
   ) {
-    let end = if include_current {
+    let line_end = if include_current {
       end
     }
     else {
@@ -110,13 +110,14 @@ impl<'a> ConnectedLineMaker<'a> {
     let line = ConnectedLine::new(
       self.orientation,
       begin,
-      end,
+      line_end,
       self.line_begin_type,
       connectection_type,
     )
     .unwrap();
 
     print!("Created line {:?}. ", line);
+
     self.lines.push((self.line_postprocessor)(line));
     self.reset();
     self.process(end, byte);
@@ -204,7 +205,7 @@ impl<'a> ConnectedLineMaker<'a> {
         else {
           print!(". ");
         }
-        //self.reset();
+        self.reset();
       }
       else {
         print!("Ignore '{}'", byte as char);

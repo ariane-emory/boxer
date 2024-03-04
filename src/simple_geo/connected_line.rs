@@ -57,7 +57,7 @@ impl fmt::Debug for ConnectedLine {
     );
     write!(
       f,
-      "{}{:?} {:15}{:?}",
+      "{}{:?} {:15} {:?}",
       orientation_str, self.start, connection_str, self.end
     )
   }
