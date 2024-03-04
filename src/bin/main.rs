@@ -45,7 +45,7 @@ fn main() -> io::Result<()> {
 
     // RefCell scope:
     {
-      let (vert_linemaker, process_vert) = make_process_file_fun(
+      let (vert_linemaker, process_vert) = make_process_bidirectionally_fun(
         Vertical,
         b'|',
         b'-',
@@ -56,7 +56,7 @@ fn main() -> io::Result<()> {
         log_byte_with_orientation_and_flipped_and_offset_pos,
       );
 
-      let (horiz_linemaker, process_horiz) = make_process_file_fun(
+      let (horiz_linemaker, process_horiz) = make_process_bidirectionally_fun(
         Horizontal,
         b'-',
         b'|',
