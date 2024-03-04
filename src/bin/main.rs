@@ -28,6 +28,7 @@ fn main() -> io::Result<()> {
 
   // all_lines scope:
   {
+    let mut all_lines: Vec<ConnectedLine> = Vec::new();
     let offset_pos = |pos: Point| pos.flip().offset_by(LINE_OFFSET, 0);
     let offset_line = |cl: ConnectedLine| cl.offset_by(LINE_OFFSET, 0);
     let offset_word = |wrd: Word| wrd.offset_by(LINE_OFFSET, 0);
@@ -41,7 +42,6 @@ fn main() -> io::Result<()> {
       |ori, pos, byte| log_labeled_byte(ori, offset_pos(pos), byte);
     let log_byte_with_orientation_and_flipped_and_offset_pos =
       |ori, pos, byte| log_labeled_byte(ori, flip_and_offset_pos(pos), byte);
-    let mut all_lines: Vec<ConnectedLine> = Vec::new();
 
     // RefCell scope:
     {
