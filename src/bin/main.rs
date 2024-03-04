@@ -9,6 +9,6 @@ use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  let (_, _, _, _) = process_file("./data/simple.box")?;
+  let _ = process_file("./data/simple.box")?;
   Ok(())
 }
