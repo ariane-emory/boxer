@@ -35,12 +35,12 @@ fn main() -> io::Result<()> {
         false,
         false,
         // Offset the line nunbers to match emacs' numbering:
-        Box::new(|line| {
+        |line| {
           let l = line.flip().offset_by(LINE_OFFSET, 0);
           println!("Changed {:?} into {:?}!", line, l);
           l
-        }),
-        Box::new(|word| word.offset_by(LINE_OFFSET, 0)),
+        },
+        |word| word.offset_by(LINE_OFFSET, 0),
         |pos, byte| {
           println!(
             "Vert:    {:?}: '{}'",
@@ -57,12 +57,12 @@ fn main() -> io::Result<()> {
         true,
         true,
         // Offset the line nunbers to match emacs' numbering:
-        Box::new(|line| {
+        |line| {
           let l = line.offset_by(LINE_OFFSET, 0);
           println!("Changed {:?} into {:?}", line, l);
           l
-        }),
-        Box::new(|word| word.offset_by(LINE_OFFSET, 0)),
+        },
+        |word| word.offset_by(LINE_OFFSET, 0),
         |pos, byte| {
           println!(
             "Horiz:   {:?}: '{}'",

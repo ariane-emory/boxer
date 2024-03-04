@@ -36,8 +36,8 @@ pub fn make_process_file_fun<'a>(
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
-  line_postprocessor: Box<dyn Fn(ConnectedLine) -> ConnectedLine + 'a>,
-  word_postprocessor: Box<dyn Fn(Word) -> Word + 'a>,
+  line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
+  word_postprocessor: impl Fn(Word) -> Word + 'a,
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let lm = ConnectedLineMaker::new(
@@ -46,8 +46,8 @@ pub fn make_process_file_fun<'a>(
     wall_char,
     collect_words,
     allow_length_one,
-    line_postprocessor,
-    word_postprocessor,
+    Box::new(line_postprocessor),
+    Box::new(word_postprocessor),
   );
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
