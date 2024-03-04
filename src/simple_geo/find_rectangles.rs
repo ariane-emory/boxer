@@ -3,7 +3,7 @@ use std::fmt::Debug;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn find_rectangles<T: LineMethods + Debug>(
-  lines: &Vec<T>,
+  lines: Vec<T>,
   rectangles: &mut Vec<Rectangle>,
   free_lines: &mut Vec<T>,
   allow_overlap: bool,

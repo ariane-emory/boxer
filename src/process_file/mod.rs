@@ -106,7 +106,7 @@ pub fn process_file(
   println!("Found:");
   println!("================================================================================");
 
-  find_rectangles(&mut all_lines, &mut rectangles, &mut free_lines, false);
+  find_rectangles(all_lines, &mut rectangles, &mut free_lines, false);
 
   free_lines
     .iter()
