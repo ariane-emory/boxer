@@ -194,9 +194,9 @@ pub fn process_file(
 
       println!("New word: {:?}", new_word);
 
-      lines.retain(|cl| cl != &line);
-      words.retain(|word| word != &candidate_words[0]);
-      sorted_insert(&mut words, new_word);
+      vec_remove(&mut lines, &line);
+      vec_remove(&mut words, &candidate_words[0]);
+      vec_sorted_insert(&mut words, new_word);
     }
   }
 
@@ -213,7 +213,19 @@ pub fn process_file(
 
 
 /////////////////////////////////////////////////////////////////////////////////
-fn sorted_insert<T: Ord>(vec: &mut Vec<T>, value: T) {
+fn vec_remove<T: PartialEq + std::fmt::Debug>(vec: &mut Vec<T>, value: &T) {
+  let pos = vec.iter().position(|v| v == value);
+
+  if let Some(pos) = pos {
+    vec.remove(pos);
+  }
+  else {
+    panic!("Value {:?} not found in vec.", value);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+fn vec_sorted_insert<T: Ord>(vec: &mut Vec<T>, value: T) {
   match vec.binary_search(&value) {
     Ok(pos) => vec.insert(pos, value),
     Err(pos) => vec.insert(pos, value),
