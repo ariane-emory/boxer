@@ -17,7 +17,7 @@ use std::rc::Rc;
 static LINE_OFFSET: isize = 1;
 
 /////////////////////////////////////////////////////////////////////////////////
-pub fn make_process_matrix_bidirectionally_fun<'a>(
+pub fn make_process_bidirectionally_fun<'a>(
   orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
@@ -84,7 +84,7 @@ pub fn process_file(
     // RefCell scope:
     {
       let (vert_linemaker, process_vert_fun) =
-        make_process_matrix_bidirectionally_fun(
+        make_process_bidirectionally_fun(
           Vertical,
           b'|',
           b'-',
@@ -96,7 +96,7 @@ pub fn process_file(
         );
 
       let (horiz_linemaker, process_horiz_fun) =
-        make_process_matrix_bidirectionally_fun(
+        make_process_bidirectionally_fun(
           Horizontal,
           b'-',
           b'|',
