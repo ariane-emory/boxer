@@ -124,12 +124,13 @@ fn extract_basic_geometry(
   //  if false {
   println!("");
 
-  other_lines
-    .iter()
-    .for_each(|line| println!("Other line:      {:?}", line));
   words
     .iter()
     .for_each(|word| println!("Found word:      {:?}", word));
+
+  other_lines
+    .iter()
+    .for_each(|line| println!("Other line:      {:?}", line));
   //  }
 
   rectangles
