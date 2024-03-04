@@ -195,8 +195,8 @@ pub fn process_file(
 
       println!("New word: {:?}", new_word);
 
-      lines.removeq(&line);
-      words.removeq(&candidate_words[0]);
+      lines.removeql(&line);
+      words.removeql(&candidate_words[0]);
       words.sorted_insert(new_word);
     }
   }
