@@ -182,8 +182,11 @@ pub fn process_file(
       .cloned()
       .collect::<Vec<Word>>();
 
-    for word in candidate_words {
-      println!("  Candidate word: {:?}", word);
+    if candidate_words.len() > 1 {
+      panic!("Bad data, found more than one candidate word for {:?}", line);
+    }
+    else if candidate_words.len() == 1 {
+      println!("  Candidate word: {:?}", candidate_words[0]);
     }
   }
 
