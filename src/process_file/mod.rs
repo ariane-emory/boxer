@@ -1,13 +1,20 @@
 use crate::line_makers::ConnectedLineMaker;
+use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
+use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation;
+use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
+use crate::simple_geo::Rectangle;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 
 use std::cell::RefCell;
-use std::io;
+use std::io::Result as IoResult;
 use std::rc::Rc;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+static LINE_OFFSET: isize = 1;
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_matrix_bidirectionally_fun<'a>(
@@ -49,17 +56,13 @@ pub fn make_process_matrix_bidirectionally_fun<'a>(
 /////////////////////////////////////////////////////////////////////////////////
 pub fn process_file(
   path: &str,
-  process_horiz: impl Fn(&Point, &u8),
-  process_vert: impl Fn(&Point, &u8),
-) -> io::Result<(Vec<Vec<u8>>, Vec<ConnectedLine>, Vec<Rectangle>, Vec<Word>)> {
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
-  let max_len = matrix_max_row_len(&matrix);
-  let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
-  process_matrix_bidirectionally(&uniform_matrix, process_horiz, process_vert);
-
+) -> IoResult<(Vec<Vec<u8>>, Vec<ConnectedLine>, Vec<Rectangle>, Vec<Word>)> {
   let mut rectangles = Vec::new();
   let mut other_lines = Vec::new();
   let mut words = Vec::new();
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+  let max_len = matrix_max_row_len(&matrix);
+  let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
 
   // all_lines scope:
   {
@@ -103,6 +106,12 @@ pub fn process_file(
           offset_word,
           log_byte_with_orientation_and_offset_pos,
         );
+
+      process_matrix_bidirectionally(
+        &uniform_matrix,
+        process_horiz_fun,
+        process_vert_fun,
+      );
 
       println!("");
 
