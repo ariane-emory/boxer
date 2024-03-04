@@ -287,7 +287,7 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
         for line in lines {
           if visited_lines.insert(*line) {
             chain.push(*line);
-            let next_point = if &line.start == point {
+            let next_point = if line.start == point {
               &line.end
             }
             else {
