@@ -311,12 +311,12 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 
 ////////////////////////////////////////////////////////////////////////////////
 fn analyze_chain(
-  lines: &Vec<ConnectedLine>,
+  chain: &Vec<ConnectedLine>,
 ) -> Option<(Option<Point>, Option<Point>)> {
   let mut point_occurrences = HashMap::new();
 
   // Count occurrences of each point
-  for line in lines {
+  for line in chain {
     *point_occurrences.entry(line.start).or_insert(0) += 1;
     *point_occurrences.entry(line.end).or_insert(0) += 1;
   }
