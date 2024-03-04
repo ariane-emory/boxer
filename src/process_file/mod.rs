@@ -67,8 +67,8 @@ fn extract_basic_geometry(
     let flip_pos = |pos: Point| pos.flip();
     let flip_line = |cl: ConnectedLine| cl.flip();
     let flip_word = |wrd: Word| wrd.flip();
-    let log_labeled_byte = |ori: Orientation, pos: Point, byte: u8| {
-      println!("{:12} {:?}: '{}'", format!("{:?}:", ori), pos, byte as char)
+    let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
+      print!("\n[{:12?}] ", ori);
     };
     let log_byte_with_orientation =
       |ori, pos, byte| log_labeled_byte(ori, pos, byte);

@@ -72,7 +72,7 @@ impl<'a> ConnectedLineMaker<'a> {
         )
         .unwrap(),
       );
-      println!("  PUSHING WORD: {:?}", word);
+      print!("Pushing word {:?}.", word);
       self.words.push(word)
     }
     self.current_word = String::new();
@@ -82,10 +82,11 @@ impl<'a> ConnectedLineMaker<'a> {
     self.try_collect_word();
     self.line_begin = None;
     self.line_begin_type = Nothing;
+    print!("Reset. ");
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    println!("  Begin line at {:?}.", connection_type);
+    print!("Begin line at {:?}.", connection_type);
     self.try_collect_word();
     self.line_begin = Some(pos);
     self.line_begin_type = connection_type;
@@ -106,13 +107,16 @@ impl<'a> ConnectedLineMaker<'a> {
       connectection_type,
     )
     .unwrap();
-    println!("  Created line: {:?}", line);
+    print!("Created line {:?}. ", line);
     self.lines.push((self.line_postprocessor)(line));
     self.reset();
     self.process(end, byte);
   }
 
   pub fn process(&mut self, pos: Point, byte: u8) {
+    let tmp = format!("{:?}. ", byte as char);
+    print!("At {:?} process {:6}", pos, tmp);
+
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art
     // lines like '+----+'.- When a '+' is observed and line_begin is None,
     // the current position is recorded. If line begin is set and the
@@ -124,12 +128,12 @@ impl<'a> ConnectedLineMaker<'a> {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
     // if pos.line != self.prev_pos.line {
-    //   println!("         new row, reset!");
+    //   print!("         new row, reset!");
     //   self.reset();
     // }
     if byte == b'\0' {
-      println!("  End of row, reset!\n");
       self.reset();
+      print!("End of row!\n");
     }
     else if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least two characters long, we
@@ -143,7 +147,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.complete_line(byte, begin, pos, Corner);
         }
         else {
-          println!("  Begin line at Corner after line break!");
+          print!("Begin line at Corner after line break!");
           self.begin_line(pos, Corner);
         }
       }
@@ -151,11 +155,11 @@ impl<'a> ConnectedLineMaker<'a> {
         self.complete_line(byte, begin, pos, Wall);
       }
       else if byte != self.line_body_char {
+        print!("Broke line, distance = {}. ", pos.distance(&begin));
         if distance_ok {
-          self.complete_line(byte, begin, pos.offset_by(0, -1), Nothing);
+          self.complete_line(byte, begin, pos.offset_by(0, 0), Nothing);
         }
         else {
-          println!("  broke line, distance = {}!", pos.distance(&begin));
           self.reset();
           self.process(pos, byte);
         }
@@ -173,27 +177,33 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       else if self.collect_words && is_word_char(byte) {
         if self.current_word.len() == 0 {
-          println!("  BEGIN WORD AT {:?} WITH '{}'.", pos, byte as char);
+          print!("Begin word at {:?} with '{}'.", pos, byte as char);
           self.current_word_begin = pos;
         }
         self.current_word.push(byte as char);
-        println!(
-          "  Add char '{}', word = \"{}\".",
+        print!(
+          "Add char '{}', word = \"{}\".",
           byte as char, self.current_word
         );
       }
       else if byte == b' ' {
-        println!(
-          "  Reset for '{}',      holding {:?}.",
-          byte as char, self.current_word
-        );
+        print!("Whitespace");
+        if self.current_word.len() > 0 {
+          print!(", holding {:?}. ", self.current_word);
+        }
+        else {
+          print!(". ");
+        }
         self.reset();
       }
       else {
-        println!(
-          "  Do nothing for '{}', holding {:?}.",
-          byte as char, self.current_word
-        );
+        print!("Ignore '{}'", byte as char);
+        if self.current_word.len() > 0 {
+          print!(", holding {:?}. ", self.current_word);
+        }
+        else {
+          print!(". ");
+        }
       }
     }
 
