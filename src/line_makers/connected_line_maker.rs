@@ -2,7 +2,7 @@ use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Orientation;
-use crate::simple_geo::Orientation::*;
+//use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 

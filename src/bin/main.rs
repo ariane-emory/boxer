@@ -21,7 +21,7 @@ fn main() -> io::Result<()> {
   let mut rectangles = Vec::new();
   let mut leftover_lines = Vec::new();
   let mut words = Vec::new();
-  let mut matrix = Vec::new();
+  let mut _matrix = Vec::new();
 
   // all_lines scope:
   {
@@ -73,7 +73,7 @@ fn main() -> io::Result<()> {
         },
       );
 
-      matrix = process_file(filename, process_horiz, process_vert);
+      _matrix = process_file(filename, process_horiz, process_vert);
 
       println!("");
 
