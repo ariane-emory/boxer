@@ -72,7 +72,7 @@ impl<'a> ConnectedLineMaker<'a> {
         )
         .unwrap(),
       );
-      println!("PUSHING WORD: {:?}", word);
+      println!("  PUSHING WORD: {:?}", word);
       self.words.push(word)
     }
     self.current_word = String::new();
@@ -85,7 +85,7 @@ impl<'a> ConnectedLineMaker<'a> {
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    println!("Begin line at {:?}.", connection_type);
+    println!("  Begin line at {:?}.", connection_type);
     self.try_collect_word();
     self.line_begin = Some(pos);
     self.line_begin_type = connection_type;
@@ -106,7 +106,7 @@ impl<'a> ConnectedLineMaker<'a> {
       connectection_type,
     )
     .unwrap();
-    println!("         CREATED LINE: {:?}", line);
+    println!("  Created line: {:?}", line);
     self.lines.push((self.line_postprocessor)(line));
     self.reset();
     self.process(end, byte);
@@ -123,12 +123,15 @@ impl<'a> ConnectedLineMaker<'a> {
     // attempt to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a
     // line).
-    if pos.line != self.prev_pos.line {
-      println!("         new row, reset!");
+    // if pos.line != self.prev_pos.line {
+    //   println!("         new row, reset!");
+    //   self.reset();
+    // }
+    if byte == b'\0' {
+      println!("  End of row, reset!\n");
       self.reset();
     }
-
-    if let Some(begin) = self.line_begin {
+    else if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least two characters long, we
       // will need to check the distance between the current position and
       // the line begin position:
@@ -140,7 +143,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.complete_line(byte, begin, pos, Corner);
         }
         else {
-          println!("Begin line at Corner after line break!");
+          println!("  Begin line at Corner after line break!");
           self.begin_line(pos, Corner);
         }
       }
@@ -152,7 +155,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.complete_line(byte, begin, pos.offset_by(0, -1), Nothing);
         }
         else {
-          println!("         broke line, distance = {}!", pos.distance(&begin));
+          println!("  broke line, distance = {}!", pos.distance(&begin));
           self.reset();
           self.process(pos, byte);
         }
@@ -170,25 +173,25 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       else if self.collect_words && is_word_char(byte) {
         if self.current_word.len() == 0 {
-          println!("BEGIN WORD AT {:?} WITH '{}'.", pos, byte as char);
+          println!("  BEGIN WORD AT {:?} WITH '{}'.", pos, byte as char);
           self.current_word_begin = pos;
         }
         self.current_word.push(byte as char);
         println!(
-          "Add char '{}', word = \"{}\".",
+          "  Add char '{}', word = \"{}\".",
           byte as char, self.current_word
         );
       }
       else if byte == b' ' {
         println!(
-          "Reset for '{}',      holding {:?}.",
+          "  Reset for '{}',      holding {:?}.",
           byte as char, self.current_word
         );
         self.reset();
       }
       else {
         println!(
-          "Do nothing for '{}', holding {:?}.",
+          "  Do nothing for '{}', holding {:?}.",
           byte as char, self.current_word
         );
       }

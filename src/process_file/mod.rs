@@ -42,10 +42,6 @@ pub fn make_process_bidirectionally_fun<'a>(
   let rc_linemaker_twin = Rc::clone(&rc_linemaker);
 
   (rc_linemaker, move |pos: &Point, byte: &u8| {
-    if pos.col == 0 {
-      println!("");
-    }
-
     let pos = pos_preprocessor(*pos);
 
     if 0 != (*byte & 128) {
@@ -153,13 +149,16 @@ pub fn process_file(
   let normalize_matrix_width = normalized_matrix[0].len();
 
   for row in normalized_matrix.iter_mut() {
-    row.push(b'\n');
+    row.push(b'\0');
   }
-  normalized_matrix.push(vec![b'\n'; normalize_matrix_width + 1]);
+
+  normalized_matrix.push(vec![b'\0'; normalize_matrix_width + 1]);
 
   for row in &normalized_matrix {
     println!("{:?}", std::str::from_utf8(&row).unwrap());
   }
+
+  println!("");
 
   let (rectangles, other_lines, words) =
     extract_basic_geometry(&normalized_matrix);
