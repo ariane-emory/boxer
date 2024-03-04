@@ -262,14 +262,8 @@ fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
   let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
 
   for line in lines {
-    graph
-      .entry(line.start.clone())
-      .or_default()
-      .push(line.clone());
-    graph
-      .entry(line.end.clone())
-      .or_default()
-      .push(line.clone());
+    graph.entry(line.start).or_default().push(*line);
+    graph.entry(line.end).or_default().push(*line);
   }
 
   let mut visited_points: HashSet<Point> = HashSet::new();
