@@ -156,10 +156,6 @@ pub fn process_file(
 
   normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
 
-  // for row in &normalized_matrix {
-  //   println!("{:?}", std::str::from_utf8(&row).unwrap());
-  // }
-
   println!("");
 
   let (rectangles, other_lines, words) =
@@ -187,6 +183,15 @@ pub fn process_file(
     }
     else if candidate_words.len() == 1 {
       println!("  Candidate word: {:?}", candidate_words[0]);
+
+      let new_word = Word::new(
+        &format!("-{}", candidate_words[0].string),
+        line.start,
+        candidate_words[0].end,
+      )
+      .unwrap();
+
+      println!("New word: {:?}", new_word);
     }
   }
 
