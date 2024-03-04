@@ -25,7 +25,7 @@ fn main() -> io::Result<()> {
   //loop {
   let filename = "./data/simple.box";
   let mut rectangles = Vec::new();
-  let mut leftover_lines = Vec::new();
+  let mut other_lines = Vec::new();
   let mut words = Vec::new();
   let mut _matrix = Vec::new();
 
@@ -74,26 +74,25 @@ fn main() -> io::Result<()> {
 
       println!("");
 
+      words.extend(horiz_linemaker.borrow().words.iter().cloned());
       all_lines.extend(horiz_linemaker.borrow().lines.iter());
       all_lines.extend(vert_linemaker.borrow().lines.iter());
-      words.extend(horiz_linemaker.borrow().words.iter().cloned());
     } // End of RefCell scope.
 
     let corner_connected = |cl: &ConnectedLine| {
       cl.start_connects_to == Corner && cl.end_connects_to == Corner
     };
 
-    leftover_lines
-      .extend(all_lines.iter().filter(|line| !corner_connected(line)));
+    other_lines.extend(all_lines.iter().filter(|line| !corner_connected(line)));
     all_lines.retain(corner_connected);
 
-    find_rectangles(&all_lines, &mut rectangles, &mut leftover_lines, false);
+    find_rectangles(&all_lines, &mut rectangles, &mut other_lines, false);
   } // End of all_lines scope.
 
   println!("");
 
-  for line in leftover_lines.iter() {
-    println!("Leftover line:   {:?}", line);
+  for line in other_lines.iter() {
+    println!("Other line:      {:?}", line);
   }
 
   for word in words.iter() {
