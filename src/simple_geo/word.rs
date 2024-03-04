@@ -12,7 +12,6 @@ pub struct Word {
 ////////////////////////////////////////////////////////////////////////////////
 impl Word {
   pub fn new(string: &str, start: Point, end: Point) -> GeoResult<Self> {
-    println!("Construct with {:?} @ {:?} → {:?}...", string, start, end);
     if start.col > end.col {
       Err(ErrString::new("start.col > end.col!"))
     }
