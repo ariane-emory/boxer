@@ -122,91 +122,6 @@ pub fn process_file(
   Ok((normalized_matrix, rectangles, lines, words))
 }
 
-/////////////////////////////////////////////////////////////////////////////////
-fn extract_basic_geometry(
-  normalized_matrix: &Vec<Vec<u8>>,
-) -> (Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>) {
-  let mut rectangles = Vec::new();
-  let mut lines = Vec::new();
-  let mut words = Vec::new();
-
-  // all_lines scope:
-  {
-    let mut all_lines: Vec<ConnectedLine> = Vec::new();
-    let flip_pos = |pos: Point| pos.flip();
-    let flip_line = |cl: ConnectedLine| cl.flip();
-    let flip_word = |wrd: Word| wrd.flip();
-    let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
-      noisy_print!("\n[{:12?}] ", ori);
-    };
-    let log_byte_with_orientation =
-      |ori, pos, byte| log_labeled_byte(ori, pos, byte);
-    let log_byte_with_orientation_and_flipped_pos =
-      |ori, pos, byte| log_labeled_byte(ori, flip_pos(pos), byte);
-
-    // RefCell scope:
-    {
-      let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
-        Vertical,
-        b'|',
-        b'-',
-        false,
-        false,
-        |pos| pos.offset_by(0, LINE_OFFSET),
-        flip_line,
-        flip_word,
-        log_byte_with_orientation_and_flipped_pos,
-      );
-
-      let (horiz_linemaker, process_horiz_fun) =
-        make_process_bidirectionally_fun(
-          Horizontal,
-          b'-',
-          b'|',
-          true,
-          true,
-          |pos| pos.offset_by(LINE_OFFSET, 0),
-          |line| line,
-          |word| word,
-          log_byte_with_orientation,
-        );
-
-      process_matrix_bidirectionally(
-        &normalized_matrix,
-        process_horiz_fun,
-        process_vert_fun,
-      );
-
-      //println!("");
-
-      words.extend(horiz_linemaker.borrow().words.iter().cloned());
-      all_lines.extend(horiz_linemaker.borrow().lines.iter());
-      all_lines.extend(vert_linemaker.borrow().lines.iter());
-    } // End of RefCell scope.
-
-    lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
-    all_lines.retain(ConnectedLine::corner_connected);
-
-    find_rectangles(&all_lines, &mut rectangles, &mut lines, false);
-  } // End of all_lines scope.
-
-  //println!("");
-
-  lines
-    .iter()
-    .for_each(|line| println!("Line:            {:?}", line));
-
-  words
-    .iter()
-    .for_each(|word| println!("Found word:      {:?}", word));
-
-  rectangles
-    .iter()
-    .for_each(|rect| println!("Found rectangle: {:?}", rect));
-
-  (rectangles, lines, words)
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
   let single_length_lines = lines
@@ -341,4 +256,89 @@ fn analyze_chain(
     0 => Some((None, None)), // Indicate a loop with None values
     _ => None,               // Malformed or disconnected chain
   }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+fn extract_basic_geometry(
+  normalized_matrix: &Vec<Vec<u8>>,
+) -> (Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>) {
+  let mut rectangles = Vec::new();
+  let mut lines = Vec::new();
+  let mut words = Vec::new();
+
+  // all_lines scope:
+  {
+    let mut all_lines: Vec<ConnectedLine> = Vec::new();
+    let flip_pos = |pos: Point| pos.flip();
+    let flip_line = |cl: ConnectedLine| cl.flip();
+    let flip_word = |wrd: Word| wrd.flip();
+    let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
+      noisy_print!("\n[{:12?}] ", ori);
+    };
+    let log_byte_with_orientation =
+      |ori, pos, byte| log_labeled_byte(ori, pos, byte);
+    let log_byte_with_orientation_and_flipped_pos =
+      |ori, pos, byte| log_labeled_byte(ori, flip_pos(pos), byte);
+
+    // RefCell scope:
+    {
+      let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
+        Vertical,
+        b'|',
+        b'-',
+        false,
+        false,
+        |pos| pos.offset_by(0, LINE_OFFSET),
+        flip_line,
+        flip_word,
+        log_byte_with_orientation_and_flipped_pos,
+      );
+
+      let (horiz_linemaker, process_horiz_fun) =
+        make_process_bidirectionally_fun(
+          Horizontal,
+          b'-',
+          b'|',
+          true,
+          true,
+          |pos| pos.offset_by(LINE_OFFSET, 0),
+          |line| line,
+          |word| word,
+          log_byte_with_orientation,
+        );
+
+      process_matrix_bidirectionally(
+        &normalized_matrix,
+        process_horiz_fun,
+        process_vert_fun,
+      );
+
+      //println!("");
+
+      words.extend(horiz_linemaker.borrow().words.iter().cloned());
+      all_lines.extend(horiz_linemaker.borrow().lines.iter());
+      all_lines.extend(vert_linemaker.borrow().lines.iter());
+    } // End of RefCell scope.
+
+    lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
+    all_lines.retain(ConnectedLine::corner_connected);
+
+    find_rectangles(&all_lines, &mut rectangles, &mut lines, false);
+  } // End of all_lines scope.
+
+  //println!("");
+
+  lines
+    .iter()
+    .for_each(|line| println!("Line:            {:?}", line));
+
+  words
+    .iter()
+    .for_each(|word| println!("Found word:      {:?}", word));
+
+  rectangles
+    .iter()
+    .for_each(|rect| println!("Found rectangle: {:?}", rect));
+
+  (rectangles, lines, words)
 }
