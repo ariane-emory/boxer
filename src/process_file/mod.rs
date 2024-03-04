@@ -46,8 +46,8 @@ pub fn make_process_file_fun<'a>(
     wall_char,
     collect_words,
     allow_length_one,
-    Box::new(line_postprocessor),
-    Box::new(word_postprocessor),
+    line_postprocessor,
+    word_postprocessor,
   );
   let rc_lm = Rc::new(RefCell::new(lm));
   let rc_lm_twin = Rc::clone(&rc_lm);
