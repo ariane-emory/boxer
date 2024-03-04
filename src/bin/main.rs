@@ -9,7 +9,7 @@ use boxer::simple_geo::find_rectangles;
 use boxer::simple_geo::Offsetable;
 use boxer::simple_geo::Orientation::*;
 //use boxer::simple_geo::Word;
-use boxer::simple_geo::LineMethods;
+//use boxer::simple_geo::LineMethods;
 use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -27,8 +27,10 @@ impl Word {
       })
     }
   }
-
-  pub fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Offsetable for Word {
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
     Self::new(
       &self.string,
       self.start.offset_by(line_offset, col_offset),
@@ -37,7 +39,7 @@ impl Word {
     .unwrap()
   }
 
-  pub fn flip(&self) -> Self {
+  fn flip(&self) -> Self {
     Self::new(&self.string, self.start.flip(), self.end.flip()).unwrap()
   }
 }
