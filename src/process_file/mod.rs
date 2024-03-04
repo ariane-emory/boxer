@@ -161,13 +161,17 @@ pub fn process_file(
   normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
 
   println!("");
-
   println!("================================================================================");
   println!("Extracting basic geometry...");
   println!("================================================================================");
 
   let (rectangles, mut lines, mut words) =
     extract_basic_geometry(&normalized_matrix);
+
+  println!("");
+  println!("================================================================================");
+  println!("Try to merge length-1 lines...");
+  println!("================================================================================");
 
   let single_length_lines = lines
     .iter()
