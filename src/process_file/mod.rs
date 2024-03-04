@@ -111,7 +111,7 @@ pub fn process_file(
     println!("Chain {}: length {} ", i, chain.len());
     chain.iter().for_each(|line| println!("  {:?}", line));
 
-    if let Some((start, end)) = find_chain_ends(&chain) {
+    if let Some((start, end)) = analyze_chain(&chain) {
       println!("  Start: {:?}, End: {:?}", start, end);
     }
     else {
@@ -345,5 +345,72 @@ fn find_chain_ends(lines: &Vec<ConnectedLine>) -> Option<(Point, Point)> {
   match (starts.len(), ends.len()) {
     (1, 1) => Some((starts[0].clone(), ends[0].clone())),
     _ => None, // Either loop (0,0) or malformed chain
+  }
+}
+
+
+fn find_chain_ends_directed(
+  lines: &Vec<ConnectedLine>,
+) -> Option<(Point, Point)> {
+  let mut start_points = HashMap::new(); // Counts as a start point
+  let mut end_points = HashMap::new(); // Counts as an end point
+
+  for line in lines {
+    *start_points.entry(line.start.clone()).or_insert(0) += 1;
+    *end_points.entry(line.end.clone()).or_insert(0) += 1;
+  }
+
+  // A unique start point is one that is never an end point
+  let start = start_points
+    .iter()
+    .find(|(point, &count)| count == 1 && !end_points.contains_key(*point));
+
+  // A unique end point is one that is never a start point
+  let end = end_points
+    .iter()
+    .find(|(point, &count)| count == 1 && !start_points.contains_key(*point));
+
+  match (start, end) {
+    (Some((start_point, _)), Some((end_point, _))) => {
+      Some(((*start_point).clone(), (*end_point).clone()))
+    }
+    _ => None, // No unique start/end found or chain forms a loop
+  }
+}
+
+// Adjusted main function and struct definitions as per previous examples
+
+
+fn analyze_chain(
+  lines: &Vec<ConnectedLine>,
+) -> Option<(Option<Point>, Option<Point>)> {
+  let mut point_occurrences = HashMap::new();
+
+  // Count occurrences of each point
+  for line in lines {
+    *point_occurrences.entry(line.start.clone()).or_insert(0) += 1;
+    *point_occurrences.entry(line.end.clone()).or_insert(0) += 1;
+  }
+
+  let mut unique_points = point_occurrences
+    .into_iter()
+    .filter(|&(_, count)| count == 1)
+    .map(|(point, _)| point)
+    .collect::<Vec<_>>();
+
+  // Sort unique points to maintain top-left to bottom-right convention
+  unique_points.sort_by(|a, b| a.line.cmp(&b.line).then(a.col.cmp(&b.col)));
+
+  let start = unique_points.first().cloned();
+  let end = unique_points.last().cloned();
+
+  // If there are exactly 2 unique points, return them as start and end
+  // If there are 0 unique points, it's a loop (return None to indicate no
+  // unique start/end) If there's 1 or more than 2 unique points, the chain
+  // might be malformed or disconnected
+  match unique_points.len() {
+    2 => Some((start, end)),
+    0 => Some((None, None)), // Indicate a loop with None values
+    _ => None,               // Malformed or disconnected chain
   }
 }
