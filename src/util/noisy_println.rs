@@ -2,7 +2,6 @@
 const NOISY: bool = false;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Temporarily public, move this somewhere else!
 pub fn noisy_println(args: std::fmt::Arguments) {
   if NOISY {
     println!("{}", args);
@@ -14,5 +13,20 @@ pub fn noisy_println(args: std::fmt::Arguments) {
 macro_rules! noisy_println {
   ($($arg:tt)*) => {
     noisy_println(format_args!($($arg)*))
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+pub fn noisy_print(args: std::fmt::Arguments) {
+  if NOISY {
+    print!("{}", args);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#[macro_export]
+macro_rules! noisy_print {
+  ($($arg:tt)*) => {
+    noisy_print(format_args!($($arg)*))
   }
 }

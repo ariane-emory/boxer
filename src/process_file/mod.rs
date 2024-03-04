@@ -1,4 +1,6 @@
 use crate::line_makers::ConnectedLineMaker;
+use crate::noisy_print;
+//use crate::noisy_println;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::LineMethods;
@@ -9,7 +11,10 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Rectangle;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
-use crate::util::*;
+use crate::util::noisy_print;
+//use crate::util::noisy_println;
+use crate::util::vec_utils::Removeql;
+use crate::util::vec_utils::SortedInsert;
 
 use std::cell::RefCell;
 use std::io::Result as IoResult;
@@ -69,7 +74,7 @@ fn extract_basic_geometry(
     let flip_line = |cl: ConnectedLine| cl.flip();
     let flip_word = |wrd: Word| wrd.flip();
     let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
-      print!("\n[{:12?}] ", ori);
+      noisy_print!("\n[{:12?}] ", ori);
     };
     let log_byte_with_orientation =
       |ori, pos, byte| log_labeled_byte(ori, pos, byte);
