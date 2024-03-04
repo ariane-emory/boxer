@@ -174,6 +174,13 @@ pub fn process_file(
   println!("================================================================================");
   println!("");
 
+  merge_length_1_lines(&mut lines, &mut words);
+
+  Ok((normalized_matrix, rectangles, lines, words))
+}
+
+////////////////////////////////////////////////////////////////////////////////
+fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
   let single_length_lines = lines
     .iter()
     .filter(|cl| cl.len() == 1)
@@ -205,7 +212,7 @@ pub fn process_file(
       )
       .unwrap();
 
-      println!("New word: {:?}", new_word);
+      println!("  New word: {:?}", new_word);
 
       lines.removeql(&line);
       words.removeql(&candidate_words[0]);
@@ -220,6 +227,4 @@ pub fn process_file(
     .for_each(|line| println!("Other line:      {:?}", line));
 
   words.iter().for_each(|word| println!("{:?}", word));
-
-  Ok((normalized_matrix, rectangles, lines, words))
 }
