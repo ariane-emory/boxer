@@ -15,7 +15,7 @@ pub fn process_file(
   process_vert: impl Fn(&Point, &u8),
 ) -> Vec<Vec<u8>> {
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path).unwrap();
-  let max_len = max_row_len(&matrix);
+  let max_len = matrix_max_row_len(&matrix);
   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
   process_matrix_bidirectionally(&uniform_matrix, process_horiz, process_vert);
   uniform_matrix

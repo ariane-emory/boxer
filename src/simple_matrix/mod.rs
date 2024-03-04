@@ -70,7 +70,7 @@ where
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn max_row_len<T>(byte_matrix: &Vec<Vec<T>>) -> usize {
+pub fn matrix_max_row_len<T>(byte_matrix: &Vec<Vec<T>>) -> usize {
   let mut max = 0;
 
   for row in byte_matrix {
