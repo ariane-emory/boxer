@@ -61,19 +61,18 @@ pub fn make_process_bidirectionally_fun<'a>(
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-pub fn normalize_and_and_add_null_sentinels_to_matrix(
-  matrix: Vec<Vec<u8>>,
+pub fn add_null_sentinels_to_normalized_matrix(
+  mut matrix: Vec<Vec<u8>>,
 ) -> Vec<Vec<u8>> {
-  let mut normalized_matrix =
-    normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
-  let normalize_matrix_width = normalized_matrix[0].len();
+  let normalized_matrix_width = matrix[0].len();
   let terminator = b'\0';
 
-  for row in normalized_matrix.iter_mut() {
+  for row in matrix.iter_mut() {
     row.push(terminator);
   }
-  normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
-  normalized_matrix
+
+  matrix.push(vec![terminator; normalized_matrix_width + 1]);
+  matrix
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -81,23 +80,16 @@ pub fn process_file(
   path: &str,
 ) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
-  let mut matrix =
+  let matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
-  let normalize_matrix_width = matrix[0].len();
-  let terminator = b'\0';
-
-  for row in matrix.iter_mut() {
-    row.push(terminator);
-  }
-
-  matrix.push(vec![terminator; normalize_matrix_width + 1]);
+  let matrix = add_null_sentinels_to_normalized_matrix(matrix);
 
   println!("");
   println!("================================================================================");
   println!("Extracting basic geometry...");
   println!("================================================================================");
 
-  let (mut all_lines, mut words) = extract_lines_and_words(&matrix);
+  let (mut lines, mut words) = extract_lines_and_words(&matrix);
 
   println!("");
   println!("================================================================================");
@@ -107,13 +99,13 @@ pub fn process_file(
   let mut rectangles: Vec<Rectangle> = Vec::new();
   let mut free_lines: Vec<ConnectedLine> = Vec::new();
 
-  free_lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
-  all_lines.retain(ConnectedLine::corner_connected);
+  free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
+  lines.retain(ConnectedLine::corner_connected);
 
   free_lines
     .iter()
-    .for_each(|line| println!("Free Line: {:?}", line));
-  all_lines
+    .for_each(|line| println!("Free Line:      {:?}", line));
+  lines
     .iter()
     .for_each(|line| println!("Candidate Line: {:?}", line));
 
@@ -122,14 +114,11 @@ pub fn process_file(
   println!("Found:");
   println!("================================================================================");
 
-  find_rectangles(all_lines, &mut rectangles, &mut free_lines, false);
+  find_rectangles(lines, &mut rectangles, &mut free_lines, false);
 
   free_lines
     .iter()
     .for_each(|line| println!("Free Line: {:?}", line));
-  // all_lines
-  //   .iter()
-  //   .for_each(|line| println!("Candidate Line: {:?}", line));
   rectangles
     .iter()
     .for_each(|rect| println!("Found rectangle: {:?}", rect));
