@@ -69,19 +69,16 @@ fn extract_basic_geometry(
   // all_lines scope:
   {
     let mut all_lines: Vec<ConnectedLine> = Vec::new();
-    let offset_pos = |pos: Point| pos.flip().offset_by(LINE_OFFSET, 0);
-    let offset_line = |cl: ConnectedLine| cl.offset_by(LINE_OFFSET, 0);
-    let offset_word = |wrd: Word| wrd.offset_by(LINE_OFFSET, 0);
-    let flip_and_offset_pos = |pos: Point| offset_pos(pos).flip();
-    let flip_and_offset_line = |cl: ConnectedLine| offset_line(cl.flip());
-    let flip_and_offset_word = |wrd: Word| offset_word(wrd.flip());
+    let flip_pos = |pos: Point| pos.flip();
+    let flip_line = |cl: ConnectedLine| cl.flip();
+    let flip_word = |wrd: Word| wrd.flip();
     let log_labeled_byte = |ori: Orientation, pos: Point, byte: u8| {
       println!("{:12} {:?}: '{}'", format!("{:?}:", ori), pos, byte as char)
     };
-    let log_byte_with_orientation_and_offset_pos =
-      |ori, pos, byte| log_labeled_byte(ori, offset_pos(pos), byte);
-    let log_byte_with_orientation_and_flipped_and_offset_pos =
-      |ori, pos, byte| log_labeled_byte(ori, flip_and_offset_pos(pos), byte);
+    let log_byte_with_orientation =
+      |ori, pos, byte| log_labeled_byte(ori, pos, byte);
+    let log_byte_with_orientation_and_flipped_pos =
+      |ori, pos, byte| log_labeled_byte(ori, flip_pos(pos), byte);
 
     // RefCell scope:
     {
@@ -92,9 +89,9 @@ fn extract_basic_geometry(
         false,
         false,
         |pos| pos.offset_by(0, LINE_OFFSET),
-        flip_and_offset_line,
-        flip_and_offset_word,
-        log_byte_with_orientation_and_flipped_and_offset_pos,
+        flip_line,
+        flip_word,
+        log_byte_with_orientation_and_flipped_pos,
       );
 
       let (horiz_linemaker, process_horiz_fun) =
@@ -105,9 +102,9 @@ fn extract_basic_geometry(
           true,
           true,
           |pos| pos.offset_by(LINE_OFFSET, 0),
-          offset_line,
-          offset_word,
-          log_byte_with_orientation_and_offset_pos,
+          |line| line,
+          |word| word,
+          log_byte_with_orientation,
         );
 
       process_matrix_bidirectionally(
