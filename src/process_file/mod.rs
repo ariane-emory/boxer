@@ -151,6 +151,10 @@ pub fn process_file(
   let uniform_matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
 
+  for row in &uniform_matrix {
+    println!("{:?}", std::str::from_utf8(&row).unwrap());
+  }
+
   let (rectangles, other_lines, words) =
     extract_basic_geometry(&uniform_matrix);
 
