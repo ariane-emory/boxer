@@ -91,7 +91,7 @@ pub fn process_matrix_bidirectionally(
   let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
   rotated_matrix.reverse();
   rotated_matrix.each(process_vert);
-  println!("================================================================================");
+  //println!("================================================================================");
   matrix.each(process_horiz);
 }
 
