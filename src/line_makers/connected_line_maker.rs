@@ -21,7 +21,6 @@ pub struct ConnectedLineMaker<'a> {
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
-  //pos_preprocessor: Box<dyn Fn(Point) -> Point + 'a>,
   line_postprocessor: Box<dyn Fn(ConnectedLine) -> ConnectedLine + 'a>,
   word_postprocessor: Box<dyn Fn(Word) -> Word + 'a>,
   pub lines: Vec<ConnectedLine>,
@@ -40,7 +39,6 @@ impl<'a> ConnectedLineMaker<'a> {
     wall_char: u8,
     collect_words: bool,
     allow_length_one: bool,
-    //pos_preprocessor: impl Fn(Point) -> Point + 'a,
     line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
     word_postprocessor: impl Fn(Word) -> Word + 'a,
   ) -> ConnectedLineMaker<'a> {
@@ -50,7 +48,6 @@ impl<'a> ConnectedLineMaker<'a> {
       wall_char,
       collect_words,
       allow_length_one,
-      //pos_preprocessor: Box::new(pos_preprocessor),
       line_postprocessor: Box::new(line_postprocessor),
       word_postprocessor: Box::new(word_postprocessor),
       lines: Vec::new(),
@@ -127,7 +124,7 @@ impl<'a> ConnectedLineMaker<'a> {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
     if pos.line != self.prev_pos.line {
-      println!("         new line, abort!");
+      println!("         new line, reset!");
       self.reset();
     }
 

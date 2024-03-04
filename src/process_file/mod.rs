@@ -35,7 +35,6 @@ pub fn make_process_bidirectionally_fun<'a>(
     wall_char,
     collect_words,
     allow_length_one,
-    //pos_preprocessor,
     line_postprocessor,
     word_postprocessor,
   );
