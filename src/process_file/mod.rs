@@ -269,56 +269,12 @@ fn extract_basic_geometry(
   // all_lines scope:
   {
     let mut all_lines: Vec<ConnectedLine> = Vec::new();
-    let flip_pos = |pos: Point| pos.flip();
-    let flip_line = |cl: ConnectedLine| cl.flip();
-    let flip_word = |wrd: Word| wrd.flip();
-    let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
-      noisy_print!("\n[{:12?}] ", ori);
-    };
-    let log_byte_with_orientation =
-      |ori, pos, byte| log_labeled_byte(ori, pos, byte);
-    let log_byte_with_orientation_and_flipped_pos =
-      |ori, pos, byte| log_labeled_byte(ori, flip_pos(pos), byte);
 
-    // RefCell scope:
-    {
-      let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
-        Vertical,
-        b'|',
-        b'-',
-        false,
-        false,
-        |pos| pos.offset_by(0, LINE_OFFSET),
-        flip_line,
-        flip_word,
-        log_byte_with_orientation_and_flipped_pos,
-      );
+    let (extracted_lines, extracted_words) =
+      extract_lines_and_words(normalized_matrix);
 
-      let (horiz_linemaker, process_horiz_fun) =
-        make_process_bidirectionally_fun(
-          Horizontal,
-          b'-',
-          b'|',
-          true,
-          true,
-          |pos| pos.offset_by(LINE_OFFSET, 0),
-          |line| line,
-          |word| word,
-          log_byte_with_orientation,
-        );
-
-      process_matrix_bidirectionally(
-        &normalized_matrix,
-        process_horiz_fun,
-        process_vert_fun,
-      );
-
-      //println!("");
-
-      words.extend(horiz_linemaker.borrow().words.iter().cloned());
-      all_lines.extend(horiz_linemaker.borrow().lines.iter());
-      all_lines.extend(vert_linemaker.borrow().lines.iter());
-    } // End of RefCell scope.
+    words.extend(exracted_words.iter.cloned());
+    all_lines.extend(extracted_lines.iter().cloned());
 
     lines.extend(all_lines.iter().filter(|cl| !cl.corner_connected()));
     all_lines.retain(ConnectedLine::corner_connected);
