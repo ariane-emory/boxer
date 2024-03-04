@@ -61,10 +61,9 @@ pub fn make_process_bidirectionally_fun<'a>(
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-pub fn process_file(
-  path: &str,
-) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+pub fn normalize_and_and_add_null_sentinels_to_matrix(
+  matrix: Vec<Vec<u8>>,
+) -> Vec<Vec<u8>> {
   let mut normalized_matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
   let normalize_matrix_width = normalized_matrix[0].len();
@@ -73,15 +72,32 @@ pub fn process_file(
   for row in normalized_matrix.iter_mut() {
     row.push(terminator);
   }
-
   normalized_matrix.push(vec![terminator; normalize_matrix_width + 1]);
+  normalized_matrix
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+pub fn process_file(
+  path: &str,
+) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
+  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+  let mut matrix =
+    normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
+  let normalize_matrix_width = matrix[0].len();
+  let terminator = b'\0';
+
+  for row in matrix.iter_mut() {
+    row.push(terminator);
+  }
+
+  matrix.push(vec![terminator; normalize_matrix_width + 1]);
 
   println!("");
   println!("================================================================================");
   println!("Extracting basic geometry...");
   println!("================================================================================");
 
-  let (mut all_lines, mut words) = extract_lines_and_words(&normalized_matrix);
+  let (mut all_lines, mut words) = extract_lines_and_words(&matrix);
 
   println!("");
   println!("================================================================================");
@@ -147,7 +163,7 @@ pub fn process_file(
     }
   }
 
-  Ok((normalized_matrix, rectangles, free_lines, words))
+  Ok((matrix, rectangles, free_lines, words))
 }
 
 ////////////////////////////////////////////////////////////////////////////////
