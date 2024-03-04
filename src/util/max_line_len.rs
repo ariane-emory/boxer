@@ -4,7 +4,7 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn max_line_len(path: &str) -> io::Result<usize> {
+pub fn max_line_len_file(path: &str) -> io::Result<usize> {
   let file = File::open(path)?;
   let mut buf_reader = BufReader::new(file);
   let mut pos = Point::new(0, 0);
@@ -22,7 +22,8 @@ pub fn max_line_len(path: &str) -> io::Result<usize> {
         max_len = max(max_len, pos.col);
         pos.col = 0;
         pos.line += 1;
-      } else {
+      }
+      else {
         pos.col += 1;
       }
     }
