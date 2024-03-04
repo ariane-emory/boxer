@@ -260,6 +260,7 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
 ////////////////////////////////////////////////////////////////////////////////
 fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
   let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
+
   for line in lines {
     graph
       .entry(line.start.clone())
