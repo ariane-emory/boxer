@@ -9,6 +9,7 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Rectangle;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
+use crate::util::*;
 
 use std::cell::RefCell;
 use std::io::Result as IoResult;
@@ -209,25 +210,4 @@ pub fn process_file(
   words.iter().for_each(|word| println!("{:?}", word));
 
   Ok((normalized_matrix, rectangles, lines, words))
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////
-fn vec_remove<T: PartialEq + std::fmt::Debug>(vec: &mut Vec<T>, value: &T) {
-  let pos = vec.iter().position(|v| v == value);
-
-  if let Some(pos) = pos {
-    vec.remove(pos);
-  }
-  else {
-    panic!("Value {:?} not found in vec.", value);
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-fn vec_sorted_insert<T: Ord>(vec: &mut Vec<T>, value: T) {
-  match vec.binary_search(&value) {
-    Ok(pos) => vec.insert(pos, value),
-    Err(pos) => vec.insert(pos, value),
-  }
 }
