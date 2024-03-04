@@ -14,12 +14,10 @@ pub enum Rotation {
 //pub use Rotation::*;
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn rotate_matrix<T>(
-  matrix: &[Vec<T>],
-  rot: Rotation,
-) -> Vec<Vec<T>>
+pub fn rotate_matrix<T>(matrix: &[Vec<T>], rot: Rotation) -> Vec<Vec<T>>
 where
-  T: Copy, {
+  T: Copy,
+{
   let num_rows = matrix.len();
 
   if num_rows == 0 {
@@ -33,7 +31,8 @@ where
     for col in 0..num_cols {
       if rot == Rotation::Clockwise {
         rotated_matrix[col][num_rows - 1 - row] = matrix[row][col];
-      } else {
+      }
+      else {
         rotated_matrix[num_cols - 1 - col][row] = matrix[row][col];
       }
     }
@@ -49,7 +48,8 @@ pub fn normalize_matrix_width<T>(
   val: T,
 ) -> Vec<Vec<T>>
 where
-  T: Copy, {
+  T: Copy,
+{
   let mut new_matrix = Vec::new();
 
   for row in byte_matrix {
@@ -59,13 +59,29 @@ where
       let mut new_row = row.to_vec();
       new_row.resize(len, val);
       new_matrix.push(new_row);
-    } else {
+    }
+    else {
       let new_row = row[0..len.min(row_len)].to_vec();
       new_matrix.push(new_row);
     }
   }
 
   new_matrix
+}
+
+////////////////////////////////////////////////////////////////////////////////
+pub fn max_row_len<T>(byte_matrix: &Vec<Vec<T>>) -> usize {
+  let mut max = 0;
+
+  for row in byte_matrix {
+    let len = row.len();
+
+    if len > max {
+      max = len;
+    }
+  }
+
+  max
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -163,18 +179,12 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub trait MatrixEachable<T> {
-  fn each(
-    &self,
-    process: impl Fn(&Point, &T),
-  );
+  fn each(&self, process: impl Fn(&Point, &T));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 impl<T> MatrixEachable<T> for Vec<Vec<T>> {
-  fn each(
-    &self,
-    process: impl Fn(&Point, &T),
-  ) {
+  fn each(&self, process: impl Fn(&Point, &T)) {
     let mut pos = Point::new(0, 0);
 
     for line in 0..self.len() {

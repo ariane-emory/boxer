@@ -4,7 +4,6 @@ use crate::simple_geo::Orientation;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
-use crate::util::max_line_len_file;
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -16,7 +15,7 @@ pub fn process_file(
   process_vert: impl Fn(&Point, &u8),
 ) -> Vec<Vec<u8>> {
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path).unwrap();
-  let max_len = max_line_len_file(path).unwrap();
+  let max_len = max_row_len(&matrix);
   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
   let mut rotated_matrix =
     rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
@@ -28,25 +27,6 @@ pub fn process_file(
 
   uniform_matrix
 }
-
-// /////////////////////////////////////////////////////////////////////////////
-// //// pub fn process_bidirectionally(
-//   matrix: Vec<Vec<u8>>,
-//   process_horiz: impl Fn(&Point, &u8),
-//   process_vert: impl Fn(&Point, &u8),
-// ) -> Vec<Vec<u8>> {
-//   let max_len = max_line_len(matrix);
-//   let uniform_matrix = normalize_matrix_width(&matrix, max_len, b' ');
-//   let mut rotated_matrix =
-//     rotate_matrix(&uniform_matrix, Rotation::CounterClockwise);
-//   rotated_matrix.reverse();
-
-//   rotated_matrix.each(process_vert);
-//   println!("\n================================================================================");
-//   uniform_matrix.each(process_horiz);
-
-//   uniform_matrix
-// }
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_file_fun<'a>(
