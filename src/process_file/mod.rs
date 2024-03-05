@@ -108,7 +108,7 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let free_lines = join_interrupted_lines(free_lines);
+  let mut free_lines = join_interrupted_lines(free_lines);
 
   free_lines
     .iter()

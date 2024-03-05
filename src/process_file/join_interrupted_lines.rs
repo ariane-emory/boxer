@@ -31,27 +31,30 @@ fn join_similarly_oriented_interrupted_lines(
 ) -> Vec<ConnectedLine> {
   let mut merged_lines: Vec<ConnectedLine> = Vec::new();
   lines.sort();
-  lines.reverse();
+  // lines.reverse();
   while let Some(mut line) = lines.pop() {
     println!("Looking for merges for {:?}...", line);
 
-    while line.end_connects_to == Wall {
+    while line.start_connects_to == Wall {
       if let Some(other) = lines.pop() {
-        if line.end != other.start || other.start_connects_to != Wall {
+        println!("  Considering {:?}...", other);
+        if line.start != other.end || other.end_connects_to != Wall {
+          println!("  Breaking!");
           break;
         }
-        println!("Could merge with {:?}.", other);
+        println!("  Could merge with {:?}.", other);
         line = ConnectedLine::new(
           line.orientation,
-          line.start,
-          other.end,
-          line.start_connects_to,
-          other.end_connects_to,
+          other.start,
+          line.end,
+          other.start_connects_to,
+          line.end_connects_to,
         )
         .unwrap();
-        println!("Merged into: {:?}", line);
+        println!("  Merged into: {:?}", line);
       }
     }
+    println!("  Pushing {:?}.", line);
     merged_lines.push(line);
   }
   merged_lines

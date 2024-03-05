@@ -12,9 +12,9 @@ pub enum ConnectionType {
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub struct ConnectedLine {
-  pub orientation: Orientation,
   pub start: Point,
   pub end: Point,
+  pub orientation: Orientation,
   pub start_connects_to: ConnectionType,
   pub end_connects_to: ConnectionType,
 }
