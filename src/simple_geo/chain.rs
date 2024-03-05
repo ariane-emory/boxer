@@ -1,4 +1,5 @@
 use crate::simple_geo::ConnectedLine;
+use crate::simple_geo::ConnectionType;
 use crate::simple_geo::Point;
 use std::collections::{HashMap, HashSet};
 
@@ -55,18 +56,37 @@ pub fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn chain_get_network(chain: &Vec<ConnectedLine>) -> Vec<Point> {
-  let mut connectivity_map = HashMap::new();
+pub fn chain_get_network(
+  chain: &Vec<ConnectedLine>,
+) -> Vec<(Point, ConnectionType)> {
+  let mut point_connection_map: HashMap<Point, Vec<ConnectionType>> =
+    HashMap::new();
 
+  // Populate the map with connection types for each point
   for line in chain {
-    *connectivity_map.entry(line.start.clone()).or_insert(0) += 1;
-    *connectivity_map.entry(line.end.clone()).or_insert(0) += 1;
+    point_connection_map
+      .entry(line.start.clone())
+      .or_insert_with(Vec::new)
+      .push(line.start_connects_to.clone());
+    point_connection_map
+      .entry(line.end.clone())
+      .or_insert_with(Vec::new)
+      .push(line.end_connects_to.clone());
   }
 
-  let end_points = connectivity_map
+  // Filter points that are connected exactly once, and pair them with their
+  // connection type
+  let end_points = point_connection_map
     .into_iter()
-    .filter(|&(_, count)| count == 1)
-    .map(|(point, _)| point)
+    .filter_map(|(point, connections)| {
+      if connections.len() == 1 {
+        // Assume there's only one connection type if the point is unique
+        Some((point, connections[0].clone()))
+      }
+      else {
+        None
+      }
+    })
     .collect::<Vec<_>>();
 
   end_points
