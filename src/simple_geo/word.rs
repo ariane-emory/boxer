@@ -55,8 +55,8 @@ impl Offsetable for Word {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl Flippable for Word {
-  fn flip(&self) -> Self {
-    Self::new(&self.string, self.start.flip(), self.end.flip()).unwrap()
-  }
-}
+// impl Flippable for Word {
+//   fn flip(&self) -> Self {
+//     Self::new(&self.string, self.start.flip(), self.end.flip()).unwrap()
+//   }
+// }
