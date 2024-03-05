@@ -20,13 +20,16 @@ pub trait Removeql<T>
 where
   T: PartialEq,
 {
-  fn removeql(&mut self, value: &T);
+  fn removeql(&mut self, value: &T) -> Option<T>;
 }
 
 impl<T: PartialEq> Removeql<T> for Vec<T> {
-  fn removeql(&mut self, value: &T) {
+  fn removeql(&mut self, value: &T) -> Option<T> {
     if let Some(pos) = self.iter().position(|x| x == value) {
-      self.remove(pos);
+      Some(self.remove(pos))
+    }
+    else {
+      None
     }
   }
 }

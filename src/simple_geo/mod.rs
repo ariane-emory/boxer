@@ -4,7 +4,7 @@ mod connected_line;
 mod find_rectangles;
 mod flippable;
 mod line;
-mod line_methods;
+pub mod line_methods;
 mod network;
 mod offsetable;
 mod orientation;

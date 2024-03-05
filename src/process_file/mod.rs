@@ -1,18 +1,19 @@
 mod add_null_sentinels_to_normalized_matrix;
-mod check_for_illegal_networks;
+//mod check_for_illegal_networks;
 mod extract_lines_and_words;
 mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
-use crate::simple_geo::find_networks;
+//use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
-use crate::simple_geo::network_get_endpoints;
+//use crate::simple_geo::network_get_endpoints;
+use crate::simple_geo::line_methods::LineMethods;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
 use add_null_sentinels_to_normalized_matrix::add_null_sentinels_to_normalized_matrix;
-use check_for_illegal_networks::check_for_illegal_networks;
+//use check_for_illegal_networks::check_for_illegal_networks;
 use extract_lines_and_words::extract_lines_and_words;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
 use merge_length_1_lines_with_words::merge_length_1_lines_with_words;
@@ -101,6 +102,28 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("Merging interrupted lines...");
   println!("================================================================================");
   println!("");
+
+  let mut free_lines = free_lines;
+  free_lines.sort();
+
+  let horizontal_lines = free_lines
+    .iter()
+    .filter(|line| line.is_horizontal())
+    .cloned()
+    .collect::<Vec<ConnectedLine>>();
+
+  let vertical_lines = free_lines
+    .iter()
+    .filter(|line| line.is_vertical())
+    .cloned()
+    .collect::<Vec<ConnectedLine>>();
+
+  horizontal_lines
+    .iter()
+    .for_each(|line| println!("Horizontal Line: {:?}", line));
+  vertical_lines
+    .iter()
+    .for_each(|line| println!("Vertical Line:   {:?}", line));
 
   // if false {
   //   println!("");
