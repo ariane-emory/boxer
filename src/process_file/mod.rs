@@ -112,36 +112,32 @@ pub fn process_file(path: &str) -> Result<()> {
   free_lines.sort();
   free_lines.reverse();
 
+  let mut merged_horizontal_lines: Vec<ConnectedLine> = Vec::new();
   let mut horizontal_lines = free_lines
     .iter()
     .filter(|line| line.is_horizontal())
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-  //horizontal_lines.sort();
+  horizontal_lines
+    .iter()
+    .for_each(|line| println!("Horizontal Line: {:?}", line));
 
+  let mut merged_vertical_lines: Vec<ConnectedLine> = Vec::new();
   let mut vertical_lines = free_lines
     .iter()
     .filter(|line| line.is_vertical())
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-  //vertical_lines.sort();
-
-  horizontal_lines
-    .iter()
-    .for_each(|line| println!("Horizontal Line: {:?}", line));
   vertical_lines
     .iter()
     .for_each(|line| println!("Vertical Line:   {:?}", line));
-
-  let mut merged_horizontal_lines: Vec<ConnectedLine> = Vec::new();
-  let mut merged_vertical_lines: Vec<ConnectedLine> = Vec::new();
 
   while let Some(mut line) = horizontal_lines.pop() {
     println!("Looking for merges for {:?}...", line);
 
     if line.end_connects_to == Wall {
       if let Some(other_line) = horizontal_lines.remove_if(|other| {
-        line.start == other.start && other.start_connects_to == Wall
+        line.end == other.start && other.start_connects_to == Wall
       }) {
         println!("{:?} could join {:?}.", line, other_line);
       }
