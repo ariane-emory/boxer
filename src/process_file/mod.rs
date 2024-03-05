@@ -4,8 +4,6 @@ use crate::util::noisy_print;
 //use crate::util::noisy_println;
 
 use crate::line_makers::ConnectedLineMaker;
-use crate::simple_geo::analyze_chain;
-use crate::simple_geo::find_chains;
 #[allow(unused_imports)]
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
@@ -105,10 +103,10 @@ pub fn process_file(path: &str) -> Result<()> {
 
   // let mut non_rectangle_candidate_lines: Vec<ConnectedLine> = Vec::new();
   // non_rectangle_candidate_lines
-  //   .extend(free_lines.iter().filter(|cl| !cl.corner_connected()));
+  //   .extend(free_lines.iter().filter(|cl| !cl.is_corner_connected()));
 
   // let mut rectangle_candidate_lines: Vec<ConnectedLine> = free_lines;
-  // rectangle_candidate_lines.retain(ConnectedLine::corner_connected);
+  // rectangle_candidate_lines.retain(ConnectedLine::is_corner_connected);
 
   // non_rectangle_candidate_lines
   //   .iter()
@@ -161,14 +159,14 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let chains = find_chains(&free_lines);
+  let chains = ConnectedLine::find_chains(&free_lines);
 
   for (i, chain) in chains.iter().enumerate() {
     //chain.sort();
     println!("Chain {}: length {} ", i, chain.len());
     chain.iter().for_each(|line| println!("  {:?}", line));
 
-    if let Some((start, end)) = analyze_chain(&chain) {
+    if let Some((start, end)) = ConnectedLine::analyze_chain(&chain) {
       println!("  Start: {:?}, End: {:?}", start, end);
     }
     else {
