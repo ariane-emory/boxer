@@ -148,7 +148,9 @@ pub fn process_file(
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));
 
-  words.iter().for_each(|word| println!("{:?}", word));
+  words
+    .iter()
+    .for_each(|word| println!("Word:               {:?}", word));
 
   rectangles
     .iter()

@@ -68,12 +68,12 @@ pub fn find_rectangles<T: LineMethods + Debug>(
     }
 
     if !found_a_rect {
-      println!("No coaligned lines found for {:?}", line);
+      //println!("No coaligned lines found for {:?}", line);
       free_lines.push(line);
     }
     else if !allow_overlap {
-      for line in lines_to_remove.iter() {
-        println!("Removing line {:?}", line);
+      for _line in lines_to_remove.iter() {
+        //println!("Removing line {:?}", line);
       }
       copied_lines.retain(|l| !lines_to_remove.contains(&l));
     }
