@@ -30,7 +30,8 @@ impl<T: Copy> Steppable for Select<T> {
   fn step(&mut self) {
     if self.which.read() {
       self.output.set(self.right.read());
-    } else {
+    }
+    else {
       self.output.set(self.left.read());
     }
   }
@@ -51,10 +52,7 @@ pub struct Max<T: Copy + PartialOrd> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + PartialOrd> Max<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     Max {
       output: new_signal_ref(left.read()),
       left: Rc::clone(left),
@@ -67,7 +65,8 @@ impl<T: Copy + PartialOrd> Steppable for Max<T> {
   fn step(&mut self) {
     if self.right.read() > self.left.read() {
       self.output.set(self.right.read());
-    } else {
+    }
+    else {
       self.output.set(self.left.read());
     }
   }
@@ -87,10 +86,7 @@ pub struct Min<T: Copy + PartialOrd> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: Copy + PartialOrd> Min<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     Min {
       output: new_signal_ref(left.read()),
       left: Rc::clone(left),
@@ -103,7 +99,8 @@ impl<T: Copy + PartialOrd> Steppable for Min<T> {
   fn step(&mut self) {
     if self.right.read() < self.left.read() {
       self.output.set(self.right.read());
-    } else {
+    }
+    else {
       self.output.set(self.left.read());
     }
   }
@@ -142,9 +139,11 @@ impl<T: Copy + PartialOrd> Steppable for Limit<T> {
   fn step(&mut self) {
     if self.input.read() < self.min.read() {
       self.output.set(self.min.read());
-    } else if self.input.read() > self.max.read() {
+    }
+    else if self.input.read() > self.max.read() {
       self.output.set(self.max.read());
-    } else {
+    }
+    else {
       self.output.set(self.input.read());
     }
   }

@@ -79,13 +79,16 @@ impl Steppable for UpCounter {
       // println!("Reset rose..");
       self.output.set(0);
       self.at_max.set(false);
-    } else if at_max {
+    }
+    else if at_max {
       // println!("At max!");
       return;
-    } else if clock_rose {
+    }
+    else if clock_rose {
       // println!("  Clock rose..");
       self.output.set(output_val + 1);
-    } else {
+    }
+    else {
       // println!("  Nothing interesting happened..");
     }
   }
@@ -161,9 +164,11 @@ impl Steppable for DownCounter {
     if reset_rose {
       self.output.set(min_val);
       self.at_min.set(false);
-    } else if at_min {
+    }
+    else if at_min {
       return;
-    } else if clock_rose {
+    }
+    else if clock_rose {
       self.output.set(output_val - 1);
     }
   }
@@ -256,9 +261,11 @@ impl Steppable for UpDownCounter {
       self.output.set(min_val);
       self.at_min.set(false);
       self.at_max.set(false);
-    } else if at_max || at_min {
+    }
+    else if at_max || at_min {
       return;
-    } else if clock_rose {
+    }
+    else if clock_rose {
       self.output.set(output_val + 1);
     }
   }

@@ -3,9 +3,9 @@ mod extract_lines_and_words;
 mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
-use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
+use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;

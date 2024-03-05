@@ -19,7 +19,8 @@ impl Steppable for RisingTrigger {
   fn step(&mut self) {
     if !self.input.read() && self.input.read() {
       self.output.set(true);
-    } else {
+    }
+    else {
       self.output.set(false);
     }
   }
@@ -51,7 +52,8 @@ impl Steppable for FallingTrigger {
   fn step(&mut self) {
     if !self.input.read() && self.input.read() {
       self.output.set(true);
-    } else {
+    }
+    else {
       self.output.set(false);
     }
   }

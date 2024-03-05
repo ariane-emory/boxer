@@ -28,7 +28,8 @@ fn perform_steps<T: Copy>(
 
     if let Ok(us) = ctr.output_value().try_into() {
       render(b'x', b'-', us, max.output_value());
-    } else {
+    }
+    else {
       panic!("Error converting output value to usize.");
     }
   }

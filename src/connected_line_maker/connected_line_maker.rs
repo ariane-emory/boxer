@@ -140,19 +140,25 @@ impl<'a> ConnectedLineMaker<'a> {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
 
-    if byte == b'\0' {
-      noisy_print!("End of row! ");
-      self.reset();
-      noisy_println!("");
-    }
-    else if let Some(begin) = self.line_begin {
+    if let Some(begin) = self.line_begin {
       // in order to ensure that the line is at least two characters long, we
       // will need to check the distance between the current position and
       // the line begin position:
       let distance_ok = pos.distance(&begin) > 1
         || (self.line_begin_type == Nothing && self.allow_length_one);
 
-      if byte == b'+' {
+      if byte == b'\0' {
+        if distance_ok {
+          noisy_print!("End of row, line ends in Nothing! ");
+          self.complete_line(byte, begin, pos, Nothing, false);
+        }
+        else {
+          noisy_print!("End of row, no line! ");
+          self.reset();
+        }
+        noisy_println!("");
+      }
+      else if byte == b'+' {
         if distance_ok {
           self.complete_line(byte, begin, pos, Corner, true);
         }
@@ -176,6 +182,11 @@ impl<'a> ConnectedLineMaker<'a> {
       }
     }
     else {
+      if byte == b'\0' {
+        noisy_print!("End of row! ");
+        self.reset();
+        noisy_println!("");
+      }
       if byte == b'+' {
         self.begin_line(pos, Corner);
       }

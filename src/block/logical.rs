@@ -8,10 +8,7 @@ pub struct Or {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Or {
-  pub fn new(
-    left: &SignalRef<bool>,
-    right: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<bool>, right: &SignalRef<bool>) -> Self {
     let mut r = Or {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -44,10 +41,7 @@ pub struct And {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl And {
-  pub fn new(
-    left: &SignalRef<bool>,
-    right: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<bool>, right: &SignalRef<bool>) -> Self {
     let mut r = And {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -80,10 +74,7 @@ struct Xor {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Xor {
-  pub fn new(
-    left: &SignalRef<bool>,
-    right: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<bool>, right: &SignalRef<bool>) -> Self {
     let mut r = Xor {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -116,10 +107,7 @@ struct Nor {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl Nor {
-  pub fn new(
-    left: &SignalRef<bool>,
-    right: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<bool>, right: &SignalRef<bool>) -> Self {
     let mut r = Nor {
       output: new_signal_ref(false),
       left: Rc::clone(left),

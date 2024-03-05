@@ -137,7 +137,8 @@ impl<T: std::ops::Neg<Output = T> + std::cmp::PartialOrd + Copy + Default>
   fn step(&mut self) {
     if self.input.read() < Default::default() {
       self.output.set(-self.input.read());
-    } else {
+    }
+    else {
       self.output.set(self.input.read());
     }
   }
@@ -270,9 +271,11 @@ impl<T: std::cmp::PartialOrd + Copy + Default> Steppable for Clamp<T> {
 
     if input < min {
       self.output.set(min);
-    } else if input > max {
+    }
+    else if input > max {
       self.output.set(max);
-    } else {
+    }
+    else {
       self.output.set(input);
     }
   }
@@ -348,9 +351,11 @@ impl<
 
     if input < min {
       self.output.set(max - (min - input) % (max - min));
-    } else if input > max {
+    }
+    else if input > max {
       self.output.set(min + (input - min) % (max - min));
-    } else {
+    }
+    else {
       self.output.set(input);
     }
   }

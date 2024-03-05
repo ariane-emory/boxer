@@ -8,10 +8,7 @@ pub struct GreaterThan<T: std::cmp::PartialOrd + Copy> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> GreaterThan<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = GreaterThan {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -29,7 +26,9 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for GreaterThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> SteppableWithOutputSignal<bool> for GreaterThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> SteppableWithOutputSignal<bool>
+  for GreaterThan<T>
+{
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
@@ -44,10 +43,7 @@ pub struct LessThan<T: std::cmp::PartialOrd + Copy> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialOrd + Copy> LessThan<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = LessThan {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -65,7 +61,9 @@ impl<T: std::cmp::PartialOrd + Copy> Steppable for LessThan<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialOrd + Copy> SteppableWithOutputSignal<bool> for LessThan<T> {
+impl<T: std::cmp::PartialOrd + Copy> SteppableWithOutputSignal<bool>
+  for LessThan<T>
+{
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
@@ -80,10 +78,7 @@ pub struct Equal<T: std::cmp::PartialEq + Copy> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> Equal<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = Equal {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -101,7 +96,9 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for Equal<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> SteppableWithOutputSignal<bool> for Equal<T> {
+impl<T: std::cmp::PartialEq + Copy> SteppableWithOutputSignal<bool>
+  for Equal<T>
+{
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }
@@ -116,10 +113,7 @@ pub struct NotEqual<T: std::cmp::PartialEq + Copy> {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<T: std::cmp::PartialEq + Copy> NotEqual<T> {
-  pub fn new(
-    left: &SignalRef<T>,
-    right: &SignalRef<T>,
-  ) -> Self {
+  pub fn new(left: &SignalRef<T>, right: &SignalRef<T>) -> Self {
     let mut r = NotEqual {
       output: new_signal_ref(false),
       left: Rc::clone(left),
@@ -137,7 +131,9 @@ impl<T: std::cmp::PartialEq + Copy> Steppable for NotEqual<T> {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl<T: std::cmp::PartialEq + Copy> SteppableWithOutputSignal<bool> for NotEqual<T> {
+impl<T: std::cmp::PartialEq + Copy> SteppableWithOutputSignal<bool>
+  for NotEqual<T>
+{
   fn output(&self) -> &SignalRef<bool> {
     &self.output
   }

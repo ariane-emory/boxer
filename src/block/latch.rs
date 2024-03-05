@@ -8,10 +8,7 @@ pub struct SRLatch {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl SRLatch {
-  pub fn new(
-    set: &SignalRef<bool>,
-    reset: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(set: &SignalRef<bool>, reset: &SignalRef<bool>) -> Self {
     SRLatch {
       output: new_signal_ref(false),
       set: Rc::clone(set),
@@ -24,7 +21,8 @@ impl Steppable for SRLatch {
   fn step(&mut self) {
     if self.reset.read() {
       self.output.set(false);
-    } else if self.set.read() {
+    }
+    else if self.set.read() {
       self.output.set(true);
     }
   }
@@ -45,10 +43,7 @@ pub struct RSLatch {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl RSLatch {
-  pub fn new(
-    set: &SignalRef<bool>,
-    reset: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(set: &SignalRef<bool>, reset: &SignalRef<bool>) -> Self {
     RSLatch {
       output: new_signal_ref(false),
       set: Rc::clone(set),
@@ -61,7 +56,8 @@ impl Steppable for RSLatch {
   fn step(&mut self) {
     if self.reset.read() {
       self.output.set(false);
-    } else if self.set.read() {
+    }
+    else if self.set.read() {
       self.output.set(true);
     }
   }
@@ -104,9 +100,11 @@ impl Steppable for JKFlipFlop {
     if self.last_clock && !self.clock.read() {
       if self.j_input.read() && self.k_input.read() {
         self.output.set(!self.output.read());
-      } else if self.j_input.read() {
+      }
+      else if self.j_input.read() {
         self.output.set(true);
-      } else if self.k_input.read() {
+      }
+      else if self.k_input.read() {
         self.output.set(false);
       }
     }
@@ -130,10 +128,7 @@ pub struct DFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl DFlipFlop {
-  pub fn new(
-    input: &SignalRef<bool>,
-    clock: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(input: &SignalRef<bool>, clock: &SignalRef<bool>) -> Self {
     DFlipFlop {
       output: new_signal_ref(false),
       input: Rc::clone(input),
@@ -168,10 +163,7 @@ pub struct TFlipFlop {
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl TFlipFlop {
-  pub fn new(
-    input: &SignalRef<bool>,
-    clock: &SignalRef<bool>,
-  ) -> Self {
+  pub fn new(input: &SignalRef<bool>, clock: &SignalRef<bool>) -> Self {
     TFlipFlop {
       output: new_signal_ref(false),
       input: Rc::clone(input),

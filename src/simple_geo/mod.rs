@@ -1,11 +1,11 @@
 #![allow(dead_code)]
 
-mod network;
 mod connected_line;
 mod find_rectangles;
 mod flippable;
 mod line;
 mod line_methods;
+mod network;
 mod offsetable;
 mod orientation;
 mod point;
@@ -16,12 +16,12 @@ mod word;
 
 use crate::util::*;
 
-pub use network::*;
 pub use connected_line::*;
 pub use find_rectangles::*;
 pub use flippable::*;
 pub use line::*;
 pub use line_methods::*;
+pub use network::*;
 pub use offsetable::*;
 pub use orientation::*;
 pub use point::*;
