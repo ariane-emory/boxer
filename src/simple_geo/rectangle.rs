@@ -79,3 +79,19 @@ impl Positional for Rectangle {
     self.bottom_right
   }
 }
+////////////////////////////////////////////////////////////////////////////////
+impl Offsetable for Rectangle {
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    Self::new(
+      self.top_left.offset_by(line_offset, col_offset),
+      self.bottom_right.offset_by(line_offset, col_offset),
+    )
+    .unwrap()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Flippable for Rectangle {
+  fn flip(&self) -> Self {
+    Self::new(self.top_left.flip(), self.bottom_right.flip()).unwrap()
+  }
+}
