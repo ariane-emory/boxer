@@ -133,13 +133,13 @@ pub fn process_file(path: &str) -> Result<()> {
     .for_each(|line| println!("Vertical Line:   {:?}", line));
 
   while let Some(mut line) = horizontal_lines.pop() {
-    println!("Looking for merges for {:?}...", line);
+    println!("\nLooking for merges for {:?}...", line);
 
     if line.end_connects_to == Wall {
-      if let Some(other) = horizontal_lines
+      while let Some(other) = horizontal_lines
         .remove_if(|o| line.end == o.start && o.start_connects_to == Wall)
       {
-        println!("{:?} could join {:?}.", line, other);
+        println!("Could merge with {:?}.", other);
 
         line = ConnectedLine::new(
           line.orientation,
@@ -147,7 +147,10 @@ pub fn process_file(path: &str) -> Result<()> {
           other.end,
           line.start_connects_to,
           other.end_connects_to,
-        );
+        )
+        .unwrap();
+
+        println!("Merged into: {:?}", line);
       }
     }
   }
