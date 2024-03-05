@@ -110,18 +110,21 @@ pub fn process_file(path: &str) -> Result<()> {
 
   let mut free_lines = free_lines;
   free_lines.sort();
+  free_lines.reverse();
 
   let mut horizontal_lines = free_lines
     .iter()
     .filter(|line| line.is_horizontal())
     .cloned()
     .collect::<Vec<ConnectedLine>>();
+  //horizontal_lines.sort();
 
   let mut vertical_lines = free_lines
     .iter()
     .filter(|line| line.is_vertical())
     .cloned()
     .collect::<Vec<ConnectedLine>>();
+  //vertical_lines.sort();
 
   horizontal_lines
     .iter()
@@ -135,6 +138,7 @@ pub fn process_file(path: &str) -> Result<()> {
 
   while let Some(mut line) = horizontal_lines.pop() {
     println!("Looking for merges for {:?}...", line);
+
     if line.end_connects_to == Wall {
       if let Some(other_line) = horizontal_lines.remove_if(|other| {
         line.start == other.start && other.start_connects_to == Wall
