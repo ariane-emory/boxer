@@ -7,6 +7,7 @@ use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::ConnectedLine;
+use crate::simple_geo::ConnectionType::*;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
@@ -126,29 +127,33 @@ pub fn process_file(path: &str) -> Result<()> {
   for (i, network) in networks.iter().enumerate() {
     let endpoints = network_get_endpoints(&network);
 
-    for (ii, (point, end_point_type)) in endpoints.iter().enumerate() {
+    for (ii, (point, point_type)) in endpoints.iter().enumerate() {
       // A network is illegal if any of it's end points are on a Rectangle's
       // corner:
-      for (iii, rectangle) in rectangles.iter().enumerate() {
-        if rectangle.has_corner_point(*point) {
-          panic!(
+      if *point_type == Corner {
+        for (iii, rectangle) in rectangles.iter().enumerate() {
+          if rectangle.has_corner_point(*point) {
+            panic!(
             "Network #{} has an illegal end point #{}: {:?} on Rectangle #{}'s corner.",
             i + 1,
             ii + 1,
-            (point, end_point_type),
+            (point, point_type),
             iii + 1
           );
+          }
         }
       }
 
       // A network is illegal if any of it's end points are on a Wall that is
       // not part of any Rectangle:
-      if !rectangles.iter().any(|rect| rect.has_wall_point(*point)) {
+      if *point_type == Wall
+        && !rectangles.iter().any(|rect| rect.has_wall_point(*point))
+      {
         panic!(
           "Network #{} has an illegal end point #{}: {:?} on a Wall that is not part of any Rectangle.",
           i + 1,
           ii + 1,
-          (point, end_point_type)
+          (point, point_type)
         );
       }
     }
