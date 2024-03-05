@@ -18,7 +18,7 @@ use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
-use std::io::Result as IoResult;
+use std::io::Result;
 use std::rc::Rc;
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ pub fn add_null_sentinels_to_normalized_matrix(
 /////////////////////////////////////////////////////////////////////////////////
 pub fn process_file(
   path: &str,
-) -> IoResult<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
+) -> Result<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
   let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
   let matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
