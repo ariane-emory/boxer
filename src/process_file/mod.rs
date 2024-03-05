@@ -104,7 +104,7 @@ pub fn process_file(path: &str) -> Result<()> {
 
   for (i, chain) in chains.iter().enumerate() {
     //chain.sort();
-    println!("Chain {}: length {} ", i, chain.len());
+    println!("Network #{}:", i + 1);
     chain.iter().for_each(|line| println!("  {:?}", line));
 
     // if let Some((start, end)) = analyze_chain(&chain) {
@@ -117,7 +117,7 @@ pub fn process_file(path: &str) -> Result<()> {
     let net = chain_get_network(&chain);
 
     for (i, point) in net.iter().enumerate() {
-      println!("  Network point #{}: {:?}", i + 1, point);
+      println!("  End point #{}: {:?}", i + 1, point);
     }
   }
 
