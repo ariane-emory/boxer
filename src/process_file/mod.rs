@@ -12,9 +12,11 @@ use crate::simple_geo::find_rectangles;
 //use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::line_methods::LineMethods;
 use crate::simple_geo::ConnectedLine;
+use crate::simple_geo::ConnectionType::*;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
+use crate::util::RemoveIf;
 use add_null_sentinels_to_normalized_matrix::add_null_sentinels_to_normalized_matrix;
 //use check_for_illegal_networks::check_for_illegal_networks;
 use extract_lines_and_words::extract_lines_and_words;
@@ -130,6 +132,16 @@ pub fn process_file(path: &str) -> Result<()> {
 
   let mut merged_horizontal_lines: Vec<ConnectedLine> = Vec::new();
   let mut merged_vertical_lines: Vec<ConnectedLine> = Vec::new();
+
+  while let Some(mut line) = horizontal_lines.pop() {
+    if line.end_connects_to == Wall {
+      if let Some(other_line) = horizontal_lines.remove_if(|other| {
+        line.start == other.start && other.start_connects_to == Wall
+      }) {
+        println!("{:?} could join {:?}.", line, other_line);
+      }
+    }
+  }
 
   // if false {
   //   println!("");
