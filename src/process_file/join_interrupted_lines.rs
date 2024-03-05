@@ -52,6 +52,9 @@ fn join_similarly_oriented_interrupted_lines(
         .unwrap();
         println!("  Merged into: {:?}", line);
       }
+      else {
+        break;
+      }
     }
     println!("  Pushing {:?}.", line);
     merged_lines.push(line);
