@@ -37,26 +37,26 @@ pub fn join_interrupted_lines(
   while let Some(mut line) = lines.pop() {
     println!("Looking for merges for {:?}...", line);
 
-    while let Some(other) = lines.remove_if(|o| {
-      line.end_connects_to == Wall
-        && line.orientation == o.orientation
-        && line.end == o.start
-        && o.start_connects_to == Wall
-    }) {
-      println!("Could merge with {:?}.", other);
+    if line.end_connects_to == Wall {
+      while let Some(other) = lines.remove_if(|o| {
+        line.orientation == o.orientation
+          && line.end == o.start
+          && o.start_connects_to == Wall
+      }) {
+        println!("Could merge with {:?}.", other);
 
-      line = ConnectedLine::new(
-        line.orientation,
-        line.start,
-        other.end,
-        line.start_connects_to,
-        other.end_connects_to,
-      )
-      .unwrap();
+        line = ConnectedLine::new(
+          line.orientation,
+          line.start,
+          other.end,
+          line.start_connects_to,
+          other.end_connects_to,
+        )
+        .unwrap();
 
-      println!("Merged into: {:?}", line);
+        println!("Merged into: {:?}", line);
+      }
     }
-
     merged_lines.push(line);
   }
   merged_lines
