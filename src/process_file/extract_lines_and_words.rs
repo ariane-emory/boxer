@@ -38,7 +38,7 @@ pub fn extract_lines_and_words(
     b'|',
     b'-',
     false,
-    false,
+    true,
     is_non_ascii_byte,
     offset_column,
     flip_line,
