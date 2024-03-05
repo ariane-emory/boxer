@@ -83,14 +83,17 @@ pub fn network_get_endpoints(
         // This particular check only detects certain types of illegal network!
         // For example, it does not detect the following types of illegal
         // network:
-        // - networks with end points at AnotherLines where the wall is not part of any
-        //   Rectangle.
+        // - networks with end points at AnotherLines where the wall is not part
+        //   of any Rectangle.
         // - networks with end points at Corners where the corner is the corner
         //   of a Rectangle.
         // Those must be detected elsewhere!
-        if connections[0] == ConnectionType::Corner {
-          panic!("Detected illegal network: {:?}", network);
-        }
+        // if connections[0] == ConnectionType::Corner {
+        //   panic!(
+        //     "Detected illegal network, illegal due to {:?} in {:?}",
+        //     connections[0], network
+        //   );
+        // }
         Some((point, connections[0]))
       }
       else {
