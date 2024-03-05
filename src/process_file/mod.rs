@@ -273,7 +273,7 @@ fn extract_lines_and_words(
   );
 
   process_matrix_bidirectionally(
-    &normalized_matrix,
+    normalized_matrix,
     process_horiz_fun,
     process_vert_fun,
   );
