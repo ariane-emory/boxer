@@ -6,7 +6,7 @@ use ConnectionType::*;
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub enum ConnectionType {
   Nothing,
-  Wall,
+  AnotherLine,
   Corner,
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,11 +52,15 @@ impl fmt::Debug for ConnectedLine {
     let start_connects_to = format!("{:?}", self.start_connects_to);
     let end_connects_to = format!("{:?}", self.end_connects_to);
 
-    let connection_str =
-      format!("{:7}←{:2}→{:7}", start_connects_to, self.len(), end_connects_to);
+    let connection_str = format!(
+      "{:11}←{:2}→{:11}",
+      start_connects_to,
+      self.len(),
+      end_connects_to
+    );
     write!(
       f,
-      "{}{:?} {:18} {:?}",
+      "{}{:?} {:24} {:?}",
       orientation_str, self.start, connection_str, self.end
     )
   }
