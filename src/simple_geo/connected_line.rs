@@ -50,7 +50,7 @@ impl fmt::Debug for ConnectedLine {
       Orientation::Vertical => "V",
     };
     let connection_str = format!(
-      "{:?}←{}→{:?}",
+      "{:?}←{:2}→{:?}",
       self.start_connects_to,
       self.len(),
       self.end_connects_to
