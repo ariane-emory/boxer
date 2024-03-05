@@ -1,25 +1,25 @@
-#![allow(unused_variables)]
-#![allow(unused_mut)]
+// #![allow(unused_variables)]
+// #![allow(unused_mut)]
 
 mod add_null_sentinels_to_normalized_matrix;
-//mod check_for_illegal_networks;
+mod check_for_illegal_networks;
 mod extract_lines_and_words;
 mod join_interrupted_lines;
 mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
-//use crate::simple_geo::find_networks;
+use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
-//use crate::simple_geo::network_get_endpoints;
+use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::ConnectedLine;
 //use crate::simple_geo::ConnectionType::*;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
 use add_null_sentinels_to_normalized_matrix::add_null_sentinels_to_normalized_matrix;
-use join_interrupted_lines::join_interrupted_lines;
-//use check_for_illegal_networks::check_for_illegal_networks;
+use check_for_illegal_networks::check_for_illegal_networks;
 use extract_lines_and_words::extract_lines_and_words;
+use join_interrupted_lines::join_interrupted_lines;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
 use merge_length_1_lines_with_words::merge_length_1_lines_with_words;
 use std::io::Result;
@@ -108,136 +108,42 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let mut free_lines = join_interrupted_lines(free_lines);
+  let free_lines = join_interrupted_lines(free_lines);
 
   free_lines
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));
 
-  // let mut free_lines = free_lines;
-  // free_lines.sort();
-  // free_lines.reverse();
+  println!("");
+  println!("=========================-======================================================");
+  println!("Looking for networks...");
+  println!("================================================================================");
+  println!("");
 
-  // let mut merged_horizontal_lines: Vec<ConnectedLine> = Vec::new();
-  // let mut horizontal_lines = free_lines
-  //   .iter()
-  //   .filter(|line| line.is_horizontal())
-  //   .cloned()
-  //   .collect::<Vec<ConnectedLine>>();
-  // horizontal_lines
-  //   .iter()
-  //   .for_each(|line| println!("Horizontal Line: {:?}", line));
+  let networks = find_networks(free_lines);
 
-  // let mut merged_vertical_lines: Vec<ConnectedLine> = Vec::new();
-  // let mut vertical_lines = free_lines
-  //   .iter()
-  //   .filter(|line| line.is_vertical())
-  //   .cloned()
-  //   .collect::<Vec<ConnectedLine>>();
-  // vertical_lines
-  //   .iter()
-  //   .for_each(|line| println!("Vertical Line:   {:?}", line));
+  for (i, network) in networks.iter().enumerate() {
+    //network.sort();
+    println!("Network #{}:", i + 1);
+    network
+      .iter()
+      .enumerate()
+      .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1, line));
 
-  // while let Some(mut line) = horizontal_lines.pop() {
-  //   println!("\nLooking for merges for {:?}...", line);
+    let endpoints = network_get_endpoints(&network);
 
-  //   while let Some(other) = horizontal_lines.remove_if(|o| {
-  //     line.end_connects_to == Wall
-  //       && line.end == o.start
-  //       && o.start_connects_to == Wall
-  //   }) {
-  //     println!("Could merge with {:?}.", other);
+    for (i, point) in endpoints.iter().enumerate() {
+      println!("  End point #{}:  {:?}", i + 1, point);
+    }
+  }
 
-  //     line = ConnectedLine::new(
-  //       line.orientation,
-  //       line.start,
-  //       other.end,
-  //       line.start_connects_to,
-  //       other.end_connects_to,
-  //     )
-  //     .unwrap();
+  println!("");
+  println!("=========================-======================================================");
+  println!("Checking for illegal networks...");
+  println!("================================================================================");
+  println!("");
 
-  //     println!("Merged into: {:?}", line);
-  //   }
-
-  //   merged_horizontal_lines.push(line);
-  // }
-
-  // println!("");
-
-  // merged_horizontal_lines
-  //   .iter()
-  //   .for_each(|line| println!("Merged Horizontal Line: {:?}", line));
-
-  // while let Some(mut line) = vertical_lines.pop() {
-  //   println!("\nLooking for merges for {:?}...", line);
-
-  //   while let Some(other) = vertical_lines.remove_if(|o| {
-  //     line.end_connects_to == Wall
-  //       && line.end == o.start
-  //       && o.start_connects_to == Wall
-  //   }) {
-  //     println!("Could merge with {:?}.", other);
-
-  //     line = ConnectedLine::new(
-  //       line.orientation,
-  //       line.start,
-  //       other.end,
-  //       line.start_connects_to,
-  //       other.end_connects_to,
-  //     )
-  //     .unwrap();
-
-  //     println!("Merged into: {:?}", line);
-  //   }
-
-  //   merged_vertical_lines.push(line);
-  // }
-
-  // println!("");
-
-  // merged_vertical_lines
-  //   .iter()
-  //   .for_each(|line| println!("Merged Vertical Line: {:?}", line));
-
-  // let mut all_merged_lines = Vec::new();
-  // all_merged_lines.extend(merged_horizontal_lines);
-  // all_merged_lines.extend(merged_vertical_lines);
-  // all_merged_lines.sort();
-
-  // if false {
-  //   println!("");
-  //   println!("=========================-======================================================");
-  //   println!("Looking for networks...");
-  //   println!("================================================================================");
-  //   println!("");
-
-  //   let networks = find_networks(&free_lines);
-
-  //   for (i, network) in networks.iter().enumerate() {
-  //     //network.sort();
-  //     println!("Network #{}:", i + 1);
-  //     network
-  //       .iter()
-  //       .enumerate()
-  //       .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1,
-  // line));
-
-  //     let endpoints = network_get_endpoints(&network);
-
-  //     for (i, point) in endpoints.iter().enumerate() {
-  //       println!("  End point #{}:  {:?}", i + 1, point);
-  //     }
-  //   }
-
-  //   println!("");
-  //   println!("=========================-======================================================");
-  //   println!("Checking for illegal networks...");
-  //   println!("================================================================================");
-  //   println!("");
-
-  //   check_for_illegal_networks(&networks, &rectangles);
-  // }
+  check_for_illegal_networks(&networks, &rectangles);
 
   Ok(())
 }

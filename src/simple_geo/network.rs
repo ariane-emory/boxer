@@ -6,12 +6,12 @@ use crate::simple_geo::Point;
 use std::collections::{HashMap, HashSet};
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn find_networks(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
+pub fn find_networks(lines: Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
   let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
 
   for line in lines {
-    graph.entry(line.start).or_default().push(*line);
-    graph.entry(line.end).or_default().push(*line);
+    graph.entry(line.start).or_default().push(line);
+    graph.entry(line.end).or_default().push(line);
   }
 
   let mut visited_points: HashSet<Point> = HashSet::new();
