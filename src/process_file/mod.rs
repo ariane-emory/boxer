@@ -4,7 +4,8 @@ mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
 //use crate::simple_geo::find_rectangles;
-use crate::simple_geo::ConnectedLine;
+use crate::simple_geo::analyze_chain;
+use crate::simple_geo::find_chains;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
@@ -98,14 +99,14 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let chains = ConnectedLine::find_chains(&free_lines);
+  let chains = find_chains(&free_lines);
 
   for (i, chain) in chains.iter().enumerate() {
     //chain.sort();
     println!("Chain {}: length {} ", i, chain.len());
     chain.iter().for_each(|line| println!("  {:?}", line));
 
-    if let Some((start, end)) = ConnectedLine::analyze_chain(&chain) {
+    if let Some((start, end)) = analyze_chain(&chain) {
       println!("  Start: {:?}, End: {:?}", start, end);
     }
     else {

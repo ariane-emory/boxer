@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+mod chain;
 mod connected_line;
 mod find_rectangles;
 mod flippable;
@@ -15,6 +16,7 @@ mod word;
 
 use crate::util::*;
 
+pub use chain::*;
 pub use connected_line::*;
 pub use find_rectangles::*;
 pub use flippable::*;
