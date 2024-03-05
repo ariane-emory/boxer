@@ -105,7 +105,9 @@ pub fn process_file(path: &str) -> Result<()> {
   for (i, chain) in chains.iter().enumerate() {
     //chain.sort();
     println!("Network #{}:", i + 1);
-    chain.iter().for_each(|line| println!("  Line: {:?}", line));
+    chain
+      .iter()
+      .for_each(|line| println!("  Line:       {:?}", line));
 
     let net = chain_get_network(&chain);
 
