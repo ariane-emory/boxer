@@ -16,7 +16,7 @@ impl Word {
       Err(ErrString::new("start.col > end.col!"))
     }
     else if start.line != end.line {
-      Err(ErrString::new("start.col > end.col!"))
+      Err(ErrString::new("start.line != end.line!"))
     }
     else {
       Ok(Self {
