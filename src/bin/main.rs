@@ -9,6 +9,6 @@ use std::io::{self};
 
 ////////////////////////////////////////////////////////////////////////////////
 fn main() -> io::Result<()> {
-  process_file("./data/complex.box")?;
+  process_file("./data/test.box")?;
   Ok(())
 }
