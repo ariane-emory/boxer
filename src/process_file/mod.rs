@@ -79,7 +79,7 @@ pub fn add_null_sentinels_to_normalized_matrix(
 pub fn process_file(
   path: &str,
 ) -> Result<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
-  let matrix: Vec<Vec<u8>> = read_file_to_byte_matrix(path)?;
+  let matrix = read_file_to_byte_matrix(path)?;
   let matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
   let matrix = add_null_sentinels_to_normalized_matrix(matrix);
