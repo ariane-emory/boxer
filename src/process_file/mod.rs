@@ -151,9 +151,11 @@ pub fn process_file(path: &str) -> Result<()> {
         for (iii, rectangle) in rectangles.iter().enumerate() {
           if rectangle.has_wall_point(*point) {
             println!(
-              "Found wall point on Rectangle #{}'s wall for end point {:?}.",
+              "Found wall point on Rectangle #{}'s wall for end Point #{} {:?} in network #{}.",
               iii + 1,
-              point
+              ii + 1, 
+              point,
+              i + 1
             );
             found_it = true;
             break;
