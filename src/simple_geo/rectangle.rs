@@ -62,14 +62,15 @@ impl Rectangle {
       && other.lower_bound() <= contained_rect.lower_bound()
   }
   
-  pub fn is_on_corner(&self, point: Point) -> bool {
-    point == self.top_left()
+  pub fn is_corner_point(&self, point: Point) -> bool {
+    false
+      || point == self.top_left()
       || point == self.bottom_right()
       || point == self.bottom_left()
       || point == self.top_right()
   }
 
-  pub fn is_on_wall(&self, point: Point) -> bool {
+  pub fn is_wall_point(&self, point: Point) -> bool {
     // If not a corner, check if the point is on one of the sides.
     !self.is_on_corner(point) &&
       (self.top_side().overlaps(&point) ||
