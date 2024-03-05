@@ -9,25 +9,6 @@ pub struct Rectangle {
   pub top_left: Point,
   pub bottom_right: Point,
 }
-
-////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Rectangle {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-impl Positional for Rectangle {
-  fn top_left(&self) -> Point {
-    self.top_left
-  }
-
-  fn bottom_right(&self) -> Point {
-    self.bottom_right
-  }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 impl Rectangle {
   pub fn new(start: Point, end: Point) -> GeoResult<Self> {
@@ -79,5 +60,22 @@ impl Rectangle {
       && other.right_bound() <= contained_rect.right_bound()
       && other.upper_bound() >= contained_rect.upper_bound()
       && other.lower_bound() <= contained_rect.lower_bound()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl fmt::Debug for Rectangle {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "Rectangle({:?}, {:?})", self.top_left, self.bottom_right)
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+impl Positional for Rectangle {
+  fn top_left(&self) -> Point {
+    self.top_left
+  }
+
+  fn bottom_right(&self) -> Point {
+    self.bottom_right
   }
 }
