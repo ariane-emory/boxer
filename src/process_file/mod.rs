@@ -97,47 +97,47 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
-  println!("================================================================================");
-  println!("Finding rectangles in:");
-  println!("================================================================================");
+  // println!("");
+  // println!("================================================================================");
+  // println!("Finding rectangles in:");
+  // println!("================================================================================");
 
-  let mut non_rectangle_candidate_lines: Vec<ConnectedLine> = Vec::new();
-  non_rectangle_candidate_lines
-    .extend(free_lines.iter().filter(|cl| !cl.corner_connected()));
+  // let mut non_rectangle_candidate_lines: Vec<ConnectedLine> = Vec::new();
+  // non_rectangle_candidate_lines
+  //   .extend(free_lines.iter().filter(|cl| !cl.corner_connected()));
 
-  let mut rectangle_candidate_lines: Vec<ConnectedLine> = free_lines;
-  rectangle_candidate_lines.retain(ConnectedLine::corner_connected);
+  // let mut rectangle_candidate_lines: Vec<ConnectedLine> = free_lines;
+  // rectangle_candidate_lines.retain(ConnectedLine::corner_connected);
 
-  non_rectangle_candidate_lines
-    .iter()
-    .for_each(|line| println!("Non-Candidate Line: {:?}", line));
-  rectangle_candidate_lines
-    .iter()
-    .for_each(|line| println!("Candidate Line:     {:?}", line));
-  words
-    .iter()
-    .for_each(|word| println!("Word:               {:?}", word));
+  // non_rectangle_candidate_lines
+  //   .iter()
+  //   .for_each(|line| println!("Non-Candidate Line: {:?}", line));
+  // rectangle_candidate_lines
+  //   .iter()
+  //   .for_each(|line| println!("Candidate Line:     {:?}", line));
+  // words
+  //   .iter()
+  //   .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
-  println!("================================================================================");
-  println!("Found:");
-  println!("================================================================================");
+  // println!("");
+  // println!("================================================================================");
+  // println!("Found:");
+  // println!("================================================================================");
 
-  let (rectangles, mut free_lines) =
-    find_rectangles(rectangle_candidate_lines, false);
+  // let (rectangles, mut free_lines) =
+  //   find_rectangles(rectangle_candidate_lines, false);
 
-  free_lines.extend(non_rectangle_candidate_lines);
+  // free_lines.extend(non_rectangle_candidate_lines);
 
-  free_lines
-    .iter()
-    .for_each(|line| println!("Free Line:          {:?}", line));
-  rectangles
-    .iter()
-    .for_each(|rect| println!("Rectangle:          {:?}", rect));
-  words
-    .iter()
-    .for_each(|word| println!("Word:               {:?}", word));
+  // free_lines
+  //   .iter()
+  //   .for_each(|line| println!("Free Line:          {:?}", line));
+  // rectangles
+  //   .iter()
+  //   .for_each(|rect| println!("Rectangle:          {:?}", rect));
+  // words
+  //   .iter()
+  //   .for_each(|word| println!("Word:               {:?}", word));
 
   println!("");
   println!("================================================================================");
