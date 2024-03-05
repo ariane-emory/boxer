@@ -18,11 +18,11 @@ pub trait LineMethods: Positional {
 
   //////////////////////////////////////////////////////////////////////////////
   fn orientation(&self) -> Orientation {
-    if self.is_horizontal() {
-      Horizontal
+    if self.is_vertical() {
+      Vertical
     }
     else {
-      Vertical
+      Horizontal
     }
   }
 
