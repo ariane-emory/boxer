@@ -132,6 +132,9 @@ pub fn process_file(
   free_lines
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));
+  words
+    .iter()
+    .for_each(|word| println!("Word:               {:?}", word));
   rectangles
     .iter()
     .for_each(|rect| println!("Rectangle:          {:?}", rect));
@@ -147,11 +150,9 @@ pub fn process_file(
   free_lines
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));
-
   words
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
-
   rectangles
     .iter()
     .for_each(|rect| println!("Rectangle:          {:?}", rect));
