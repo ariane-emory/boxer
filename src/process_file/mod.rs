@@ -126,16 +126,16 @@ pub fn process_file(path: &str) -> Result<()> {
   for (i, network) in networks.iter().enumerate() {
     let endpoints = network_get_endpoints(&network);
 
-    for (ii, point) in endpoints.iter().enumerate() {
+    for (ii, (point, end_point_type)) in endpoints.iter().enumerate() {
       // A network is illegal if any of it's end points are on a Rectangle's
       // corner:
       for (iii, rectangle) in rectangles.iter().enumerate() {
-        if rectangle.has_corner_point(point.0) {
-          println!(
+        if rectangle.has_corner_point(*point) {
+          panic!(
             "Network #{} has an illegal end point #{}: {:?} on Rectangle #{}'s corner.",
             i + 1,
             ii + 1,
-            point,
+            (point, end_point_type),
             iii + 1
           );
         }
@@ -143,12 +143,12 @@ pub fn process_file(path: &str) -> Result<()> {
 
       // A network is illegal if any of it's end points are on a Wall that is
       // not part of any Rectangle:
-      if !rectangles.iter().any(|rect| rect.has_wall_point(point.0)) {
-        println!(
+      if !rectangles.iter().any(|rect| rect.has_wall_point(*point)) {
+        panic!(
           "Network #{} has an illegal end point #{}: {:?} on a Wall that is not part of any Rectangle.",
           i + 1,
           ii + 1,
-          point
+          (point, end_point_type)
         );
       }
     }
