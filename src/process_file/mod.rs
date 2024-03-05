@@ -194,6 +194,11 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|line| println!("Merged Vertical Line: {:?}", line));
 
+  let mut all_merged_lines = Vec::new();
+  all_merged_lines.extend(merged_horizontal_lines);
+  all_merged_lines.extend(merged_vertical_lines);
+  all_merged_lines.sort();
+
   // if false {
   //   println!("");
   //   println!("=========================-======================================================");
