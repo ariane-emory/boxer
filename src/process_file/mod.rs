@@ -14,6 +14,7 @@ use crate::simple_geo::Orientation;
 use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
+use crate::util::ErrString;
 //use crate::simple_geo::Rectangle;
 use crate::simple_matrix::*;
 use crate::util::vec_utils::Removeql;
@@ -31,6 +32,7 @@ pub fn make_process_bidirectionally_fun<'a>(
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
+  is_invalid_byte: impl Fn(u8) -> Option<ErrString> + 'a,
   pos_preprocessor: impl Fn(Point) -> Point + 'a,
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   word_postprocessor: impl Fn(Word) -> Word + 'a,
@@ -50,8 +52,8 @@ pub fn make_process_bidirectionally_fun<'a>(
   (rc_linemaker, move |pos: &Point, byte: &u8| {
     let pos = pos_preprocessor(*pos);
 
-    if 0 != (*byte & 128) {
-      panic!("Found non-ASCII byte {} at {:?}", byte, pos);
+    if let Some(err) = is_invalid_byte(*byte) {
+      panic!("{} at {:?}", err, pos);
     }
 
     custom_printer(pos, *byte);
@@ -239,12 +241,21 @@ fn extract_lines_and_words(
     |pos, byte| log_labeled_byte(Horizontal, pos, byte);
   let log_byte_with_orientation_and_flipped_pos =
     |pos, byte| log_labeled_byte(Vertical, flip_pos(pos), byte);
+  let is_non_ascii_byte = |byte: u8| {
+    if 0 != (byte & 128) {
+      Some(ErrString::new(&format!("Non-ASCII byte {}", byte)))
+    }
+    else {
+      None
+    }
+  };
 
   let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
     b'|',
     b'-',
     false,
     false,
+    is_non_ascii_byte,
     |pos| pos.offset_by(0, LINE_OFFSET),
     flip_line,
     do_nothing_to_word,
@@ -256,6 +267,7 @@ fn extract_lines_and_words(
     b'|',
     true,
     true,
+    is_non_ascii_byte,
     |pos| pos.offset_by(LINE_OFFSET, 0),
     |line| line,
     |word| word,
