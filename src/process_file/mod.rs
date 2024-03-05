@@ -233,6 +233,7 @@ fn extract_lines_and_words(
   let mut words = Vec::new();
   let flip_pos = |pos: Point| pos.flip();
   let flip_line = |cl: ConnectedLine| cl.flip();
+  let do_nothing_to_line = |line: ConnectedLine| line;
   let do_nothing_to_word = |wrd: Word| wrd;
   let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
     noisy_print!("\n[{:12?}] ", ori);
@@ -267,8 +268,8 @@ fn extract_lines_and_words(
     true,
     is_non_ascii_byte,
     offset_line,
-    |line| line,
-    |word| word,
+    do_nothing_to_line,
+    do_nothing_to_word,
     log_byte_with_orientation,
   );
 
