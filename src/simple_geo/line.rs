@@ -7,42 +7,6 @@ pub struct Line {
   pub start: Point,
   pub end: Point,
 }
-
-////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Line {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "{:?} → {:?}", self.start, self.end)
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-impl Positional for Line {
-  fn top_left(&self) -> Point {
-    self.start
-  }
-
-  fn bottom_right(&self) -> Point {
-    self.end
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-impl LineMethods for Line {}
-////////////////////////////////////////////////////////////////////////////////
-impl Offsetable for Line {
-  fn flip(&self) -> Self {
-    Self::new(self.start().flip(), self.end().flip()).unwrap()
-  }
-
-  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
-    Self::new(
-      self.start().offset_by(line_offset, col_offset),
-      self.end().offset_by(line_offset, col_offset),
-    )
-    .unwrap()
-  }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 impl Line {
   pub fn new(start: Point, end: Point) -> GeoResult<Self> {
@@ -65,5 +29,38 @@ impl Line {
     };
 
     Ok(Self { start, end })
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl fmt::Debug for Line {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "{:?} → {:?}", self.start, self.end)
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+impl Positional for Line {
+  fn top_left(&self) -> Point {
+    self.start
+  }
+
+  fn bottom_right(&self) -> Point {
+    self.end
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl LineMethods for Line {}
+////////////////////////////////////////////////////////////////////////////////
+impl Offsetable for Line {
+  fn flip(&self) -> Self {
+    Self::new(self.start().flip(), self.end().flip()).unwrap()
+  }
+
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    Self::new(
+      self.start().offset_by(line_offset, col_offset),
+      self.end().offset_by(line_offset, col_offset),
+    )
+    .unwrap()
   }
 }
