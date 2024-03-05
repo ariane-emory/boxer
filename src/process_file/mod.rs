@@ -155,10 +155,6 @@ pub fn process_file(
   words
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
-  rectangles
-    .iter()
-    .for_each(|rect| println!("Rectangle:          {:?}", rect));
-
 
   println!("");
   println!("================================================================================");
