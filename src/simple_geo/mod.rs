@@ -1,17 +1,17 @@
 #![allow(dead_code)]
 
-pub mod connected_line;
-pub mod find_rectangles;
-pub mod flippable;
-pub mod line;
-pub mod line_methods;
-pub mod offsetable;
-pub mod orientation;
-pub mod point;
-pub mod positional;
-pub mod rectangle;
-pub mod size;
-pub mod word;
+mod connected_line;
+mod find_rectangles;
+mod flippable;
+mod line;
+mod line_methods;
+mod offsetable;
+mod orientation;
+mod point;
+mod positional;
+mod rectangle;
+mod size;
+mod word;
 
 use crate::util::*;
 
