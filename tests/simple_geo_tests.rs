@@ -568,10 +568,7 @@ mod tests {
       Line::new(Point::new(4, 16), Point::new(9, 16)).unwrap(),
     ];
 
-    let mut leftover_lines = Vec::new();
-    let mut rects = Vec::new();
-
-    find_rectangles(lines, &mut rects, &mut leftover_lines, false);
+    let (rects, leftover_lines) = find_rectangles(lines, false);
 
     println!("");
     for rect in &rects {
