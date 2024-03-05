@@ -81,6 +81,9 @@ pub fn network_get_endpoints(
     .filter_map(|(point, connections)| {
       if connections.len() == 1 {
         // Assume there's only one connection type if the point is unique
+        if connections[0] == ConnectionType::Corner {
+          panic!("Detected illegal network: {:?}", network);
+        }
         Some((point, connections[0]))
       }
       else {
