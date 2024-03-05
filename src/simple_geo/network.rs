@@ -1,5 +1,7 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
+use crate::simple_geo::ConnectionType::*;
+use crate::simple_geo::LineMethods;
 use crate::simple_geo::Point;
 use std::collections::{HashMap, HashSet};
 
@@ -27,14 +29,35 @@ pub fn find_networks(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
       if let Some(lines) = graph.get(point) {
         for line in lines {
           if visited_lines.insert(*line) {
-            network.push(*line);
-            let next_point = if line.start == *point {
-              &line.end
-            }
-            else {
-              &line.start
+            let is_connection_valid = |other: &ConnectedLine| -> bool {
+              // Check if the other line has the same orientation
+              let same_orientation = line.is_horizontal()
+                == other.is_horizontal()
+                || line.is_vertical() == other.is_vertical();
+
+              // Validate connection based on orientation and ConnectionType
+              (line.start_connects_to == Wall || line.end_connects_to == Wall)
+                && same_orientation
             };
-            dfs(next_point, graph, visited_points, visited_lines, network);
+
+            // Find all connected lines that meet the criteria
+            let connected_lines = lines
+              .iter()
+              .filter(|&l| is_connection_valid(l))
+              .collect::<Vec<_>>();
+
+            for connected_line in connected_lines {
+              if !visited_lines.contains(connected_line) {
+                network.push(*connected_line);
+                let next_point = if connected_line.start == *point {
+                  &connected_line.end
+                }
+                else {
+                  &connected_line.start
+                };
+                dfs(next_point, graph, visited_points, visited_lines, network);
+              }
+            }
           }
         }
       }
