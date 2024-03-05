@@ -108,7 +108,7 @@ pub fn process_file(path: &str) -> Result<()> {
     network
       .iter()
       .enumerate()
-      .for_each(|(i, line)| println!("  Line #{}:      {:?}", i, line));
+      .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1, line));
 
     let endpoints = network_get_endpoints(&network);
 
