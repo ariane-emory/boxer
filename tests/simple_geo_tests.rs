@@ -571,7 +571,7 @@ mod tests {
     let mut leftover_lines = Vec::new();
     let mut rects = Vec::new();
 
-    find_rectangles(&lines, &mut rects, &mut leftover_lines, false);
+    find_rectangles(lines, &mut rects, &mut leftover_lines, false);
 
     println!("");
     for rect in &rects {
