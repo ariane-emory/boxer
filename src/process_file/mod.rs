@@ -9,9 +9,8 @@ use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
-
-pub use extract_lines_and_words::extract_lines_and_words;
-pub use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
+use extract_lines_and_words::extract_lines_and_words;
+use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
 use std::io::Result;
 
 /////////////////////////////////////////////////////////////////////////////////
