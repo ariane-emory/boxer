@@ -242,13 +242,11 @@ fn extract_lines_and_words(
   let log_byte_with_orientation_and_flipped_pos =
     |pos, byte| log_labeled_byte(Vertical, flip_pos(pos), byte);
   let is_non_ascii_byte = |byte: u8| {
-    if 0 != (byte & 128) {
-      Some(ErrString::new(&format!("Non-ASCII byte {}", byte)))
-    }
-    else {
-      None
-    }
+    (byte & 128 != 0)
+      .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
   };
+  let offset_line = |pos| pos.offset_by(LINE_OFFSET, 0);
+  let offset_column = |pos| pos.offset_by(0, LINE_OFFSET);
 
   let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
     b'|',
@@ -256,7 +254,7 @@ fn extract_lines_and_words(
     false,
     false,
     is_non_ascii_byte,
-    |pos| pos.offset_by(0, LINE_OFFSET),
+    offset_column,
     flip_line,
     do_nothing_to_word,
     log_byte_with_orientation_and_flipped_pos,
@@ -268,7 +266,7 @@ fn extract_lines_and_words(
     true,
     true,
     is_non_ascii_byte,
-    |pos| pos.offset_by(LINE_OFFSET, 0),
+    offset_line,
     |line| line,
     |word| word,
     log_byte_with_orientation,
