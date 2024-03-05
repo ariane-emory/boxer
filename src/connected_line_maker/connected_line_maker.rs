@@ -33,7 +33,6 @@ pub struct ConnectedLineMaker<'a> {
   line_begin_type: ConnectionType,
   current_word: String,
   current_word_begin: Option<Point>,
-  prev_pos: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
@@ -60,7 +59,6 @@ impl<'a> ConnectedLineMaker<'a> {
       line_begin_type: Corner,
       current_word: String::new(),
       current_word_begin: None,
-      prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
 
@@ -144,10 +142,7 @@ impl<'a> ConnectedLineMaker<'a> {
     // attempt to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a
     // line).
-    // if pos.line != self.prev_pos.line {
-    //   noisy_print!("         new row, reset!");
-    //   self.reset();
-    // }
+
     if byte == b'\0' {
       noisy_print!("End of row! ");
       self.reset();
@@ -225,7 +220,5 @@ impl<'a> ConnectedLineMaker<'a> {
         }
       }
     }
-
-    self.prev_pos = pos;
   }
 }
