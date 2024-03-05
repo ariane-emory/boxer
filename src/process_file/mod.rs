@@ -110,10 +110,36 @@ pub fn process_file(path: &str) -> Result<()> {
       .enumerate()
       .for_each(|(i, line)| println!("  Line #{}:      {:?}", i, line));
 
-    let net = network_get_endpoints(&network);
+    let endpoints = network_get_endpoints(&network);
 
-    for (i, point) in net.iter().enumerate() {
+    for (i, point) in endpoints.iter().enumerate() {
       println!("  End point #{}:  {:?}", i + 1, point);
+    }
+  }
+
+  println!("");
+  println!("=========================-======================================================");
+  println!("Checking for illegal networks...");
+  println!("================================================================================");
+  println!("");
+
+  for (i, network) in networks.iter().enumerate() {
+    let endpoints = network_get_endpoints(&network);
+
+    for (ii, point) in endpoints.iter().enumerate() {
+      // A network is illegal if any of it's end points are on a Rectangle's
+      // corner:
+      for (iii, rectangle) in rectangles.iter().enumerate() {
+        if rectangle.has_corner_point(point.0) {
+          println!(
+            "Network #{} has an illegal end point #{}: {:?} on Rectangle #{}'s corner.",
+            i + 1,
+            ii + 1,
+            point,
+            iii + 1
+          );
+        }
+      }
     }
   }
 
