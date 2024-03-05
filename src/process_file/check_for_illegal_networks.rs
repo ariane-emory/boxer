@@ -46,7 +46,7 @@ pub fn check_for_illegal_networks(
         }
         if !found_it {
           panic!(
-          "Network #{} has an illegal end point #{}: {:?} on a AnotherLine that is not part of any Rectangle.",
+          "Network #{} has an illegal end point #{}: {:?} on AnotherLine that is not part of any Rectangle.",
           i + 1,
           ii + 1,
           (point, point_type)
