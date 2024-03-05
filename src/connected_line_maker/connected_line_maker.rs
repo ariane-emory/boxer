@@ -2,7 +2,7 @@ use crate::noisy_print;
 use crate::noisy_println;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
-use crate::simple_geo::ConnectionType::{Corner, Nothing, AnotherLine};
+use crate::simple_geo::ConnectionType::{AnotherLine, Corner, Nothing};
 use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation::Horizontal;
 use crate::util::noisy_print;

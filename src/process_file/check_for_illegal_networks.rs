@@ -18,12 +18,12 @@ pub fn check_for_illegal_networks(
         for (iii, rectangle) in rectangles.iter().enumerate() {
           if rectangle.has_corner_point(*point) {
             panic!(
-            "Network #{} has an illegal end point #{}: {:?} on Rectangle #{}'s corner.",
-            i + 1,
-            ii + 1,
-            (point, point_type),
-            iii + 1
-          );
+              "Network #{} has an illegal end point #{}: {:?} on Rectangle #{}'s corner.",
+              i + 1,
+              ii + 1,
+              (point, point_type),
+              iii + 1
+            );
           }
         }
       }
@@ -46,13 +46,19 @@ pub fn check_for_illegal_networks(
         }
         if !found_it {
           panic!(
-          "Network #{} has an illegal end point #{}: {:?} on AnotherLine that is not part of any Rectangle.",
-          i + 1,
-          ii + 1,
-          (point, point_type)
-        );
+            "Network #{} has an illegal end point #{}: {:?} on AnotherLine that is not part of any Rectangle.",
+            i + 1,
+            ii + 1,
+            (point, point_type)
+          );
         }
       }
+
+      // TODO: A network is illegal if any of it's end points are on Nothing are
+      // on a vertical line, like this:
+      // IN ---+--- OUT
+      //       |
+      //       |
     }
   }
 }
