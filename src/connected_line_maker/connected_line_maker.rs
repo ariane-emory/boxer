@@ -31,8 +31,8 @@ pub struct ConnectedLineMaker<'a> {
   pub words: Vec<Word>,
   line_begin: Option<Point>,
   line_begin_type: ConnectionType,
-  current_word: String,
   current_word_begin: Option<Point>,
+  current_word: String,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
@@ -57,8 +57,8 @@ impl<'a> ConnectedLineMaker<'a> {
       words: Vec::new(),
       line_begin: None,
       line_begin_type: Corner,
-      current_word: String::new(),
       current_word_begin: None,
+      current_word: String::new(),
     }
   }
 
