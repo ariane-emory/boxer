@@ -1,7 +1,6 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType::*;
 use crate::simple_geo::Orientation::*;
-use crate::util::RemoveIf;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
@@ -37,11 +36,11 @@ fn join_similarly_oriented_interrupted_lines(
     println!("Looking for merges for {:?}...", line);
 
     while line.end_connects_to == Wall {
-      if let Some(other) =
-        lines.remove_if(|o| line.end == o.start && o.start_connects_to == Wall)
-      {
+      if let Some(other) = lines.pop() {
+        if line.end != other.start || other.start_connects_to != Wall {
+          break;
+        }
         println!("Could merge with {:?}.", other);
-
         line = ConnectedLine::new(
           line.orientation,
           line.start,
@@ -50,7 +49,6 @@ fn join_similarly_oriented_interrupted_lines(
           other.end_connects_to,
         )
         .unwrap();
-
         println!("Merged into: {:?}", line);
       }
     }
