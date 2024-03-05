@@ -37,8 +37,6 @@ pub fn make_process_bidirectionally_fun<'a>(
   custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let linemaker = ConnectedLineMaker::new(
-    Horizontal, /* All lines start as Horizontal, flip them afterwards with
-                 * line_postprocessor if you want Vertical lines. */
     line_body_char,
     wall_char,
     collect_words,
