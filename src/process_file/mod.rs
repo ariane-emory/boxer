@@ -140,6 +140,17 @@ pub fn process_file(path: &str) -> Result<()> {
           );
         }
       }
+
+      // A network is illegal if any of it's end points are on a Wall that is
+      // not part of any Rectangle:
+      if !rectangles.iter().any(|rect| rect.has_wall_point(point.0)) {
+        println!(
+          "Network #{} has an illegal end point #{}: {:?} on a Wall that is not part of any Rectangle.",
+          i + 1,
+          ii + 1,
+          point
+        );
+      }
     }
   }
 
