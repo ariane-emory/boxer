@@ -12,7 +12,6 @@ use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::ConnectedLine;
-//use crate::simple_geo::ConnectionType::*;
 use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
