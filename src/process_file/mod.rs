@@ -86,57 +86,74 @@ pub fn process_file(
 
   println!("");
   println!("================================================================================");
-  println!("Extracting basic geometry...");
+  println!("Extracting ConnectedLines and Words from matrix...");
   println!("================================================================================");
 
-  let (lines, mut words) = extract_lines_and_words(&matrix);
+  let (free_lines, words) = extract_lines_and_words(&matrix);
+
+
+  free_lines
+    .iter()
+    .for_each(|line| println!("Free Line:          {:?}", line));
+
+  words
+    .iter()
+    .for_each(|word| println!("Words:              {:?}", word));
 
   println!("");
   println!("================================================================================");
   println!("Finding rectangles in:");
   println!("================================================================================");
 
-  let mut rectangles = Vec::new();
-  let mut free_lines = Vec::new();
+  let mut non_rectangle_candidate_lines: Vec<ConnectedLine> = Vec::new();
+  non_rectangle_candidate_lines
+    .extend(free_lines.iter().filter(|cl| !cl.corner_connected()));
 
-  free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
-
-  let mut rectangle_candidate_lines: Vec<ConnectedLine> = lines;
+  let mut rectangle_candidate_lines: Vec<ConnectedLine> = free_lines;
   rectangle_candidate_lines.retain(ConnectedLine::corner_connected);
 
-  free_lines
+  non_rectangle_candidate_lines
     .iter()
-    .for_each(|line| println!("Free Line:      {:?}", line));
+    .for_each(|line| println!("Non-Candidate Line: {:?}", line));
   rectangle_candidate_lines
     .iter()
-    .for_each(|line| println!("Candidate Line: {:?}", line));
+    .for_each(|line| println!("Candidate Line:     {:?}", line));
 
   println!("");
   println!("================================================================================");
   println!("Found:");
   println!("================================================================================");
 
-  find_rectangles(
-    rectangle_candidate_lines,
-    &mut rectangles,
-    &mut free_lines,
-    false,
-  );
+  let (rectangles, mut free_lines) =
+    find_rectangles(rectangle_candidate_lines, false);
+
+  free_lines.extend(non_rectangle_candidate_lines);
 
   free_lines
     .iter()
-    .for_each(|line| println!("Free Line: {:?}", line));
+    .for_each(|line| println!("Free Line:          {:?}", line));
   rectangles
     .iter()
-    .for_each(|rect| println!("Found rectangle: {:?}", rect));
+    .for_each(|rect| println!("Rectangle:          {:?}", rect));
 
   println!("");
   println!("================================================================================");
-  println!("Try to merge length-1 lines...");
+  println!("Finding and trying to merge length-1 lines with Words...");
   println!("================================================================================");
   println!("");
 
-  merge_length_1_lines(&mut free_lines, &mut words);
+  let (free_lines, words) = merge_length_1_lines(free_lines, words);
+
+  free_lines
+    .iter()
+    .for_each(|line| println!("Free Line:          {:?}", line));
+
+  words.iter().for_each(|word| println!("{:?}", word));
+
+  rectangles
+    .iter()
+    .for_each(|rect| println!("Rectangle:          {:?}", rect));
+
 
   println!("");
   println!("================================================================================");
@@ -163,7 +180,10 @@ pub fn process_file(
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
+fn merge_length_1_lines(
+  mut lines: Vec<ConnectedLine>,
+  mut words: Vec<Word>,
+) -> (Vec<ConnectedLine>, Vec<Word>) {
   let single_length_lines = lines
     .iter()
     .filter(|cl| cl.len() == 1)
@@ -203,13 +223,7 @@ fn merge_length_1_lines(lines: &mut Vec<ConnectedLine>, words: &mut Vec<Word>) {
     }
   }
 
-  // println!("");
-
-  lines
-    .iter()
-    .for_each(|line| println!("Line:      {:?}", line));
-
-  words.iter().for_each(|word| println!("{:?}", word));
+  (lines, words)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -298,34 +312,11 @@ fn analyze_chain(
   }
 }
 
-// /////////////////////////////////////////////////////////////////////////////
-// //// fn extract_basic_geometry(
-//   normalized_matrix: &Vec<Vec<u8>>,
-// ) -> (/* Vec<Rectangle>, */ Vec<ConnectedLine>, Vec<Word>) {
-//   //let mut free_lines: Vec<ConnectedLine> = Vec::new();
-//   let (lines, words) = extract_lines_and_words(normalized_matrix);
-
-//   // free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
-//   // lines.retain(ConnectedLine::corner_connected);
-
-//   // find_rectangles(&lines, &mut rectangles, &mut free_lines, false);
-
-//   // words
-//   //   .iter()
-//   //   .for_each(|word| println!("Word:            {:?}", word));
-
-//   // rectangles
-//   //   .iter()
-//   //   .for_each(|rect| println!("Found rectangle: {:?}", rect));
-
-//   (/* rectangles, */ lines, words)
-// }
-
 /////////////////////////////////////////////////////////////////////////////////
 fn extract_lines_and_words(
   normalized_matrix: &Vec<Vec<u8>>,
 ) -> (Vec<ConnectedLine>, Vec<Word>) {
-  let mut lines = Vec::new();
+  let mut free_lines = Vec::new();
   let mut words = Vec::new();
   let flip_pos = |pos: Point| pos.flip();
   let flip_line = |cl: ConnectedLine| cl.flip();
@@ -369,16 +360,8 @@ fn extract_lines_and_words(
   );
 
   words.extend(horiz_linemaker.borrow().words.iter().cloned());
-  lines.extend(horiz_linemaker.borrow().lines.iter());
-  lines.extend(vert_linemaker.borrow().lines.iter());
+  free_lines.extend(horiz_linemaker.borrow().lines.iter());
+  free_lines.extend(vert_linemaker.borrow().lines.iter());
 
-  lines
-    .iter()
-    .for_each(|line| println!("Line:            {:?}", line));
-
-  words
-    .iter()
-    .for_each(|word| println!("Found word:      {:?}", word));
-
-  (lines, words)
+  (free_lines, words)
 }
