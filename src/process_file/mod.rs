@@ -1,16 +1,13 @@
 mod extract_lines_and_words;
 mod make_process_bidirectionally_fun;
+mod merge_length_1_lines_with_words;
 
 //use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
-use crate::simple_geo::LineMethods;
-use crate::simple_geo::Offsetable;
-use crate::simple_geo::Word;
 use crate::simple_matrix::*;
-use crate::util::vec_utils::Removeql;
-use crate::util::vec_utils::SortedInsert;
 use extract_lines_and_words::extract_lines_and_words;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
+use merge_length_1_lines_with_words::merge_length_1_lines_with_words;
 use std::io::Result;
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +94,7 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let (free_lines, words) = merge_length_1_lines(free_lines, words);
+  let (free_lines, words) = merge_length_1_lines_with_words(free_lines, words);
 
   free_lines
     .iter()
@@ -128,51 +125,4 @@ pub fn process_file(path: &str) -> Result<()> {
   }
 
   Ok(())
-}
-
-////////////////////////////////////////////////////////////////////////////////
-fn merge_length_1_lines(
-  mut lines: Vec<ConnectedLine>,
-  mut words: Vec<Word>,
-) -> (Vec<ConnectedLine>, Vec<Word>) {
-  let single_length_lines = lines
-    .iter()
-    .filter(|cl| cl.len() == 1)
-    .cloned()
-    .collect::<Vec<ConnectedLine>>();
-
-  for line in single_length_lines {
-    println!("Length 1 line: {:?}", line);
-
-    let candidate_words = words
-      .iter()
-      .filter(|word| word.start == line.start.offset_by(0, 1))
-      .cloned()
-      .collect::<Vec<Word>>();
-
-    if candidate_words.len() == 0 {
-      panic!("No match for {:?} found.", line);
-    }
-    else if candidate_words.len() > 1 {
-      panic!("Bad data, found more than one candidate word for {:?}", line);
-    }
-    else {
-      println!("  Candidate word: {:?}", candidate_words[0]);
-
-      let new_word = Word::new(
-        &format!("-{}", candidate_words[0].string),
-        line.start,
-        candidate_words[0].end,
-      )
-      .unwrap();
-
-      println!("  New word: {:?}", new_word);
-
-      lines.removeql(&line);
-      words.removeql(&candidate_words[0]);
-      words.sorted_insert(new_word);
-    }
-  }
-
-  (lines, words)
 }
