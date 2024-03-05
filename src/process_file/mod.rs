@@ -107,12 +107,13 @@ pub fn process_file(path: &str) -> Result<()> {
     println!("Network #{}:", i + 1);
     chain
       .iter()
-      .for_each(|line| println!("  Line:       {:?}", line));
+      .enumerate()
+      .for_each(|(i, line)| println!("  Line #{}:      {:?}", i, line));
 
     let net = chain_get_network(&chain);
 
     for (i, point) in net.iter().enumerate() {
-      println!("  End point #{}: {:?}", i + 1, point);
+      println!("  End point #{}:  {:?}", i + 1, point);
     }
   }
 
