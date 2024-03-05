@@ -4,6 +4,7 @@ use crate::util::noisy_print;
 //use crate::util::noisy_println;
 
 use crate::line_makers::ConnectedLineMaker;
+#[allow(unused_imports)]
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::LineMethods;
