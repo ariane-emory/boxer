@@ -11,7 +11,7 @@ use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation;
 use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
-use crate::simple_geo::Rectangle;
+//use crate::simple_geo::Rectangle;
 use crate::simple_geo::Word;
 use crate::simple_matrix::*;
 use crate::util::vec_utils::Removeql;
@@ -76,9 +76,7 @@ pub fn add_null_sentinels_to_normalized_matrix(
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-pub fn process_file(
-  path: &str,
-) -> Result<(Vec<Vec<u8>>, Vec<Rectangle>, Vec<ConnectedLine>, Vec<Word>)> {
+pub fn process_file(path: &str) -> Result<()> {
   let matrix = read_file_to_byte_matrix(path)?;
   let matrix =
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
@@ -177,7 +175,7 @@ pub fn process_file(
     }
   }
 
-  Ok((matrix, rectangles, free_lines, words))
+  Ok(())
 }
 
 ////////////////////////////////////////////////////////////////////////////////
