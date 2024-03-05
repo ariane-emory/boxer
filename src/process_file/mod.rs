@@ -96,8 +96,8 @@ pub fn process_file(
   println!("Finding rectangles in:");
   println!("================================================================================");
 
-  let mut rectangles: Vec<Rectangle> = Vec::new();
-  let mut free_lines: Vec<ConnectedLine> = Vec::new();
+  let mut rectangles = Vec::new();
+  let mut free_lines = Vec::new();
 
   free_lines.extend(lines.iter().filter(|cl| !cl.corner_connected()));
 
