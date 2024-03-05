@@ -32,7 +32,7 @@ pub struct ConnectedLineMaker<'a> {
   line_begin: Option<Point>,
   line_begin_type: ConnectionType,
   current_word: String,
-  current_word_begin: Point,
+  current_word_begin: Option<Point>,
   prev_pos: Point,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,27 +59,30 @@ impl<'a> ConnectedLineMaker<'a> {
       line_begin: None,
       line_begin_type: Corner,
       current_word: String::new(),
-      current_word_begin: Point::new(std::usize::MAX, std::usize::MAX),
+      current_word_begin: None,
       prev_pos: Point::new(std::usize::MAX, std::usize::MAX),
     }
   }
 
   fn try_collect_word(&mut self) {
-    if self.collect_words && self.current_word.len() > 0 {
-      let word = (self.word_postprocessor)(
-        Word::new(
-          &self.current_word,
-          self.current_word_begin,
-          self
-            .current_word_begin
-            .offset_by(0, (self.current_word.len() - 1) as isize),
-        )
-        .unwrap(),
-      );
-      noisy_print!("Pushing word {:?}.", word);
-      self.words.push(word)
+    if self.collect_words {
+      if let Some(word_begin) = self.current_word_begin {
+        if self.current_word.len() > 0 {
+          let word = (self.word_postprocessor)(
+            Word::new(
+              &self.current_word,
+              word_begin,
+              word_begin.offset_by(0, (self.current_word.len() - 1) as isize),
+            )
+            .unwrap(),
+          );
+          noisy_print!("Pushing word {:?}.", word);
+          self.words.push(word)
+        }
+      }
+      self.current_word_begin = None;
+      self.current_word = String::new();
     }
-    self.current_word = String::new();
   }
 
   fn reset(&mut self) {
@@ -193,7 +196,7 @@ impl<'a> ConnectedLineMaker<'a> {
       else if self.collect_words && is_word_char(byte) {
         if self.current_word.len() == 0 {
           noisy_print!("Begin word at {:?} with '{}'.", pos, byte as char);
-          self.current_word_begin = pos;
+          self.current_word_begin = Some(pos);
         }
         self.current_word.push(byte as char);
         noisy_print!(
