@@ -36,6 +36,7 @@ pub fn merge_interrupted_lines(
 
     while let Some(other) = horizontal_lines.remove_if(|o| {
       line.end_connects_to == Wall
+        && line.orientation == o.orientation
         && line.end == o.start
         && o.start_connects_to == Wall
     }) {
@@ -67,6 +68,7 @@ pub fn merge_interrupted_lines(
 
     while let Some(other) = vertical_lines.remove_if(|o| {
       line.end_connects_to == Wall
+        && line.orientation == o.orientation
         && line.end == o.start
         && o.start_connects_to == Wall
     }) {
