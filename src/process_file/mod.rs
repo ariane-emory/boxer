@@ -110,6 +110,10 @@ pub fn process_file(path: &str) -> Result<()> {
 
   let free_lines = merge_interrupted_lines(free_lines);
 
+  free_lines
+    .iter()
+    .for_each(|line| println!("Free Line:          {:?}", line));
+
   // let mut free_lines = free_lines;
   // free_lines.sort();
   // free_lines.reverse();
