@@ -35,6 +35,12 @@ pub fn find_networks(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
                 == other.is_horizontal()
                 || line.is_vertical() == other.is_vertical();
 
+              if !same_orientation {
+                return true;
+              }
+
+              println!("Check {:?} vs {:?}...", line, other);
+
               // Validate connection based on orientation and ConnectionType
               (line.start_connects_to == Wall || line.end_connects_to == Wall)
                 && same_orientation
