@@ -4,7 +4,7 @@ mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
 //use crate::simple_geo::find_rectangles;
-use crate::simple_geo::analyze_chain;
+//use crate::simple_geo::analyze_chain;
 use crate::simple_geo::chain_get_network;
 use crate::simple_geo::find_chains;
 use crate::simple_matrix::matrix_max_row_len;
