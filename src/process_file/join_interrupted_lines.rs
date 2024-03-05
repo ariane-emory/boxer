@@ -33,9 +33,8 @@ fn join_similarly_oriented_interrupted_lines(
   lines.sort();
   // lines.reverse();
   while let Some(mut line) = lines.pop() {
-    println!("Looking for merges for {:?}...", line);
-
     while line.start_connects_to == AnotherLine {
+      println!("Looking for merges for {:?}...", line);
       if let Some(other) = lines.pop() {
         println!("  Considering {:?}...", other);
         if line.start != other.end || other.end_connects_to != AnotherLine {
