@@ -10,7 +10,7 @@ pub fn join_interrupted_lines(
   lines.sort();
   lines.reverse();
   while let Some(mut line) = lines.pop() {
-    println!("\nLooking for merges for {:?}...", line);
+    println!("Looking for merges for {:?}...", line);
 
     while let Some(other) = lines.remove_if(|o| {
       line.end_connects_to == Wall
