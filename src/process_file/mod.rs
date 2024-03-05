@@ -6,7 +6,6 @@ use crate::util::noisy_print;
 mod make_process_bidirectionally_fun;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
 
-use crate::connected_line_maker::ConnectedLineMaker;
 #[allow(unused_imports)]
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
@@ -22,9 +21,7 @@ use crate::util::ErrString;
 use crate::simple_matrix::*;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
-use std::cell::RefCell;
 use std::io::Result;
-use std::rc::Rc;
 
 /////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
