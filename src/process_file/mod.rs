@@ -135,25 +135,64 @@ pub fn process_file(path: &str) -> Result<()> {
   while let Some(mut line) = horizontal_lines.pop() {
     println!("\nLooking for merges for {:?}...", line);
 
-    if line.end_connects_to == Wall {
-      while let Some(other) = horizontal_lines
-        .remove_if(|o| line.end == o.start && o.start_connects_to == Wall)
-      {
-        println!("Could merge with {:?}.", other);
+    while let Some(other) = horizontal_lines.remove_if(|o| {
+      line.end_connects_to == Wall
+        && line.end == o.start
+        && o.start_connects_to == Wall
+    }) {
+      println!("Could merge with {:?}.", other);
 
-        line = ConnectedLine::new(
-          line.orientation,
-          line.start,
-          other.end,
-          line.start_connects_to,
-          other.end_connects_to,
-        )
-        .unwrap();
+      line = ConnectedLine::new(
+        line.orientation,
+        line.start,
+        other.end,
+        line.start_connects_to,
+        other.end_connects_to,
+      )
+      .unwrap();
 
-        println!("Merged into: {:?}", line);
-      }
+      println!("Merged into: {:?}", line);
     }
+
+    merged_horizontal_lines.push(line);
   }
+
+  println!("");
+
+  merged_horizontal_lines
+    .iter()
+    .for_each(|line| println!("Merged Horizontal Line: {:?}", line));
+
+  while let Some(mut line) = vertical_lines.pop() {
+    println!("\nLooking for merges for {:?}...", line);
+
+    while let Some(other) = vertical_lines.remove_if(|o| {
+      line.end_connects_to == Wall
+        && line.end == o.start
+        && o.start_connects_to == Wall
+    }) {
+      println!("Could merge with {:?}.", other);
+
+      line = ConnectedLine::new(
+        line.orientation,
+        line.start,
+        other.end,
+        line.start_connects_to,
+        other.end_connects_to,
+      )
+      .unwrap();
+
+      println!("Merged into: {:?}", line);
+    }
+
+    merged_vertical_lines.push(line);
+  }
+
+  println!("");
+
+  merged_vertical_lines
+    .iter()
+    .for_each(|line| println!("Merged Vertical Line: {:?}", line));
 
   // if false {
   //   println!("");
