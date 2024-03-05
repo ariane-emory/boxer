@@ -37,7 +37,7 @@ fn join_similarly_oriented_interrupted_lines(
       println!("\nLooking for merges for {:?}...", line);
       if let Some(other) = lines.pop() {
         println!("  Considering {:?}...", other);
-        if line.start != other.end || other.end_connects_to != Wall {
+        if (line.start != other.end) || (other.end_connects_to != Wall) {
           println!("  Breaking!");
           //          break;
         }
