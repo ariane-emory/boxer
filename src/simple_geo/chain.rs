@@ -55,41 +55,6 @@ pub fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn analyze_chain(
-  chain: &Vec<ConnectedLine>,
-) -> Option<(Option<Point>, Option<Point>)> {
-  let mut point_occurrences = HashMap::new();
-
-  // Count occurrences of each point
-  for line in chain {
-    *point_occurrences.entry(line.start).or_insert(0) += 1;
-    *point_occurrences.entry(line.end).or_insert(0) += 1;
-  }
-
-  let mut unique_points = point_occurrences
-    .into_iter()
-    .filter(|&(_, count)| count == 1)
-    .map(|(point, _)| point)
-    .collect::<Vec<_>>();
-
-  unique_points.sort();
-
-  let start = unique_points.first().cloned();
-  let end = unique_points.last().cloned();
-
-  // If there are exactly 2 unique points, return them as start and end
-  // If there are 0 unique points, it's a loop (return None to indicate no
-  // unique start/end) If there's 1 or more than 2 unique points, the chain
-  // might be malformed or disconnected
-  match unique_points.len() {
-    2 => Some((start, end)),
-    0 => Some((None, None)), // Indicate a loop with None values
-    _ => None,               // Malformed or disconnected chain
-  }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 pub fn chain_get_network(chain: &[ConnectedLine]) -> Vec<Point> {
   let mut connectivity_map = HashMap::new();
 
