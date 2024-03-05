@@ -241,12 +241,12 @@ fn extract_lines_and_words(
     |pos, byte| log_labeled_byte(Horizontal, pos, byte);
   let log_byte_with_orientation_and_flipped_pos =
     |pos, byte| log_labeled_byte(Vertical, flip_pos(pos), byte);
-  let is_non_ascii_byte = |byte: u8| {
+  let is_non_ascii_byte = |byte| {
     (byte & 128 != 0)
       .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
   };
-  let offset_line = |pos| pos.offset_by(LINE_OFFSET, 0);
-  let offset_column = |pos| pos.offset_by(0, LINE_OFFSET);
+  let offset_line = |pos: Point| pos.offset_by(LINE_OFFSET, 0);
+  let offset_column = |pos: Point| pos.offset_by(0, LINE_OFFSET);
 
   let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
     b'|',
