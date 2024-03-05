@@ -1,7 +1,5 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
-// use crate::simple_geo::ConnectionType::*;
-use crate::simple_geo::LineMethods;
 use crate::simple_geo::Point;
 use std::collections::{HashMap, HashSet};
 
