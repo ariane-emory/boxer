@@ -28,21 +28,6 @@ impl Word {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-impl Offsetable for Word {
-  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
-    Self::new(
-      &self.string,
-      self.start.offset_by(line_offset, col_offset),
-      self.end.offset_by(line_offset, col_offset),
-    )
-    .unwrap()
-  }
-
-  fn flip(&self) -> Self {
-    Self::new(&self.string, self.start.flip(), self.end.flip()).unwrap()
-  }
-}
-////////////////////////////////////////////////////////////////////////////////
 impl fmt::Debug for Word {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     write!(f, "Word({:?} → {:?} {:?})", self.start, self.end, self.string)
@@ -56,5 +41,22 @@ impl Positional for Word {
 
   fn bottom_right(&self) -> Point {
     self.end
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Offsetable for Word {
+  fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
+    Self::new(
+      &self.string,
+      self.start.offset_by(line_offset, col_offset),
+      self.end.offset_by(line_offset, col_offset),
+    )
+    .unwrap()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Flippable for Word {
+  fn flip(&self) -> Self {
+    Self::new(&self.string, self.start.flip(), self.end.flip()).unwrap()
   }
 }

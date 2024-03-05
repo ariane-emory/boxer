@@ -7,6 +7,7 @@ use crate::connected_line_maker::ConnectedLineMaker;
 #[allow(unused_imports)]
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
+use crate::simple_geo::Flippable;
 use crate::simple_geo::LineMethods;
 use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation;

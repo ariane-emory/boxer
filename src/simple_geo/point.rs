@@ -7,25 +7,6 @@ pub struct Point {
   pub line: usize,
   pub col: usize,
 }
-
-////////////////////////////////////////////////////////////////////////////////
-impl fmt::Debug for Point {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "(L{:<2}:C{:<2})", self.line, self.col)
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-impl Positional for Point {
-  fn top_left(&self) -> Self {
-    *self
-  }
-
-  fn bottom_right(&self) -> Self {
-    *self
-  }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 impl Point {
   pub fn new(line: usize, col: usize) -> Self {
@@ -46,11 +27,25 @@ impl Point {
       + (self.line as isize - other.line as isize).abs() as usize
   }
 }
-impl Offsetable for Point {
-  fn flip(&self) -> Self {
-    Self::new(self.col, self.line)
+////////////////////////////////////////////////////////////////////////////////
+impl fmt::Debug for Point {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "(L{:<2}:C{:<2})", self.line, self.col)
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+impl Positional for Point {
+  fn top_left(&self) -> Self {
+    *self
   }
 
+  fn bottom_right(&self) -> Self {
+    *self
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Offsetable for Point {
   fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
     let new_line = if line_offset < 0 {
       self.line.checked_sub((-line_offset) as usize)
@@ -71,5 +66,11 @@ impl Offsetable for Point {
       (Some(line), Some(col)) => Self::new(line, col),
       _ => panic!("Offset results in underflow or overflow"),
     }
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Flippable for Point {
+  fn flip(&self) -> Self {
+    Self::new(self.col, self.line)
   }
 }

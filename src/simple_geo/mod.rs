@@ -2,6 +2,7 @@
 
 pub mod connected_line;
 pub mod find_rectangles;
+pub mod flippable;
 pub mod line;
 pub mod line_methods;
 pub mod offsetable;
@@ -16,6 +17,7 @@ use crate::util::*;
 
 pub use connected_line::*;
 pub use find_rectangles::*;
+pub use flippable::*;
 pub use line::*;
 pub use line_methods::*;
 pub use offsetable::*;

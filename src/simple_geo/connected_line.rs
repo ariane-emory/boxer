@@ -163,22 +163,24 @@ impl Positional for ConnectedLine {
 impl LineMethods for ConnectedLine {}
 ////////////////////////////////////////////////////////////////////////////////
 impl Offsetable for ConnectedLine {
-  fn flip(&self) -> Self {
-    Self::new(
-      self.orientation,
-      self.start().flip(),
-      self.end().flip(),
-      self.start_connects_to,
-      self.end_connects_to,
-    )
-    .unwrap()
-  }
-
   fn offset_by(&self, line_offset: isize, col_offset: isize) -> Self {
     Self::new(
       self.orientation,
       self.start.offset_by(line_offset, col_offset),
       self.end.offset_by(line_offset, col_offset),
+      self.start_connects_to,
+      self.end_connects_to,
+    )
+    .unwrap()
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+impl Flippable for ConnectedLine {
+  fn flip(&self) -> Self {
+    Self::new(
+      self.orientation,
+      self.start().flip(),
+      self.end().flip(),
       self.start_connects_to,
       self.end_connects_to,
     )
