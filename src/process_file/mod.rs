@@ -3,8 +3,8 @@ mod extract_lines_and_words;
 mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
-use crate::simple_geo::chain_get_network;
-use crate::simple_geo::find_chains;
+use crate::simple_geo::network_get_network;
+use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_matrix::matrix_max_row_len;
@@ -100,17 +100,17 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let chains = find_chains(&free_lines);
+  let networks = find_networks(&free_lines);
 
-  for (i, chain) in chains.iter().enumerate() {
-    //chain.sort();
+  for (i, network) in networks.iter().enumerate() {
+    //network.sort();
     println!("Network #{}:", i + 1);
-    chain
+    network
       .iter()
       .enumerate()
       .for_each(|(i, line)| println!("  Line #{}:      {:?}", i, line));
 
-    let net = chain_get_network(&chain);
+    let net = network_get_network(&network);
 
     for (i, point) in net.iter().enumerate() {
       println!("  End point #{}:  {:?}", i + 1, point);

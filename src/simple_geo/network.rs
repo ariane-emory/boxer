@@ -4,7 +4,7 @@ use crate::simple_geo::Point;
 use std::collections::{HashMap, HashSet};
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
+pub fn find_networks(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
   let mut graph: HashMap<Point, Vec<ConnectedLine>> = HashMap::new();
 
   for line in lines {
@@ -14,56 +14,56 @@ pub fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 
   let mut visited_points: HashSet<Point> = HashSet::new();
   let mut visited_lines: HashSet<ConnectedLine> = HashSet::new();
-  let mut chains: Vec<Vec<ConnectedLine>> = Vec::new();
+  let mut networks: Vec<Vec<ConnectedLine>> = Vec::new();
 
   fn dfs(
     point: &Point,
     graph: &HashMap<Point, Vec<ConnectedLine>>,
     visited_points: &mut HashSet<Point>,
     visited_lines: &mut HashSet<ConnectedLine>,
-    chain: &mut Vec<ConnectedLine>,
+    network: &mut Vec<ConnectedLine>,
   ) {
     if visited_points.insert(*point) {
       if let Some(lines) = graph.get(point) {
         for line in lines {
           if visited_lines.insert(*line) {
-            chain.push(*line);
+            network.push(*line);
             let next_point = if line.start == *point {
               &line.end
             }
             else {
               &line.start
             };
-            dfs(next_point, graph, visited_points, visited_lines, chain);
+            dfs(next_point, graph, visited_points, visited_lines, network);
           }
         }
       }
     }
   }
 
-  // Find and group chains
+  // Find and group networks
   for point in graph.keys() {
     if !visited_points.contains(point) {
-      let mut chain = Vec::new();
-      dfs(point, &graph, &mut visited_points, &mut visited_lines, &mut chain);
-      if !chain.is_empty() {
-        chains.push(chain);
+      let mut network = Vec::new();
+      dfs(point, &graph, &mut visited_points, &mut visited_lines, &mut network);
+      if !network.is_empty() {
+        networks.push(network);
       }
     }
   }
 
-  chains
+  networks
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn chain_get_network(
-  chain: &Vec<ConnectedLine>,
+pub fn network_get_network(
+  network: &Vec<ConnectedLine>,
 ) -> Vec<(Point, ConnectionType)> {
   let mut point_connection_map: HashMap<Point, Vec<ConnectionType>> =
     HashMap::new();
 
   // Populate the map with connection types for each point
-  for line in chain {
+  for line in network {
     point_connection_map
       .entry(line.start.clone())
       .or_insert_with(Vec::new)
