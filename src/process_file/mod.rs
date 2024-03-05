@@ -6,6 +6,7 @@ mod merge_length_1_lines_with_words;
 use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::network_get_endpoints;
+use crate::simple_geo::Rectangle;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType::*;
 use crate::simple_matrix::matrix_max_row_len;
@@ -124,7 +125,14 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  for (i, network) in networks.iter().enumerate() {
+  check_for_illegal_networks(&networks, &rectangles);
+
+  Ok(())
+}
+
+
+fn check_for_illegal_networks(networks: &Vec<Vec<ConnectedLine>>, rectangles: &Vec<Rectangle>) {
+    for (i, network) in networks.iter().enumerate() {
     let endpoints = network_get_endpoints(&network);
 
     for (ii, (point, point_type)) in endpoints.iter().enumerate() {
@@ -171,6 +179,4 @@ pub fn process_file(path: &str) -> Result<()> {
       }
     }
   }
-
-  Ok(())
 }
