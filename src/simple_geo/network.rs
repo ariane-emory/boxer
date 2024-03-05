@@ -56,7 +56,7 @@ pub fn find_networks(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn network_get_network(
+pub fn network_get_endpoints(
   network: &Vec<ConnectedLine>,
 ) -> Vec<(Point, ConnectionType)> {
   let mut point_connection_map: HashMap<Point, Vec<ConnectionType>> =

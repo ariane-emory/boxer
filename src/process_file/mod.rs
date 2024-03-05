@@ -3,7 +3,7 @@ mod extract_lines_and_words;
 mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
-use crate::simple_geo::network_get_network;
+use crate::simple_geo::network_get_endpoints;
 use crate::simple_geo::find_networks;
 use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
@@ -110,7 +110,7 @@ pub fn process_file(path: &str) -> Result<()> {
       .enumerate()
       .for_each(|(i, line)| println!("  Line #{}:      {:?}", i, line));
 
-    let net = network_get_network(&network);
+    let net = network_get_endpoints(&network);
 
     for (i, point) in net.iter().enumerate() {
       println!("  End point #{}:  {:?}", i + 1, point);
