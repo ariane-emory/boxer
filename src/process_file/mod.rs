@@ -134,6 +134,7 @@ pub fn process_file(path: &str) -> Result<()> {
   let mut merged_vertical_lines: Vec<ConnectedLine> = Vec::new();
 
   while let Some(mut line) = horizontal_lines.pop() {
+    println!("Looking for merges for {:?}...", line);
     if line.end_connects_to == Wall {
       if let Some(other_line) = horizontal_lines.remove_if(|other| {
         line.start == other.start && other.start_connects_to == Wall
