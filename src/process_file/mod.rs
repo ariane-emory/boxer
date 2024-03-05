@@ -146,15 +146,27 @@ pub fn process_file(path: &str) -> Result<()> {
 
       // A network is illegal if any of it's end points are on a Wall that is
       // not part of any Rectangle:
-      if *point_type == Wall
-        && !rectangles.iter().any(|rect| rect.has_wall_point(*point))
-      {
-        panic!(
+      if *point_type == Wall {
+        let mut found_it = false;
+        for (iii, rectangle) in rectangles.iter().enumerate() {
+          if rectangle.has_wall_point(*point) {
+            println!(
+              "Found wall point on Rectangle #{}'s wall for end point {:?}.",
+              iii + 1,
+              point
+            );
+            found_it = true;
+            break;
+          }
+        }
+        if !found_it {
+          panic!(
           "Network #{} has an illegal end point #{}: {:?} on a Wall that is not part of any Rectangle.",
           i + 1,
           ii + 1,
           (point, point_type)
         );
+        }
       }
     }
   }
