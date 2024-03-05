@@ -11,7 +11,7 @@ pub enum Rotation {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn rotate_matrix<T>(matrix: &[Vec<T>], rot: Rotation) -> Vec<Vec<T>>
+pub fn rotate_matrix<T>(matrix: &Vec<Vec<T>>, rot: Rotation) -> Vec<Vec<T>>
 where
   T: Copy,
 {
