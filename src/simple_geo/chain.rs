@@ -93,13 +93,11 @@ pub fn analyze_chain(
 pub fn chain_get_network(chain: &[ConnectedLine]) -> Vec<Point> {
   let mut connectivity_map = HashMap::new();
 
-  // Track connectivity for each point
   for line in chain {
     *connectivity_map.entry(line.start.clone()).or_insert(0) += 1;
     *connectivity_map.entry(line.end.clone()).or_insert(0) += 1;
   }
 
-  // Identify end points based on connectivity
   let end_points = connectivity_map
     .into_iter()
     .filter(|&(_, count)| count == 1)
@@ -108,37 +106,3 @@ pub fn chain_get_network(chain: &[ConnectedLine]) -> Vec<Point> {
 
   end_points
 }
-
-// pub fn chain_get_network(chain: &Vec<ConnectedLine>) -> Vec<Point> {
-//   let mut point_occurrences = HashMap::new();
-
-//   // Count occurrences of each point
-//   for line in chain {
-//     *point_occurrences.entry(line.start.clone()).or_insert(0) += 1;
-//     *point_occurrences.entry(line.end.clone()).or_insert(0) += 1;
-//   }
-
-//   // Filter points to exclude those that are part of more than two lines
-//   let mut end_points = point_occurrences
-//     .into_iter()
-//     .filter(|&(_, count)| count == 1 || count == 2) // Adjusted condition
-//     .map(|(point, _)| point)
-//     .collect::<Vec<_>>();
-
-//   // Sort the end points for consistency
-//   end_points.sort();
-
-//   // Exclude points that are not ends but intersections
-//   end_points
-//     .into_iter()
-//     .filter(|point| {
-//       let mut connected_lines = 0;
-//       for line in chain {
-//         if line.start == *point || line.end == *point {
-//           connected_lines += 1;
-//         }
-//       }
-//       connected_lines < 3 // Keep only if point is part of less than 3 lines
-//     })
-//     .collect()
-// }
