@@ -1,3 +1,4 @@
+mod add_null_sentinels_to_normalized_matrix;
 mod extract_lines_and_words;
 mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
@@ -5,25 +6,11 @@ mod merge_length_1_lines_with_words;
 //use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_matrix::*;
+use add_null_sentinels_to_normalized_matrix::add_null_sentinels_to_normalized_matrix;
 use extract_lines_and_words::extract_lines_and_words;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
 use merge_length_1_lines_with_words::merge_length_1_lines_with_words;
 use std::io::Result;
-
-/////////////////////////////////////////////////////////////////////////////////
-pub fn add_null_sentinels_to_normalized_matrix(
-  mut matrix: Vec<Vec<u8>>,
-) -> Vec<Vec<u8>> {
-  let normalized_matrix_width = matrix[0].len();
-  let terminator = b'\0';
-
-  for row in matrix.iter_mut() {
-    row.push(terminator);
-  }
-
-  matrix.push(vec![terminator; normalized_matrix_width + 1]);
-  matrix
-}
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn process_file(path: &str) -> Result<()> {
