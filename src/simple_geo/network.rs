@@ -80,7 +80,9 @@ pub fn network_get_endpoints(
     .into_iter()
     .filter_map(|(point, connections)| {
       if connections.len() == 1 {
-        // Assume there's only one connection type if the point is unique
+        // This particular check only detects certain types of illegal network:
+        // For example, it does not detect networks with endpoints at Walls that
+        // are not part of any Rectangle. Those must be detected elsewhere!
         if connections[0] == ConnectionType::Corner {
           panic!("Detected illegal network: {:?}", network);
         }
