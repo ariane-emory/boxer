@@ -4,7 +4,7 @@ use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Offsetable;
-use crate::simple_geo::Orientation;
+use crate::simple_geo::Orientation::Horizontal;
 use crate::util::noisy_print;
 use crate::util::noisy_println;
 //use crate::simple_geo::Orientation::*;
@@ -20,7 +20,6 @@ fn is_word_char(byte: u8) -> bool {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker<'a> {
-  orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
@@ -37,7 +36,6 @@ pub struct ConnectedLineMaker<'a> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
   pub fn new(
-    orientation: Orientation,
     line_body_char: u8,
     wall_char: u8,
     collect_words: bool,
@@ -46,7 +44,6 @@ impl<'a> ConnectedLineMaker<'a> {
     word_postprocessor: impl Fn(Word) -> Word + 'a,
   ) -> ConnectedLineMaker<'a> {
     ConnectedLineMaker {
-      orientation,
       line_body_char,
       wall_char,
       collect_words,
@@ -113,7 +110,7 @@ impl<'a> ConnectedLineMaker<'a> {
     };
 
     let line = ConnectedLine::new(
-      self.orientation,
+      Horizontal,
       begin,
       line_end,
       self.line_begin_type,
