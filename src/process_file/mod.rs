@@ -4,8 +4,8 @@
 mod add_null_sentinels_to_normalized_matrix;
 //mod check_for_illegal_networks;
 mod extract_lines_and_words;
-mod make_process_bidirectionally_fun;
 mod join_interrupted_lines;
+mod make_process_bidirectionally_fun;
 mod merge_length_1_lines_with_words;
 
 //use crate::simple_geo::find_networks;
@@ -17,7 +17,7 @@ use crate::simple_matrix::matrix_max_row_len;
 use crate::simple_matrix::normalize_matrix_width;
 use crate::simple_matrix::read_file_to_byte_matrix;
 use add_null_sentinels_to_normalized_matrix::add_null_sentinels_to_normalized_matrix;
-use join_interrupted_lines::join_interrupted_lines;
+use join_interrupted_lines::join_all_interrupted_lines;
 //use check_for_illegal_networks::check_for_illegal_networks;
 use extract_lines_and_words::extract_lines_and_words;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
@@ -108,7 +108,7 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("");
 
-  let free_lines = join_interrupted_lines(free_lines);
+  let free_lines = join_all_interrupted_lines(free_lines);
 
   free_lines
     .iter()

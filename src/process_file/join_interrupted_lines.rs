@@ -1,8 +1,33 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType::*;
+use crate::simple_geo::Orientation::*;
 use crate::util::RemoveIf;
 
 ////////////////////////////////////////////////////////////////////////////////
+pub fn join_all_interrupted_lines(
+  lines: Vec<ConnectedLine>,
+) -> Vec<ConnectedLine> {
+  let horizontal_lines = lines
+    .iter()
+    .filter(|cl| cl.orientation == Horizontal)
+    .cloned()
+    .collect::<Vec<ConnectedLine>>();
+
+  let vertical_lines = lines
+    .iter()
+    .filter(|cl| cl.orientation == Vertical)
+    .cloned()
+    .collect::<Vec<ConnectedLine>>();
+
+  let horizontal_lines = join_interrupted_lines(horizontal_lines);
+  let vertical_lines = join_interrupted_lines(vertical_lines);
+  let mut lines = Vec::new();
+  lines.extend(horizontal_lines);
+  lines.extend(vertical_lines);
+  lines.sort();
+  lines
+}
+
 pub fn join_interrupted_lines(
   mut lines: Vec<ConnectedLine>,
 ) -> Vec<ConnectedLine> {
