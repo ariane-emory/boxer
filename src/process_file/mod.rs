@@ -35,7 +35,7 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("Extracting ConnectedLines and Words from matrix...");
   println!("================================================================================");
 
-  let (mut free_lines, words) = extract_lines_and_words(&matrix);
+  let (free_lines, words) = extract_lines_and_words(&matrix);
 
   free_lines
     .iter()

@@ -61,3 +61,42 @@ pub fn join_similarly_oriented_interrupted_lines(
   }
   merged_lines
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+#[allow(dead_code)]
+fn alternate_join_similarly_oriented_interrupted_lines(
+  mut lines: Vec<ConnectedLine>,
+) -> Vec<ConnectedLine> {
+  let mut merged_lines: Vec<ConnectedLine> = Vec::new();
+  lines.sort();
+  // lines.reverse();
+  while let Some(mut line) = lines.pop() {
+    while line.start_connects_to == Wall {
+      println!("\nLooking for merges for {:?}...", line);
+      if let Some(other) = lines.pop() {
+        println!("  Considering {:?}...", other);
+        if (line.start != other.end) || (other.end_connects_to != Wall) {
+          println!("  Breaking!");
+          break;
+        }
+        println!("  Could merge with {:?}.", other);
+        line = ConnectedLine::new(
+          line.orientation,
+          other.start,
+          line.end,
+          other.start_connects_to,
+          line.end_connects_to,
+        )
+        .unwrap();
+        println!("  Merged into: {:?}", line);
+      }
+      else {
+        break;
+      }
+    }
+    println!("  Pushing {:?}.", line);
+    merged_lines.push(line);
+  }
+  merged_lines
+}
