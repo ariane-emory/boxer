@@ -178,7 +178,12 @@ impl Offsetable for ConnectedLine {
 impl Flippable for ConnectedLine {
   fn flip(&self) -> Self {
     Self::new(
-      self.orientation,
+      if self.orientation == Orientation::Horizontal {
+        Orientation::Vertical
+      }
+      else {
+        Orientation::Horizontal
+      },
       self.start().flip(),
       self.end().flip(),
       self.start_connects_to,

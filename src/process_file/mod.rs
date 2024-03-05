@@ -27,7 +27,6 @@ static LINE_OFFSET: isize = 1;
 
 /////////////////////////////////////////////////////////////////////////////////
 pub fn make_process_bidirectionally_fun<'a>(
-  orientation: Orientation,
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
@@ -35,10 +34,11 @@ pub fn make_process_bidirectionally_fun<'a>(
   pos_preprocessor: impl Fn(Point) -> Point + 'a,
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   word_postprocessor: impl Fn(Word) -> Word + 'a,
-  custom_printer: impl Fn(Orientation, Point, u8) + 'a,
+  custom_printer: impl Fn(Point, u8) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let linemaker = ConnectedLineMaker::new(
-    orientation,
+    Horizontal, /* All lines start as Horizontal, flip them afterwards with
+                 * line_postprocessor if you want Vertical lines. */
     line_body_char,
     wall_char,
     collect_words,
@@ -56,7 +56,7 @@ pub fn make_process_bidirectionally_fun<'a>(
       panic!("Found non-ASCII byte {} at {:?}", byte, pos);
     }
 
-    custom_printer(orientation, pos, *byte);
+    custom_printer(pos, *byte);
     rc_linemaker_twin.borrow_mut().process(pos, *byte);
   })
 }
@@ -238,12 +238,11 @@ fn extract_lines_and_words(
     noisy_print!("\n[{:12?}] ", ori);
   };
   let log_byte_with_orientation =
-    |ori, pos, byte| log_labeled_byte(ori, pos, byte);
+    |pos, byte| log_labeled_byte(Horizontal, pos, byte);
   let log_byte_with_orientation_and_flipped_pos =
-    |ori, pos, byte| log_labeled_byte(ori, flip_pos(pos), byte);
+    |pos, byte| log_labeled_byte(Vertical, flip_pos(pos), byte);
 
   let (vert_linemaker, process_vert_fun) = make_process_bidirectionally_fun(
-    Vertical,
     b'|',
     b'-',
     false,
@@ -255,7 +254,6 @@ fn extract_lines_and_words(
   );
 
   let (horiz_linemaker, process_horiz_fun) = make_process_bidirectionally_fun(
-    Horizontal,
     b'-',
     b'|',
     true,
