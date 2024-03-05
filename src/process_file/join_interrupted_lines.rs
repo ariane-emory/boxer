@@ -10,13 +10,11 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .filter(|cl| cl.orientation == Horizontal)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-
   let vertical_lines = lines
     .iter()
     .filter(|cl| cl.orientation == Vertical)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-
   let horizontal_lines =
     join_similarly_oriented_interrupted_lines(horizontal_lines);
   let vertical_lines =
