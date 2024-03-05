@@ -1,6 +1,7 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::LineMethods;
 use crate::simple_geo::Offsetable;
+use crate::simple_geo::Orientation::Horizontal;
 use crate::simple_geo::Word;
 use crate::util::vec_utils::Removeql;
 use crate::util::vec_utils::SortedInsert;
@@ -12,7 +13,7 @@ pub fn merge_length_1_lines_with_words(
 ) -> (Vec<ConnectedLine>, Vec<Word>) {
   let single_length_lines = lines
     .iter()
-    .filter(|cl| cl.len() == 1)
+    .filter(|cl| cl.len() == 1 && cl.orientation == Horizontal)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
 
