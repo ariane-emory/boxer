@@ -136,10 +136,18 @@ pub fn process_file(path: &str) -> Result<()> {
     println!("Looking for merges for {:?}...", line);
 
     if line.end_connects_to == Wall {
-      if let Some(other_line) = horizontal_lines.remove_if(|other| {
-        line.end == other.start && other.start_connects_to == Wall
-      }) {
-        println!("{:?} could join {:?}.", line, other_line);
+      if let Some(other) = horizontal_lines
+        .remove_if(|o| line.end == o.start && o.start_connects_to == Wall)
+      {
+        println!("{:?} could join {:?}.", line, other);
+
+        line = ConnectedLine::new(
+          line.orientation,
+          line.start,
+          other.end,
+          line.start_connects_to,
+          other.end_connects_to,
+        );
       }
     }
   }
