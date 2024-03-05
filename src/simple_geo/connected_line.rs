@@ -6,8 +6,8 @@ use ConnectionType::*;
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub enum ConnectionType {
   Nothing,
-  Corner,
   Wall,
+  Corner,
 }
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Eq, Hash, PartialEq, Ord, PartialOrd)]
