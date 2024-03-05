@@ -105,14 +105,7 @@ pub fn process_file(path: &str) -> Result<()> {
   for (i, chain) in chains.iter().enumerate() {
     //chain.sort();
     println!("Network #{}:", i + 1);
-    chain.iter().for_each(|line| println!("  {:?}", line));
-
-    // if let Some((start, end)) = analyze_chain(&chain) {
-    //   println!("  Start: {:?}, End: {:?}", start, end);
-    // }
-    // else {
-    //   println!("  Chain ends not found.");
-    // }
+    // chain.iter().for_each(|line| println!("  {:?}", line));
 
     let net = chain_get_network(&chain);
 
