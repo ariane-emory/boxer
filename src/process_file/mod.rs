@@ -96,36 +96,38 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
-  println!("=========================-======================================================");
-  println!("Looking for networks...");
-  println!("================================================================================");
-  println!("");
+  if false {
+    println!("");
+    println!("=========================-======================================================");
+    println!("Looking for networks...");
+    println!("================================================================================");
+    println!("");
 
-  let networks = find_networks(&free_lines);
+    let networks = find_networks(&free_lines);
 
-  for (i, network) in networks.iter().enumerate() {
-    //network.sort();
-    println!("Network #{}:", i + 1);
-    network
-      .iter()
-      .enumerate()
-      .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1, line));
+    for (i, network) in networks.iter().enumerate() {
+      //network.sort();
+      println!("Network #{}:", i + 1);
+      network
+        .iter()
+        .enumerate()
+        .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1, line));
 
-    let endpoints = network_get_endpoints(&network);
+      let endpoints = network_get_endpoints(&network);
 
-    for (i, point) in endpoints.iter().enumerate() {
-      println!("  End point #{}:  {:?}", i + 1, point);
+      for (i, point) in endpoints.iter().enumerate() {
+        println!("  End point #{}:  {:?}", i + 1, point);
+      }
     }
+
+    println!("");
+    println!("=========================-======================================================");
+    println!("Checking for illegal networks...");
+    println!("================================================================================");
+    println!("");
+
+    check_for_illegal_networks(&networks, &rectangles);
   }
-
-  println!("");
-  println!("=========================-======================================================");
-  println!("Checking for illegal networks...");
-  println!("================================================================================");
-  println!("");
-
-  check_for_illegal_networks(&networks, &rectangles);
 
   Ok(())
 }
