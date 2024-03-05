@@ -1,3 +1,6 @@
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+
 mod add_null_sentinels_to_normalized_matrix;
 //mod check_for_illegal_networks;
 mod extract_lines_and_words;
@@ -106,13 +109,13 @@ pub fn process_file(path: &str) -> Result<()> {
   let mut free_lines = free_lines;
   free_lines.sort();
 
-  let horizontal_lines = free_lines
+  let mut horizontal_lines = free_lines
     .iter()
     .filter(|line| line.is_horizontal())
     .cloned()
     .collect::<Vec<ConnectedLine>>();
 
-  let vertical_lines = free_lines
+  let mut vertical_lines = free_lines
     .iter()
     .filter(|line| line.is_vertical())
     .cloned()
@@ -124,6 +127,9 @@ pub fn process_file(path: &str) -> Result<()> {
   vertical_lines
     .iter()
     .for_each(|line| println!("Vertical Line:   {:?}", line));
+
+  let mut merged_horizontal_lines: Vec<ConnectedLine> = Vec::new();
+  let mut merged_vertical_lines: Vec<ConnectedLine> = Vec::new();
 
   // if false {
   //   println!("");

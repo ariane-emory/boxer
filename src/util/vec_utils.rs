@@ -33,3 +33,24 @@ impl<T: PartialEq> Removeql<T> for Vec<T> {
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+pub trait RemoveIf<T> {
+  fn remove_if<F>(&mut self, predicate: F) -> Option<T>
+  where
+    F: FnMut(&T) -> bool;
+}
+
+impl<T> RemoveIf<T> for Vec<T> {
+  fn remove_if<F>(&mut self, predicate: F) -> Option<T>
+  where
+    F: FnMut(&T) -> bool,
+  {
+    if let Some(pos) = self.iter().position(predicate) {
+      Some(self.remove(pos))
+    }
+    else {
+      None
+    }
+  }
+}
