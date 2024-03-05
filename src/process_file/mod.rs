@@ -36,7 +36,6 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
 
   let (mut free_lines, words) = extract_lines_and_words(&matrix);
-  free_lines.sort();
 
   free_lines
     .iter()
