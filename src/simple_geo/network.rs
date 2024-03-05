@@ -81,11 +81,12 @@ pub fn network_get_endpoints(
     .filter_map(|(point, connections)| {
       if connections.len() == 1 {
         // This particular check only detects certain types of illegal network!
-        // For example, it does not detect the following types of illegal network:
+        // For example, it does not detect the following types of illegal
+        // network:
         // - networks with end points at Walls where the wall is not part of any
         //   Rectangle.
-        // - networks with end points at Corners where the corner is the corner of a
-        //   Rectangle.
+        // - networks with end points at Corners where the corner is the corner
+        //   of a Rectangle.
         // Those must be detected elsewhere!
         if connections[0] == ConnectionType::Corner {
           panic!("Detected illegal network: {:?}", network);
