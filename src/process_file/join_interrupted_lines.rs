@@ -3,7 +3,7 @@ use crate::simple_geo::ConnectionType::*;
 use crate::util::RemoveIf;
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn merge_interrupted_lines(
+pub fn join_interrupted_lines(
   mut lines: Vec<ConnectedLine>,
 ) -> Vec<ConnectedLine> {
   let mut merged_lines: Vec<ConnectedLine> = Vec::new();
