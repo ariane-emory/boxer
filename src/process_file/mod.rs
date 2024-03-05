@@ -96,38 +96,45 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  if false {
-    println!("");
-    println!("=========================-======================================================");
-    println!("Looking for networks...");
-    println!("================================================================================");
-    println!("");
+  println!("");
+  println!("================================================================================");
+  println!("Merging interrupted lines...");
+  println!("================================================================================");
+  println!("");
 
-    let networks = find_networks(&free_lines);
+  // if false {
+  //   println!("");
+  //   println!("=========================-======================================================");
+  //   println!("Looking for networks...");
+  //   println!("================================================================================");
+  //   println!("");
 
-    for (i, network) in networks.iter().enumerate() {
-      //network.sort();
-      println!("Network #{}:", i + 1);
-      network
-        .iter()
-        .enumerate()
-        .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1, line));
+  //   let networks = find_networks(&free_lines);
 
-      let endpoints = network_get_endpoints(&network);
+  //   for (i, network) in networks.iter().enumerate() {
+  //     //network.sort();
+  //     println!("Network #{}:", i + 1);
+  //     network
+  //       .iter()
+  //       .enumerate()
+  //       .for_each(|(i, line)| println!("  Line #{}:      {:?}", i + 1,
+  // line));
 
-      for (i, point) in endpoints.iter().enumerate() {
-        println!("  End point #{}:  {:?}", i + 1, point);
-      }
-    }
+  //     let endpoints = network_get_endpoints(&network);
 
-    println!("");
-    println!("=========================-======================================================");
-    println!("Checking for illegal networks...");
-    println!("================================================================================");
-    println!("");
+  //     for (i, point) in endpoints.iter().enumerate() {
+  //       println!("  End point #{}:  {:?}", i + 1, point);
+  //     }
+  //   }
 
-    check_for_illegal_networks(&networks, &rectangles);
-  }
+  //   println!("");
+  //   println!("=========================-======================================================");
+  //   println!("Checking for illegal networks...");
+  //   println!("================================================================================");
+  //   println!("");
+
+  //   check_for_illegal_networks(&networks, &rectangles);
+  // }
 
   Ok(())
 }
