@@ -5,7 +5,9 @@ mod merge_length_1_lines_with_words;
 
 //use crate::simple_geo::find_rectangles;
 use crate::simple_geo::ConnectedLine;
-use crate::simple_matrix::*;
+use crate::simple_matrix::matrix_max_row_len;
+use crate::simple_matrix::normalize_matrix_width;
+use crate::simple_matrix::read_file_to_byte_matrix;
 use add_null_sentinels_to_normalized_matrix::add_null_sentinels_to_normalized_matrix;
 use extract_lines_and_words::extract_lines_and_words;
 use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
