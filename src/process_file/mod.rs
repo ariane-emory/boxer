@@ -90,7 +90,6 @@ pub fn process_file(path: &str) -> Result<()> {
 
   let (free_lines, words) = extract_lines_and_words(&matrix);
 
-
   free_lines
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));
