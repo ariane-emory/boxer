@@ -63,6 +63,8 @@ pub fn join_similarly_oriented_interrupted_lines(
 }
 
 
+
+
 ////////////////////////////////////////////////////////////////////////////////
 #[allow(dead_code)]
 fn alternate_join_similarly_oriented_interrupted_lines(
