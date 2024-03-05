@@ -587,14 +587,14 @@ mod tests {
     assert!(leftover_lines.len() == 0);
     assert_eq!(
       rects[0],
+      Rectangle::new(Point::new(4, 3), Point::new(9, 16)).unwrap()
+    );
+    assert_eq!(
+      rects[1],
       Rectangle {
         top_left: Point::new(0, 0),
         bottom_right: Point::new(7, 7)
       }
-    );
-    assert_eq!(
-      rects[1],
-      Rectangle::new(Point::new(4, 3), Point::new(9, 16)).unwrap()
     );
   }
 }
