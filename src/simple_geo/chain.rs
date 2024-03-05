@@ -55,7 +55,7 @@ pub fn find_chains(lines: &Vec<ConnectedLine>) -> Vec<Vec<ConnectedLine>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub fn chain_get_network(chain: &[ConnectedLine]) -> Vec<Point> {
+pub fn chain_get_network(chain: &Vec<ConnectedLine>) -> Vec<Point> {
   let mut connectivity_map = HashMap::new();
 
   for line in chain {
