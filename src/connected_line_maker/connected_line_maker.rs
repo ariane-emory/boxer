@@ -2,7 +2,7 @@ use crate::noisy_print;
 use crate::noisy_println;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
-use crate::simple_geo::ConnectionType::{AnotherLine, Corner, Nothing};
+use crate::simple_geo::ConnectionType::{Wall, Corner, Nothing};
 use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation::Horizontal;
 use crate::util::noisy_print;
@@ -168,7 +168,7 @@ impl<'a> ConnectedLineMaker<'a> {
         }
       }
       else if byte == self.wall_char && distance_ok {
-        self.complete_line(byte, begin, pos, AnotherLine, true);
+        self.complete_line(byte, begin, pos, Wall, true);
       }
       else if byte != self.line_body_char {
         noisy_print!("Broke line, distance = {}. ", pos.distance(&begin));
@@ -194,7 +194,7 @@ impl<'a> ConnectedLineMaker<'a> {
         self.begin_line(pos, Nothing);
       }
       else if byte == self.wall_char {
-        self.begin_line(pos, AnotherLine);
+        self.begin_line(pos, Wall);
       }
       else if self.collect_words && is_word_char(byte) {
         if self.current_word.len() == 0 {

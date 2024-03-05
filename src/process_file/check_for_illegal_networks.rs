@@ -28,9 +28,9 @@ pub fn check_for_illegal_networks(
         }
       }
 
-      // A network is illegal if any of it's end points are on a AnotherLine
+      // A network is illegal if any of it's end points are on a Wall
       // that is not part of any Rectangle:
-      if *point_type == AnotherLine {
+      if *point_type == Wall {
         let mut found_it = false;
         for (_iii, rectangle) in rectangles.iter().enumerate() {
           if rectangle.has_wall_point(*point) {
@@ -46,7 +46,7 @@ pub fn check_for_illegal_networks(
         }
         if !found_it {
           panic!(
-            "Network #{} has an illegal end point #{}: {:?} on AnotherLine that is not part of any Rectangle.",
+            "Network #{} has an illegal end point #{}: {:?} on Wall that is not part of any Rectangle.",
             i + 1,
             ii + 1,
             (point, point_type)

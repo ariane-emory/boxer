@@ -15,7 +15,10 @@ impl Line {
     // }
 
     if !(start.is_left_aligned_with(&end) || start.is_top_aligned_with(&end)) {
-      return Err(ErrString::new("Line must be either horizontal or vertical"));
+      println!("{:?} → {:?}", start, end);
+      return Err(ErrString::new(
+        "Line must be either horizontal or vertical!",
+      ));
     }
 
     // We want the start point to be the top/left end of the line and the end
