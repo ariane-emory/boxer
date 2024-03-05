@@ -10,7 +10,7 @@ use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::Flippable;
 use crate::simple_geo::LineMethods;
 use crate::simple_geo::Offsetable;
-use crate::simple_geo::Orientation;
+//use crate::simple_geo::Orientation;
 use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
@@ -36,7 +36,7 @@ pub fn make_process_bidirectionally_fun<'a>(
   pos_preprocessor: impl Fn(Point) -> Point + 'a,
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   word_postprocessor: impl Fn(Word) -> Word + 'a,
-  custom_printer: impl Fn(Point, u8) + 'a,
+  custom_printer: impl Fn() + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let linemaker = ConnectedLineMaker::new(
     line_body_char,
@@ -56,7 +56,7 @@ pub fn make_process_bidirectionally_fun<'a>(
       panic!("{} at {:?}", err, pos);
     }
 
-    custom_printer(pos, *byte);
+    custom_printer();
     rc_linemaker_twin.borrow_mut().process(pos, *byte);
   })
 }
@@ -231,17 +231,14 @@ fn extract_lines_and_words(
 ) -> (Vec<ConnectedLine>, Vec<Word>) {
   let mut free_lines = Vec::new();
   let mut words = Vec::new();
-  let flip_pos = |pos: Point| pos.flip();
   let flip_line = |cl: ConnectedLine| cl.flip();
   let do_nothing_to_line = |line: ConnectedLine| line;
   let do_nothing_to_word = |wrd: Word| wrd;
-  let log_labeled_byte = |ori: Orientation, _pos: Point, _byte: u8| {
-    noisy_print!("\n[{:12?}] ", ori);
+  let log_orientation = |ori| {
+    move || {
+      noisy_print!("\n[{:12?}] ", ori);
+    }
   };
-  let log_byte_with_orientation =
-    |pos, byte| log_labeled_byte(Horizontal, pos, byte);
-  let log_byte_with_orientation_and_flipped_pos =
-    |pos, byte| log_labeled_byte(Vertical, flip_pos(pos), byte);
   let is_non_ascii_byte = |byte| {
     (byte & 128 != 0)
       .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
@@ -258,7 +255,7 @@ fn extract_lines_and_words(
     offset_column,
     flip_line,
     do_nothing_to_word,
-    log_byte_with_orientation_and_flipped_pos,
+    log_orientation(Vertical),
   );
 
   let (horiz_linemaker, process_horiz_fun) = make_process_bidirectionally_fun(
@@ -270,7 +267,7 @@ fn extract_lines_and_words(
     offset_line,
     do_nothing_to_line,
     do_nothing_to_word,
-    log_byte_with_orientation,
+    log_orientation(Horizontal),
   );
 
   process_matrix_bidirectionally(
