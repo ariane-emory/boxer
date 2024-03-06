@@ -257,7 +257,7 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Wall:
           _ if byte == self.wall_char => {
-            self.try_to_complete_line(byte, pos, Wall, true, false);
+            self.try_to_complete_line(byte, pos, Wall, true, true);
             //self.reset();
             //self.process(pos, byte);
             self.workpiece = PartialLine(pos, Wall);
@@ -265,7 +265,7 @@ impl<'a> ConnectedLineMaker<'a> {
           // Corner:
           b'+' => {
             noisy_print!("Corner, try to complete line. ");
-            self.try_to_complete_line(byte, pos, Corner, true, false);
+            self.try_to_complete_line(byte, pos, Corner, true, true);
             //self.reset();
             //self.process(pos, byte);
             println!("New line begun at {:?}", pos);

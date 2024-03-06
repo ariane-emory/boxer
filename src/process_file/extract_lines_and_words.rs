@@ -24,7 +24,7 @@ pub fn extract_lines_and_words(
   let do_nothing_to_word = |wrd: Word| wrd;
   let log_orientation = |ori| {
     move |_pos: Point| {
-      noisy_print!("\n[{:12?}@{:?}] ", ori, pos);
+      noisy_print!("\n[{:12?}@{:?}] ", ori, _pos);
       // noisy_print!("\n[{:12?}] ", ori);
     }
   };
