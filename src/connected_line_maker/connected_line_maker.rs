@@ -14,8 +14,8 @@ use crate::simple_geo::Word;
 ////////////////////////////////////////////////////////////////////////////////
 enum ConnectedLineMakerWorkpiece {
   SomethingBeginningAtWith(Point, u8),
-  ALineBeginningAtWith(Point, ConnectionType),
-  AWordBeginingAt(Point, String),
+  LineBeginningAtWith(Point, ConnectionType),
+  WordBeginingAtWith(Point, String),
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,38 +93,35 @@ impl<'a> ConnectedLineMaker<'a> {
   // }
 
   fn try_collect_word(&mut self) {
-    if self.collect_words {
-      if let Some(word_begin) = self.current_word_begin {
-        if self.current_word.len() > 0 {
-          let word = (self.word_postprocessor)(
-            Word::new(
-              &self.current_word,
-              word_begin,
-              word_begin.offset_by(0, (self.current_word.len() - 1) as isize),
-            )
-            .unwrap(),
-          );
-          noisy_print!("Pushing word {:?}.", word);
-          self.words.push(word)
-        }
+    if !self.collect_words {
+      return;
+    }
+    if let Some(WordBeginingAtWith(word_begin, string)) = self.workpiece {
+      if string.len() > 0 {
+        let word = (self.word_postprocessor)(
+          Word::new(
+            &string,
+            word_begin,
+            word_begin.offset_by(0, (string.len() - 1) as isize),
+          )
+          .unwrap(),
+        );
+        noisy_print!("Pushing word {:?}.", word);
+        self.words.push(word)
       }
-      self.current_word_begin = None;
-      self.current_word = String::new();
     }
   }
 
   fn reset(&mut self) {
     self.try_collect_word();
-    self.line_begin = None;
-    self.line_begin_type = Nothing;
+    self.workpiece = None;
     noisy_print!("Reset. ");
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
     noisy_print!("Begin line at {:?}. ", connection_type);
     self.try_collect_word();
-    self.line_begin = Some(pos);
-    self.line_begin_type = connection_type;
+    self.workpiece = Some(LineBeginningAtWith(pos, connection_type));
   }
 
   fn complete_line(
@@ -132,30 +129,37 @@ impl<'a> ConnectedLineMaker<'a> {
     byte: u8,
     begin: Point,
     end: Point,
-    connectection_type: ConnectionType,
+    line_end_type: ConnectionType,
     include_current: bool,
   ) {
-    let line_end = if include_current {
-      end
+    if let Some(LineBeginningAtWith(begin, line_begin_type)) = self.workpiece {
+      let end = if include_current {
+        end
+      }
+      else {
+        end.offset_by(0, -1)
+      };
+
+      let line = ConnectedLine::new(
+        Horizontal,
+        begin,
+        end,
+        line_begin_type,
+        line_end_type,
+      )
+      .unwrap();
+      noisy_print!("Created line {:?}. ", line);
+
+      let line = (self.line_postprocessor)(line);
+      self.lines.push(line);
+      noisy_print!("Pushed line {:?}. ", line);
+
+      self.reset();
+      self.process(end, byte);
     }
     else {
-      end.offset_by(0, -1)
-    };
-
-    let line = ConnectedLine::new(
-      Horizontal,
-      begin,
-      line_end,
-      self.line_begin_type,
-      connectection_type,
-    )
-    .unwrap();
-
-    noisy_print!("Created line {:?}. ", line);
-
-    self.lines.push((self.line_postprocessor)(line));
-    self.reset();
-    self.process(end, byte);
+      panic!("Confusion.");
+    }
   }
 
   pub fn process(&mut self, pos: Point, byte: u8) {
