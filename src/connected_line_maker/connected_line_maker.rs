@@ -346,7 +346,10 @@ impl<'a> ConnectedLineMaker<'a> {
             self.workpiece = PartialLine(pos, Wall);
           }
           // Unexpected character:
-          _ => self.panic_on_unexpected_char(byte),
+          _ => {
+            noisy_print!("Looking at {:?}, wall is {:?}", byte, self.wall_char);
+            self.panic_on_unexpected_char(byte);
+          }
         }
       }
       NoWorkpiece => match byte {
