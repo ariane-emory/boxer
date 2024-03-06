@@ -90,7 +90,6 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("Finding and trying to merge length-1 lines with Words...");
   println!("================================================================================");
-  println!("");
 
   let (free_lines, words) = merge_length_1_lines_with_words(free_lines, words);
 
@@ -105,9 +104,6 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   println!("Merging interrupted lines...");
   println!("================================================================================");
-  // println!("");
-
-  // let mut free_lines = free_lines;
 
   let free_lines = join_interrupted_lines(free_lines);
 
@@ -121,7 +117,6 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("=========================-======================================================");
   println!("Looking for networks...");
   println!("================================================================================");
-  println!("");
 
   let networks = find_networks(free_lines);
 

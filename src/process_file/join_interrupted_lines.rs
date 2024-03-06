@@ -9,16 +9,12 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .filter(|cl| cl.orientation == Horizontal)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-  //horizontal_lines.sort_by_key(|k| k.start.line);
-  //horizontal_lines.reverse();
-
   let mut vertical_lines = lines
     .iter()
     .filter(|cl| cl.orientation == Vertical)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
   vertical_lines.sort_by_key(|k| k.start.col);
-  //vertical_lines.reverse();
 
   vertical_lines
     .iter()

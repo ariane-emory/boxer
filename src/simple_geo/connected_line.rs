@@ -12,8 +12,9 @@ pub enum ConnectionType {
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Clone, Copy, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub struct ConnectedLine {
-  pub orientation: Orientation,
+  // The odd-looking field order is important for ordering:
   pub start: Point,
+  pub orientation: Orientation,
   pub end: Point,
   pub start_connects_to: ConnectionType,
   pub end_connects_to: ConnectionType,
