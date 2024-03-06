@@ -161,7 +161,8 @@ impl<'a> ConnectedLineMaker<'a> {
 
         let line = (self.line_postprocessor)(line);
         self.lines.push(line);
-        noisy_print!("Pushed line {:?}. ", line);
+        // noisy_print!("Pushed line {:?}. ", line);
+        noisy_print!("Pushed line. ");
 
         self.reset();
         self.process(end, byte);
@@ -182,8 +183,7 @@ impl<'a> ConnectedLineMaker<'a> {
   }
 
   pub fn process(&mut self, pos: Point, byte: u8) {
-    let tmp = format!("{:?}. ", byte as char);
-    noisy_print!("At {:?} process {:6}: ", pos, tmp);
+    noisy_print!("At {:?} process {:?}. ", pos, byte as char);
 
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art
     // lines like '+----+'.- When a '+' is observed and line_begin is None,
