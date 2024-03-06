@@ -107,6 +107,13 @@ pub fn process_file(path: &str) -> Result<()> {
   println!("================================================================================");
   // println!("");
 
+  let mut free_lines = free_lines;
+  free_lines.sort();
+
+  free_lines
+    .iter()
+    .for_each(|line| println!("Free Line:          {:?}", line));
+
   let free_lines = join_interrupted_lines(free_lines);
 
   println!("");
