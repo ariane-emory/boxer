@@ -244,7 +244,10 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Whitespace:
           b' ' => {
-            self.workpiece = PartialWord(*something_begin, String::from("+"));
+            self.workpiece = PartialWord(
+              *something_begin,
+              String::from(format!("{}", something_begin_byte as char)),
+            );
             self.try_to_collect_word();
             self.reset();
           }
