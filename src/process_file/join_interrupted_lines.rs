@@ -1,6 +1,7 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType::*;
 use crate::simple_geo::Orientation::*;
+use crate::util::vec_utils::RemoveIf;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
@@ -40,8 +41,43 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+pub fn join_similarly_oriented_interrupted_lines(
+  mut lines: Vec<ConnectedLine>,
+) -> Vec<ConnectedLine> {
+  let mut merged_lines: Vec<ConnectedLine> = Vec::new();
+  lines.sort();
+  lines.reverse();
+  while let Some(mut line) = lines.pop() {
+    println!("Looking for merges for {:?}...", line);
+
+    if line.end_connects_to == Wall {
+      while let Some(other) = lines.remove_if(|o| {
+        line.orientation == o.orientation
+          && line.end == o.start
+          && o.start_connects_to == Wall
+      }) {
+        println!("Could merge with {:?}.", other);
+
+        line = ConnectedLine::new(
+          line.orientation,
+          line.start,
+          other.end,
+          line.start_connects_to,
+          other.end_connects_to,
+        )
+        .unwrap();
+
+        println!("Merged into: {:?}", line);
+      }
+    }
+    merged_lines.push(line);
+  }
+  merged_lines
+}
+
+////////////////////////////////////////////////////////////////////////////////
 #[allow(dead_code)]
-fn join_similarly_oriented_interrupted_lines(
+fn buggy_join_similarly_oriented_interrupted_lines(
   mut lines: Vec<ConnectedLine>,
 ) -> Vec<ConnectedLine> {
   let mut merged_lines: Vec<ConnectedLine> = Vec::new();
