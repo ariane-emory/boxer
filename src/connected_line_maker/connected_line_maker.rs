@@ -313,11 +313,25 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       NoWorkpiece => match byte {
         // Bar:
-        _ if byte == self.bar_char => self.begin_something(pos, byte),
+        _ if byte == self.bar_char => {
+          if self.collect_words {
+            self.begin_something(pos, byte);
+          }
+          else {
+            self.begin_line(pos, Nothing);
+          }
+        }
+        // Corner:
+        b'+' => {
+          if self.collect_words {
+            self.begin_something(pos, byte);
+          }
+          else {
+            self.begin_line(pos, Corner);
+          }
+        }
         // Wall:
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
-        // Corner:
-        b'+' => self.begin_something(pos, b'+'),
         // Word char' when collecting words:
         _ if is_word_char(byte) && self.collect_words => {
           noisy_print!("Word char, begin word with '{}'. ", byte as char);
