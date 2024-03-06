@@ -140,7 +140,7 @@ impl<'a> ConnectedLineMaker<'a> {
     end_type: ConnectionType,
     include_current: bool,
   ) {
-    noisy_print!("Trying to complete line... ");
+    noisy_print!("Try to complete line... ");
 
     if let LineBeginningAtWith(begin, begin_type) = self.workpiece {
       let end = if include_current {
@@ -168,7 +168,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       else {
         noisy_print!(
-          "inadequate distance {} from {} to end, discarding incomplete line. ",
+          "inadequate distance {} from {:?} to {:?}, discarding. ",
           distance,
           begin,
           end
@@ -206,7 +206,7 @@ impl<'a> ConnectedLineMaker<'a> {
         }
         b'+' => {
           noisy_print!("Corner, try to complete line. ");
-          self.try_to_complete_line(byte, pos, Corner, false);
+          self.try_to_complete_line(byte, pos, Corner, true);
         }
         b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
         b'\0' => {
