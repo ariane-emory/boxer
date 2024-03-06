@@ -10,7 +10,7 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .cloned()
     .collect::<Vec<ConnectedLine>>();
   horizontal_lines.sort_by_key(|k| k.start.line);
-  horizontal_lines.reverse();
+  //horizontal_lines.reverse();
 
   let mut vertical_lines = lines
     .iter()
@@ -18,7 +18,7 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .cloned()
     .collect::<Vec<ConnectedLine>>();
   vertical_lines.sort_by_key(|k| k.start.col);
-  vertical_lines.reverse();
+  //vertical_lines.reverse();
 
   vertical_lines
     .iter()
@@ -52,14 +52,14 @@ fn join_similarly_oriented_interrupted_lines(
   while let Some(mut line) = lines.pop() {
     println!("\nLooking for merges for       {:?}...", line);
 
-    while line.end_connects_to == Wall {
+    while line.start_connects_to == Wall {
       if let Some(other) = lines.pop() {
         println!("  Considering                {:?}...", other);
-        if (line.end != other.start) || (other.start_connects_to != Wall) {
+        if (line.start != other.end) || (other.end_connects_to != Wall) {
           println!("  Breaking!");
           break;
         }
-        println!("  Will merge with            {:?}.", other);
+        //println!("  Will merge with            {:?}.", other);
         line = ConnectedLine::new(
           line.orientation,
           other.start,
