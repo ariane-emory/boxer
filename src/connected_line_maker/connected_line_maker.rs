@@ -14,9 +14,9 @@ use crate::simple_geo::Word;
 ////////////////////////////////////////////////////////////////////////////////
 enum ConnectedLineMakerWorkPiece {
   Nothing,
+  SomethingBeginningAtWith(Point, u8),
   ALineBeginningAtWith(Point, ConnectionType),
   AWordBeginingAt(Point, String),
-  SomethingBeginningAtWith(Point, u8),
 }
 
 ////////////////////////////////////////////////////////////////////////////////
