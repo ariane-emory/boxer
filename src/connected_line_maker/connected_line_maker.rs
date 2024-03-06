@@ -232,9 +232,6 @@ impl<'a> ConnectedLineMaker<'a> {
         _ => self.panic_on_unexpected_char(byte),
       },
       WordBeginingAtWith(word_begin, word_string) => {
-        let distance = pos.distance(&word_begin);
-        let distance_ok = distance > 1 || self.allow_length_one;
-
         panic!("Unhandled case 2: {:?}", self.workpiece)
       }
       NoWorkpiece => match byte {
