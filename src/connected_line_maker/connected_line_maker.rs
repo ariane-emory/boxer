@@ -117,7 +117,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
     }
     else {
-      panic!("Confusion");
+      panic!("Confusion in try_collect_word");
     }
   }
 
@@ -168,7 +168,7 @@ impl<'a> ConnectedLineMaker<'a> {
       self.process(end, byte);
     }
     else {
-      panic!("Confusion.");
+      panic!("Confusion in complete_line");
     }
   }
 
