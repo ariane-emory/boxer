@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 ////////////////////////////////////////////////////////////////////////////////
 const NOISY: bool = true;
 
@@ -5,6 +7,7 @@ const NOISY: bool = true;
 pub fn noisy_println(args: std::fmt::Arguments) {
   if NOISY {
     println!("{}", args);
+    let _ = io::stdout().flush();
   }
 }
 
@@ -20,6 +23,7 @@ macro_rules! noisy_println {
 pub fn noisy_print(args: std::fmt::Arguments) {
   if NOISY {
     print!("{}", args);
+    let _ = io::stdout().flush();
   }
 }
 
