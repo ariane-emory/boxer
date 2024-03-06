@@ -31,7 +31,7 @@ use ConnectedLineMakerWorkpiece::*;
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
   const WORD_CHARS: &str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:+-";
   WORD_CHARS.as_bytes().contains(&byte)
 }
 
@@ -218,8 +218,10 @@ impl<'a> ConnectedLineMaker<'a> {
           // Word char means this something is actually the start of a Word:
           _ if is_word_char(byte) => {
             noisy_print!("Word char, beginning word. ");
-            self.workpiece =
-              WordBeginingAtWith(*something_begin, String::from("+"));
+            self.workpiece = WordBeginingAtWith(
+              *something_begin,
+              String::from(&format!("+{}", byte as char)),
+            );
           }
           // Whitespace:
           b' ' => {
@@ -304,6 +306,8 @@ impl<'a> ConnectedLineMaker<'a> {
         _ if byte == self.bar_char => self.begin_line(pos, Nothing),
         // Wall:
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
+        // Corner:
+        b'+' => self.begin_something(pos, b'+'),
         // Word char' when collecting words:
         _ if is_word_char(byte) && self.collect_words => {
           noisy_print!("Word char, begin word with '{}'. ", byte as char);
@@ -313,8 +317,6 @@ impl<'a> ConnectedLineMaker<'a> {
         _ if is_word_char(byte) => {
           noisy_print!("Word char, ignoring. ")
         }
-        // Corner:
-        b'+' => self.begin_something(pos, b'+'),
         // Whitespace:
         b' ' => noisy_print!("Whitespace with no workpiece, do nothing. "),
         // Row terminator:
