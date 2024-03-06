@@ -22,7 +22,7 @@ pub fn extract_lines_and_words(
   let flip_line = |cl: ConnectedLine| cl.flip();
   let do_nothing_to_line = |line: ConnectedLine| line;
   let do_nothing_to_word = |wrd: Word| wrd;
-  let log_orientation = |ori| {
+  let log_fun = |ori| {
     move |_pos: Point| {
       noisy_print!("\n[{:12?}@{:?}] ", ori, _pos);
       // noisy_print!("\n[{:12?}] ", ori);
@@ -44,7 +44,7 @@ pub fn extract_lines_and_words(
     offset_column,
     flip_line,
     do_nothing_to_word,
-    log_orientation(Vertical),
+    log_fun(Vertical),
   );
 
   let (horiz_linemaker, process_horiz_fun) = make_process_bidirectionally_fun(
@@ -56,7 +56,7 @@ pub fn extract_lines_and_words(
     offset_line,
     do_nothing_to_line,
     do_nothing_to_word,
-    log_orientation(Horizontal),
+    log_fun(Horizontal),
   );
 
   process_matrix_bidirectionally(
