@@ -280,6 +280,12 @@ impl<'a> ConnectedLineMaker<'a> {
                 String::from(&format!("-{}", byte as char)),
               );
             }
+            if distance == 1 {
+              self.workpiece = PartialWord(
+                pos.offset_by(0, -1),
+                String::from(&format!("+{}", byte as char)),
+              );
+            }
             else {
               panic!("confusion");
               self.workpiece =
