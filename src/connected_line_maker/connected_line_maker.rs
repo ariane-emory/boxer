@@ -124,11 +124,11 @@ impl<'a> ConnectedLineMaker<'a> {
   fn reset(&mut self) {
     //self.try_collect_word();
     self.workpiece = NoWorkpiece;
-    noisy_println!("Reset. ");
+    noisy_print!("Reset. ");
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    noisy_println!("Begin line with {:?} at {:?}. ", connection_type, pos);
+    noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
     //self.try_collect_word();
     self.workpiece = LineBeginningAtWith(pos, connection_type);
   }
