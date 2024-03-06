@@ -27,8 +27,10 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
   lines
 }
 
+////////////////////////////////////////////////////////////////////////////////
 // This function is meant to be passed a Vec of lines whose orientations match:
-pub fn join_similarly_oriented_interrupted_lines(
+#[allow(dead_code)]
+pub fn good_join_similarly_oriented_interrupted_lines(
   mut lines: Vec<ConnectedLine>,
 ) -> Vec<ConnectedLine> {
   let mut merged_lines: Vec<ConnectedLine> = Vec::new();
@@ -67,7 +69,7 @@ pub fn join_similarly_oriented_interrupted_lines(
 
 ////////////////////////////////////////////////////////////////////////////////
 #[allow(dead_code)]
-fn alternate_join_similarly_oriented_interrupted_lines(
+fn join_similarly_oriented_interrupted_lines(
   mut lines: Vec<ConnectedLine>,
 ) -> Vec<ConnectedLine> {
   let mut merged_lines: Vec<ConnectedLine> = Vec::new();
