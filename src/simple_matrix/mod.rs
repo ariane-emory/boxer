@@ -85,8 +85,8 @@ pub fn matrix_max_row_len<T>(byte_matrix: &Vec<Vec<T>>) -> usize {
 // This fn assumes matrix is already uniform:
 pub fn process_matrix_bidirectionally(
   matrix: &Vec<Vec<u8>>,
-  process_horiz: impl Fn(&Point, &u8),
-  process_vert: impl Fn(&Point, &u8),
+  process_horiz: impl Fn(Point, u8),
+  process_vert: impl Fn(Point, u8),
 ) {
   if true {
     let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
@@ -143,13 +143,16 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-pub trait MatrixEachable<T> {
-  fn each(&self, process: impl Fn(&Point, &T));
+pub trait MatrixEachable<T>
+where
+  T: Copy,
+{
+  fn each(&self, process: impl Fn(Point, T));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-impl<T> MatrixEachable<T> for Vec<Vec<T>> {
-  fn each(&self, process: impl Fn(&Point, &T)) {
+impl<T: Copy> MatrixEachable<T> for Vec<Vec<T>> {
+  fn each(&self, process: impl Fn(Point, T)) {
     let mut pos = Point::new(0, 0);
 
     for line in 0..self.len() {
@@ -159,9 +162,9 @@ impl<T> MatrixEachable<T> for Vec<Vec<T>> {
         pos.line = line;
         pos.col = col;
 
-        let elem = &self[line][col];
+        let elem = self[line][col];
 
-        process(&pos, elem);
+        process(pos, elem);
       }
     }
   }

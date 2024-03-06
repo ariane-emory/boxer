@@ -17,7 +17,7 @@ pub fn make_process_bidirectionally_fun<'a>(
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   word_postprocessor: impl Fn(Word) -> Word + 'a,
   custom_printer: impl Fn(Point, u8) + 'a,
-) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
+) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(Point, u8) + 'a) {
   let linemaker = ConnectedLineMaker::new(
     line_body_char,
     wall_char,
@@ -29,14 +29,14 @@ pub fn make_process_bidirectionally_fun<'a>(
   let rc_linemaker = Rc::new(RefCell::new(linemaker));
   let rc_linemaker_twin = Rc::clone(&rc_linemaker);
 
-  (rc_linemaker, move |pos: &Point, byte: &u8| {
-    let pos = pos_preprocessor(*pos);
+  (rc_linemaker, move |pos: Point, byte: u8| {
+    let pos = pos_preprocessor(pos);
 
-    if let Some(err) = is_invalid_byte(*byte) {
-      panic!("{} at {:4?}", err, pos);
+    if let Some(err) = is_invalid_byte(byte) {
+      panic!("{} at {:?}", err, pos);
     }
 
-    custom_printer(pos, *byte);
-    rc_linemaker_twin.borrow_mut().process(pos, *byte);
+    custom_printer(pos, byte);
+    rc_linemaker_twin.borrow_mut().process(pos, byte);
   })
 }
