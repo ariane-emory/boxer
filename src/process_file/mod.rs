@@ -125,7 +125,7 @@ pub fn process_file(path: &str) -> Result<()> {
     //network.sort();
     println!("Network #{}:", i + 1);
     network.iter().enumerate().for_each(|(i, line)| {
-      let str = format!("Line #{}:", i);
+      let str = format!("Line #{}:", i + 1);
       println!("  {:9}      {:?}", str, line);
     });
 
