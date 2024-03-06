@@ -132,7 +132,7 @@ pub fn process_file(path: &str) -> Result<()> {
     let endpoints = network_get_endpoints(&network);
 
     for (i, point) in endpoints.iter().enumerate() {
-      println!("  End point #{}:  {:?}", i + 1, point);
+      println!(" End point #{}:  {:?}", i + 1, point);
     }
   }
 
