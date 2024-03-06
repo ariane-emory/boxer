@@ -88,7 +88,7 @@ pub fn process_matrix_bidirectionally(
   process_horiz: impl Fn(&Point, &u8),
   process_vert: impl Fn(&Point, &u8),
 ) {
-  if false {
+  if true {
     let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
     rotated_matrix.reverse();
     rotated_matrix.each(process_vert);
