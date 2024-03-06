@@ -298,6 +298,12 @@ impl<'a> ConnectedLineMaker<'a> {
             self.try_to_collect_word();
             self.reset();
           }
+          // Wall:
+          _ if byte == self.wall_char => {
+            noisy_print!("Wall, try to complete word. ");
+            self.try_to_collect_word();
+            self.workpiece = LineBeginningAtWith(pos, Wall);
+          }
           // Unexpected character:
           _ => self.panic_on_unexpected_char(byte),
         }
