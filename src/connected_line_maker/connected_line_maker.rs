@@ -245,28 +245,30 @@ impl<'a> ConnectedLineMaker<'a> {
         // Wall:
         _ if byte == self.wall_char => {
           self.try_to_complete_line(byte, pos, Wall, true);
-          self.reset();
-          self.process(pos, byte);
+          //self.reset();
+          //self.process(pos, byte);
+          self.workpiece = LineBeginningAtWith(pos, Wall);
         }
         // Corner:
         b'+' => {
           noisy_print!("Corner, try to complete line. ");
           self.try_to_complete_line(byte, pos, Corner, true);
-          self.reset();
-          self.process(pos, byte);
+          //self.reset();
+          //self.process(pos, byte);
+          self.workpiece = LineBeginningAtWith(pos, Corner);
         }
         // Whitespace:
         b' ' => {
           self.try_to_complete_line(byte, pos, Nothing, false);
           self.reset();
-          self.process(pos, byte);
+          //self.process(pos, byte);
         }
         // Row terminator:
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
           self.try_to_complete_line(byte, pos, Nothing, false);
           self.reset();
-          self.process(pos, byte);
+          //self.process(pos, byte);
         }
         // Unexpected character:
         _ => self.panic_on_unexpected_char(byte),
