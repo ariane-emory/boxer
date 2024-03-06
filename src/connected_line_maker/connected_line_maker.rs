@@ -347,7 +347,11 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Unexpected character:
           _ => {
-            noisy_print!("Looking at {:?}, wall is {:?}", byte, self.wall_char);
+            noisy_print!(
+              "Looking at {:?}, wall is {:?}",
+              byte as char,
+              self.wall_char as char,
+            );
             self.panic_on_unexpected_char(byte);
           }
         }
