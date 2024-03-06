@@ -193,17 +193,17 @@ impl<'a> ConnectedLineMaker<'a> {
 
     match &self.workpiece {
       LineBeginningAtWith(line_begin, line_begin_type) => match byte {
-        b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
+        _ if byte == self.bar_char => {
+          noisy_print!("Bar char, continuing line. ")
+        }
         _ if byte == self.wall_char => {
           self.try_to_complete_line(byte, pos, Wall, true)
-        }
-        _ if byte == self.bar_char => {
-          noisy_print!("Bar char, continuing line. ");
         }
         b'+' => {
           noisy_print!("Corner, try to complete line. ");
           self.try_to_complete_line(byte, pos, Corner, false);
         }
+        b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
           self.try_to_complete_line(byte, pos, Nothing, false);
