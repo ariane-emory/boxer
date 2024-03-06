@@ -12,9 +12,9 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 
 ////////////////////////////////////////////////////////////////////////////////
-enum Payload {
+enum ConnectedLineMakerWorkPiece {
   Nothing,
-  ALineBeginningAtWith(ConnectionType, Point),
+  ALineBeginningAtWith(Point, ConnectionType),
   AWordBeginingAt(Point, String),
   SomethingBeginningAtWith(Point, u8),
 }
