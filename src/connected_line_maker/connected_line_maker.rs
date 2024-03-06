@@ -242,11 +242,11 @@ impl<'a> ConnectedLineMaker<'a> {
               )),
             );
           }
-          // Whitespace:
+          // Whitespace: whatever started the Something is being used as a Word.
           b' ' => {
             self.workpiece = PartialWord(
               *something_begin,
-              String::from(format!("{}", something_begin_byte as char)),
+              String::from(format!("{}", *something_begin_byte as char)),
             );
             self.try_to_collect_word();
             self.reset();
@@ -351,25 +351,13 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       NoWorkpiece => match byte {
         // Bar:
-        _ if byte == self.bar_char => {
-          if self.collect_words {
-            self.begin_something(pos, byte);
-          }
-          else {
-            self.begin_line(pos, Nothing);
-          }
+        _ if byte == self.bar_char && self.collect_words => {
+          self.begin_something(pos, byte)
         }
+        _ if byte == self.bar_char => self.begin_line(pos, Nothing),
         // Corner:
-        b'+' => {
-          if self.collect_words {
-            self.begin_something(pos, byte);
-          }
-          else {
-            self.begin_line(pos, Corner);
-          }
-        }
-        // Wall:
-        _ if byte == self.wall_char => self.begin_line(pos, Wall),
+        b'+' if self.collect_words => self.begin_something(pos, byte),
+        b'+' => self.begin_line(pos, Corner),
         // Word char' when collecting words:
         _ if is_word_char(byte) && self.collect_words => {
           noisy_print!("Word char, begin word with '{}'. ", byte as char);
