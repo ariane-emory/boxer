@@ -358,6 +358,8 @@ impl<'a> ConnectedLineMaker<'a> {
         // Corner:
         b'+' if self.collect_words => self.begin_something(pos, byte),
         b'+' => self.begin_line(pos, Corner),
+        // Wall:
+        _ if byte == self.wall_char => self.begin_line(pos, Wall),
         // Word char' when collecting words:
         _ if is_word_char(byte) && self.collect_words => {
           noisy_print!("Word char, begin word with '{}'. ", byte as char);
