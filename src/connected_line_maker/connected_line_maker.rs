@@ -190,13 +190,15 @@ impl<'a> ConnectedLineMaker<'a> {
     // attempt to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a
     // line).
-    let wall_char = self.wall_char;
 
     match &self.workpiece {
       LineBeginningAtWith(line_begin, line_begin_type) => match byte {
         b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
-        _ if byte == wall_char => {
+        _ if byte == self.wall_char => {
           self.try_to_complete_line(byte, pos, Wall, true)
+        }
+        _ if byte == self.bar_char => {
+          noisy_print!("Bar char, continuing line. ");
         }
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
