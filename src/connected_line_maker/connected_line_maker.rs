@@ -2,7 +2,7 @@ use crate::noisy_print;
 use crate::noisy_println;
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
-use crate::simple_geo::ConnectionType::{Wall, Corner, Nothing};
+use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation::Horizontal;
 use crate::util::noisy_print;
@@ -14,7 +14,7 @@ use crate::simple_geo::Word;
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
   const WORD_CHARS: &str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:+";
   WORD_CHARS.as_bytes().contains(&byte)
 }
 
@@ -163,6 +163,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.complete_line(byte, begin, pos, Corner, true);
         }
         else {
+          // TODO: Probably make a Word here?
           noisy_print!("Begin line at Corner after line break! ");
           self.begin_line(pos, Corner);
         }
