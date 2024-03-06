@@ -77,14 +77,14 @@ fn join_similarly_oriented_interrupted_lines(
   // lines.reverse();
   while let Some(mut line) = lines.pop() {
     while line.start_connects_to == Wall {
-      println!("\nLooking for merges for {:?}...", line);
+      println!("\nLooking for merges for       {:?}...", line);
       if let Some(other) = lines.pop() {
-        println!("  Considering {:?}...", other);
+        println!("  Considering                {:?}...", other);
         if (line.start != other.end) || (other.end_connects_to != Wall) {
           println!("  Breaking!");
           break;
         }
-        println!("  Could merge with {:?}.", other);
+        println!("  Could merge with     {:?}.", other);
         line = ConnectedLine::new(
           line.orientation,
           other.start,
@@ -93,13 +93,13 @@ fn join_similarly_oriented_interrupted_lines(
           line.end_connects_to,
         )
         .unwrap();
-        println!("  Merged into: {:?}", line);
+        println!("  Merged into:         {:?}", line);
       }
       else {
         break;
       }
     }
-    println!("  Pushing {:?}.", line);
+    println!("  Pushing                    {:?}.", line);
     merged_lines.push(line);
   }
   merged_lines
