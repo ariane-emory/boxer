@@ -135,14 +135,12 @@ pub fn process_file(path: &str) -> Result<()> {
       println!(" End point #{}:  {:?}", i + 1, point);
     }
   }
-
   println!("");
   println!("=========================-======================================================");
   println!("Checking for illegal networks...");
   println!("================================================================================");
   println!("");
-
   check_for_illegal_networks(&networks, &rectangles);
-
+  println!("No illegal networks detected.");
   Ok(())
 }
