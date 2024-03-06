@@ -13,7 +13,6 @@ use crate::simple_geo::Word;
 
 ////////////////////////////////////////////////////////////////////////////////
 enum ConnectedLineMakerWorkpiece {
-  Nothing,
   SomethingBeginningAtWith(Point, u8),
   ALineBeginningAtWith(Point, ConnectionType),
   AWordBeginingAt(Point, String),
@@ -39,7 +38,7 @@ pub struct ConnectedLineMaker<'a> {
   word_postprocessor: Box<dyn Fn(Word) -> Word + 'a>,
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
-  workpiece: ConnectedLineMakerWorkpiece,
+  workpiece: Option<ConnectedLineMakerWorkpiece>,
   //line_begin: Option<Point>,
   //line_begin_type: ConnectionType,
   //current_word_begin: Option<Point>,
@@ -64,7 +63,7 @@ impl<'a> ConnectedLineMaker<'a> {
       word_postprocessor: Box::new(word_postprocessor),
       lines: Vec::new(),
       words: Vec::new(),
-      workpiece: Nothing,
+      workpiece: None,
       // line_begin: None,
       // line_begin_type: Corner,
       // current_word_begin: None,
