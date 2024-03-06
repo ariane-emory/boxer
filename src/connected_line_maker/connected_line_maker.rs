@@ -193,19 +193,17 @@ impl<'a> ConnectedLineMaker<'a> {
     let wall_char = self.wall_char;
 
     match &self.workpiece {
-      LineBeginningAtWith(line_begin, line_begin_type) => {
-        let distance = pos.distance(&line_begin);
-        let distance_ok = distance > 1
-          || (*line_begin_type == Nothing && self.allow_length_one);
-
-        match byte {
-          b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
-          _ if byte == wall_char => {
-            self.try_to_complete_line(byte, pos, Wall, true)
-          }
-          _ => panic!("Unhandled case 1: {:?}", self.workpiece),
+      LineBeginningAtWith(line_begin, line_begin_type) => match byte {
+        b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
+        _ if byte == wall_char => {
+          self.try_to_complete_line(byte, pos, Wall, true)
         }
-      }
+        b'\0' => {
+          noisy_print!("End of row, line ends in Nothing! ");
+          self.try_to_complete_line(byte, pos, Nothing, false);
+        }
+        _ => panic!("Unhandled case 1: {:?}", self.workpiece),
+      },
       WordBeginingAtWith(word_begin, word_string) => {
         let distance = pos.distance(&word_begin);
         let distance_ok = distance > 1 || self.allow_length_one;
@@ -213,8 +211,10 @@ impl<'a> ConnectedLineMaker<'a> {
         panic!("Unhandled case 2: {:?}", self.workpiece)
       }
       NoWorkpiece => match byte {
-        wall_char => self.begin_line(pos, Wall),
-        // _ => panic!("Unhandled case 3: {:?}", self.workpiece),
+        _ if byte == wall_char => self.begin_line(pos, Wall),
+        b'+' => self.begin_line(pos, Corner),
+        b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
+        _ => panic!("Unhandled case 3: {:?}", self.workpiece),
       },
     }
 
