@@ -83,10 +83,10 @@ pub fn matrix_max_row_len<T>(byte_matrix: &Vec<Vec<T>>) -> usize {
 
 /////////////////////////////////////////////////////////////////////////////////
 // This fn assumes matrix is already uniform:
-pub fn process_matrix_bidirectionally(
-  matrix: &Vec<Vec<u8>>,
-  process_horiz: impl Fn(Point, u8),
-  process_vert: impl Fn(Point, u8),
+pub fn process_matrix_bidirectionally<T: Copy>(
+  matrix: &Vec<Vec<T>>,
+  process_horiz: impl Fn(Point, T),
+  process_vert: impl Fn(Point, T),
 ) {
   if true {
     let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
