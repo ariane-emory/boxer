@@ -19,7 +19,7 @@ use crate::simple_geo::Word;
 #[derive(Debug)]
 enum ConnectedLineMakerWorkpiece {
   NoWorkpiece,
-  //SomethingBeginningAtWith(Point, u8),
+  SomethingBeginningAtWith(Point, u8),
   LineBeginningAtWith(Point, ConnectionType),
   WordBeginingAtWith(Point, String),
 }
@@ -132,6 +132,11 @@ impl<'a> ConnectedLineMaker<'a> {
     self.workpiece = LineBeginningAtWith(pos, connection_type);
   }
 
+  fn begin_something(&mut self, pos: Point, byte: u8) {
+    noisy_print!("Begin something with {:?} at {:?}. ", byte as char, pos);
+    self.workpiece = SomethingBeginningAtWith(pos, byte);
+  }
+
   fn begin_word(&mut self, pos: Point, byte: u8) {
     noisy_print!("Begin word with '{}' at {:?}. ", byte as char, pos);
     let mut string = String::new();
@@ -207,6 +212,35 @@ impl<'a> ConnectedLineMaker<'a> {
     // line).
 
     match &mut self.workpiece {
+      SomethingBeginningAtWith(something_begin, something_begin_byte) => {
+        match byte {
+          // Bar means this 'something' is actually the start of a Line:
+          _ if byte == self.bar_char => {
+            noisy_print!("Bar char, beginning line. ");
+            self.workpiece = LineBeginningAtWith(*something_begin, Corner);
+          }
+          // Word char means this something is actually the start of a Word:
+          _ if is_word_char(byte) => {
+            noisy_print!("Word char, beginning word. ");
+            self.workpiece =
+              WordBeginingAtWith(*something_begin, String::from("+"));
+          }
+          // Whitespace:
+          b' ' => {
+            self.workpiece =
+              WordBeginingAtWith(*something_begin, String::from("+"));
+            self.try_to_collect_word();
+            self.reset();
+          }
+          // Row terminator:
+          b'\0' => {
+            noisy_print!("End of row, reset. ");
+            self.reset();
+          }
+          // Unexpected character:
+          _ => self.panic_on_unexpected_char(byte),
+        }
+      }
       LineBeginningAtWith(line_begin, line_begin_type) => match byte {
         // Bar:
         _ if byte == self.bar_char => {
@@ -262,16 +296,17 @@ impl<'a> ConnectedLineMaker<'a> {
         _ if byte == self.bar_char => self.begin_line(pos, Nothing),
         // Wall:
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
-        // Word char':
+        // Word char' when collecting words:
         _ if is_word_char(byte) && self.collect_words => {
           noisy_print!("Word char, begin word with '{}'. ", byte as char);
           self.begin_word(pos, byte)
         }
+        // Word char' when not collecting words:
         _ if is_word_char(byte) => {
           noisy_print!("Word char, ignoring. ")
         }
         // Corner:
-        b'+' => self.begin_line(pos, Corner),
+        b'+' => self.begin_something(pos, b'+'),
         // Whitespace:
         b' ' => noisy_print!("Whitespace with no workpiece, do nothing. "),
         // Row terminator:
