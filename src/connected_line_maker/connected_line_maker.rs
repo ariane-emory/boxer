@@ -178,7 +178,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       else if allow_inadequate {
         noisy_print!(
-          "inadequate distance {} from {:?} to {:?}. ",
+          "inadequate line distance {} from {:?} to {:?} permitted. ",
           distance,
           begin,
           end
@@ -186,7 +186,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       else {
         panic!(
-          "inadequate distance {} from {:?} to {:?} not permitted here!",
+          "inadequate line distance {} from {:?} to {:?} not permitted here!",
           distance, begin, end
         );
       }
@@ -257,7 +257,7 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Wall:
           _ if byte == self.wall_char => {
-            self.try_to_complete_line(byte, pos, Wall, true);
+            self.try_to_complete_line(byte, pos, Wall, true, false);
             //self.reset();
             //self.process(pos, byte);
             self.workpiece = PartialLine(pos, Wall);
@@ -265,7 +265,7 @@ impl<'a> ConnectedLineMaker<'a> {
           // Corner:
           b'+' => {
             noisy_print!("Corner, try to complete line. ");
-            self.try_to_complete_line(byte, pos, Corner, true);
+            self.try_to_complete_line(byte, pos, Corner, true, false);
             //self.reset();
             //self.process(pos, byte);
             println!("New line begun at {:?}", pos);
@@ -273,7 +273,7 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Whitespace:
           b' ' => {
-            self.try_to_complete_line(byte, pos, Nothing, false);
+            self.try_to_complete_line(byte, pos, Nothing, false, true);
             self.reset();
             //self.process(pos, byte);
           }
@@ -282,7 +282,7 @@ impl<'a> ConnectedLineMaker<'a> {
             noisy_println!(
               "Word char, try to complete line and switch to word. "
             );
-            self.try_to_complete_line(byte, pos, Nothing, false);
+            self.try_to_complete_line(byte, pos, Nothing, false, true);
 
             // if distance == 2 {
             //   self.workpiece = PartialWord(
@@ -299,7 +299,7 @@ impl<'a> ConnectedLineMaker<'a> {
           // Row terminator:
           b'\0' => {
             noisy_print!("End of row, line ends in Nothing! ");
-            self.try_to_complete_line(byte, pos, Nothing, false);
+            self.try_to_complete_line(byte, pos, Nothing, false, true);
             self.reset();
             //self.process(pos, byte);
           }
