@@ -23,11 +23,12 @@ pub fn extract_lines_and_words(
   let do_nothing_to_line = |line: ConnectedLine| line;
   let do_nothing_to_word = |wrd: Word| wrd;
   let log_fun = |ori, flip_pos| {
-    move |pos: Point| {
+    move |pos: Point, byte: u8| {
       noisy_print!(
-        "\n[{:12?}@{:?}] ",
+        "\n[{:12?}@{:?} {}] ",
         ori,
-        if flip_pos { pos.flip() } else { pos }
+        if flip_pos { pos.flip() } else { pos },
+        byte as char
       );
       // noisy_print!("\n[{:12?}] ", ori);
     }
