@@ -84,7 +84,7 @@ fn join_similarly_oriented_interrupted_lines(
           println!("  Breaking!");
           break;
         }
-        println!("  Could merge with           {:?}.", other);
+        println!("  Will merge with            {:?}.", other);
         line = ConnectedLine::new(
           line.orientation,
           other.start,
