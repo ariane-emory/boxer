@@ -25,7 +25,7 @@ pub fn extract_lines_and_words(
   let log_fun = |ori, flip_pos| {
     move |pos: Point, byte: u8| {
       noisy_print!(
-        "\n[{:12?}@{:?} {}] ",
+        "\n[{:12?}@{:?} {:?}] ",
         ori,
         if flip_pos { pos.flip() } else { pos },
         byte as char
