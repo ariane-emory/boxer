@@ -117,19 +117,19 @@ impl<'a> ConnectedLineMaker<'a> {
       }
     }
     else {
-      panic!("Confusion in try_collect_word");
+      panic!("Inappropriate call to try_collect_word");
     }
   }
 
   fn reset(&mut self) {
-    self.try_collect_word();
+    //self.try_collect_word();
     self.workpiece = NoWorkpiece;
     noisy_println!("Reset. ");
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
     noisy_println!("Begin line with {:?} at {:?}. ", connection_type, pos);
-    self.try_collect_word();
+    //self.try_collect_word();
     self.workpiece = LineBeginningAtWith(pos, connection_type);
   }
 
