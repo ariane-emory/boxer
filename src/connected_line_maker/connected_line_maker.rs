@@ -191,15 +191,17 @@ impl<'a> ConnectedLineMaker<'a> {
         let distance_ok = distance > 1
           || (*line_begin_type == Nothing && self.allow_length_one);
 
-        panic!("Unhandled case: {:?}", self.workpiece)
+        panic!("Unhandled case 1: {:?}", self.workpiece)
       }
       WordBeginingAtWith(word_begin, word_string) => {
         let distance = pos.distance(&word_begin);
         let distance_ok = distance > 1 || self.allow_length_one;
 
-        panic!("Unhandled case: {:?}", self.workpiece)
+        panic!("Unhandled case 2: {:?}", self.workpiece)
       }
-      NoWorkpiece => panic!("Unhandled case: {:?}", self.workpiece),
+      NoWorkpiece => {
+        panic!("Unhandled case 3: {:?}", self.workpiece);
+      }
     }
 
     // if let Some(begin) = self.line_begin {
