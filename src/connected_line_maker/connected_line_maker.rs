@@ -310,42 +310,47 @@ impl<'a> ConnectedLineMaker<'a> {
         }
       }
       PartialWord(word_begin, ref mut word_string) => {
-        match byte {
-          // Word char':
-          _ if is_word_char(byte) => {
-            word_string.push(byte as char);
-            noisy_print!(
-              "Word char, continuing word with '{}': {:?}. ",
-              byte as char,
-              word_string
-            );
-          }
-          // Whitespace:
-          b' ' => {
-            noisy_print!("Whitespace, try to complete word. ");
-            self.try_to_collect_word();
-            self.reset();
-          }
-          // Row terminator:
-          b'\0' => {
-            noisy_print!("End of row, try to complete word. ");
-            self.try_to_collect_word();
-            self.reset();
-          }
-          // Wall:
-          _ if byte == self.wall_char => {
-            noisy_print!("Wall, try to complete word. ");
-            self.try_to_collect_word();
-            self.workpiece = PartialLine(pos, Wall);
-          }
-          // Unexpected character:
-          _ => {
-            noisy_print!(
-              "Looking at {:?}, wall is {:?}",
-              byte as char,
-              self.wall_char as char,
-            );
-            self.panic_on_unexpected_char(byte);
+        if !self.collect_words {
+          panic!("Entered PartialWord arm when !collect_words, this should not happen.");
+        }
+        else {
+          match byte {
+            // Word char':
+            _ if is_word_char(byte) => {
+              word_string.push(byte as char);
+              noisy_print!(
+                "Word char, continuing word with '{}': {:?}. ",
+                byte as char,
+                word_string
+              );
+            }
+            // Whitespace:
+            b' ' => {
+              noisy_print!("Whitespace, try to complete word. ");
+              self.try_to_collect_word();
+              self.reset();
+            }
+            // Row terminator:
+            b'\0' => {
+              noisy_print!("End of row, try to complete word. ");
+              self.try_to_collect_word();
+              self.reset();
+            }
+            // Wall:
+            _ if byte == self.wall_char => {
+              noisy_print!("Wall, try to complete word. ");
+              self.try_to_collect_word();
+              self.workpiece = PartialLine(pos, Wall);
+            }
+            // Unexpected character:
+            _ => {
+              noisy_print!(
+                "Looking at {:?}, wall is {:?}",
+                byte as char,
+                self.wall_char as char,
+              );
+              self.panic_on_unexpected_char(byte);
+            }
           }
         }
       }
