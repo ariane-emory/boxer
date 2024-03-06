@@ -279,11 +279,12 @@ impl<'a> ConnectedLineMaker<'a> {
         match byte {
           // Word char':
           _ if is_word_char(byte) => {
-            noisy_print!(
-              "Word char, continuing word with '{}'. ",
-              byte as char
-            );
             word_string.push(byte as char);
+            noisy_print!(
+              "Word char, continuing word with '{}': {:?}. ",
+              byte as char,
+              word_string
+            );
           }
           // Whitespace:
           b' ' => {
