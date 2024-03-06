@@ -5,22 +5,36 @@ use crate::util::vec_utils::RemoveIf;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
-  let horizontal_lines = lines
+  let mut horizontal_lines = lines
     .iter()
     .filter(|cl| cl.orientation == Horizontal)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
-  let vertical_lines = lines
+  horizontal_lines.sort_by_key(|k| k.start.line);
+
+  let mut vertical_lines = lines
     .iter()
     .filter(|cl| cl.orientation == Vertical)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
+  vertical_lines.sort_by_key(|k| k.start.col);
+
+  vertical_lines
+    .iter()
+    .for_each(|line| println!("Vert Line:          {:?}", line));
+  horizontal_lines
+    .iter()
+    .for_each(|line| println!("Horiz Line:         {:?}", line));
+
+  println!("\n--------------------------------------------------------------------------------");
   let vertical_lines =
     join_similarly_oriented_interrupted_lines(vertical_lines);
   println!("\n--------------------------------------------------------------------------------");
   let horizontal_lines =
     join_similarly_oriented_interrupted_lines(horizontal_lines);
+
   let mut lines = Vec::new();
+
   lines.extend(horizontal_lines);
   lines.extend(vertical_lines);
   lines.sort();
