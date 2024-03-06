@@ -1,7 +1,6 @@
 use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType::*;
 use crate::simple_geo::Orientation::*;
-use crate::util::vec_utils::RemoveIf;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
