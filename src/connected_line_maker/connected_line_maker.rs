@@ -37,7 +37,7 @@ fn is_word_char(byte: u8) -> bool {
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker<'a> {
-  line_body_char: u8,
+  bar_char: u8,
   wall_char: u8,
   collect_words: bool,
   allow_length_one: bool,
@@ -54,7 +54,7 @@ pub struct ConnectedLineMaker<'a> {
 ////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
   pub fn new(
-    line_body_char: u8,
+    bar_char: u8,
     wall_char: u8,
     collect_words: bool,
     allow_length_one: bool,
@@ -62,7 +62,7 @@ impl<'a> ConnectedLineMaker<'a> {
     word_postprocessor: impl Fn(Word) -> Word + 'a,
   ) -> ConnectedLineMaker<'a> {
     ConnectedLineMaker {
-      line_body_char,
+      bar_char,
       wall_char,
       collect_words,
       allow_length_one,
@@ -183,7 +183,7 @@ impl<'a> ConnectedLineMaker<'a> {
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art
     // lines like '+----+'.- When a '+' is observed and line_begin is None,
     // the current position is recorded. If line begin is set and the
-    // current character is the same as line_body_char, the
+    // current character is the same as bar_char, the
     // line is extended. If the current character is a '+', the line is closed
     // and added to the list of lines and line_begin is reset to None.
     // If some other character is observed in the middle (e.g., '+---a---+' the
@@ -213,7 +213,7 @@ impl<'a> ConnectedLineMaker<'a> {
         panic!("Unhandled case 2: {:?}", self.workpiece)
       }
       NoWorkpiece => match byte {
-        _ if byte == wall_char => self.begin_line(pos, Wall),
+        _ if byte == self.wall_char => self.begin_line(pos, Wall),
         b'+' => self.begin_line(pos, Corner),
         b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
         _ => panic!("Unhandled case 3: {:?}", self.workpiece),
@@ -252,7 +252,7 @@ impl<'a> ConnectedLineMaker<'a> {
     //   else if byte == self.wall_char && distance_ok {
     //     self.complete_line(byte, begin, pos, Wall, true);
     //   }
-    //   else if byte != self.line_body_char {
+    //   else if byte != self.bar_char {
     //     noisy_print!("Broke line, distance = {}. ", pos.distance(&begin));
     //     if distance_ok {
     //       self.complete_line(byte, begin, pos, Nothing, false);
@@ -275,7 +275,7 @@ impl<'a> ConnectedLineMaker<'a> {
     //   if byte == b'+' {
     //     self.begin_line(pos, Corner);
     //   }
-    //   if byte == self.line_body_char {
+    //   if byte == self.bar_char {
     //     self.begin_line(pos, Nothing);
     //   }
     //   else if byte == self.wall_char {
