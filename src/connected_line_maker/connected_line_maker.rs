@@ -200,7 +200,7 @@ impl<'a> ConnectedLineMaker<'a> {
 
         match byte {
           b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
-          _ if byte == wall_char => {
+          b if b == wall_char => {
             self.try_to_complete_line(byte, pos, Wall, true)
           }
           _ => panic!("Unhandled case 1: {:?}", self.workpiece),
