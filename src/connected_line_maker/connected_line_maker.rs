@@ -98,7 +98,7 @@ impl<'a> ConnectedLineMaker<'a> {
   //   ()
   // }
 
-  fn try_collect_word(&mut self) {
+  fn try_to_collect_word(&mut self) {
     if !self.collect_words {
       return;
     }
@@ -117,12 +117,12 @@ impl<'a> ConnectedLineMaker<'a> {
       }
     }
     else {
-      panic!("Inappropriate call to try_collect_word");
+      panic!("Inappropriate call to try_to_collect_word");
     }
   }
 
   fn reset(&mut self) {
-    //self.try_collect_word();
+    //self.try_to_collect_word();
     self.workpiece = NoWorkpiece;
     noisy_print!("Reset. ");
   }
@@ -184,7 +184,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
     }
     else {
-      panic!("Confusion in try_to_complete_line");
+      panic!("Inappropriate call to try_to_complete_line");
     }
   }
 
@@ -206,7 +206,7 @@ impl<'a> ConnectedLineMaker<'a> {
     // A Line must contain at least one line_body character ('++' is not a
     // line).
 
-    match &self.workpiece {
+    match &mut self.workpiece {
       LineBeginningAtWith(line_begin, line_begin_type) => match byte {
         // Bar:
         _ if byte == self.bar_char => {
@@ -231,8 +231,31 @@ impl<'a> ConnectedLineMaker<'a> {
         // Unexpected character:
         _ => self.panic_on_unexpected_char(byte),
       },
-      WordBeginingAtWith(word_begin, word_string) => {
-        panic!("Unhandled case 2: {:?}", self.workpiece)
+      WordBeginingAtWith(word_begin, ref mut word_string) => {
+        match byte {
+          // Word char':
+          _ if is_word_char(byte) => {
+            noisy_print!(
+              "Word char, continuing word with '{}'. ",
+              byte as char
+            );
+            word_string.push(byte as char);
+          }
+          // Whitespace:
+          b' ' => {
+            noisy_print!("Whitespace, try to complete word. ");
+            self.try_to_collect_word();
+            self.reset();
+          }
+          // Row terminator:
+          b'\0' => {
+            noisy_print!("End of row, try to complete word. ");
+            self.try_to_collect_word();
+            self.reset();
+          }
+          // Unexpected character:
+          _ => self.panic_on_unexpected_char(byte),
+        }
       }
       NoWorkpiece => match byte {
         // Bar:
