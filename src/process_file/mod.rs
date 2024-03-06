@@ -75,6 +75,7 @@ pub fn process_file(path: &str) -> Result<()> {
     find_rectangles(rectangle_candidate_lines, false);
 
   free_lines.extend(non_rectangle_candidate_lines);
+  free_lines.sort();
 
   free_lines
     .iter()

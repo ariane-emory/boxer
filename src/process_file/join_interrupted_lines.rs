@@ -14,6 +14,7 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .filter(|cl| cl.orientation == Vertical)
     .cloned()
     .collect::<Vec<ConnectedLine>>();
+
   vertical_lines.sort_by_key(|k| k.start.col);
 
   vertical_lines
