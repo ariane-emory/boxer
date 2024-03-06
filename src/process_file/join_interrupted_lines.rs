@@ -76,17 +76,3 @@ fn join_similarly_oriented_interrupted_lines(
   }
   merged_lines
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////do not delete this comment
