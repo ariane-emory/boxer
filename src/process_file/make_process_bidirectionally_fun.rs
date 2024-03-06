@@ -33,7 +33,7 @@ pub fn make_process_bidirectionally_fun<'a>(
     let pos = pos_preprocessor(*pos);
 
     if let Some(err) = is_invalid_byte(*byte) {
-      panic!("{} at {:?}", err, pos);
+      panic!("{} at {:4?}", err, pos);
     }
 
     custom_printer(pos, *byte);

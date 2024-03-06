@@ -277,7 +277,7 @@ impl<'a> ConnectedLineMaker<'a> {
             self.try_to_complete_line(byte, pos, Corner, true, true);
             //self.reset();
             //self.process(pos, byte);
-            println!("New line begun at {:?}", pos);
+            noisy_print!("New line begun at {:?}", pos);
             self.workpiece = PartialLine(pos, Corner);
           }
           // Whitespace:
@@ -288,7 +288,7 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Word character, try to finish the line and begin a word instead:
           _ if is_word_char(byte) => {
-            noisy_println!(
+            noisy_print!(
               "Word char, try to complete line and switch to word. "
             );
             self.try_to_complete_line(byte, pos, Nothing, false, true);
