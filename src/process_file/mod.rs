@@ -109,6 +109,8 @@ pub fn process_file(path: &str) -> Result<()> {
 
   let free_lines = join_interrupted_lines(free_lines);
 
+  println!("");
+
   free_lines
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));

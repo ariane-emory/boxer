@@ -17,7 +17,7 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .collect::<Vec<ConnectedLine>>();
   let horizontal_lines =
     join_similarly_oriented_interrupted_lines(horizontal_lines);
-  println!("--------------------------------------------------------------------------------");
+  println!("\n--------------------------------------------------------------------------------");
   let vertical_lines =
     join_similarly_oriented_interrupted_lines(vertical_lines);
   let mut lines = Vec::new();
