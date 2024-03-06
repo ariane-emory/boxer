@@ -150,6 +150,7 @@ impl<'a> ConnectedLineMaker<'a> {
     end: Point,
     end_type: ConnectionType,
     include_current: bool,
+    allow_inadequate: bool,
   ) {
     noisy_print!("Try to complete line... ");
 
@@ -175,12 +176,18 @@ impl<'a> ConnectedLineMaker<'a> {
         // noisy_print!("Pushed line {:?}. ", line);
         noisy_print!("Pushed line. ");
       }
-      else {
+      else if allow_inadequate {
         noisy_print!(
           "inadequate distance {} from {:?} to {:?}. ",
           distance,
           begin,
           end
+        );
+      }
+      else {
+        panic!(
+          "inadequate distance {} from {:?} to {:?} not permitted here!",
+          distance, begin, end
         );
       }
     }
@@ -272,16 +279,19 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Word character, try to finish the line and begin a word instead:
           _ if is_word_char(byte) => {
+            noisy_println!(
+              "Word char, try to complete line and switch to word. "
+            );
             self.try_to_complete_line(byte, pos, Nothing, false);
 
-            if distance == 2 {
-              self.workpiece = PartialWord(
-                pos.offset_by(0, -1),
-                String::from(&format!("-{}", byte as char)),
-              );
-            }
-            else {
-              panic!("confusion");
+            // if distance == 2 {
+            //   self.workpiece = PartialWord(
+            //     pos.offset_by(0, -1),
+            //     String::from(&format!("-{}", byte as char)),
+            //   );
+            // }
+            // else
+            {
               self.workpiece =
                 PartialWord(pos, String::from(&format!("{}", byte as char)));
             }
