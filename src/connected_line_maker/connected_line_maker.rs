@@ -122,6 +122,7 @@ impl<'a> ConnectedLineMaker<'a> {
 
     self.lines.push((self.line_postprocessor)(line));
     self.reset();
+    noisy_print!("Recurse. ");
     self.process(end, byte);
   }
 
@@ -188,10 +189,10 @@ impl<'a> ConnectedLineMaker<'a> {
         self.reset();
         noisy_println!("");
       }
-      if byte == b'+' {
+      else if byte == b'+' {
         self.begin_line(pos, Corner);
       }
-      if byte == self.line_body_char {
+      else if byte == self.line_body_char {
         self.begin_line(pos, Nothing);
       }
       else if byte == self.wall_char {
