@@ -198,21 +198,27 @@ impl<'a> ConnectedLineMaker<'a> {
 
     match &self.workpiece {
       LineBeginningAtWith(line_begin, line_begin_type) => match byte {
+        // Bar:
         _ if byte == self.bar_char => {
           noisy_print!("Bar char, continuing line. ")
         }
+        // Wall:
         _ if byte == self.wall_char => {
           self.try_to_complete_line(byte, pos, Wall, true)
         }
+        // Corner:
         b'+' => {
           noisy_print!("Corner, try to complete line. ");
           self.try_to_complete_line(byte, pos, Corner, true);
         }
+        // Whitespace:
         b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
+        // Row terminator:
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
           self.try_to_complete_line(byte, pos, Nothing, false);
         }
+        // Unexpected character:
         _ => panic!("Unhandled case 1: {:?}", self.workpiece),
       },
       WordBeginingAtWith(word_begin, word_string) => {
@@ -222,10 +228,17 @@ impl<'a> ConnectedLineMaker<'a> {
         panic!("Unhandled case 2: {:?}", self.workpiece)
       }
       NoWorkpiece => match byte {
+        // Bar:
+        _ if byte == self.bar_char => self.begin_line(pos, Nothing),
+        // Wall:
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
+        // Corner:
         b'+' => self.begin_line(pos, Corner),
-        b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
+        // Whitespace:
         b' ' => noisy_print!("Whitespace with no workpiece, do nothing. "),
+        // Row terminator:
+        b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
+        // Unexpected character.
         _ => panic!("Unhandled case 3: {:?}", self.workpiece),
       },
     }
