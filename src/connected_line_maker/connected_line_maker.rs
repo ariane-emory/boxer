@@ -167,7 +167,12 @@ impl<'a> ConnectedLineMaker<'a> {
         self.process(end, byte);
       }
       else {
-        noisy_print!("inadequate length, discarding incomplete line. ");
+        noisy_print!(
+          "inadequate distance {} from {} to end, discarding incomplete line. ",
+          distance,
+          begin,
+          end
+        );
         self.reset();
       }
     }
