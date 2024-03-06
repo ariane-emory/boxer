@@ -133,42 +133,46 @@ impl<'a> ConnectedLineMaker<'a> {
     self.workpiece = LineBeginningAtWith(pos, connection_type);
   }
 
-  fn complete_line(
+  fn try_to_complete_line(
     &mut self,
     byte: u8,
     end: Point,
-    line_end_type: ConnectionType,
+    end_type: ConnectionType,
     include_current: bool,
   ) {
     noisy_println!("Completing line... ");
 
-    if let LineBeginningAtWith(begin, line_begin_type) = self.workpiece {
+    if let LineBeginningAtWith(begin, begin_type) = self.workpiece {
       let end = if include_current {
         end
       }
       else {
         end.offset_by(0, -1)
       };
+      let distance = end.distance(&begin);
+      let distance_ok =
+        distance > 1 || (begin_type == Nothing && self.allow_length_one);
 
-      let line = ConnectedLine::new(
-        Horizontal,
-        begin,
-        end,
-        line_begin_type,
-        line_end_type,
-      )
-      .unwrap();
-      noisy_println!("Created line {:?}. ", line);
+      if distance_ok {
+        let line =
+          ConnectedLine::new(Horizontal, begin, end, begin_type, end_type)
+            .unwrap();
+        noisy_println!("Created line {:?}. ", line);
 
-      let line = (self.line_postprocessor)(line);
-      self.lines.push(line);
-      noisy_print!("Pushed line {:?}. ", line);
+        let line = (self.line_postprocessor)(line);
+        self.lines.push(line);
+        noisy_print!("Pushed line {:?}. ", line);
 
-      self.reset();
-      self.process(end, byte);
+        self.reset();
+        self.process(end, byte);
+      }
+      else {
+        noisy_println!("Inadequate length, discarding incomplete line.");
+        self.reset();
+      }
     }
     else {
-      panic!("Confusion in complete_line");
+      panic!("Confusion in try_to_complete_line");
     }
   }
 
@@ -195,8 +199,10 @@ impl<'a> ConnectedLineMaker<'a> {
           || (*line_begin_type == Nothing && self.allow_length_one);
 
         match byte {
-          b' ' => self.complete_line(byte, pos, Nothing, false),
-          wall_char if distance_ok => self.complete_line(byte, pos, Wall, true),
+          b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
+          _ if byte == wall_char => {
+            self.try_to_complete_line(byte, pos, Wall, true)
+          }
           _ => panic!("Unhandled case 1: {:?}", self.workpiece),
         }
       }
