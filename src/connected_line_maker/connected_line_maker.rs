@@ -174,18 +174,14 @@ impl<'a> ConnectedLineMaker<'a> {
         self.lines.push(line);
         // noisy_print!("Pushed line {:?}. ", line);
         noisy_print!("Pushed line. ");
-
-        self.reset();
-        self.process(end, byte);
       }
       else {
         noisy_print!(
-          "inadequate distance {} from {:?} to {:?}, discarding. ",
+          "inadequate distance {} from {:?} to {:?}. ",
           distance,
           begin,
           end
         );
-        self.reset();
       }
     }
     else {
@@ -248,19 +244,29 @@ impl<'a> ConnectedLineMaker<'a> {
         }
         // Wall:
         _ if byte == self.wall_char => {
-          self.try_to_complete_line(byte, pos, Wall, true)
+          self.try_to_complete_line(byte, pos, Wall, true);
+          self.reset();
+          self.process(pos, byte);
         }
         // Corner:
         b'+' => {
           noisy_print!("Corner, try to complete line. ");
           self.try_to_complete_line(byte, pos, Corner, true);
+          self.reset();
+          self.process(pos, byte);
         }
         // Whitespace:
-        b' ' => self.try_to_complete_line(byte, pos, Nothing, false),
+        b' ' => {
+          self.try_to_complete_line(byte, pos, Nothing, false);
+          self.reset();
+          self.process(pos, byte);
+        }
         // Row terminator:
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
           self.try_to_complete_line(byte, pos, Nothing, false);
+          self.reset();
+          self.process(pos, byte);
         }
         // Unexpected character:
         _ => self.panic_on_unexpected_char(byte),
