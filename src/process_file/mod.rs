@@ -124,10 +124,10 @@ pub fn process_file(path: &str) -> Result<()> {
   for (i, network) in networks.iter().enumerate() {
     //network.sort();
     println!("Network #{}:", i + 1);
-    network
-      .iter()
-      .enumerate()
-      .for_each(|(i, line)| println!("  Line #{}:       {:?}", i + 1, line));
+    network.iter().enumerate().for_each(|(i, line)| {
+      let str = format!("Line #{}:", i);
+      println!("  {:9}      {:?}", str, line);
+    });
 
     let endpoints = network_get_endpoints(&network);
 
