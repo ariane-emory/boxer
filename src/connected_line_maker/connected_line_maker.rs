@@ -220,7 +220,10 @@ impl<'a> ConnectedLineMaker<'a> {
             noisy_print!("Word char, beginning word. ");
             self.workpiece = WordBeginingAtWith(
               *something_begin,
-              String::from(&format!("+{}", byte as char)),
+              String::from(&format!(
+                "{}{}",
+                *something_begin_byte as char, byte as char
+              )),
             );
           }
           // Whitespace:
@@ -310,7 +313,7 @@ impl<'a> ConnectedLineMaker<'a> {
       }
       NoWorkpiece => match byte {
         // Bar:
-        _ if byte == self.bar_char => self.begin_line(pos, Nothing),
+        _ if byte == self.bar_char => self.begin_something(pos, byte),
         // Wall:
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
         // Corner:
