@@ -128,7 +128,7 @@ impl<'a> ConnectedLineMaker<'a> {
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    noisy_print!("Begin line at {:?}. ", connection_type);
+    noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
     self.try_collect_word();
     self.workpiece = LineBeginningAtWith(pos, connection_type);
   }
@@ -140,6 +140,8 @@ impl<'a> ConnectedLineMaker<'a> {
     line_end_type: ConnectionType,
     include_current: bool,
   ) {
+    noisy_println!("Completing line... ");
+
     if let LineBeginningAtWith(begin, line_begin_type) = self.workpiece {
       let end = if include_current {
         end
@@ -172,7 +174,7 @@ impl<'a> ConnectedLineMaker<'a> {
 
   pub fn process(&mut self, pos: Point, byte: u8) {
     let tmp = format!("{:?}. ", byte as char);
-    noisy_print!("At {:?} process {:6}", pos, tmp);
+    noisy_println!("At {:?} process {:6}", pos, tmp);
 
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art
     // lines like '+----+'.- When a '+' is observed and line_begin is None,
@@ -184,6 +186,7 @@ impl<'a> ConnectedLineMaker<'a> {
     // attempt to create a line is abandoned (and line_begin becomes None).
     // A Line must contain at least one line_body character ('++' is not a
     // line).
+    let wall_char = self.wall_char;
 
     match &self.workpiece {
       LineBeginningAtWith(line_begin, line_begin_type) => {
@@ -191,7 +194,11 @@ impl<'a> ConnectedLineMaker<'a> {
         let distance_ok = distance > 1
           || (*line_begin_type == Nothing && self.allow_length_one);
 
-        panic!("Unhandled case 1: {:?}", self.workpiece)
+        match byte {
+          b' ' => self.complete_line(byte, pos, Nothing, false),
+          wall_char if distance_ok => self.complete_line(byte, pos, Wall, true),
+          _ => panic!("Unhandled case 1: {:?}", self.workpiece),
+        }
       }
       WordBeginingAtWith(word_begin, word_string) => {
         let distance = pos.distance(&word_begin);
@@ -199,9 +206,10 @@ impl<'a> ConnectedLineMaker<'a> {
 
         panic!("Unhandled case 2: {:?}", self.workpiece)
       }
-      NoWorkpiece => {
-        panic!("Unhandled case 3: {:?}", self.workpiece);
-      }
+      NoWorkpiece => match byte {
+        wall_char => self.begin_line(pos, Wall),
+        // _ => panic!("Unhandled case 3: {:?}", self.workpiece),
+      },
     }
 
     // if let Some(begin) = self.line_begin {

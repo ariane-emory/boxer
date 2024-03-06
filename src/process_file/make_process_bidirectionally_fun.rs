@@ -16,7 +16,7 @@ pub fn make_process_bidirectionally_fun<'a>(
   pos_preprocessor: impl Fn(Point) -> Point + 'a,
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
   word_postprocessor: impl Fn(Word) -> Word + 'a,
-  custom_printer: impl Fn() + 'a,
+  custom_printer: impl Fn(Point) + 'a,
 ) -> (Rc<RefCell<ConnectedLineMaker<'a>>>, impl Fn(&Point, &u8) + 'a) {
   let linemaker = ConnectedLineMaker::new(
     line_body_char,
@@ -36,7 +36,7 @@ pub fn make_process_bidirectionally_fun<'a>(
       panic!("{} at {:?}", err, pos);
     }
 
-    custom_printer();
+    custom_printer(pos);
     rc_linemaker_twin.borrow_mut().process(pos, *byte);
   })
 }

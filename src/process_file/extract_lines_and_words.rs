@@ -23,8 +23,8 @@ pub fn extract_lines_and_words(
   let do_nothing_to_line = |line: ConnectedLine| line;
   let do_nothing_to_word = |wrd: Word| wrd;
   let log_orientation = |ori| {
-    move || {
-      noisy_print!("\n[{:12?}] ", ori);
+    move |pos: Point| {
+      noisy_print!("\n[{:12?}@{:?}] ", ori, pos);
     }
   };
   let is_non_ascii_byte = |byte| {
