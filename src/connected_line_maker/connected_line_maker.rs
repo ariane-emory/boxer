@@ -129,8 +129,14 @@ impl<'a> ConnectedLineMaker<'a> {
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
     noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
-    //self.try_collect_word();
     self.workpiece = LineBeginningAtWith(pos, connection_type);
+  }
+
+  fn begin_word(&mut self, pos: Point, byte: u8) {
+    noisy_print!("Begin word with '{}' at {:?}. ", byte as char, pos);
+    let mut string = String::new();
+    string.push(byte as char);
+    self.workpiece = WordBeginingAtWith(pos, string);
   }
 
   fn try_to_complete_line(
@@ -182,6 +188,10 @@ impl<'a> ConnectedLineMaker<'a> {
     }
   }
 
+  fn panic_on_unexpected_char(&self, byte: u8) {
+    panic!("Unexpected characer {:?} during {:?}", byte as char, self.workpiece)
+  }
+
   pub fn process(&mut self, pos: Point, byte: u8) {
     noisy_print!("At {:?} process {:?}. ", pos, byte as char);
 
@@ -219,7 +229,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.try_to_complete_line(byte, pos, Nothing, false);
         }
         // Unexpected character:
-        _ => panic!("Unhandled case 1: {:?}", self.workpiece),
+        _ => self.panic_on_unexpected_char(byte),
       },
       WordBeginingAtWith(word_begin, word_string) => {
         let distance = pos.distance(&word_begin);
@@ -232,6 +242,10 @@ impl<'a> ConnectedLineMaker<'a> {
         _ if byte == self.bar_char => self.begin_line(pos, Nothing),
         // Wall:
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
+        // Word char':
+        _ if self.collect_words && is_word_char(byte) => {
+          self.begin_word(pos, byte)
+        }
         // Corner:
         b'+' => self.begin_line(pos, Corner),
         // Whitespace:
@@ -239,102 +253,8 @@ impl<'a> ConnectedLineMaker<'a> {
         // Row terminator:
         b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
         // Unexpected character.
-        _ => panic!("Unhandled case 3: {:?}", self.workpiece),
+        _ => self.panic_on_unexpected_char(byte),
       },
     }
-
-    // if let Some(begin) = self.line_begin {
-    //   // in order to ensure that the line is at least two characters long, we
-    //   // will need to check the distance between the current position and
-    //   // the line begin position:
-    //   let distance = pos.distance(&begin);
-    //   let distance_ok = distance > 1
-    //     || (self.line_begin_type == Nothing && self.allow_length_one);
-
-    //   if byte == b'\0' {
-    //     if distance_ok {
-    //       noisy_print!("End of row, line ends in Nothing! ");
-    //       self.complete_line(byte, begin, pos, Nothing, false);
-    //     }
-    //     else {
-    //       noisy_print!("End of row, no line! ");
-    //       self.reset();
-    //     }
-    //     noisy_println!("");
-    //   }
-    //   else if byte == b'+' {
-    //     if distance_ok {
-    //       self.complete_line(byte, begin, pos, Corner, true);
-    //     }
-    //     else {
-    //       // TODO: Probably make a Word here?
-    //       noisy_print!("Begin line at Corner after line break! ");
-    //       self.begin_line(pos, Corner);
-    //     }
-    //   }
-    //   else if byte == self.wall_char && distance_ok {
-    //     self.complete_line(byte, begin, pos, Wall, true);
-    //   }
-    //   else if byte != self.bar_char {
-    //     noisy_print!("Broke line, distance = {}. ", pos.distance(&begin));
-    //     if distance_ok {
-    //       self.complete_line(byte, begin, pos, Nothing, false);
-    //     }
-    //     else {
-    //       self.reset();
-    //       self.process(pos, byte);
-    //     }
-    //   }
-    //   else {
-    //     noisy_print!("Body char? ");
-    //   }
-    // }
-    // else {
-    //   if byte == b'\0' {
-    //     noisy_print!("End of row! ");
-    //     self.reset();
-    //     noisy_println!("");
-    //   }
-    //   if byte == b'+' {
-    //     self.begin_line(pos, Corner);
-    //   }
-    //   if byte == self.bar_char {
-    //     self.begin_line(pos, Nothing);
-    //   }
-    //   else if byte == self.wall_char {
-    //     self.begin_line(pos, Wall);
-    //   }
-    //   else if self.collect_words && is_word_char(byte) {
-    //     if self.current_word.len() == 0 {
-    //       noisy_print!("Begin word at {:?} with '{}'.", pos, byte as char);
-    //       self.current_word_begin = Some(pos);
-    //     }
-    //     self.current_word.push(byte as char);
-    //     noisy_print!(
-    //       "Add char '{}', word = \"{}\".",
-    //       byte as char,
-    //       self.current_word
-    //     );
-    //   }
-    //   else if byte == b' ' {
-    //     noisy_print!("Whitespace");
-    //     if self.current_word.len() > 0 {
-    //       noisy_print!(", holding {:?}. ", self.current_word);
-    //     }
-    //     else {
-    //       noisy_print!(". ");
-    //     }
-    //     self.reset();
-    //   }
-    //   else {
-    //     noisy_print!("Ignore '{}'", byte as char);
-    //     if self.current_word.len() > 0 {
-    //       noisy_print!(", holding {:?}. ", self.current_word);
-    //     }
-    //     else {
-    //       noisy_print!(". ");
-    //     }
-    //   }
-    // }
   }
 }
