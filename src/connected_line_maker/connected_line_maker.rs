@@ -140,7 +140,7 @@ impl<'a> ConnectedLineMaker<'a> {
     end_type: ConnectionType,
     include_current: bool,
   ) {
-    noisy_print!("Completing line... ");
+    noisy_print!("Trying to complete line... ");
 
     if let LineBeginningAtWith(begin, begin_type) = self.workpiece {
       let end = if include_current {
