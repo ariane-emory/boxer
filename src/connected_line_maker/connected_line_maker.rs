@@ -267,16 +267,12 @@ impl<'a> ConnectedLineMaker<'a> {
           // Wall:
           _ if byte == self.wall_char => {
             self.try_to_complete_line(byte, pos, Wall, true, true);
-            //self.reset();
-            //self.process(pos, byte);
             self.workpiece = PartialLine(pos, Wall);
           }
           // Corner:
           b'+' => {
             noisy_print!("Corner, try to complete line. ");
             self.try_to_complete_line(byte, pos, Corner, true, true);
-            //self.reset();
-            //self.process(pos, byte);
             noisy_print!("New line begun at {:?}", pos);
             self.workpiece = PartialLine(pos, Corner);
           }
@@ -284,25 +280,19 @@ impl<'a> ConnectedLineMaker<'a> {
           b' ' => {
             self.try_to_complete_line(byte, pos, Nothing, false, true);
             self.reset();
-            //self.process(pos, byte);
           }
           // Word character, try to finish the line and begin a word instead:
           _ if is_word_char(byte) => {
-            noisy_print!(
-              "Word char, try to complete line and switch to word. "
-            );
-            self.try_to_complete_line(byte, pos, Nothing, false, true);
-
-            // if distance == 2 {
-            //   self.workpiece = PartialWord(
-            //     pos.offset_by(0, -1),
-            //     String::from(&format!("-{}", byte as char)),
-            //   );
-            // }
-            // else
-            {
+            if self.collect_words {
+              noisy_print!(
+                "Word char, try to complete line and switch to word. "
+              );
+              self.try_to_complete_line(byte, pos, Nothing, false, true);
               self.workpiece =
                 PartialWord(pos, String::from(&format!("{}", byte as char)));
+            }
+            else {
+              noisy_print!("Ignoring word char. ");
             }
           }
           // Row terminator:
