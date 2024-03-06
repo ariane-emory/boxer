@@ -140,7 +140,7 @@ impl<'a> ConnectedLineMaker<'a> {
     end_type: ConnectionType,
     include_current: bool,
   ) {
-    noisy_println!("Completing line... ");
+    noisy_print!("Completing line... ");
 
     if let LineBeginningAtWith(begin, begin_type) = self.workpiece {
       let end = if include_current {
@@ -157,7 +157,7 @@ impl<'a> ConnectedLineMaker<'a> {
         let line =
           ConnectedLine::new(Horizontal, begin, end, begin_type, end_type)
             .unwrap();
-        noisy_println!("Created line {:?}. ", line);
+        noisy_print!("created line {:?}. ", line);
 
         let line = (self.line_postprocessor)(line);
         self.lines.push(line);
@@ -167,7 +167,7 @@ impl<'a> ConnectedLineMaker<'a> {
         self.process(end, byte);
       }
       else {
-        noisy_println!("Inadequate length, discarding incomplete line.");
+        noisy_print!("inadequate length, discarding incomplete line. ");
         self.reset();
       }
     }
@@ -178,7 +178,7 @@ impl<'a> ConnectedLineMaker<'a> {
 
   pub fn process(&mut self, pos: Point, byte: u8) {
     let tmp = format!("{:?}. ", byte as char);
-    noisy_println!("At {:?} process {:6}", pos, tmp);
+    noisy_print!("At {:?} process {:6}: ", pos, tmp);
 
     // Feed a character to the ConnectedLineMaker: this looks for ASCII art
     // lines like '+----+'.- When a '+' is observed and line_begin is None,
@@ -199,6 +199,10 @@ impl<'a> ConnectedLineMaker<'a> {
         }
         _ if byte == self.bar_char => {
           noisy_print!("Bar char, continuing line. ");
+        }
+        b'+' => {
+          noisy_print!("Corner, try to complete line. ");
+          self.try_to_complete_line(byte, pos, Corner, false);
         }
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
