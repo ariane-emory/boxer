@@ -225,6 +225,7 @@ impl<'a> ConnectedLineMaker<'a> {
         _ if byte == self.wall_char => self.begin_line(pos, Wall),
         b'+' => self.begin_line(pos, Corner),
         b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
+        b' ' => noisy_print!("Whitespace with no workpiece, do nothing. "),
         _ => panic!("Unhandled case 3: {:?}", self.workpiece),
       },
     }
