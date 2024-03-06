@@ -12,12 +12,15 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 
 ////////////////////////////////////////////////////////////////////////////////
-enum ConnectedLineMakerWorkPiece {
+enum ConnectedLineMakerWorkpiece {
   Nothing,
   SomethingBeginningAtWith(Point, u8),
   ALineBeginningAtWith(Point, ConnectionType),
   AWordBeginingAt(Point, String),
 }
+
+////////////////////////////////////////////////////////////////////////////////
+use ConnectedLineMakerWorkpiece::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
@@ -26,7 +29,7 @@ fn is_word_char(byte: u8) -> bool {
   WORD_CHARS.as_bytes().contains(&byte)
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 pub struct ConnectedLineMaker<'a> {
   line_body_char: u8,
   wall_char: u8,
@@ -36,12 +39,13 @@ pub struct ConnectedLineMaker<'a> {
   word_postprocessor: Box<dyn Fn(Word) -> Word + 'a>,
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
-  line_begin: Option<Point>,
-  line_begin_type: ConnectionType,
-  current_word_begin: Option<Point>,
-  current_word: String,
+  workpiece: ConnectedLineMakerWorkpiece,
+  //line_begin: Option<Point>,
+  //line_begin_type: ConnectionType,
+  //current_word_begin: Option<Point>,
+  //current_word: String,
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
   pub fn new(
     line_body_char: u8,
@@ -60,10 +64,11 @@ impl<'a> ConnectedLineMaker<'a> {
       word_postprocessor: Box::new(word_postprocessor),
       lines: Vec::new(),
       words: Vec::new(),
-      line_begin: None,
-      line_begin_type: Corner,
-      current_word_begin: None,
-      current_word: String::new(),
+      workpiece: Nothing,
+      // line_begin: None,
+      // line_begin_type: Corner,
+      // current_word_begin: None,
+      // current_word: String::new(),
     }
   }
 
