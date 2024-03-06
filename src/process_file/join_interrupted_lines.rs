@@ -4,7 +4,7 @@ use crate::simple_geo::Orientation::*;
 
 ////////////////////////////////////////////////////////////////////////////////
 pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
-  let mut horizontal_lines = lines
+  let horizontal_lines = lines
     .iter()
     .filter(|cl| cl.orientation == Horizontal)
     .cloned()
