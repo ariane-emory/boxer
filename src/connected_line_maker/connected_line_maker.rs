@@ -19,9 +19,9 @@ use crate::simple_geo::Word;
 #[derive(Debug)]
 enum ConnectedLineMakerWorkpiece {
   NoWorkpiece,
-  SomethingBeginningAtWith(Point, u8),
-  LineBeginningAtWith(Point, ConnectionType),
-  WordBeginingAtWith(Point, String),
+  Something(Point, u8),
+  PartialLine(Point, ConnectionType),
+  PartialWord(Point, String),
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ impl<'a> ConnectedLineMaker<'a> {
     if !self.collect_words {
       return;
     }
-    if let WordBeginingAtWith(word_begin, word_string) = &self.workpiece {
+    if let PartialWord(word_begin, word_string) = &self.workpiece {
       if word_string.len() > 0 {
         let word = (self.word_postprocessor)(
           Word::new(
@@ -129,19 +129,19 @@ impl<'a> ConnectedLineMaker<'a> {
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
     noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
-    self.workpiece = LineBeginningAtWith(pos, connection_type);
+    self.workpiece = PartialLine(pos, connection_type);
   }
 
   fn begin_something(&mut self, pos: Point, byte: u8) {
     noisy_print!("Begin something with {:?} at {:?}. ", byte as char, pos);
-    self.workpiece = SomethingBeginningAtWith(pos, byte);
+    self.workpiece = Something(pos, byte);
   }
 
   fn begin_word(&mut self, pos: Point, byte: u8) {
     noisy_print!("Begin word with '{}' at {:?}. ", byte as char, pos);
     let mut string = String::new();
     string.push(byte as char);
-    self.workpiece = WordBeginingAtWith(pos, string);
+    self.workpiece = PartialWord(pos, string);
   }
 
   fn try_to_complete_line(
@@ -153,7 +153,7 @@ impl<'a> ConnectedLineMaker<'a> {
   ) {
     noisy_print!("Try to complete line... ");
 
-    if let LineBeginningAtWith(begin, begin_type) = self.workpiece {
+    if let PartialLine(begin, begin_type) = self.workpiece {
       let end = if include_current {
         end
       }
@@ -208,17 +208,17 @@ impl<'a> ConnectedLineMaker<'a> {
     // line).
 
     match &mut self.workpiece {
-      SomethingBeginningAtWith(something_begin, something_begin_byte) => {
+      Something(something_begin, something_begin_byte) => {
         match byte {
           // Bar means this 'something' is actually the start of a Line:
           _ if byte == self.bar_char => {
             noisy_print!("Bar char, beginning line. ");
-            self.workpiece = LineBeginningAtWith(*something_begin, Corner);
+            self.workpiece = PartialLine(*something_begin, Corner);
           }
           // Word char means this something is actually the start of a Word:
           _ if is_word_char(byte) => {
             noisy_print!("Word char, beginning word. ");
-            self.workpiece = WordBeginingAtWith(
+            self.workpiece = PartialWord(
               *something_begin,
               String::from(&format!(
                 "{}{}",
@@ -228,8 +228,7 @@ impl<'a> ConnectedLineMaker<'a> {
           }
           // Whitespace:
           b' ' => {
-            self.workpiece =
-              WordBeginingAtWith(*something_begin, String::from("+"));
+            self.workpiece = PartialWord(*something_begin, String::from("+"));
             self.try_to_collect_word();
             self.reset();
           }
@@ -242,7 +241,7 @@ impl<'a> ConnectedLineMaker<'a> {
           _ => self.panic_on_unexpected_char(byte),
         }
       }
-      LineBeginningAtWith(line_begin, line_begin_type) => match byte {
+      PartialLine(line_begin, line_begin_type) => match byte {
         // Bar:
         _ if byte == self.bar_char => {
           noisy_print!("Bar char, continuing line. ")
@@ -252,7 +251,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.try_to_complete_line(byte, pos, Wall, true);
           //self.reset();
           //self.process(pos, byte);
-          self.workpiece = LineBeginningAtWith(pos, Wall);
+          self.workpiece = PartialLine(pos, Wall);
         }
         // Corner:
         b'+' => {
@@ -260,7 +259,7 @@ impl<'a> ConnectedLineMaker<'a> {
           self.try_to_complete_line(byte, pos, Corner, true);
           //self.reset();
           //self.process(pos, byte);
-          self.workpiece = LineBeginningAtWith(pos, Corner);
+          self.workpiece = PartialLine(pos, Corner);
         }
         // Whitespace:
         b' ' => {
@@ -278,7 +277,7 @@ impl<'a> ConnectedLineMaker<'a> {
         // Unexpected character:
         _ => self.panic_on_unexpected_char(byte),
       },
-      WordBeginingAtWith(word_begin, ref mut word_string) => {
+      PartialWord(word_begin, ref mut word_string) => {
         match byte {
           // Word char':
           _ if is_word_char(byte) => {
@@ -305,7 +304,7 @@ impl<'a> ConnectedLineMaker<'a> {
           _ if byte == self.wall_char => {
             noisy_print!("Wall, try to complete word. ");
             self.try_to_collect_word();
-            self.workpiece = LineBeginningAtWith(pos, Wall);
+            self.workpiece = PartialLine(pos, Wall);
           }
           // Unexpected character:
           _ => self.panic_on_unexpected_char(byte),
