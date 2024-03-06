@@ -12,9 +12,17 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 
 ////////////////////////////////////////////////////////////////////////////////
+enum Payload {
+  Nothing,
+  ALineBeginningAtWith(ConnectionType, Point),
+  AWordBeginingAt(Point, String),
+  SomethingBeginningAtWith(Point, u8),
+}
+
+////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
   const WORD_CHARS: &str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:+";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:";
   WORD_CHARS.as_bytes().contains(&byte)
 }
 
@@ -180,6 +188,9 @@ impl<'a> ConnectedLineMaker<'a> {
           self.reset();
           self.process(pos, byte);
         }
+      }
+      else {
+        noisy_print!("Body char? ");
       }
     }
     else {
