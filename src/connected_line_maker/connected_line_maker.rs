@@ -112,7 +112,7 @@ impl<'a> ConnectedLineMaker<'a> {
           )
           .unwrap(),
         );
-        noisy_print!("Pushing word {:?}.", word);
+        noisy_println!("Pushing word {:?}.", word);
         self.words.push(word)
       }
     }
@@ -124,11 +124,11 @@ impl<'a> ConnectedLineMaker<'a> {
   fn reset(&mut self) {
     self.try_collect_word();
     self.workpiece = NoWorkpiece;
-    noisy_print!("Reset. ");
+    noisy_println!("Reset. ");
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
+    noisy_println!("Begin line with {:?} at {:?}. ", connection_type, pos);
     self.try_collect_word();
     self.workpiece = LineBeginningAtWith(pos, connection_type);
   }
@@ -158,7 +158,7 @@ impl<'a> ConnectedLineMaker<'a> {
         line_end_type,
       )
       .unwrap();
-      noisy_print!("Created line {:?}. ", line);
+      noisy_println!("Created line {:?}. ", line);
 
       let line = (self.line_postprocessor)(line);
       self.lines.push(line);
