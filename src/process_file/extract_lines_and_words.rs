@@ -67,6 +67,7 @@ pub fn extract_lines_and_words(
   words.extend(horiz_linemaker.borrow().words.iter().cloned());
   free_lines.extend(horiz_linemaker.borrow().lines.iter());
   free_lines.extend(vert_linemaker.borrow().lines.iter());
+  free_lines.sort();
 
   (free_lines, words)
 }
