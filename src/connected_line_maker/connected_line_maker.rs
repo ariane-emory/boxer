@@ -29,10 +29,17 @@ enum ConnectedLineMakerWorkpiece {
 use ConnectedLineMakerWorkpiece::*;
 
 ////////////////////////////////////////////////////////////////////////////////
+const ALPHA_CHARS: &str =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const NUM_CHARS: &str = "0123456789";
+const SYM_CHARS: &str = "[]{}!@#$%^&*()=/_<>:+-";
+
+////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
-  const WORD_CHARS: &str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:+-";
-  WORD_CHARS.as_bytes().contains(&byte)
+  false
+    || ALPHA_CHARS.as_bytes().contains(&byte)
+    || NUM_CHARS.as_bytes().contains(&byte)
+    || SYM_CHARS.as_bytes().contains(&byte)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
