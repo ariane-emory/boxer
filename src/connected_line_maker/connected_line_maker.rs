@@ -264,6 +264,26 @@ impl<'a> ConnectedLineMaker<'a> {
         match byte {
           // Should never get her if we're not collecting words:
           _ if ! self.collect_words => panic!("Entered PartialWord arm when !collect_words, this should not happen."),
+          // Bar, switch to capturing line:
+          _ if self.bar_char == byte => {
+            noisy_print!("Bar, complete word and switch to line. ");
+            self.collect_word();
+            self.reset();
+            self.workpiece = PartialLine(pos, Nothing);
+          }
+          // Corner, switch to capturing line:
+          b'+' => {
+            noisy_print!("Bar, complete word and switch to line. ");
+            self.collect_word();
+            self.reset();
+            self.workpiece = PartialLine(pos, Corner);
+          }
+          // Wall:
+          _ if byte == self.wall_char => {
+            noisy_print!("Wall, complete word and switch to line. ");
+            self.collect_word();
+            self.workpiece = PartialLine(pos, Wall);
+          }
           // Word char':
           _ if is_word_char(byte) => {
             word_string.push(byte as char);
@@ -274,22 +294,17 @@ impl<'a> ConnectedLineMaker<'a> {
             );
           }
           // Whitespace:
-          b' ' => {
-            noisy_print!("Whitespace, try to complete word. ");
-            self.collect_word();
-            self.reset();
+           b' ' => {
+             noisy_print!("Whitespace, try to complete word. ");
+             self.collect_word();
+             self.reset();
+             self.workpiece = PartialLine(pos, Corner);
           }
           // Row terminator:
           b'\0' => {
             noisy_print!("End of row, try to complete word. ");
             self.collect_word();
             self.reset();
-          }
-          // Wall:
-          _ if byte == self.wall_char => {
-            noisy_print!("Wall, try to complete word. ");
-            self.collect_word();
-            self.workpiece = PartialLine(pos, Wall);
           }
           // Unexpected character:
           _ => {
