@@ -121,7 +121,7 @@ impl<'a> ConnectedLineMaker<'a> {
     noisy_print!("Begin word with '{}' at {:?}. ", byte as char, pos);
     let mut string = String::new();
     string.push(byte as char);
-    self.workpiece = PartialWord(pos, string);
+    self.workpiece = PartialWord(pos, format!("{}", byte as char));
   }
 
   fn try_to_complete_line(
