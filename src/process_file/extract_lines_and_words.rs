@@ -34,11 +34,10 @@ pub fn extract_lines_and_words(
       // noisy_print!("\n[{:12?}] ", ori);
     }
   };
-  let is_non_ascii_byte = |byte: u8| None;
-  // {
-  //   (byte & 128 != 0)
-  //     .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
-  // };
+  let is_non_ascii_byte = |byte: u8| {
+    (byte & 128 != 0)
+      .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
+  };
   let offset_line = |pos: Point| pos.offset_by(LINE_OFFSET, 0);
   let offset_column = |pos: Point| pos.offset_by(0, LINE_OFFSET);
 
