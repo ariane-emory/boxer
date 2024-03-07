@@ -8,7 +8,7 @@ use crate::simple_geo::ConnectedLine;
 use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Offsetable;
-use crate::simple_geo::Orientation::Horizontal;
+use crate::simple_geo::Orientation::*;
 use crate::util::noisy_print;
 use crate::util::noisy_println;
 //use crate::simple_geo::Orientation::*;
@@ -126,8 +126,9 @@ impl<'a> ConnectedLineMaker<'a> {
         end.offset_by(0, -1)
       };
       let distance = end.distance(&begin);
-      let distance_ok =
-        distance > 1 || (begin_type == Nothing && self.allow_length_one);
+      let distance_ok = distance > 1
+        || (begin_type == Nothing && self.allow_length_one)
+        || (begin_type == Corner && end_type == Corner); // Hackish, tidy... allow on vertical pass only?
       if distance_ok {
         let line =
           ConnectedLine::new(Horizontal, begin, end, begin_type, end_type)
