@@ -267,47 +267,44 @@ impl<'a> ConnectedLineMaker<'a> {
         }
       }
       PartialWord(word_begin, ref mut word_string) => {
-        if !self.collect_words {
-          panic!("Entered PartialWord arm when !collect_words, this should not happen.");
-        }
-        else {
-          match byte {
-            // Word char':
-            _ if is_word_char(byte) => {
-              word_string.push(byte as char);
-              noisy_print!(
-                "Word char, continuing word with '{}': {:?}. ",
-                byte as char,
-                word_string
-              );
-            }
-            // Whitespace:
-            b' ' => {
-              noisy_print!("Whitespace, try to complete word. ");
-              self.try_to_collect_word();
-              self.reset();
-            }
-            // Row terminator:
-            b'\0' => {
-              noisy_print!("End of row, try to complete word. ");
-              self.try_to_collect_word();
-              self.reset();
-            }
-            // Wall:
-            _ if byte == self.wall_char => {
-              noisy_print!("Wall, try to complete word. ");
-              self.try_to_collect_word();
-              self.workpiece = PartialLine(pos, Wall);
-            }
-            // Unexpected character:
-            _ => {
-              noisy_print!(
-                "Looking at {:?}, wall is {:?}",
-                byte as char,
-                self.wall_char as char,
-              );
-              self.panic_on_unexpected_char(byte);
-            }
+        match byte {
+          // Should never get her if we're not collecting words:
+          _ if ! self.collect_words => panic!("Entered PartialWord arm when !collect_words, this should not happen."),
+          // Word char':
+          _ if is_word_char(byte) => {
+            word_string.push(byte as char);
+            noisy_print!(
+              "Word char, continuing word with '{}': {:?}. ",
+              byte as char,
+              word_string
+            );
+          }
+          // Whitespace:
+          b' ' => {
+            noisy_print!("Whitespace, try to complete word. ");
+            self.try_to_collect_word();
+            self.reset();
+          }
+          // Row terminator:
+          b'\0' => {
+            noisy_print!("End of row, try to complete word. ");
+            self.try_to_collect_word();
+            self.reset();
+          }
+          // Wall:
+          _ if byte == self.wall_char => {
+            noisy_print!("Wall, try to complete word. ");
+            self.try_to_collect_word();
+            self.workpiece = PartialLine(pos, Wall);
+          }
+          // Unexpected character:
+          _ => {
+            noisy_print!(
+              "Looking at {:?}, wall is {:?}",
+              byte as char,
+              self.wall_char as char,
+            );
+            self.panic_on_unexpected_char(byte);
           }
         }
       }
@@ -315,7 +312,7 @@ impl<'a> ConnectedLineMaker<'a> {
         // Bar is definitely a line if we're not collecting words:
         _ if byte == self.bar_char && !self.collect_words => {
           noisy_print!("Begin Line with {:?}. ", byte as char);
-          self.begin_line(pos, Nothing);
+          self.workpiece = PartialLine(pos, Wall);
         }
         // Bar is Something if we're collecting words:
         _ if byte == self.bar_char => {
@@ -325,7 +322,7 @@ impl<'a> ConnectedLineMaker<'a> {
         // Corner is definitely a line if we're not collecting words:
         b'+' if !self.collect_words => {
           noisy_print!("Begin Line with {:?}. ", byte as char);
-          self.begin_line(pos, Corner);
+          self.workpiece = PartialLine(pos, Corner);
         }
         // Corner is Something if we're collecting words:
         b'+' => {
@@ -333,29 +330,24 @@ impl<'a> ConnectedLineMaker<'a> {
           self.workpiece = Something(pos, byte);
         }
         // Wall is always the start of a line:
-        _ if byte == self.wall_char => self.begin_line(pos, Wall),
+        _ if byte == self.wall_char => {
+          noisy_print!("Begin Line with {:?}. ", byte as char);
+          self.workpiece = PartialLine(pos, Wall);
+        }
         // Word char starts a word if we're collecting words:
         _ if is_word_char(byte) && self.collect_words => {
+          noisy_print!("Begin Word with {:?}. ", byte as char);
           self.workpiece = PartialWord(pos, format!("{}", byte as char));
         }
         // Word char is ignored when not collecting words:
         _ if is_word_char(byte) => noisy_print!("Word char, ignoring. "),
-        // Whitespace is ignored:
+        // Whitespace is ignored since there's no workpiece:
         b' ' => noisy_print!("Whitespace with no workpiece, do nothing. "),
-        // Row terminator:
+        // Row terminator is ignored since there's no workpiece:
         b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
-        // Unexpected character.
+        // Unexpected character, panic.
         _ => self.panic_on_unexpected_char(byte),
       },
     }
-  }
-  fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
-    noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
-    self.workpiece = PartialLine(pos, connection_type);
-  }
-
-  fn begin_something(&mut self, pos: Point, byte: u8) {
-    noisy_print!("Begin something with {:?} at {:?}. ", byte as char, pos);
-    self.workpiece = Something(pos, byte);
   }
 }
