@@ -45,7 +45,6 @@ pub fn extract_lines_and_words(
     b'|',
     b'-',
     false,
-    true,
     is_non_ascii_byte,
     offset_column,
     flip_line,
@@ -56,7 +55,6 @@ pub fn extract_lines_and_words(
   let (horiz_linemaker, process_horiz_fun) = make_process_bidirectionally_fun(
     b'-',
     b'|',
-    true,
     true,
     is_non_ascii_byte,
     offset_line,

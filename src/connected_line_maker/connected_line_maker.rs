@@ -49,7 +49,6 @@ pub struct ConnectedLineMaker<'a> {
   bar_char: u8,
   wall_char: u8,
   collect_words: bool,
-  allow_length_one: bool,
   line_postprocessor: Box<dyn Fn(ConnectedLine) -> ConnectedLine + 'a>,
   word_postprocessor: Box<dyn Fn(Word) -> Word + 'a>,
   pub lines: Vec<ConnectedLine>,
@@ -62,7 +61,6 @@ impl<'a> ConnectedLineMaker<'a> {
     bar_char: u8,
     wall_char: u8,
     collect_words: bool,
-    allow_length_one: bool,
     line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
     word_postprocessor: impl Fn(Word) -> Word + 'a,
   ) -> ConnectedLineMaker<'a> {
@@ -70,7 +68,6 @@ impl<'a> ConnectedLineMaker<'a> {
       bar_char,
       wall_char,
       collect_words,
-      allow_length_one,
       line_postprocessor: Box::new(line_postprocessor),
       word_postprocessor: Box::new(word_postprocessor),
       lines: Vec::new(),
@@ -115,7 +112,6 @@ impl<'a> ConnectedLineMaker<'a> {
     end: Point,
     end_type: ConnectionType,
     include_current: bool,
-    allow_inadequate: bool,
   ) {
     noisy_print!("Complete line: ");
     if let PartialLine(begin, begin_type) = self.workpiece {
@@ -127,7 +123,7 @@ impl<'a> ConnectedLineMaker<'a> {
       };
       let distance = end.distance(&begin);
       let distance_ok = distance > 1
-        || (begin_type == Nothing && self.allow_length_one)
+        || begin_type == Nothing
         || (begin_type == Corner && end_type == Corner); // Hackish, tidy... allow on vertical pass only?
       if distance_ok {
         let line =
@@ -139,18 +135,12 @@ impl<'a> ConnectedLineMaker<'a> {
         // noisy_print!("Pushed line {:?}. ", line);
         noisy_print!("Pushed line. ");
       }
-      else if allow_inadequate {
+      else {
         noisy_print!(
           "inadequate line distance {} from {:?} to {:?} permitted. ",
           distance,
           begin,
           end
-        );
-      }
-      else {
-        panic!(
-          "inadequate line distance {} from {:?} to {:?} not permitted here!",
-          distance, begin, end
         );
       }
     }
@@ -222,39 +212,39 @@ impl<'a> ConnectedLineMaker<'a> {
         // Wall:
         _ if byte == self.wall_char => {
           noisy_print!("Wall, try to complete line. ");
-          self.try_to_complete_line(pos, Wall, true, true);
+          self.try_to_complete_line(pos, Wall, true);
           self.workpiece = PartialLine(pos, Wall);
           noisy_print!("New line begun at {:?}", pos);
         }
         // Corner:
         b'+' => {
           noisy_print!("Corner, try to complete line. ");
-          self.try_to_complete_line(pos, Corner, true, true);
+          self.try_to_complete_line(pos, Corner, true);
           self.workpiece = PartialLine(pos, Corner);
           noisy_print!("New line begun at {:?}", pos);
         }
         // Whitespace:
         b' ' => {
-          self.try_to_complete_line(pos, Nothing, false, true);
+          self.try_to_complete_line(pos, Nothing, false);
           self.reset();
         }
         // Word character, treat as whitespace if not collecting words:
         _ if is_word_char(byte) && !self.collect_words => {
-          self.try_to_complete_line(pos, Nothing, false, true);
+          self.try_to_complete_line(pos, Nothing, false);
           self.reset();
         }
         // Word character, try to finish the line and begin a word instead if
         // collecting words:
         _ if is_word_char(byte) => {
           noisy_print!("Word char, try to complete line and switch to word. ");
-          self.try_to_complete_line(pos, Nothing, false, true);
+          self.try_to_complete_line(pos, Nothing, false);
           self.workpiece =
             PartialWord(pos, String::from(&format!("{}", byte as char)));
         }
         // Row terminator:
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
-          self.try_to_complete_line(pos, Nothing, false, true);
+          self.try_to_complete_line(pos, Nothing, false);
           self.reset();
           //self.process(pos, byte);
         }

@@ -11,7 +11,6 @@ pub fn make_process_bidirectionally_fun<'a>(
   line_body_char: u8,
   wall_char: u8,
   collect_words: bool,
-  allow_length_one: bool,
   is_invalid_byte: impl Fn(u8) -> Option<ErrString> + 'a,
   pos_preprocessor: impl Fn(Point) -> Point + 'a,
   line_postprocessor: impl Fn(ConnectedLine) -> ConnectedLine + 'a,
@@ -22,7 +21,6 @@ pub fn make_process_bidirectionally_fun<'a>(
     line_body_char,
     wall_char,
     collect_words,
-    allow_length_one,
     line_postprocessor,
     word_postprocessor,
   );
