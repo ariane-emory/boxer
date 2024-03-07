@@ -76,10 +76,6 @@ impl<'a> ConnectedLineMaker<'a> {
       lines: Vec::new(),
       words: Vec::new(),
       workpiece: NoWorkpiece,
-      // line_begin: None,
-      // line_begin_type: Corner,
-      // current_word_begin: None,
-      // current_word: String::new(),
     }
   }
 
