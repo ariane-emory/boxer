@@ -8,7 +8,7 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 use crate::simple_matrix::process_matrix_bidirectionally;
 use crate::util::noisy_print;
-//use crate::util::ErrString;
+use crate::util::ErrString;
 
 /////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
