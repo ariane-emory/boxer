@@ -266,19 +266,20 @@ impl<'a> ConnectedLineMaker<'a> {
             self.try_to_complete_line(byte, pos, Nothing, false, true);
             self.reset();
           }
-          // Word character, try to finish the line and begin a word instead:
+          // Word character, treat as whitespace if not collecting words:
+          _ if is_word_char(byte) && !self.collect_words => {
+            self.try_to_complete_line(byte, pos, Nothing, false, true);
+            self.reset();
+          }
+          // Word character, try to finish the line and begin a word instead if
+          // collecting words:
           _ if is_word_char(byte) => {
-            if self.collect_words {
-              noisy_print!(
-                "Word char, try to complete line and switch to word. "
-              );
-              self.try_to_complete_line(byte, pos, Nothing, false, true);
-              self.workpiece =
-                PartialWord(pos, String::from(&format!("{}", byte as char)));
-            }
-            else {
-              noisy_print!("Ignoring word char. ");
-            }
+            noisy_print!(
+              "Word char, try to complete line and switch to word. "
+            );
+            self.try_to_complete_line(byte, pos, Nothing, false, true);
+            self.workpiece =
+              PartialWord(pos, String::from(&format!("{}", byte as char)));
           }
           // Row terminator:
           b'\0' => {
