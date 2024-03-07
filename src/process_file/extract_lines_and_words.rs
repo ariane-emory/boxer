@@ -8,7 +8,7 @@ use crate::simple_geo::Point;
 use crate::simple_geo::Word;
 use crate::simple_matrix::process_matrix_bidirectionally;
 use crate::util::noisy_print;
-use crate::util::ErrString;
+//use crate::util::ErrString;
 
 /////////////////////////////////////////////////////////////////////////////////
 static LINE_OFFSET: isize = 1;
@@ -34,10 +34,11 @@ pub fn extract_lines_and_words(
       // noisy_print!("\n[{:12?}] ", ori);
     }
   };
-  let is_non_ascii_byte = |byte| {
-    (byte & 128 != 0)
-      .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
-  };
+  let is_non_ascii_byte = |byte: u8| None;
+  // {
+  //   (byte & 128 != 0)
+  //     .then(|| ErrString::new(&format!("Non-ASCII byte {}", byte)))
+  // };
   let offset_line = |pos: Point| pos.offset_by(LINE_OFFSET, 0);
   let offset_column = |pos: Point| pos.offset_by(0, LINE_OFFSET);
 
