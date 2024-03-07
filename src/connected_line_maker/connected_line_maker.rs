@@ -350,9 +350,9 @@ impl<'a> ConnectedLineMaker<'a> {
         }
         // Word char is ignored when not collecting words:
         _ if is_word_char(byte) => noisy_print!("Word char, ignoring. "),
-        // Whitespace is ignored since there's no workpiece:
+        // Whitespace is ignored when there's no workpiece:
         b' ' => noisy_print!("Whitespace with no workpiece, do nothing. "),
-        // Row terminator is ignored since there's no workpiece:
+        // Row terminator is ignored when there's no workpiece:
         b'\0' => noisy_print!("End of row with no workpiece, do nothing. "),
         // Unexpected character, panic.
         _ => self.panic_on_unexpected_char(byte),
