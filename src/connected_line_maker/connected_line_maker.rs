@@ -33,7 +33,7 @@ const ALPHA_CHARS: &str =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const NUM_CHARS: &str = "0123456789";
 const SYM_CHARS: &str = "[]{}!@#$%^&*()=/_<>:";
-const PLUS_MINUS_CHARS: &str = "+-";
+//const PLUS_MINUS_CHARS: &str = "+-";
 
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
@@ -41,7 +41,7 @@ fn is_word_char(byte: u8) -> bool {
     || ALPHA_CHARS.as_bytes().contains(&byte)
     || NUM_CHARS.as_bytes().contains(&byte)
     || SYM_CHARS.as_bytes().contains(&byte)
-    || PLUS_MINUS_CHARS.as_bytes().contains(&byte)
+  //  || PLUS_MINUS_CHARS.as_bytes().contains(&byte)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
