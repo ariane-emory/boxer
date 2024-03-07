@@ -119,8 +119,6 @@ impl<'a> ConnectedLineMaker<'a> {
 
   fn begin_word(&mut self, pos: Point, byte: u8) {
     noisy_print!("Begin word with '{}' at {:?}. ", byte as char, pos);
-    let mut string = String::new();
-    string.push(byte as char);
     self.workpiece = PartialWord(pos, format!("{}", byte as char));
   }
 
