@@ -87,26 +87,6 @@ impl<'a> ConnectedLineMaker<'a> {
     }
   }
 
-  // #[derive(Debug)]
-  // enum Dummy {
-  //   Nothing,
-  //   Something(String, usize),
-  // }
-  // use Dummy::*;
-
-  // fn main() {
-  //   let mut dummy = Something(String::from("hello"), 1);
-
-  //   if let Something(ref mut field, ref mut counter) = dummy {
-  //     field.push('!');
-  //     *counter += 1;
-  //   }
-
-  //   println!("{:?}", dummy);
-
-  //   ()
-  // }
-
   fn try_to_collect_word(&mut self) {
     if !self.collect_words {
       return;
@@ -161,7 +141,7 @@ impl<'a> ConnectedLineMaker<'a> {
     include_current: bool,
     allow_inadequate: bool,
   ) {
-    noisy_print!("Try to complete line... ");
+    noisy_print!("Try to complete line: ");
 
     if let PartialLine(begin, begin_type) = self.workpiece {
       let end = if include_current {
