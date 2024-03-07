@@ -54,7 +54,7 @@ pub fn check_for_illegal_networks(
         }
       }
 
-      // TODO: A network is illegal if any of it's end points connected to
+      // TODO: A network is illegal if any of its end points connected to
       // Nothing are on a Vertical line, like this:
       // IN ---+--- OUT
       //       |
