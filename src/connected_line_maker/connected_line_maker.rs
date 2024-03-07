@@ -103,7 +103,6 @@ impl<'a> ConnectedLineMaker<'a> {
   }
 
   fn reset(&mut self) {
-    //self.try_to_collect_word();
     self.workpiece = NoWorkpiece;
     noisy_print!("Reset. ");
   }
