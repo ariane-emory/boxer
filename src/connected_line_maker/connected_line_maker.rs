@@ -103,8 +103,8 @@ impl<'a> ConnectedLineMaker<'a> {
   }
 
   fn reset(&mut self) {
-    self.workpiece = NoWorkpiece;
     noisy_print!("Reset. ");
+    self.workpiece = NoWorkpiece;
   }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
