@@ -141,7 +141,7 @@ impl<'a> ConnectedLineMaker<'a> {
     include_current: bool,
     allow_inadequate: bool,
   ) {
-    noisy_print!("Try to complete line: ");
+    noisy_print!("Complete line... ");
 
     if let PartialLine(begin, begin_type) = self.workpiece {
       let end = if include_current {
