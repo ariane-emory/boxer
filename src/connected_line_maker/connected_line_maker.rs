@@ -55,10 +55,6 @@ pub struct ConnectedLineMaker<'a> {
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
   workpiece: ConnectedLineMakerWorkpiece,
-  //line_begin: Option<Point>,
-  //line_begin_type: ConnectionType,
-  //current_word_begin: Option<Point>,
-  //current_word: String,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
