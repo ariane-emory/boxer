@@ -1,0 +1,120 @@
+{
+   // Use IntelliSense to learn about possible attributes.
+   // Hover to view descriptions of existing attributes.
+   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+   "version": "0.2.0",
+   "configurations": [
+      {
+         "type": "lldb",
+         "request": "launch",
+         "name": "Debug unit tests in library 'boxer'",
+         "cargo": {
+            "args": [
+               "test",
+               "--no-run",
+               "--lib",
+               "--package=boxer"
+            ],
+            "filter": {
+               "name": "boxer",
+               "kind": "lib"
+            }
+         },
+         "args": [],
+         "cwd": "${workspaceFolder}"
+      },
+      {
+         "type": "lldb",
+         "request": "launch",
+         "name": "Debug executable 'main'",
+         "cargo": {
+            "args": [
+               "build",
+               "--bin=main",
+               "--package=boxer"
+            ],
+            "filter": {
+               "name": "main",
+               "kind": "bin"
+            }
+         },
+         "args": [],
+         "cwd": "${workspaceFolder}"
+      },
+      {
+         "type": "lldb",
+         "request": "launch",
+         "name": "Debug unit tests in executable 'main'",
+         "cargo": {
+            "args": [
+               "test",
+               "--no-run",
+               "--bin=main",
+               "--package=boxer"
+            ],
+            "filter": {
+               "name": "main",
+               "kind": "bin"
+            }
+         },
+         "args": [],
+         "cwd": "${workspaceFolder}"
+      },
+      {
+         "type": "lldb",
+         "request": "launch",
+         "name": "Debug executable 'blocks'",
+         "cargo": {
+            "args": [
+               "build",
+               "--bin=blocks",
+               "--package=boxer"
+            ],
+            "filter": {
+               "name": "blocks",
+               "kind": "bin"
+            }
+         },
+         "args": [],
+         "cwd": "${workspaceFolder}"
+      },
+      {
+         "type": "lldb",
+         "request": "launch",
+         "name": "Debug unit tests in executable 'blocks'",
+         "cargo": {
+            "args": [
+               "test",
+               "--no-run",
+               "--bin=blocks",
+               "--package=boxer"
+            ],
+            "filter": {
+               "name": "blocks",
+               "kind": "bin"
+            }
+         },
+         "args": [],
+         "cwd": "${workspaceFolder}"
+      },
+      {
+         "type": "lldb",
+         "request": "launch",
+         "name": "Debug integration test 'simple_geo_tests'",
+         "cargo": {
+            "args": [
+               "test",
+               "--no-run",
+               "--test=simple_geo_tests",
+               "--package=boxer"
+            ],
+            "filter": {
+               "name": "simple_geo_tests",
+               "kind": "test"
+            }
+         },
+         "args": [],
+         "cwd": "${workspaceFolder}"
+      }
+   ]
+}
