@@ -1,3 +1,4 @@
+// -*- fill-column: 80; eval: (display-fill-column-indicator-mode 1); -*-
 #![allow(dead_code)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
@@ -9,11 +10,10 @@ use crate::simple_geo::ConnectionType;
 use crate::simple_geo::ConnectionType::{Corner, Nothing, Wall};
 use crate::simple_geo::Offsetable;
 use crate::simple_geo::Orientation::Horizontal;
-use crate::util::noisy_print;
-use crate::util::noisy_println;
-//use crate::simple_geo::Orientation::*;
 use crate::simple_geo::Point;
 use crate::simple_geo::Word;
+use crate::util::noisy_print;
+use crate::util::noisy_println;
 
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug)]
