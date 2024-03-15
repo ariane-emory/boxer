@@ -31,7 +31,7 @@ use ConnectedLineMakerWorkpiece::*;
 ////////////////////////////////////////////////////////////////////////////////
 fn is_word_char(byte: u8) -> bool {
   const WORD_CHARS: &str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:+-";
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]{}!@#$%^&*()=/_<>:+-";
   WORD_CHARS.as_bytes().contains(&byte)
 }
 
@@ -263,18 +263,8 @@ impl<'a> ConnectedLineMaker<'a> {
               "Word char, try to complete line and switch to word. "
             );
             self.try_to_complete_line(byte, pos, Nothing, false, true);
-
-            // if distance == 2 {
-            //   self.workpiece = PartialWord(
-            //     pos.offset_by(0, -1),
-            //     String::from(&format!("-{}", byte as char)),
-            //   );
-            // }
-            // else
-            {
-              self.workpiece =
-                PartialWord(pos, String::from(&format!("{}", byte as char)));
-            }
+            self.workpiece =
+              PartialWord(pos, String::from(&format!("{}", byte as char)));
           }
           // Row terminator:
           b'\0' => {
