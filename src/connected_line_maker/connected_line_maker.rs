@@ -46,10 +46,6 @@ pub struct ConnectedLineMaker<'a> {
   pub lines: Vec<ConnectedLine>,
   pub words: Vec<Word>,
   workpiece: ConnectedLineMakerWorkpiece,
-  //line_begin: Option<Point>,
-  //line_begin_type: ConnectionType,
-  //current_word_begin: Option<Point>,
-  //current_word: String,
 }
 ////////////////////////////////////////////////////////////////////////////////
 impl<'a> ConnectedLineMaker<'a> {
@@ -71,10 +67,6 @@ impl<'a> ConnectedLineMaker<'a> {
       lines: Vec::new(),
       words: Vec::new(),
       workpiece: NoWorkpiece,
-      // line_begin: None,
-      // line_begin_type: Corner,
-      // current_word_begin: None,
-      // current_word: String::new(),
     }
   }
 
@@ -100,11 +92,6 @@ impl<'a> ConnectedLineMaker<'a> {
       panic!("Inappropriate call to try_to_collect_word");
     }
   }
-
-  // fn reset(&mut self) {
-  //   //self.try_to_collect_word();
-  //       noisy_print!("Reset. ");
-  // }
 
   fn begin_line(&mut self, pos: Point, connection_type: ConnectionType) {
     noisy_print!("Begin line with {:?} at {:?}. ", connection_type, pos);
