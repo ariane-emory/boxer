@@ -78,26 +78,6 @@ impl<'a> ConnectedLineMaker<'a> {
     }
   }
 
-  // #[derive(Debug)]
-  // enum Dummy {
-  //   Nothing,
-  //   Something(String, usize),
-  // }
-  // use Dummy::*;
-
-  // fn main() {
-  //   let mut dummy = Something(String::from("hello"), 1);
-
-  //   if let Something(ref mut field, ref mut counter) = dummy {
-  //     field.push('!');
-  //     *counter += 1;
-  //   }
-
-  //   println!("{:?}", dummy);
-
-  //   ()
-  // }
-
   fn try_to_collect_word(&mut self) {
     if !self.collect_words {
       return;
