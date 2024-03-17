@@ -5,11 +5,10 @@
       "name": "Run 'main'",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/target/debug/main", // Adjust if necessary
+      "program": "${workspaceFolder}/target/debug/main",
       "args": [],
       "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build --bin main", // Ensure binary is built before debugging
-      "stopAtEntry": false
+      "preLaunchTask": "cargo build --bin main"
     }
     // Other configurations...
   ]
