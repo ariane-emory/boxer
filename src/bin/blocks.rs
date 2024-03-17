@@ -194,9 +194,7 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut printed = 0;
   let quarterways = width >> 2;
   let mut next_div = quarterways;
-
   print!("|");
-
   for _ in 0..signal {
     if printed == next_div {
       print!("|");
@@ -205,7 +203,6 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
     print!("{}", char as char);
     printed = printed + 1;
   }
-
   for _ in 0..(width - signal) {
     if printed == next_div {
       print!("|");
