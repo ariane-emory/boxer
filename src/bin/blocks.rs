@@ -193,7 +193,6 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut next_div = quarterways;
 
   print!("|");
-  if !true || false && true {};
 
   for _ in 0..signal {
     if printed == next_div {
