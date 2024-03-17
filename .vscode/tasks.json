@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build main",
+      "type": "shell",
+      "command": "cargo build --bin main",
+      "group": "build",
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "build blocks",
+      "type": "shell",
+      "command": "cargo build --bin blocks",
+      "group": "build",
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "presentation": {
+        "reveal": "silent"
+      }
+    }
+  ]
+}
