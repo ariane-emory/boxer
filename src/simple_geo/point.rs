@@ -23,8 +23,8 @@ impl Point {
 
   pub fn distance(&self, other: &Self) -> usize {
     // calculates the 'Manhattan distance'.
-    (self.col as isize - other.col as isize).abs() as usize
-      + (self.line as isize - other.line as isize).abs() as usize
+    (self.col as isize - other.col as isize).unsigned_abs()
+      + (self.line as isize - other.line as isize).unsigned_abs()
   }
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@ pub fn process_file(path: &str) -> Result<()> {
     normalize_matrix_width(&matrix, matrix_max_row_len(&matrix), b' ');
   let matrix = add_null_sentinels_to_normalized_matrix(matrix);
 
-  println!("");
+  println!();
   println!("================================================================================");
   println!("Extracting ConnectedLines and Words from matrix...");
   println!("================================================================================");
@@ -44,7 +44,7 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
+  println!();
   println!("================================================================================");
   println!("Finding rectangles in:");
   println!("================================================================================");
@@ -66,7 +66,7 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
+  println!();
   println!("================================================================================");
   println!("Found:");
   println!("================================================================================");
@@ -87,7 +87,7 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
+  println!();
   println!("================================================================================");
   println!("Finding and trying to merge length-1 lines with Words...");
   println!("================================================================================");
@@ -101,20 +101,20 @@ pub fn process_file(path: &str) -> Result<()> {
     .iter()
     .for_each(|word| println!("Word:               {:?}", word));
 
-  println!("");
+  println!();
   println!("================================================================================");
   println!("Merging interrupted lines...");
   println!("================================================================================");
 
   let free_lines = join_interrupted_lines(free_lines);
 
-  println!("");
+  println!();
 
   free_lines
     .iter()
     .for_each(|line| println!("Free Line:          {:?}", line));
 
-  println!("");
+  println!();
   println!("================================================================================");
   println!("Looking for networks...");
   println!("================================================================================");
@@ -129,17 +129,17 @@ pub fn process_file(path: &str) -> Result<()> {
       println!("  {:9}      {:?}", str, line);
     });
 
-    let endpoints = network_get_endpoints(&network);
+    let endpoints = network_get_endpoints(network);
 
     for (i, point) in endpoints.iter().enumerate() {
       println!("  End point #{}:  {:?}", i + 1, point);
     }
   }
-  println!("");
+  println!();
   println!("=========================-======================================================");
   println!("Checking for illegal networks...");
   println!("================================================================================");
-  println!("");
+  println!();
   check_for_illegal_networks(&networks, &rectangles);
   println!("No illegal networks detected.");
   Ok(())

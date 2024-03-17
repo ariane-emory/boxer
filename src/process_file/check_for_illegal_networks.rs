@@ -9,7 +9,7 @@ pub fn check_for_illegal_networks(
   rectangles: &Vec<Rectangle>,
 ) {
   for (i, network) in networks.iter().enumerate() {
-    let endpoints = network_get_endpoints(&network);
+    let endpoints = network_get_endpoints(network);
 
     for (ii, (point, point_type)) in endpoints.iter().enumerate() {
       // A network is illegal if any of it's end points are on a Rectangle's

@@ -66,17 +66,19 @@ pub fn network_get_endpoints(
   for line in network {
     point_connection_map
       .entry(line.start)
-      .or_insert_with(Vec::new)
+      .or_default()
       .push(line.start_connects_to);
     point_connection_map
-      .entry(line.end.clone())
-      .or_insert_with(Vec::new)
+      .entry(line.end)
+      .or_default()
       .push(line.end_connects_to);
   }
 
   // Filter points that are connected exactly once, and pair them with their
   // connection type
-  let end_points = point_connection_map
+  
+
+  point_connection_map
     .into_iter()
     .filter_map(|(point, connections)| {
       if connections.len() == 1 {
@@ -100,7 +102,5 @@ pub fn network_get_endpoints(
         None
       }
     })
-    .collect::<Vec<_>>();
-
-  end_points
+    .collect::<Vec<_>>()
 }

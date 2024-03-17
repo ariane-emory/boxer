@@ -26,7 +26,7 @@ pub fn merge_length_1_lines_with_words(
       .cloned()
       .collect::<Vec<Word>>();
 
-    if candidate_words.len() == 0 {
+    if candidate_words.is_empty() {
       panic!("No match for {:?} found.", line);
     }
     else if candidate_words.len() > 1 {

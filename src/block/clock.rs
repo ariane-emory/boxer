@@ -22,7 +22,7 @@ impl Steppable for Clock {
     let last_output = self.output.read();
     let period = self.period.read();
 
-    self.count = self.count + 1;
+    self.count += 1;
 
     if self.count >= period {
       self.output.set(!last_output);

@@ -89,7 +89,7 @@ pub fn process_matrix_bidirectionally<T: Copy>(
   process_vert: impl Fn(Point, T),
 ) {
   if true {
-    let mut rotated_matrix = rotate_matrix(&matrix, Rotation::CounterClockwise);
+    let mut rotated_matrix = rotate_matrix(matrix, Rotation::CounterClockwise);
     rotated_matrix.reverse();
     rotated_matrix.each(process_vert);
   }
@@ -124,21 +124,21 @@ impl FormatRows<u8> for Vec<Vec<u8>> {
   fn format_rows(&self) -> String {
     let mut s: String = "[".to_string();
 
-    if self.len() > 0 {
-      s.push_str(" ");
+    if !self.is_empty() {
+      s.push(' ');
       s.push_str(
-        format!("\"{}\"", String::from_utf8_lossy(&self[0]).to_string())
+        format!("\"{}\"", String::from_utf8_lossy(&self[0]))
           .as_str(),
       );
 
       for l in &self[1..] {
         s.push_str(
-          format!(", \"{}\"", String::from_utf8_lossy(l).to_string()).as_str(),
+          format!(", \"{}\"", String::from_utf8_lossy(l)).as_str(),
         );
       }
-      s.push_str(" ");
+      s.push(' ');
     }
-    s.push_str("]");
+    s.push(']');
     s
   }
 }

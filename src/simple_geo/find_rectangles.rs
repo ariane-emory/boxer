@@ -18,7 +18,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
     let mut lines_to_remove: Vec<T> = Vec::new();
 
     for other_line in &copied_lines {
-      if let Some(_) = line.is_coaligned_with(other_line) {
+      if line.is_coaligned_with(other_line).is_some() {
         //println!("Found coaligned lines: \n   {:?}\n   {:?}", line,
         // other_line);
 
@@ -75,7 +75,7 @@ pub fn find_rectangles<T: LineMethods + Debug>(
       for _line in lines_to_remove.iter() {
         //println!("Removing line {:?}", line);
       }
-      copied_lines.retain(|l| !lines_to_remove.contains(&l));
+      copied_lines.retain(|l| !lines_to_remove.contains(l));
     }
   }
 

@@ -175,10 +175,8 @@ impl TFlipFlop {
 ////////////////////////////////////////////////////////////////////////////////
 impl Steppable for TFlipFlop {
   fn step(&mut self) {
-    if self.last_clock && !self.clock.read() {
-      if self.input.read() {
-        self.output.set(!self.output.read());
-      }
+    if self.last_clock && !self.clock.read() && self.input.read() {
+      self.output.set(!self.output.read());
     }
     self.last_clock = self.clock.read();
   }

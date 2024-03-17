@@ -81,10 +81,10 @@ impl<'a> ConnectedLineMaker<'a> {
       panic!("Inappropriate call to collect_word, not collecting words");
     }
     if let PartialWord(word_begin, word_string) = &self.workpiece {
-      if word_string.len() > 0 {
+      if !word_string.is_empty() {
         let word = (self.word_postprocessor)(
           Word::new(
-            &word_string,
+            word_string,
             *word_begin,
             word_begin.offset_by(0, (word_string.len() - 1) as isize),
           )
@@ -184,7 +184,7 @@ impl<'a> ConnectedLineMaker<'a> {
           b' ' => {
             self.workpiece = PartialWord(
               *something_begin,
-              String::from(format!("{}", *something_begin_byte as char)),
+              format!("{}", *something_begin_byte as char),
             );
             self.collect_word();
             self.workpiece = NoWorkpiece;

@@ -5,6 +5,12 @@ pub struct RandomUsize {
   output: SignalRef<usize>,
 }
 ////////////////////////////////////////////////////////////////////////////////
+impl Default for RandomUsize {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl RandomUsize {
   pub fn new() -> Self {
     let mut r = RandomUsize {

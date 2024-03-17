@@ -25,12 +25,7 @@ where
 
 impl<T: PartialEq> Removeql<T> for Vec<T> {
   fn removeql(&mut self, value: &T) -> Option<T> {
-    if let Some(pos) = self.iter().position(|x| x == value) {
-      Some(self.remove(pos))
-    }
-    else {
-      None
-    }
+    self.iter().position(|x| x == value).map(|pos| self.remove(pos))
   }
 }
 
@@ -46,11 +41,6 @@ impl<T> RemoveIf<T> for Vec<T> {
   where
     F: Fn(&T) -> bool,
   {
-    if let Some(pos) = self.iter().position(|item| predicate(item)) {
-      Some(self.remove(pos))
-    }
-    else {
-      None
-    }
+    self.iter().position(predicate).map(|pos| self.remove(pos))
   }
 }

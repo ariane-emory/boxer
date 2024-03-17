@@ -6,6 +6,12 @@ pub struct Feedback<T: Copy + Default> {
   input: Option<SignalRef<T>>,
 }
 ////////////////////////////////////////////////////////////////////////////////
+impl<T: Copy + Default> Default for Feedback<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T: Copy + Default> Feedback<T> {
   pub fn new() -> Self {
     Feedback {
