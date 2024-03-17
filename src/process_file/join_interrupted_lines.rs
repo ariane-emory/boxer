@@ -47,6 +47,7 @@ pub fn join_similarly_oriented_interrupted_lines(
   let mut merged_lines: Vec<ConnectedLine> = Vec::new();
   lines.sort();
   lines.reverse();
+
   while let Some(mut line) = lines.pop() {
     println!("Looking for merges for {:?}...", line);
 
