@@ -102,11 +102,6 @@ impl<'a> ConnectedLineMaker<'a> {
     }
   }
 
-  fn reset(&mut self) {
-    noisy_print!("Reset. ");
-    self.workpiece = NoWorkpiece;
-  }
-
   fn try_to_complete_line(
     &mut self,
     end: Point,
@@ -192,13 +187,13 @@ impl<'a> ConnectedLineMaker<'a> {
               String::from(format!("{}", *something_begin_byte as char)),
             );
             self.collect_word();
-            self.reset();
+            self.workpiece = NoWorkpiece;
           }
           // Row terminator:
           b'\0' => {
             // Maybe this case should panic?
             noisy_print!("End of row, reset. ");
-            self.reset();
+            self.workpiece = NoWorkpiece;
           }
           // Unexpected character:
           _ => self.panic_on_unexpected_char(byte),
@@ -226,12 +221,12 @@ impl<'a> ConnectedLineMaker<'a> {
         // Whitespace:
         b' ' => {
           self.try_to_complete_line(pos, Nothing, false);
-          self.reset();
+          self.workpiece = NoWorkpiece;
         }
         // Word character, treat as whitespace if not collecting words:
         _ if is_word_char(byte) && !self.collect_words => {
           self.try_to_complete_line(pos, Nothing, false);
-          self.reset();
+          self.workpiece = NoWorkpiece;
         }
         // Word character, try to finish the line and begin a word instead if
         // collecting words:
@@ -245,7 +240,7 @@ impl<'a> ConnectedLineMaker<'a> {
         b'\0' => {
           noisy_print!("End of row, line ends in Nothing! ");
           self.try_to_complete_line(pos, Nothing, false);
-          self.reset();
+          self.workpiece = NoWorkpiece;
           //self.process(pos, byte);
         }
         // Unexpected character:
@@ -259,14 +254,13 @@ impl<'a> ConnectedLineMaker<'a> {
           _ if self.bar_char == byte => {
             noisy_print!("Bar, complete word and switch to line. ");
             self.collect_word();
-            self.reset();
             self.workpiece = PartialLine(pos, Nothing);
           }
           // Corner, switch to capturing line:
           b'+' => {
             noisy_print!("Bar, complete word and switch to line. ");
             self.collect_word();
-            self.reset();
+            self.workpiece = NoWorkpiece;
             self.workpiece = PartialLine(pos, Corner);
           }
           // Wall:
@@ -288,14 +282,13 @@ impl<'a> ConnectedLineMaker<'a> {
            b' ' => {
              noisy_print!("Whitespace, try to complete word. ");
              self.collect_word();
-             self.reset();
              self.workpiece = PartialLine(pos, Corner);
           }
           // Row terminator:
           b'\0' => {
             noisy_print!("End of row, try to complete word. ");
             self.collect_word();
-            self.reset();
+            self.workpiece = NoWorkpiece;
           }
           // Unexpected character:
           _ => {
