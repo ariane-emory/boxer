@@ -52,7 +52,7 @@ pub fn join_similarly_oriented_interrupted_lines(
     println!("Looking for merges for {:?}...", line);
 
     if line.end_connects_to == Wall {
-      while let Some(other) = lines.remove_if(|o| {
+      if let Some(other) = lines.remove_if(|o| {
         line.orientation == o.orientation
           && line.end == o.start
           && o.start_connects_to == Wall
