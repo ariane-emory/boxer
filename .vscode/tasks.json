@@ -10,7 +10,8 @@
         "$rustc"
       ],
       "presentation": {
-        "reveal": "silent"
+        "reveal": "silent",
+        "panel": "shared"
       }
     },
     {
@@ -22,7 +23,8 @@
         "$rustc"
       ],
       "presentation": {
-        "reveal": "silent"
+        "reveal": "silent",
+        "panel": "shared"
       }
     }
   ]
