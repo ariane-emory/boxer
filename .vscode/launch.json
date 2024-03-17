@@ -2,14 +2,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run 'main'",
+      "name": "Debug Main",
       "type": "lldb",
       "request": "launch",
+      "preLaunchTask": "build main",
       "program": "${workspaceFolder}/target/debug/main",
       "args": [],
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build --bin main"
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Blocks",
+      "type": "lldb",
+      "request": "launch",
+      "preLaunchTask": "build blocks",
+      "program": "${workspaceFolder}/target/debug/blocks",
+      "args": [],
+      "cwd": "${workspaceFolder}"
     }
-    // Other configurations...
   ]
 }

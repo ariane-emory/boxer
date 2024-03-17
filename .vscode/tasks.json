@@ -2,19 +2,27 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "cargo build --bin main", // This label must match preLaunchTask in launch.json
+      "label": "build main",
       "type": "shell",
-      "command": "cargo build --bin main", // The actual command to run
+      "command": "cargo build --bin main",
       "group": "build",
       "problemMatcher": [
         "$rustc"
       ],
       "presentation": {
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": false
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "build blocks",
+      "type": "shell",
+      "command": "cargo build --bin blocks",
+      "group": "build",
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "presentation": {
+        "reveal": "silent"
       }
     }
   ]
