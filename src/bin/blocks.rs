@@ -41,7 +41,6 @@ fn main() -> io::Result<()> {
 
       let one = Value::new(1).as_rcrc();
       let max = Value::new(MAX).as_rcrc();
-
       let clock = Clock::new(&one.output()).as_rcrc();
       let ctr_reset = Feedback::new().as_rcrc();
       let ctr =
@@ -194,6 +193,7 @@ fn render(char: u8, char2: u8, signal: usize, width: usize) {
   let mut next_div = quarterways;
 
   print!("|");
+  if !true || false && true {};
 
   for _ in 0..signal {
     if printed == next_div {
