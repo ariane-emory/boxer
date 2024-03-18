@@ -25,7 +25,10 @@ where
 
 impl<T: PartialEq> Removeql<T> for Vec<T> {
   fn removeql(&mut self, value: &T) -> Option<T> {
-    self.iter().position(|x| x == value).map(|pos| self.remove(pos))
+    self
+      .iter()
+      .position(|x| x == value)
+      .map(|pos| self.remove(pos))
   }
 }
 
