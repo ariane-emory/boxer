@@ -18,7 +18,8 @@ pub fn check_for_illegal_networks(
         for (iii, rectangle) in rectangles.iter().enumerate() {
           if rectangle.has_corner_point(*point) {
             panic!(
-              "Network #{} has an illegal end point #{}: {:?} on Rectangle #{}'s corner.",
+              "Network #{} has an illegal end point #{}: {:?} on Rectangle \
+               #{}'s corner.",
               i + 1,
               ii + 1,
               (point, point_type),
@@ -46,7 +47,8 @@ pub fn check_for_illegal_networks(
         }
         if !found_it {
           panic!(
-            "Network #{} has an illegal end point #{}: {:?} on Wall that is not part of any Rectangle.",
+            "Network #{} has an illegal end point #{}: {:?} on Wall that is not \
+             part of any Rectangle.",
             i + 1,
             ii + 1,
             (point, point_type)

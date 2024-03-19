@@ -119,7 +119,8 @@ impl<'a> ConnectedLineMaker<'a> {
       let distance = end.distance(&begin);
       let distance_ok = distance > 1
         || begin_type == Nothing
-        || (begin_type == Corner && end_type == Corner); // Hackish, tidy... allow on vertical pass only?
+        || (begin_type == Corner && end_type == Corner);
+      // ^ Hackish, tidy... allow on vertical pass only?
       if distance_ok {
         let line =
           ConnectedLine::new(Horizontal, begin, end, begin_type, end_type)
@@ -249,7 +250,10 @@ impl<'a> ConnectedLineMaker<'a> {
       PartialWord(_word_begin, ref mut word_string) => {
         match byte {
           // Should never get her if we're not collecting words:
-          _ if ! self.collect_words => panic!("Entered PartialWord arm when !collect_words, this should not happen."),
+          _ if !self.collect_words => panic!(
+            "Entered PartialWord arm when !collect_words, this should not \
+             happen."
+          ),
           // Bar, switch to capturing line:
           _ if self.bar_char == byte => {
             noisy_print!("Bar, complete word and switch to line. ");
@@ -279,10 +283,10 @@ impl<'a> ConnectedLineMaker<'a> {
             );
           }
           // Whitespace:
-           b' ' => {
-             noisy_print!("Whitespace, try to complete word. ");
-             self.collect_word();
-             self.workpiece = PartialLine(pos, Corner);
+          b' ' => {
+            noisy_print!("Whitespace, try to complete word. ");
+            self.collect_word();
+            self.workpiece = PartialLine(pos, Corner);
           }
           // Row terminator:
           b'\0' => {

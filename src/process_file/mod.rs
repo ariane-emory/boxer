@@ -1,3 +1,4 @@
+// -*- c-backslash-column: 90; c-backslash-max-column: 90 ; fill-column: 90; -*-
 // #![allow(unused_variables)]
 // #![allow(unused_mut)]
 
@@ -23,7 +24,7 @@ use make_process_bidirectionally_fun::make_process_bidirectionally_fun;
 use merge_length_1_lines_with_words::merge_length_1_lines_with_words;
 use std::io::Result;
 
-/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 pub fn process_file(path: &str) -> Result<()> {
   let matrix = read_file_to_byte_matrix(path)?;
   let matrix =

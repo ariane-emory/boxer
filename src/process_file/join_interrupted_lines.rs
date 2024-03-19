@@ -25,10 +25,16 @@ pub fn join_interrupted_lines(lines: Vec<ConnectedLine>) -> Vec<ConnectedLine> {
     .iter()
     .for_each(|line| println!("Horiz Line:         {:?}", line));
 
-  println!("\n--------------------------------------------------------------------------------");
+  println!(
+    "\n-------------------------------------------------------------------------\
+     -------"
+  );
   let vertical_lines =
     join_similarly_oriented_interrupted_lines(vertical_lines);
-  println!("\n--------------------------------------------------------------------------------");
+  println!(
+    "\n-------------------------------------------------------------------------\
+     -------"
+  );
   let horizontal_lines =
     join_similarly_oriented_interrupted_lines(horizontal_lines);
 
